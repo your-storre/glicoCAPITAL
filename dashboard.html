@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | GlicoCapital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Premium Color Scheme */
+        :root {
+            --primary: #1a365d;
+            --primary-dark: #0f2040;
+            --primary-light: #2d4a80;
+            --secondary: #d4af37;
+            --secondary-dark: #b8941f;
+            --accent: #00b4d8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            color: var(--light);
+            min-height: 100vh;
+            padding-bottom: 90px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.03"><polygon fill="white" points="0,1000 1000,0 1000,1000"/></svg>');
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Premium Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 24px;
+            background: rgba(26, 54, 93, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo img {
+            height: 42px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Premium Card Design */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            padding: 28px;
+            margin-bottom: 24px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--glass-border);
+            color: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+        
+        .card.glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            color: white;
+            border: 1px solid var(--glass-border);
+        }
+        
+        /* Premium Button Styles */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            color: white;
+            box-shadow: 0 5px 15px rgba(26, 54, 93, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 54, 93, 0.5);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: white;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        /* Premium Dashboard Styles */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .welcome-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            font-weight: 700;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .welcome-section p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 28px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--glass-border);
+            color: white;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 180, 216, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            opacity: 0.8;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 16px 0;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            color: var(--gray-light);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .trend-up {
+            color: var(--success);
+        }
+        
+        .trend-down {
+            color: var(--danger);
+        }
+        
+        /* Premium Chart Container */
+        .chart-container {
+            height: 320px;
+            margin: 24px 0;
+            position: relative;
+        }
+        
+        /* Premium Transaction List */
+        .transaction-list {
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .transaction-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .transaction-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .transaction-list::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 10px;
+        }
+        
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease;
+            border-radius: 10px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        
+        .transaction-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .transaction-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .transaction-icon.income {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .transaction-icon.expense {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+        
+        .transaction-details h4 {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .transaction-date {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+        
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .transaction-amount.positive {
+            color: var(--success);
+        }
+        
+        .transaction-amount.negative {
+            color: var(--danger);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .section-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+        
+        .action-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .action-btn span {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        /* Premium Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 54, 93, 0.95);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            padding: 16px 0;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray-light);
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 12px;
+        }
+        
+        .nav-item.active, .nav-item:hover {
+            color: var(--secondary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            top: -16px;
+            width: 30px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+        
+        .nav-icon {
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-section h2 {
+                font-size: 2rem;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+            
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Animation for elements */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+        
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+        
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+        
+        /* Premium Footer */
+        .app-footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            color: var(--gray-light);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .footer-links a {
+            color: var(--gray-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Premium Header -->
+    <header>
+        <div class="logo">
+            <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
+            <h1>GlicoCapital</h1>
+        </div>
+        <div class="user-menu">
+            <button class="btn btn-outline" id="logoutBtn">Logout</button>
+            <div class="user-avatar">
+                <span>F</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="welcome-section animate-in">
+            <h2>Welcome back, Felicity!</h2>
+            <p>Your investment portfolio is growing steadily. Here's your current financial overview.</p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions animate-in delay-1">
+            <div class="action-btn">
+                <div class="action-icon">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <span>Add Funds</span>
+            </div>
+            <div class="action-btn">
+                <div class="action-icon">
+                    <i class="fas fa-download"></i>
+                </div>
+                <span>Withdraw</span>
+            </div>
+            <div class="action-btn">
+                <div class="action-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <span>Reports</span>
+            </div>
+            <div class="action-btn">
+                <div class="action-icon">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <span>Settings</span>
+            </div>
+        </div>
+
+        <!-- Premium Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card animate-in delay-1">
+                <div class="stat-icon">
+                    <i class="fas fa-piggy-bank"></i>
+                </div>
+                <div class="stat-label">Total Investment</div>
+                <div class="stat-value">$35,000</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Initial deposit</span>
+                </div>
+            </div>
+            <div class="stat-card animate-in delay-1">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-label">Current Balance</div>
+                <div class="stat-value" id="currentBalance">$35,000</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Updated today</span>
+                </div>
+            </div>
+            <div class="stat-card animate-in delay-2">
+                <div class="stat-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="stat-label">Daily Earnings</div>
+                <div class="stat-value">$70</div>
+                <div class="stat-trend">
+                    <span>Business days only</span>
+                </div>
+            </div>
+            <div class="stat-card animate-in delay-2">
+                <div class="stat-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="stat-label">Total Earnings</div>
+                <div class="stat-value" id="totalEarnings">$0</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Since 20 Sept 2025</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Earnings Chart -->
+        <div class="card glass animate-in delay-3">
+            <div class="section-header">
+                <h2>Earnings Progress</h2>
+                <div class="time-filter">
+                    <button class="btn btn-outline">1M</button>
+                    <button class="btn btn-outline">3M</button>
+                    <button class="btn btn-secondary">6M</button>
+                    <button class="btn btn-outline">1Y</button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="earningsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="card glass animate-in">
+            <div class="section-header">
+                <h2>Recent Transactions</h2>
+                <button class="btn btn-outline">View All</button>
+            </div>
+            <div class="transaction-list" id="transactionList">
+                <!-- Transactions will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Footer -->
+    <div class="app-footer">
+        <p>GlicoCapital Investment Platform © 2025. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Support</a>
+        </div>
+    </div>
+
+    <!-- Premium Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item active">
+            <span class="nav-icon"><i class="fas fa-home"></i></span>
+            <span>Home</span>
+        </a>
+        <a href="portfolio.html" class="nav-item">
+            <span class="nav-icon"><i class="fas fa-chart-pie"></i></span>
+            <span>Portfolio</span>
+        </a>
+        <a href="partners.html" class="nav-item">
+            <span class="nav-icon"><i class="fas fa-handshake"></i></span>
+            <span>Partners</span>
+        </a>
+        <a href="settings.html" class="nav-item">
+            <span class="nav-icon"><i class="fas fa-cog"></i></span>
+            <span>Settings</span>
+        </a>
+        <a href="support.html" class="nav-item">
+            <span class="nav-icon"><i class="fas fa-headset"></i></span>
+            <span>Support</span>
+        </a>
+    </nav>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
+            authDomain: "ggic-investment.firebaseapp.com",
+            databaseURL: "https://ggic-investment-default-rtdb.firebaseio.com",
+            projectId: "ggic-investment",
+            storageBucket: "ggic-investment.firebasestorage.app",
+            messagingSenderId: "805530882494",
+            appId: "1:805530882494:web:574b965b3ed0402b0f69ef",
+            measurementId: "G-NR5R3EJM93"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // DOM Elements
+        const logoutBtn = document.getElementById('logoutBtn');
+        const currentBalanceEl = document.getElementById('currentBalance');
+        const totalEarningsEl = document.getElementById('totalEarnings');
+        const transactionList = document.getElementById('transactionList');
+
+        // Logout function
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                window.location.href = 'login.html';
+            });
+        });
+
+        // Check authentication state
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'login.html';
+            } else {
+                // User is signed in, load their data
+                loadUserData(user.uid);
+            }
+        });
+
+        // Load user data from Firestore
+        function loadUserData(userId) {
+            db.collection('users').doc(userId).get()
+                .then(doc => {
+                    if (doc.exists) {
+                        const userData = doc.data();
+                        updateDashboard(userData);
+                    } else {
+                        console.log("No such document!");
+                    }
+                })
+                .catch(error => {
+                    console.log("Error getting document:", error);
+                });
+        }
+
+        // Update dashboard with user data
+        function updateDashboard(userData) {
+            // Calculate earnings based on business days
+            const startDate = new Date('2025-09-20');
+            const endDate = new Date('2025-11-30');
+            const businessDays = calculateBusinessDays(startDate, endDate);
+            const dailyEarnings = 70;
+            const totalEarnings = businessDays * dailyEarnings;
+            const currentBalance = 35000 + totalEarnings;
+
+            // Update DOM
+            currentBalanceEl.textContent = `$${currentBalance.toLocaleString()}`;
+            totalEarningsEl.textContent = `$${totalEarnings.toLocaleString()}`;
+
+            // Update transactions
+            updateTransactionList(businessDays, dailyEarnings, startDate);
+            
+            // Initialize chart
+            initEarningsChart(businessDays, dailyEarnings);
+        }
+
+        // Calculate business days between two dates
+        function calculateBusinessDays(startDate, endDate) {
+            let count = 0;
+            const curDate = new Date(startDate.getTime());
+            
+            while (curDate <= endDate) {
+                const dayOfWeek = curDate.getDay();
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) count++;
+                curDate.setDate(curDate.getDate() + 1);
+            }
+            
+            return count;
+        }
+
+        // Update transaction list
+        function updateTransactionList(businessDays, dailyEarnings, startDate) {
+            transactionList.innerHTML = '';
+            
+            // Add initial deposit
+            const depositItem = document.createElement('div');
+            depositItem.className = 'transaction-item';
+            depositItem.innerHTML = `
+                <div class="transaction-info">
+                    <div class="transaction-icon income">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <div class="transaction-details">
+                        <h4>Initial Deposit</h4>
+                        <div class="transaction-date">${formatDate(startDate)}</div>
+                    </div>
+                </div>
+                <div class="transaction-amount positive">+$35,000</div>
+            `;
+            transactionList.appendChild(depositItem);
+            
+            // Add earnings for each business day
+            const curDate = new Date(startDate.getTime());
+            let earningsCount = 0;
+            
+            for (let i = 0; i < businessDays && earningsCount < 5; i++) {
+                // Find next business day
+                while (curDate.getDay() === 0 || curDate.getDay() === 6) {
+                    curDate.setDate(curDate.getDate() + 1);
+                }
+                
+                const earningsItem = document.createElement('div');
+                earningsItem.className = 'transaction-item';
+                earningsItem.innerHTML = `
+                    <div class="transaction-info">
+                        <div class="transaction-icon income">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>Daily Earnings</h4>
+                            <div class="transaction-date">${formatDate(new Date(curDate))}</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount positive">+$${dailyEarnings}</div>
+                `;
+                transactionList.appendChild(earningsItem);
+                
+                curDate.setDate(curDate.getDate() + 1);
+                earningsCount++;
+            }
+        }
+
+        // Format date for display
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        }
+
+        // Initialize earnings chart
+        function initEarningsChart(businessDays, dailyEarnings) {
+            const ctx = document.getElementById('earningsChart').getContext('2d');
+            
+            // Generate data for the chart
+            const labels = [];
+            const earningsData = [];
+            let cumulativeEarnings = 0;
+            
+            for (let i = 0; i <= businessDays; i++) {
+                if (i % 5 === 0 || i === businessDays) {
+                    labels.push(`Day ${i}`);
+                    earningsData.push(cumulativeEarnings);
+                }
+                cumulativeEarnings += dailyEarnings;
+            }
+            
+            // Create gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(212, 175, 55, 0.4)');
+            gradient.addColorStop(1, 'rgba(212, 175, 55, 0.05)');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Earnings ($)',
+                        data: earningsData,
+                        borderColor: '#d4af37',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#d4af37',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                callback: function(value) {
+                                    return '$' + value;
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 54, 93, 0.9)',
+                            titleColor: '#d4af37',
+                            bodyColor: 'white',
+                            borderColor: '#d4af37',
+                            borderWidth: 1,
+                            cornerRadius: 10,
+                            displayColors: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Quick action buttons
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.querySelector('span').textContent;
+                
+                if (action === 'Add Funds') {
+                    alert('Redirecting to add funds page...');
+                } else if (action === 'Withdraw') {
+                    alert('Redirecting to withdrawal page...');
+                } else if (action === 'Reports') {
+                    alert('Generating investment report...');
+                } else if (action === 'Settings') {
+                    window.location.href = 'settings.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
