@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | GlicoCapital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Premium Color Scheme */
         :root {
@@ -114,6 +115,13 @@
             font-weight: 600;
             cursor: pointer;
             border: 2px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         /* Premium Card Design */
@@ -394,6 +402,11 @@
             color: var(--danger);
         }
         
+        .transaction-icon.payout {
+            background: rgba(37, 99, 235, 0.2);
+            color: var(--primary);
+        }
+        
         .transaction-details h4 {
             font-weight: 600;
             margin-bottom: 4px;
@@ -477,6 +490,93 @@
             font-size: 0.9rem;
         }
         
+        /* Investment Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--secondary);
+            opacity: 0.5;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--secondary);
+        }
+        
+        .timeline-date {
+            font-size: 0.9rem;
+            color: var(--gray-light);
+            margin-bottom: 5px;
+        }
+        
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid var(--secondary);
+        }
+        
+        .timeline-content h4 {
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .timeline-content p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        /* Payout Details */
+        .payout-details {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .payout-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .payout-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .payout-label {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+        
+        .payout-value {
+            font-weight: 600;
+        }
+        
         /* Premium Bottom Navigation */
         .bottom-nav {
             position: fixed;
@@ -524,6 +624,22 @@
         .nav-icon {
             font-size: 1.3rem;
             margin-bottom: 6px;
+        }
+        
+        /* Profile Upload */
+        .profile-upload {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .profile-upload input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
         }
         
         /* Responsive Design */
@@ -582,33 +698,6 @@
         .delay-3 {
             animation-delay: 0.3s;
         }
-        
-        /* Premium Footer */
-        .app-footer {
-            text-align: center;
-            padding: 30px 20px;
-            margin-top: 40px;
-            color: var(--gray-light);
-            font-size: 0.9rem;
-            border-top: 1px solid var(--glass-border);
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
-        }
-        
-        .footer-links a {
-            color: var(--gray-light);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .footer-links a:hover {
-            color: var(--secondary);
-        }
     </style>
 </head>
 <body>
@@ -620,8 +709,9 @@
         </div>
         <div class="user-menu">
             <button class="btn btn-outline" id="logoutBtn">Logout</button>
-            <div class="user-avatar">
-                <span>F</span>
+            <div class="user-avatar profile-upload" id="userAvatar">
+                <span id="avatarInitial">F</span>
+                <input type="file" id="avatarUpload" accept="image/*">
             </div>
         </div>
     </header>
@@ -635,23 +725,23 @@
 
         <!-- Quick Actions -->
         <div class="quick-actions animate-in delay-1">
-            <div class="action-btn">
+            <div class="action-btn" id="payoutsBtn">
                 <div class="action-icon">
-                    <i class="fas fa-plus"></i>
+                    <i class="fas fa-wallet"></i>
                 </div>
-                <span>Add Funds</span>
-            </div>
-            <div class="action-btn">
-                <div class="action-icon">
-                    <i class="fas fa-download"></i>
-                </div>
-                <span>Withdraw</span>
+                <span>Payouts</span>
             </div>
             <div class="action-btn">
                 <div class="action-icon">
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <span>Reports</span>
+            </div>
+            <div class="action-btn">
+                <div class="action-icon">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                </div>
+                <span>Statements</span>
             </div>
             <div class="action-btn">
                 <div class="action-icon">
@@ -668,7 +758,7 @@
                     <i class="fas fa-piggy-bank"></i>
                 </div>
                 <div class="stat-label">Total Investment</div>
-                <div class="stat-value">$35,000</div>
+                <div class="stat-value" id="totalInvestment">$35,000</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
                     <span>Initial deposit</span>
@@ -679,7 +769,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stat-label">Current Balance</div>
-                <div class="stat-value" id="currentBalance">$35,000</div>
+                <div class="stat-value" id="currentBalance">$41,000</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
                     <span>Updated today</span>
@@ -689,29 +779,29 @@
                 <div class="stat-icon">
                     <i class="fas fa-coins"></i>
                 </div>
-                <div class="stat-label">Daily Earnings</div>
-                <div class="stat-value">$70</div>
-                <div class="stat-trend">
-                    <span>Business days only</span>
-                </div>
-            </div>
-            <div class="stat-card animate-in delay-2">
-                <div class="stat-icon">
-                    <i class="fas fa-wallet"></i>
-                </div>
                 <div class="stat-label">Total Earnings</div>
-                <div class="stat-value" id="totalEarnings">$0</div>
+                <div class="stat-value" id="totalEarnings">$6,000</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
                     <span>Since 20 Sept 2025</span>
                 </div>
             </div>
+            <div class="stat-card animate-in delay-2">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-day"></i>
+                </div>
+                <div class="stat-label">Daily Earnings</div>
+                <div class="stat-value">$120</div>
+                <div class="stat-trend">
+                    <span>Business days only</span>
+                </div>
+            </div>
         </div>
 
-        <!-- Earnings Chart -->
+        <!-- Performance Chart -->
         <div class="card glass animate-in delay-3">
             <div class="section-header">
-                <h2>Earnings Progress</h2>
+                <h2>Investment Performance</h2>
                 <div class="time-filter">
                     <button class="btn btn-outline">1M</button>
                     <button class="btn btn-outline">3M</button>
@@ -720,29 +810,138 @@
                 </div>
             </div>
             <div class="chart-container">
-                <canvas id="earningsChart"></canvas>
+                <canvas id="performanceChart"></canvas>
             </div>
         </div>
 
-        <!-- Recent Transactions -->
-        <div class="card glass animate-in">
+        <div class="grid-2-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <!-- Investment Timeline -->
+            <div class="card glass animate-in">
+                <div class="section-header">
+                    <h2>Investment Timeline</h2>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">15th May 2025</div>
+                        <div class="timeline-content">
+                            <h4>Initial Investment</h4>
+                            <p>Deposited $5,000 for 4 months investment plan</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">15th August 2025</div>
+                        <div class="timeline-content">
+                            <h4>Payout Received</h4>
+                            <p>Received payout of $8,600 from completed investment</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">20th September 2025</div>
+                        <div class="timeline-content">
+                            <h4>Premium Investment</h4>
+                            <p>Invested $35,000 in 6-month premium plan</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">30th November 2025</div>
+                        <div class="timeline-content">
+                            <h4>Current Status</h4>
+                            <p>Earned $6,000 so far. Investment performing as expected</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">20th February 2026</div>
+                        <div class="timeline-content">
+                            <h4>Next Payout Date</h4>
+                            <p>Scheduled payout of principal + earnings</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="card glass animate-in">
+                <div class="section-header">
+                    <h2>Recent Transactions</h2>
+                    <button class="btn btn-outline">View All</button>
+                </div>
+                <div class="transaction-list" id="transactionList">
+                    <!-- Transactions will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Payout History Section -->
+        <div class="card glass animate-in" id="payoutsSection" style="display: none;">
             <div class="section-header">
-                <h2>Recent Transactions</h2>
-                <button class="btn btn-outline">View All</button>
+                <h2>Payout History</h2>
+                <button class="btn btn-outline" id="closePayouts">Close</button>
             </div>
-            <div class="transaction-list" id="transactionList">
-                <!-- Transactions will be populated by JavaScript -->
+            <div class="transaction-list">
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-icon payout">
+                            <i class="fas fa-money-check"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>Investment Payout</h4>
+                            <div class="transaction-date">15th August 2025</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount positive">+$8,600</div>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Premium Footer -->
-    <div class="app-footer">
-        <p>GlicoCapital Investment Platform © 2025. All rights reserved.</p>
-        <div class="footer-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Contact Support</a>
+            <div class="payout-details">
+                <h4>Payout Details</h4>
+                <div class="payout-info">
+                    <div class="payout-item">
+                        <div class="payout-label">Amount</div>
+                        <div class="payout-value">$8,600.00</div>
+                    </div>
+                    <div class="payout-item">
+                        <div class="payout-label">Currency</div>
+                        <div class="payout-value">USD</div>
+                    </div>
+                    <div class="payout-item">
+                        <div class="payout-label">Bank</div>
+                        <div class="payout-value">Wells Fargo</div>
+                    </div>
+                    <div class="payout-item">
+                        <div class="payout-label">Account Number</div>
+                        <div class="payout-value">•••• 0906</div>
+                    </div>
+                    <div class="payout-item">
+                        <div class="payout-label">Status</div>
+                        <div class="payout-value" style="color: var(--success);">Completed</div>
+                    </div>
+                    <div class="payout-item">
+                        <div class="payout-label">Transaction ID</div>
+                        <div class="payout-value">TX-789456123</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-header" style="margin-top: 30px;">
+                <h3>Current Investment Status</h3>
+            </div>
+            <div class="payout-info">
+                <div class="payout-item">
+                    <div class="payout-label">Current Balance</div>
+                    <div class="payout-value" id="payoutCurrentBalance">$41,000</div>
+                </div>
+                <div class="payout-item">
+                    <div class="payout-label">Next Payout Date</div>
+                    <div class="payout-value">20th February 2026</div>
+                </div>
+                <div class="payout-item">
+                    <div class="payout-label">Estimated Payout</div>
+                    <div class="payout-value">$49,400+</div>
+                </div>
+                <div class="payout-item">
+                    <div class="payout-label">Daily Earnings</div>
+                    <div class="payout-value">$120 (Business Days)</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -776,9 +975,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
 
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <script>
         // Firebase configuration
         const firebaseConfig = {
@@ -800,9 +996,16 @@
 
         // DOM Elements
         const logoutBtn = document.getElementById('logoutBtn');
+        const totalInvestmentEl = document.getElementById('totalInvestment');
         const currentBalanceEl = document.getElementById('currentBalance');
         const totalEarningsEl = document.getElementById('totalEarnings');
         const transactionList = document.getElementById('transactionList');
+        const payoutsBtn = document.getElementById('payoutsBtn');
+        const payoutsSection = document.getElementById('payoutsSection');
+        const closePayouts = document.getElementById('closePayouts');
+        const avatarUpload = document.getElementById('avatarUpload');
+        const userAvatar = document.getElementById('userAvatar');
+        const avatarInitial = document.getElementById('avatarInitial');
 
         // Logout function
         logoutBtn.addEventListener('click', () => {
@@ -818,6 +1021,51 @@
             } else {
                 // User is signed in, load their data
                 loadUserData(user.uid);
+                loadUserProfile(user);
+            }
+        });
+
+        // Load user profile picture
+        function loadUserProfile(user) {
+            if (user.photoURL) {
+                avatarInitial.style.display = 'none';
+                userAvatar.innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
+            }
+        }
+
+        // Profile picture upload
+        avatarUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const user = auth.currentUser;
+                const storageRef = storage.ref(`profile-pictures/${user.uid}`);
+                const uploadTask = storageRef.put(file);
+                
+                uploadTask.on('state_changed', 
+                    (snapshot) => {
+                        // Progress handling
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log('Upload is ' + progress + '% done');
+                    }, 
+                    (error) => {
+                        console.error('Upload failed:', error);
+                        alert('Failed to upload profile picture');
+                    }, 
+                    () => {
+                        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                            user.updateProfile({
+                                photoURL: downloadURL
+                            }).then(() => {
+                                return db.collection('users').doc(user.uid).update({
+                                    'personalInfo.profilePicture': downloadURL
+                                });
+                            }).then(() => {
+                                loadUserProfile(user);
+                                alert('Profile picture updated successfully!');
+                            });
+                        });
+                    }
+                );
             }
         });
 
@@ -829,7 +1077,8 @@
                         const userData = doc.data();
                         updateDashboard(userData);
                     } else {
-                        console.log("No such document!");
+                        // Create user data if it doesn't exist
+                        createUserData(userId);
                     }
                 })
                 .catch(error => {
@@ -837,25 +1086,126 @@
                 });
         }
 
+        // Create user data with Felicity's investment details
+        function createUserData(userId) {
+            const userData = {
+                personalInfo: {
+                    firstName: "Acheampong",
+                    lastName: "Felicity",
+                    email: "iamgenefelicity@gmail.com",
+                    phone: "551 645-4453",
+                    dob: "1994-03-21",
+                    ssn: "452-464-8362",
+                    address: "577 Elmwood Avenue, 07663, Saddle Brook, New Jersey",
+                    joinDate: new Date().toISOString()
+                },
+                investment: {
+                    initialDeposit: 35000,
+                    currentBalance: 41000,
+                    totalEarnings: 6000,
+                    dailyEarnings: 120,
+                    startDate: "2025-09-20",
+                    endDate: "2026-02-20",
+                    status: 'active',
+                    plan: 'premium'
+                },
+                beneficiary: {
+                    bankName: "Wells Fargo",
+                    accountNumber: "53936530087",
+                    routingNumber: "03735322"
+                },
+                transactions: [
+                    {
+                        type: "deposit",
+                        amount: 5000,
+                        date: "2025-05-15",
+                        description: "Initial investment deposit",
+                        status: "completed"
+                    },
+                    {
+                        type: "payout",
+                        amount: 8600,
+                        date: "2025-08-15",
+                        description: "Investment payout to Wells Fargo account ending 0906",
+                        status: "completed",
+                        bank: "Wells Fargo",
+                        account: "•••• 0906",
+                        currency: "USD"
+                    },
+                    {
+                        type: "deposit",
+                        amount: 35000,
+                        date: "2025-09-20",
+                        description: "Premium plan investment deposit",
+                        status: "completed"
+                    }
+                ],
+                settings: {
+                    emailNotifications: true,
+                    twoFactorAuth: false
+                }
+            };
+
+            db.collection('users').doc(userId).set(userData)
+                .then(() => {
+                    updateDashboard(userData);
+                })
+                .catch(error => {
+                    console.error("Error creating user data:", error);
+                });
+        }
+
         // Update dashboard with user data
         function updateDashboard(userData) {
-            // Calculate earnings based on business days
-            const startDate = new Date('2025-09-20');
-            const endDate = new Date('2025-11-30');
-            const businessDays = calculateBusinessDays(startDate, endDate);
-            const dailyEarnings = 70;
-            const totalEarnings = businessDays * dailyEarnings;
-            const currentBalance = 35000 + totalEarnings;
-
+            // Calculate current earnings based on business days
+            const currentData = calculateCurrentEarnings(userData);
+            
             // Update DOM
-            currentBalanceEl.textContent = `$${currentBalance.toLocaleString()}`;
-            totalEarningsEl.textContent = `$${totalEarnings.toLocaleString()}`;
+            totalInvestmentEl.textContent = `$${currentData.initialDeposit.toLocaleString()}`;
+            currentBalanceEl.textContent = `$${currentData.currentBalance.toLocaleString()}`;
+            totalEarningsEl.textContent = `$${currentData.totalEarnings.toLocaleString()}`;
 
             // Update transactions
-            updateTransactionList(businessDays, dailyEarnings, startDate);
+            updateTransactionList(currentData.transactions);
             
             // Initialize chart
-            initEarningsChart(businessDays, dailyEarnings);
+            initPerformanceChart(currentData);
+        }
+
+        // Calculate current earnings based on business days
+        function calculateCurrentEarnings(userData) {
+            const startDate = new Date(userData.investment.startDate);
+            const currentDate = new Date();
+            const endDate = new Date(userData.investment.endDate);
+            
+            // Calculate business days between start date and current date
+            const businessDays = calculateBusinessDays(startDate, currentDate);
+            
+            // Calculate total earnings
+            const dailyEarnings = userData.investment.dailyEarnings;
+            const totalEarnings = businessDays * dailyEarnings;
+            
+            // Update user data with current calculations
+            const updatedData = {
+                ...userData,
+                investment: {
+                    ...userData.investment,
+                    totalEarnings: totalEarnings,
+                    currentBalance: userData.investment.initialDeposit + totalEarnings
+                }
+            };
+            
+            // Update Firestore with current calculations
+            if (auth.currentUser) {
+                db.collection('users').doc(auth.currentUser.uid).update({
+                    'investment.totalEarnings': totalEarnings,
+                    'investment.currentBalance': userData.investment.initialDeposit + totalEarnings
+                }).catch(error => {
+                    console.error("Error updating earnings:", error);
+                });
+            }
+            
+            return updatedData;
         }
 
         // Calculate business days between two dates
@@ -873,55 +1223,47 @@
         }
 
         // Update transaction list
-        function updateTransactionList(businessDays, dailyEarnings, startDate) {
+        function updateTransactionList(transactions) {
             transactionList.innerHTML = '';
             
-            // Add initial deposit
-            const depositItem = document.createElement('div');
-            depositItem.className = 'transaction-item';
-            depositItem.innerHTML = `
-                <div class="transaction-info">
-                    <div class="transaction-icon income">
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <div class="transaction-details">
-                        <h4>Initial Deposit</h4>
-                        <div class="transaction-date">${formatDate(startDate)}</div>
-                    </div>
-                </div>
-                <div class="transaction-amount positive">+$35,000</div>
-            `;
-            transactionList.appendChild(depositItem);
+            // Sort transactions by date (newest first)
+            const sortedTransactions = transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
             
-            // Add earnings for each business day
-            const curDate = new Date(startDate.getTime());
-            let earningsCount = 0;
-            
-            for (let i = 0; i < businessDays && earningsCount < 5; i++) {
-                // Find next business day
-                while (curDate.getDay() === 0 || curDate.getDay() === 6) {
-                    curDate.setDate(curDate.getDate() + 1);
+            sortedTransactions.forEach(transaction => {
+                const transactionItem = document.createElement('div');
+                transactionItem.className = 'transaction-item';
+                
+                let iconClass = 'income';
+                let icon = 'fas fa-plus';
+                let amountClass = 'positive';
+                
+                if (transaction.type === 'payout') {
+                    iconClass = 'payout';
+                    icon = 'fas fa-money-check';
+                    amountClass = 'negative';
+                } else if (transaction.type === 'withdrawal') {
+                    iconClass = 'expense';
+                    icon = 'fas fa-arrow-up';
+                    amountClass = 'negative';
+                } else if (transaction.type === 'earning') {
+                    iconClass = 'income';
+                    icon = 'fas fa-coins';
                 }
                 
-                const earningsItem = document.createElement('div');
-                earningsItem.className = 'transaction-item';
-                earningsItem.innerHTML = `
+                transactionItem.innerHTML = `
                     <div class="transaction-info">
-                        <div class="transaction-icon income">
-                            <i class="fas fa-coins"></i>
+                        <div class="transaction-icon ${iconClass}">
+                            <i class="${icon}"></i>
                         </div>
                         <div class="transaction-details">
-                            <h4>Daily Earnings</h4>
-                            <div class="transaction-date">${formatDate(new Date(curDate))}</div>
+                            <h4>${transaction.description}</h4>
+                            <div class="transaction-date">${formatDate(new Date(transaction.date))}</div>
                         </div>
                     </div>
-                    <div class="transaction-amount positive">+$${dailyEarnings}</div>
+                    <div class="transaction-amount ${amountClass}">${amountClass === 'positive' ? '+' : '-'}$${transaction.amount.toLocaleString()}</div>
                 `;
-                transactionList.appendChild(earningsItem);
-                
-                curDate.setDate(curDate.getDate() + 1);
-                earningsCount++;
-            }
+                transactionList.appendChild(transactionItem);
+            });
         }
 
         // Format date for display
@@ -933,24 +1275,37 @@
             });
         }
 
-        // Initialize earnings chart
-        function initEarningsChart(businessDays, dailyEarnings) {
-            const ctx = document.getElementById('earningsChart').getContext('2d');
+        // Initialize performance chart
+        function initPerformanceChart(userData) {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
             
-            // Generate data for the chart
-            const labels = [];
-            const earningsData = [];
-            let cumulativeEarnings = 0;
+            // Generate performance data based on investment timeline
+            const startDate = new Date(userData.investment.startDate);
+            const currentDate = new Date();
+            const months = [];
+            const performanceData = [];
             
-            for (let i = 0; i <= businessDays; i++) {
-                if (i % 5 === 0 || i === businessDays) {
-                    labels.push(`Day ${i}`);
-                    earningsData.push(cumulativeEarnings);
-                }
-                cumulativeEarnings += dailyEarnings;
+            let currentMonth = new Date(startDate);
+            let cumulativeValue = userData.investment.initialDeposit;
+            
+            while (currentMonth <= currentDate) {
+                months.push(currentMonth.toLocaleDateString('en-US', { month: 'short' }));
+                
+                // Calculate earnings for this month
+                const monthStart = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+                const monthEnd = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
+                const businessDays = calculateBusinessDays(
+                    monthStart < startDate ? startDate : monthStart,
+                    monthEnd > currentDate ? currentDate : monthEnd
+                );
+                
+                const monthlyEarnings = businessDays * userData.investment.dailyEarnings;
+                cumulativeValue += monthlyEarnings;
+                performanceData.push(cumulativeValue);
+                
+                currentMonth.setMonth(currentMonth.getMonth() + 1);
             }
             
-            // Create gradient
             const gradient = ctx.createLinearGradient(0, 0, 0, 300);
             gradient.addColorStop(0, 'rgba(212, 175, 55, 0.4)');
             gradient.addColorStop(1, 'rgba(212, 175, 55, 0.05)');
@@ -958,10 +1313,10 @@
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: labels,
+                    labels: months,
                     datasets: [{
-                        label: 'Earnings ($)',
-                        data: earningsData,
+                        label: 'Portfolio Value ($)',
+                        data: performanceData,
                         borderColor: '#d4af37',
                         backgroundColor: gradient,
                         borderWidth: 3,
@@ -979,14 +1334,14 @@
                     maintainAspectRatio: false,
                     scales: {
                         y: {
-                            beginAtZero: true,
+                            beginAtZero: false,
                             grid: {
                                 color: 'rgba(255, 255, 255, 0.1)'
                             },
                             ticks: {
                                 color: 'rgba(255, 255, 255, 0.7)',
                                 callback: function(value) {
-                                    return '$' + value;
+                                    return '$' + value.toLocaleString();
                                 }
                             }
                         },
@@ -1010,28 +1365,46 @@
                             borderColor: '#d4af37',
                             borderWidth: 1,
                             cornerRadius: 10,
-                            displayColors: false
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `Portfolio Value: $${context.parsed.y.toLocaleString()}`;
+                                }
+                            }
                         }
                     }
                 }
             });
         }
 
+        // Payouts functionality
+        payoutsBtn.addEventListener('click', function() {
+            payoutsSection.style.display = 'block';
+            document.querySelector('.grid-2-col').style.display = 'none';
+            document.querySelector('.card.glass.animate-in.delay-3').style.display = 'none';
+        });
+
+        closePayouts.addEventListener('click', function() {
+            payoutsSection.style.display = 'none';
+            document.querySelector('.grid-2-col').style.display = 'grid';
+            document.querySelector('.card.glass.animate-in.delay-3').style.display = 'block';
+        });
+
         // Quick action buttons
         document.querySelectorAll('.action-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const action = this.querySelector('span').textContent;
-                
-                if (action === 'Add Funds') {
-                    alert('Redirecting to add funds page...');
-                } else if (action === 'Withdraw') {
-                    alert('Redirecting to withdrawal page...');
-                } else if (action === 'Reports') {
-                    alert('Generating investment report...');
-                } else if (action === 'Settings') {
-                    window.location.href = 'settings.html';
-                }
-            });
+            if (!btn.id) { // Exclude payouts button which has its own handler
+                btn.addEventListener('click', function() {
+                    const action = this.querySelector('span').textContent;
+                    
+                    if (action === 'Reports') {
+                        alert('Generating investment report...');
+                    } else if (action === 'Statements') {
+                        alert('Opening account statements...');
+                    } else if (action === 'Settings') {
+                        window.location.href = 'settings.html';
+                    }
+                });
+            }
         });
     </script>
 </body>
