@@ -66,7 +66,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 24px;
+            padding: 18px 20px;
             background: rgba(26, 54, 93, 0.8);
             backdrop-filter: blur(15px);
             border-radius: 0 0 20px 20px;
@@ -85,12 +85,12 @@
         }
         
         .logo img {
-            height: 42px;
+            height: 38px;
             filter: brightness(0) invert(1);
         }
         
         .logo h1 {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: 700;
             background: linear-gradient(90deg, white, var(--secondary));
             -webkit-background-clip: text;
@@ -100,12 +100,12 @@
         .user-menu {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
         
         .user-avatar {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--secondary), var(--accent));
             display: flex;
@@ -116,6 +116,7 @@
             cursor: pointer;
             border: 2px solid rgba(255, 255, 255, 0.3);
             overflow: hidden;
+            font-size: 0.9rem;
         }
         
         .user-avatar img {
@@ -124,14 +125,61 @@
             object-fit: cover;
         }
         
+        /* Page Navigation */
+        .page-navigation {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .page-navigation::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav-tab {
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .nav-tab.active {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            border-color: var(--secondary);
+        }
+        
+        /* Page Content */
+        .page-content {
+            display: none;
+        }
+        
+        .page-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         /* Premium Card Design */
         .card {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            padding: 28px;
-            margin-bottom: 24px;
+            padding: 24px;
+            margin-bottom: 20px;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid var(--glass-border);
             color: var(--dark);
@@ -150,7 +198,7 @@
         }
         
         .card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
         }
         
@@ -163,7 +211,7 @@
         
         /* Premium Button Styles */
         .btn {
-            padding: 12px 24px;
+            padding: 12px 20px;
             border-radius: 12px;
             border: none;
             font-weight: 600;
@@ -173,7 +221,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             position: relative;
             overflow: hidden;
         }
@@ -229,13 +277,13 @@
         /* Premium Dashboard Styles */
         .welcome-section {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             position: relative;
         }
         
         .welcome-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
+            font-size: 2rem;
+            margin-bottom: 10px;
             font-weight: 700;
             background: linear-gradient(90deg, white, var(--secondary));
             -webkit-background-clip: text;
@@ -243,7 +291,7 @@
         }
         
         .welcome-section p {
-            font-size: 1.1rem;
+            font-size: 1rem;
             opacity: 0.9;
             max-width: 600px;
             margin: 0 auto;
@@ -251,18 +299,18 @@
         
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
         }
         
         .stat-card {
             background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
             backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 28px;
+            border-radius: 16px;
+            padding: 20px 15px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             border: 1px solid var(--glass-border);
             color: white;
             transition: all 0.4s ease;
@@ -286,20 +334,16 @@
             opacity: 1;
         }
         
-        .stat-card:hover {
-            transform: translateY(-8px);
-        }
-        
         .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 16px;
+            font-size: 2rem;
+            margin-bottom: 12px;
             opacity: 0.8;
         }
         
         .stat-value {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             font-weight: 700;
-            margin: 16px 0;
+            margin: 12px 0;
             background: linear-gradient(90deg, white, var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -307,7 +351,7 @@
         
         .stat-label {
             color: var(--gray-light);
-            font-size: 1rem;
+            font-size: 0.85rem;
             font-weight: 500;
         }
         
@@ -315,9 +359,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            margin-top: 10px;
-            font-size: 0.9rem;
+            gap: 4px;
+            margin-top: 8px;
+            font-size: 0.8rem;
         }
         
         .trend-up {
@@ -330,20 +374,20 @@
         
         /* Premium Chart Container */
         .chart-container {
-            height: 320px;
-            margin: 24px 0;
+            height: 280px;
+            margin: 20px 0;
             position: relative;
         }
         
-        /* Premium Transaction List */
+        /* Transaction List */
         .transaction-list {
-            max-height: 420px;
+            max-height: 400px;
             overflow-y: auto;
             padding-right: 10px;
         }
         
         .transaction-list::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
         
         .transaction-list::-webkit-scrollbar-track {
@@ -360,12 +404,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 0;
+            padding: 16px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             transition: background 0.3s ease;
-            border-radius: 10px;
-            padding-left: 15px;
-            padding-right: 15px;
+            border-radius: 8px;
+            padding-left: 12px;
+            padding-right: 12px;
         }
         
         .transaction-item:hover {
@@ -379,17 +423,20 @@
         .transaction-info {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
         }
         
         .transaction-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
+            flex-shrink: 0;
         }
         
         .transaction-icon.income {
@@ -407,19 +454,30 @@
             color: var(--primary);
         }
         
+        .transaction-details {
+            flex: 1;
+            min-width: 0;
+        }
+        
         .transaction-details h4 {
             font-weight: 600;
             margin-bottom: 4px;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .transaction-date {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             opacity: 0.7;
         }
         
         .transaction-amount {
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-left: 10px;
         }
         
         .transaction-amount.positive {
@@ -435,14 +493,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
         
         .section-header h2 {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             position: relative;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
         
         .section-header h2::after {
@@ -450,100 +508,10 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 50px;
+            width: 40px;
             height: 3px;
             background: var(--secondary);
             border-radius: 3px;
-        }
-        
-        /* Quick Actions */
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 30px;
-        }
-        
-        .action-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-3px);
-        }
-        
-        .action-icon {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: var(--secondary);
-        }
-        
-        .action-btn span {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        /* Investment Timeline */
-        .timeline {
-            position: relative;
-            padding-left: 30px;
-        }
-        
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 15px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--secondary);
-            opacity: 0.5;
-        }
-        
-        .timeline-item {
-            position: relative;
-            margin-bottom: 30px;
-        }
-        
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -25px;
-            top: 5px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--secondary);
-        }
-        
-        .timeline-date {
-            font-size: 0.9rem;
-            color: var(--gray-light);
-            margin-bottom: 5px;
-        }
-        
-        .timeline-content {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 3px solid var(--secondary);
-        }
-        
-        .timeline-content h4 {
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-        
-        .timeline-content p {
-            opacity: 0.8;
-            font-size: 0.9rem;
         }
         
         /* Payout Details */
@@ -557,7 +525,7 @@
         
         .payout-info {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
@@ -568,62 +536,64 @@
         }
         
         .payout-label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             opacity: 0.7;
             margin-bottom: 5px;
         }
         
         .payout-value {
             font-weight: 600;
+            font-size: 0.9rem;
         }
         
-        /* Premium Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(26, 54, 93, 0.95);
+        /* Live Market Widget */
+        .market-widget {
+            background: var(--glass-bg);
             backdrop-filter: blur(15px);
-            display: flex;
-            justify-content: space-around;
-            padding: 16px 0;
-            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            border-top: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid var(--glass-border);
         }
         
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--gray-light);
-            font-size: 0.75rem;
-            transition: all 0.3s ease;
-            position: relative;
-            padding: 8px 12px;
-            border-radius: 12px;
+        .market-indicators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
         
-        .nav-item.active, .nav-item:hover {
-            color: var(--secondary);
-            background: rgba(212, 175, 55, 0.1);
+        .indicator {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 12px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
         }
         
-        .nav-item.active::after {
-            content: '';
-            position: absolute;
-            top: -16px;
-            width: 30px;
-            height: 3px;
-            background: var(--secondary);
-            border-radius: 3px;
-        }
-        
-        .nav-icon {
-            font-size: 1.3rem;
+        .indicator-name {
+            font-size: 0.8rem;
+            opacity: 0.8;
             margin-bottom: 6px;
+        }
+        
+        .indicator-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .indicator-change {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .change-positive {
+            color: var(--success);
+        }
+        
+        .change-negative {
+            color: var(--danger);
         }
         
         /* Profile Upload */
@@ -642,32 +612,156 @@
             cursor: pointer;
         }
         
+        /* Premium Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 54, 93, 0.95);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            padding: 14px 0;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray-light);
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 6px 10px;
+            border-radius: 10px;
+            min-width: 50px;
+        }
+        
+        .nav-item.active, .nav-item:hover {
+            color: var(--secondary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            width: 24px;
+            height: 2px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+        
         /* Responsive Design */
         @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .logo img {
+                height: 34px;
+            }
+            
+            .logo h1 {
+                font-size: 1.2rem;
+            }
+            
+            .user-avatar {
+                width: 36px;
+                height: 36px;
+                font-size: 0.8rem;
             }
             
             .welcome-section h2 {
-                font-size: 2rem;
+                font-size: 1.6rem;
             }
             
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .stat-card {
+                padding: 16px 12px;
+            }
+            
+            .stat-icon {
+                font-size: 1.6rem;
+                margin-bottom: 8px;
             }
             
             .stat-value {
-                font-size: 2rem;
+                font-size: 1.4rem;
+                margin: 8px 0;
+            }
+            
+            .stat-label {
+                font-size: 0.8rem;
             }
             
             .card {
                 padding: 20px;
+                margin-bottom: 16px;
             }
             
-            .quick-actions {
+            .chart-container {
+                height: 240px;
+            }
+            
+            .transaction-item {
+                padding: 14px 0;
+            }
+            
+            .transaction-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            
+            .section-header h2 {
+                font-size: 1.3rem;
+            }
+            
+            .market-indicators {
                 grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .page-navigation {
+                gap: 8px;
+            }
+            
+            .nav-tab {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .market-indicators {
+                grid-template-columns: 1fr;
+            }
+            
+            .payout-info {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -675,7 +769,7 @@
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -684,7 +778,7 @@
         }
         
         .animate-in {
-            animation: fadeInUp 0.6s ease forwards;
+            animation: fadeInUp 0.5s ease forwards;
         }
         
         .delay-1 {
@@ -708,7 +802,7 @@
             <h1>GlicoCapital</h1>
         </div>
         <div class="user-menu">
-            <button class="btn btn-outline" id="logoutBtn">Logout</button>
+            <button class="btn btn-outline" id="logoutBtn" style="padding: 8px 16px; font-size: 0.85rem;">Logout</button>
             <div class="user-avatar profile-upload" id="userAvatar">
                 <span id="avatarInitial">F</span>
                 <input type="file" id="avatarUpload" accept="image/*">
@@ -718,228 +812,191 @@
 
     <!-- Main Content -->
     <div class="container">
-        <div class="welcome-section animate-in">
-            <h2>Welcome back, Felicity!</h2>
-            <p>Your investment portfolio is growing steadily. Here's your current financial overview.</p>
+        <!-- Page Navigation -->
+        <div class="page-navigation">
+            <div class="nav-tab active" data-page="dashboard">Dashboard</div>
+            <div class="nav-tab" data-page="payouts">Payouts</div>
+            <div class="nav-tab" data-page="transactions">Transaction History</div>
         </div>
 
-        <!-- Quick Actions -->
-        <div class="quick-actions animate-in delay-1">
-            <div class="action-btn" id="payoutsBtn">
-                <div class="action-icon">
-                    <i class="fas fa-wallet"></i>
-                </div>
-                <span>Payouts</span>
+        <!-- Dashboard Page -->
+        <div class="page-content active" id="dashboard-page">
+            <div class="welcome-section animate-in">
+                <h2>Welcome back, Felicity!</h2>
+                <p>Your investment portfolio is growing steadily. Here's your current financial overview.</p>
             </div>
-            <div class="action-btn">
-                <div class="action-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <span>Reports</span>
-            </div>
-            <div class="action-btn">
-                <div class="action-icon">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                </div>
-                <span>Statements</span>
-            </div>
-            <div class="action-btn">
-                <div class="action-icon">
-                    <i class="fas fa-cog"></i>
-                </div>
-                <span>Settings</span>
-            </div>
-        </div>
 
-        <!-- Premium Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card animate-in delay-1">
-                <div class="stat-icon">
-                    <i class="fas fa-piggy-bank"></i>
+            <!-- Premium Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card animate-in delay-1">
+                    <div class="stat-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="stat-label">Total Investment</div>
+                    <div class="stat-value" id="totalInvestment">$35,000</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>Initial deposit</span>
+                    </div>
                 </div>
-                <div class="stat-label">Total Investment</div>
-                <div class="stat-value" id="totalInvestment">$35,000</div>
-                <div class="stat-trend trend-up">
-                    <i class="fas fa-arrow-up"></i>
-                    <span>Initial deposit</span>
+                <div class="stat-card animate-in delay-1">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-label">Current Balance</div>
+                    <div class="stat-value" id="currentBalance">$41,000</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>Updated today</span>
+                    </div>
+                </div>
+                <div class="stat-card animate-in delay-2">
+                    <div class="stat-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-label">Total Earnings</div>
+                    <div class="stat-value" id="totalEarnings">$6,000</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>Since 20 Sept 2025</span>
+                    </div>
+                </div>
+                <div class="stat-card animate-in delay-2">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="stat-label">Daily Earnings</div>
+                    <div class="stat-value">$120</div>
+                    <div class="stat-trend">
+                        <span>Business days only</span>
+                    </div>
                 </div>
             </div>
-            <div class="stat-card animate-in delay-1">
-                <div class="stat-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="stat-label">Current Balance</div>
-                <div class="stat-value" id="currentBalance">$41,000</div>
-                <div class="stat-trend trend-up">
-                    <i class="fas fa-arrow-up"></i>
-                    <span>Updated today</span>
-                </div>
-            </div>
-            <div class="stat-card animate-in delay-2">
-                <div class="stat-icon">
-                    <i class="fas fa-coins"></i>
-                </div>
-                <div class="stat-label">Total Earnings</div>
-                <div class="stat-value" id="totalEarnings">$6,000</div>
-                <div class="stat-trend trend-up">
-                    <i class="fas fa-arrow-up"></i>
-                    <span>Since 20 Sept 2025</span>
-                </div>
-            </div>
-            <div class="stat-card animate-in delay-2">
-                <div class="stat-icon">
-                    <i class="fas fa-calendar-day"></i>
-                </div>
-                <div class="stat-label">Daily Earnings</div>
-                <div class="stat-value">$120</div>
-                <div class="stat-trend">
-                    <span>Business days only</span>
-                </div>
-            </div>
-        </div>
 
-        <!-- Performance Chart -->
-        <div class="card glass animate-in delay-3">
-            <div class="section-header">
-                <h2>Investment Performance</h2>
-                <div class="time-filter">
-                    <button class="btn btn-outline">1M</button>
-                    <button class="btn btn-outline">3M</button>
-                    <button class="btn btn-secondary">6M</button>
-                    <button class="btn btn-outline">1Y</button>
-                </div>
-            </div>
-            <div class="chart-container">
-                <canvas id="performanceChart"></canvas>
-            </div>
-        </div>
-
-        <div class="grid-2-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-            <!-- Investment Timeline -->
-            <div class="card glass animate-in">
+            <!-- Live Market Widget -->
+            <div class="market-widget animate-in delay-1">
                 <div class="section-header">
-                    <h2>Investment Timeline</h2>
+                    <h2>Live Market Performance</h2>
                 </div>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">15th May 2025</div>
-                        <div class="timeline-content">
-                            <h4>Initial Investment</h4>
-                            <p>Deposited $5,000 for 4 months investment plan</p>
-                        </div>
+                <div class="market-indicators">
+                    <div class="indicator">
+                        <div class="indicator-name">S&P 500</div>
+                        <div class="indicator-value" id="sp500">4,569.78</div>
+                        <div class="indicator-change change-positive" id="sp500-change">+0.28%</div>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">15th August 2025</div>
-                        <div class="timeline-content">
-                            <h4>Payout Received</h4>
-                            <p>Received payout of $8,600 from completed investment</p>
-                        </div>
+                    <div class="indicator">
+                        <div class="indicator-name">NASDAQ</div>
+                        <div class="indicator-value" id="nasdaq">14,346.02</div>
+                        <div class="indicator-change change-positive" id="nasdaq-change">+0.45%</div>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">20th September 2025</div>
-                        <div class="timeline-content">
-                            <h4>Premium Investment</h4>
-                            <p>Invested $35,000 in 6-month premium plan</p>
-                        </div>
+                    <div class="indicator">
+                        <div class="indicator-name">DOW JONES</div>
+                        <div class="indicator-value" id="dowjones">35,654.29</div>
+                        <div class="indicator-change change-negative" id="dowjones-change">-0.12%</div>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">30th November 2025</div>
-                        <div class="timeline-content">
-                            <h4>Current Status</h4>
-                            <p>Earned $6,000 so far. Investment performing as expected</p>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">20th February 2026</div>
-                        <div class="timeline-content">
-                            <h4>Next Payout Date</h4>
-                            <p>Scheduled payout of principal + earnings</p>
-                        </div>
+                    <div class="indicator">
+                        <div class="indicator-name">GOLD</div>
+                        <div class="indicator-value" id="gold">$1,982.50</div>
+                        <div class="indicator-change change-positive" id="gold-change">+0.65%</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Recent Transactions -->
-            <div class="card glass animate-in">
+            <!-- Performance Chart -->
+            <div class="card glass animate-in delay-3">
                 <div class="section-header">
-                    <h2>Recent Transactions</h2>
-                    <button class="btn btn-outline">View All</button>
+                    <h2>Investment Performance</h2>
                 </div>
-                <div class="transaction-list" id="transactionList">
-                    <!-- Transactions will be populated by JavaScript -->
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
                 </div>
             </div>
         </div>
 
-        <!-- Payout History Section -->
-        <div class="card glass animate-in" id="payoutsSection" style="display: none;">
-            <div class="section-header">
+        <!-- Payouts Page -->
+        <div class="page-content" id="payouts-page">
+            <div class="section-header animate-in">
                 <h2>Payout History</h2>
-                <button class="btn btn-outline" id="closePayouts">Close</button>
             </div>
-            <div class="transaction-list">
-                <div class="transaction-item">
-                    <div class="transaction-info">
-                        <div class="transaction-icon payout">
-                            <i class="fas fa-money-check"></i>
+
+            <div class="card glass animate-in delay-1">
+                <div class="transaction-list">
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div class="transaction-icon payout">
+                                <i class="fas fa-money-check"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>Investment Payout</h4>
+                                <div class="transaction-date">15th August 2025</div>
+                            </div>
                         </div>
-                        <div class="transaction-details">
-                            <h4>Investment Payout</h4>
-                            <div class="transaction-date">15th August 2025</div>
+                        <div class="transaction-amount positive">+$8,600</div>
+                    </div>
+                </div>
+                <div class="payout-details">
+                    <h4>Payout Details</h4>
+                    <div class="payout-info">
+                        <div class="payout-item">
+                            <div class="payout-label">Amount</div>
+                            <div class="payout-value">$8,600.00</div>
+                        </div>
+                        <div class="payout-item">
+                            <div class="payout-label">Currency</div>
+                            <div class="payout-value">USD</div>
+                        </div>
+                        <div class="payout-item">
+                            <div class="payout-label">Bank</div>
+                            <div class="payout-value">Wells Fargo</div>
+                        </div>
+                        <div class="payout-item">
+                            <div class="payout-label">Account Number</div>
+                            <div class="payout-value">•••• 0906</div>
+                        </div>
+                        <div class="payout-item">
+                            <div class="payout-label">Status</div>
+                            <div class="payout-value" style="color: var(--success);">Completed</div>
+                        </div>
+                        <div class="payout-item">
+                            <div class="payout-label">Transaction ID</div>
+                            <div class="payout-value">TX-789456123</div>
                         </div>
                     </div>
-                    <div class="transaction-amount positive">+$8,600</div>
                 </div>
-            </div>
-            <div class="payout-details">
-                <h4>Payout Details</h4>
+                
+                <div class="section-header" style="margin-top: 30px;">
+                    <h3>Current Investment Status</h3>
+                </div>
                 <div class="payout-info">
                     <div class="payout-item">
-                        <div class="payout-label">Amount</div>
-                        <div class="payout-value">$8,600.00</div>
+                        <div class="payout-label">Current Balance</div>
+                        <div class="payout-value" id="payoutCurrentBalance">$41,000</div>
                     </div>
                     <div class="payout-item">
-                        <div class="payout-label">Currency</div>
-                        <div class="payout-value">USD</div>
+                        <div class="payout-label">Next Payout Date</div>
+                        <div class="payout-value">20th February 2026</div>
                     </div>
                     <div class="payout-item">
-                        <div class="payout-label">Bank</div>
-                        <div class="payout-value">Wells Fargo</div>
+                        <div class="payout-label">Estimated Payout</div>
+                        <div class="payout-value">$49,400+</div>
                     </div>
                     <div class="payout-item">
-                        <div class="payout-label">Account Number</div>
-                        <div class="payout-value">•••• 0906</div>
-                    </div>
-                    <div class="payout-item">
-                        <div class="payout-label">Status</div>
-                        <div class="payout-value" style="color: var(--success);">Completed</div>
-                    </div>
-                    <div class="payout-item">
-                        <div class="payout-label">Transaction ID</div>
-                        <div class="payout-value">TX-789456123</div>
+                        <div class="payout-label">Daily Earnings</div>
+                        <div class="payout-value">$120 (Business Days)</div>
                     </div>
                 </div>
             </div>
-            
-            <div class="section-header" style="margin-top: 30px;">
-                <h3>Current Investment Status</h3>
+        </div>
+
+        <!-- Transaction History Page -->
+        <div class="page-content" id="transactions-page">
+            <div class="section-header animate-in">
+                <h2>Transaction History</h2>
             </div>
-            <div class="payout-info">
-                <div class="payout-item">
-                    <div class="payout-label">Current Balance</div>
-                    <div class="payout-value" id="payoutCurrentBalance">$41,000</div>
-                </div>
-                <div class="payout-item">
-                    <div class="payout-label">Next Payout Date</div>
-                    <div class="payout-value">20th February 2026</div>
-                </div>
-                <div class="payout-item">
-                    <div class="payout-label">Estimated Payout</div>
-                    <div class="payout-value">$49,400+</div>
-                </div>
-                <div class="payout-item">
-                    <div class="payout-label">Daily Earnings</div>
-                    <div class="payout-value">$120 (Business Days)</div>
+
+            <div class="card glass animate-in delay-1">
+                <div class="transaction-list" id="transactionList">
+                    <!-- Transactions will be populated by JavaScript -->
                 </div>
             </div>
         </div>
@@ -1000,12 +1057,33 @@
         const currentBalanceEl = document.getElementById('currentBalance');
         const totalEarningsEl = document.getElementById('totalEarnings');
         const transactionList = document.getElementById('transactionList');
-        const payoutsBtn = document.getElementById('payoutsBtn');
-        const payoutsSection = document.getElementById('payoutsSection');
-        const closePayouts = document.getElementById('closePayouts');
         const avatarUpload = document.getElementById('avatarUpload');
         const userAvatar = document.getElementById('userAvatar');
         const avatarInitial = document.getElementById('avatarInitial');
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const pageContents = document.querySelectorAll('.page-content');
+
+        // Page Navigation
+        navTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetPage = this.getAttribute('data-page');
+                
+                // Update active tab
+                navTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show target page
+                pageContents.forEach(page => {
+                    page.classList.remove('active');
+                    if (page.id === `${targetPage}-page`) {
+                        page.classList.add('active');
+                    }
+                });
+                
+                // Scroll to top
+                window.scrollTo(0, 0);
+            });
+        });
 
         // Logout function
         logoutBtn.addEventListener('click', () => {
@@ -1119,14 +1197,21 @@
                         type: "deposit",
                         amount: 5000,
                         date: "2025-05-15",
-                        description: "Initial investment deposit",
+                        description: "Initial investment deposit - Starter Plan",
+                        status: "completed"
+                    },
+                    {
+                        type: "earning",
+                        amount: 45,
+                        date: "2025-05-18",
+                        description: "Daily earnings - Starter Plan",
                         status: "completed"
                     },
                     {
                         type: "payout",
                         amount: 8600,
                         date: "2025-08-15",
-                        description: "Investment payout to Wells Fargo account ending 0906",
+                        description: "Investment payout to Wells Fargo",
                         status: "completed",
                         bank: "Wells Fargo",
                         account: "•••• 0906",
@@ -1137,6 +1222,20 @@
                         amount: 35000,
                         date: "2025-09-20",
                         description: "Premium plan investment deposit",
+                        status: "completed"
+                    },
+                    {
+                        type: "earning",
+                        amount: 120,
+                        date: "2025-09-23",
+                        description: "Daily earnings - Premium Plan",
+                        status: "completed"
+                    },
+                    {
+                        type: "earning",
+                        amount: 120,
+                        date: "2025-11-30",
+                        description: "Daily earnings - Premium Plan",
                         status: "completed"
                     }
                 ],
@@ -1164,12 +1263,14 @@
             totalInvestmentEl.textContent = `$${currentData.initialDeposit.toLocaleString()}`;
             currentBalanceEl.textContent = `$${currentData.currentBalance.toLocaleString()}`;
             totalEarningsEl.textContent = `$${currentData.totalEarnings.toLocaleString()}`;
+            document.getElementById('payoutCurrentBalance').textContent = `$${currentData.currentBalance.toLocaleString()}`;
 
             // Update transactions
             updateTransactionList(currentData.transactions);
             
-            // Initialize chart
+            // Initialize charts
             initPerformanceChart(currentData);
+            initLiveMarketUpdates();
         }
 
         // Calculate current earnings based on business days
@@ -1236,18 +1337,28 @@
                 let iconClass = 'income';
                 let icon = 'fas fa-plus';
                 let amountClass = 'positive';
+                let amountPrefix = '+';
                 
                 if (transaction.type === 'payout') {
                     iconClass = 'payout';
                     icon = 'fas fa-money-check';
                     amountClass = 'negative';
+                    amountPrefix = '-';
                 } else if (transaction.type === 'withdrawal') {
                     iconClass = 'expense';
                     icon = 'fas fa-arrow-up';
                     amountClass = 'negative';
+                    amountPrefix = '-';
                 } else if (transaction.type === 'earning') {
                     iconClass = 'income';
                     icon = 'fas fa-coins';
+                    amountClass = 'positive';
+                    amountPrefix = '+';
+                } else if (transaction.type === 'deposit') {
+                    iconClass = 'income';
+                    icon = 'fas fa-wallet';
+                    amountClass = 'positive';
+                    amountPrefix = '+';
                 }
                 
                 transactionItem.innerHTML = `
@@ -1260,7 +1371,7 @@
                             <div class="transaction-date">${formatDate(new Date(transaction.date))}</div>
                         </div>
                     </div>
-                    <div class="transaction-amount ${amountClass}">${amountClass === 'positive' ? '+' : '-'}$${transaction.amount.toLocaleString()}</div>
+                    <div class="transaction-amount ${amountClass}">${amountPrefix}$${transaction.amount.toLocaleString()}</div>
                 `;
                 transactionList.appendChild(transactionItem);
             });
@@ -1279,34 +1390,22 @@
         function initPerformanceChart(userData) {
             const ctx = document.getElementById('performanceChart').getContext('2d');
             
-            // Generate performance data based on investment timeline
-            const startDate = new Date(userData.investment.startDate);
-            const currentDate = new Date();
-            const months = [];
-            const performanceData = [];
+            // Generate realistic stock market-like data
+            const months = ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb'];
+            const baseValue = userData.investment.initialDeposit;
+            const performanceData = [baseValue];
             
-            let currentMonth = new Date(startDate);
-            let cumulativeValue = userData.investment.initialDeposit;
-            
-            while (currentMonth <= currentDate) {
-                months.push(currentMonth.toLocaleDateString('en-US', { month: 'short' }));
-                
-                // Calculate earnings for this month
-                const monthStart = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
-                const monthEnd = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
-                const businessDays = calculateBusinessDays(
-                    monthStart < startDate ? startDate : monthStart,
-                    monthEnd > currentDate ? currentDate : monthEnd
-                );
-                
-                const monthlyEarnings = businessDays * userData.investment.dailyEarnings;
-                cumulativeValue += monthlyEarnings;
-                performanceData.push(cumulativeValue);
-                
-                currentMonth.setMonth(currentMonth.getMonth() + 1);
+            // Create realistic market fluctuations
+            for (let i = 1; i < months.length; i++) {
+                const previousValue = performanceData[i - 1];
+                // Simulate market growth with some volatility
+                const growth = (Math.random() * 0.08) + 0.02; // 2-10% monthly growth
+                const volatility = (Math.random() - 0.5) * 0.04; // ±2% volatility
+                const monthlyChange = previousValue * (growth + volatility);
+                performanceData.push(previousValue + monthlyChange);
             }
             
-            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            const gradient = ctx.createLinearGradient(0, 0, 0, 280);
             gradient.addColorStop(0, 'rgba(212, 175, 55, 0.4)');
             gradient.addColorStop(1, 'rgba(212, 175, 55, 0.05)');
             
@@ -1325,8 +1424,8 @@
                         pointBackgroundColor: '#d4af37',
                         pointBorderColor: '#ffffff',
                         pointBorderWidth: 2,
-                        pointRadius: 5,
-                        pointHoverRadius: 7
+                        pointRadius: 4,
+                        pointHoverRadius: 6
                     }]
                 },
                 options: {
@@ -1364,7 +1463,7 @@
                             bodyColor: 'white',
                             borderColor: '#d4af37',
                             borderWidth: 1,
-                            cornerRadius: 10,
+                            cornerRadius: 8,
                             displayColors: false,
                             callbacks: {
                                 label: function(context) {
@@ -1377,35 +1476,42 @@
             });
         }
 
-        // Payouts functionality
-        payoutsBtn.addEventListener('click', function() {
-            payoutsSection.style.display = 'block';
-            document.querySelector('.grid-2-col').style.display = 'none';
-            document.querySelector('.card.glass.animate-in.delay-3').style.display = 'none';
-        });
+        // Live market updates
+        function initLiveMarketUpdates() {
+            // Simulate live market data updates
+            setInterval(updateMarketData, 3000);
+        }
 
-        closePayouts.addEventListener('click', function() {
-            payoutsSection.style.display = 'none';
-            document.querySelector('.grid-2-col').style.display = 'grid';
-            document.querySelector('.card.glass.animate-in.delay-3').style.display = 'block';
-        });
-
-        // Quick action buttons
-        document.querySelectorAll('.action-btn').forEach(btn => {
-            if (!btn.id) { // Exclude payouts button which has its own handler
-                btn.addEventListener('click', function() {
-                    const action = this.querySelector('span').textContent;
+        function updateMarketData() {
+            const indicators = ['sp500', 'nasdaq', 'dowjones', 'gold'];
+            const changes = ['sp500-change', 'nasdaq-change', 'dowjones-change', 'gold-change'];
+            
+            indicators.forEach((indicator, index) => {
+                const element = document.getElementById(indicator);
+                const changeElement = document.getElementById(changes[index]);
+                
+                if (element && changeElement) {
+                    // Simulate small price changes
+                    const currentValue = parseFloat(element.textContent.replace(/[^0-9.-]+/g,""));
+                    const changePercent = (Math.random() - 0.5) * 0.2;
+                    const newValue = currentValue * (1 + changePercent / 100);
                     
-                    if (action === 'Reports') {
-                        alert('Generating investment report...');
-                    } else if (action === 'Statements') {
-                        alert('Opening account statements...');
-                    } else if (action === 'Settings') {
-                        window.location.href = 'settings.html';
-                    }
-                });
-            }
-        });
+                    element.textContent = newValue.toLocaleString('en-US', { 
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 2 
+                    });
+                    
+                    changeElement.textContent = `${changePercent > 0 ? '+' : ''}${changePercent.toFixed(2)}%`;
+                    changeElement.className = `indicator-change ${changePercent > 0 ? 'change-positive' : 'change-negative'}`;
+                }
+            });
+        }
+
+        // Mobile menu toggle (for future use)
+        function toggleMobileMenu() {
+            const nav = document.querySelector('.page-navigation');
+            nav.classList.toggle('active');
+        }
     </script>
 </body>
 </html>
