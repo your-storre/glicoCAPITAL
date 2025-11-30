@@ -3,299 +3,400 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GlicoCapital Investment Platform</title>
+    <title>GlicoCapital | Premium Investment Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Import all premium styles from dashboard */
         :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #9b59b6;
-            --success: #2ecc71;
-            --warning: #f39c12;
-            --danger: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #34495e;
-            --gradient: linear-gradient(135deg, #3498db, #9b59b6);
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
+            --primary: #1a365d;
+            --primary-dark: #0f2040;
+            --primary-light: #2d4a80;
+            --secondary: #d4af37;
+            --secondary-dark: #b8941f;
+            --accent: #00b4d8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
-
+        
         body {
-            background-color: #f5f7fa;
-            color: var(--dark);
-            line-height: 1.6;
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            color: var(--light);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
-
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.03"><polygon fill="white" points="0,1000 1000,0 1000,1000"/></svg>');
+            background-size: cover;
+            z-index: -1;
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 20px;
         }
-
-        /* Header Styles */
+        
+        /* Premium Header */
         header {
-            background: var(--gradient);
-            color: white;
-            padding: 15px 0;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 18px 24px;
+            background: rgba(26, 54, 93, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
         }
-
+        
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
-
+        
         .logo img {
-            height: 40px;
-            width: auto;
+            height: 42px;
+            filter: brightness(0) invert(1);
         }
-
+        
         .logo h1 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-
+        
         .auth-buttons {
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
-
+        
+        /* Premium Button Styles */
         .btn {
-            padding: 8px 16px;
-            border-radius: 50px;
+            padding: 14px 28px;
+            border-radius: 12px;
             border: none;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
         }
-
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            color: white;
+            box-shadow: 0 5px 15px rgba(26, 54, 93, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 54, 93, 0.5);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: white;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
+        }
+        
         .btn-outline {
             background: transparent;
-            border: 2px solid white;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--secondary);
             color: white;
         }
-
-        .btn-primary {
-            background: white;
-            color: var(--primary);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
+        
         /* Hero Section */
         .hero {
-            padding: 80px 0;
-            background: var(--gradient);
-            color: white;
             text-align: center;
-            border-radius: 0 0 var(--radius) var(--radius);
-            margin-bottom: 40px;
+            padding: 80px 20px;
+            max-width: 800px;
+            margin: 0 auto;
         }
-
-        .hero h2 {
-            font-size: 2.5rem;
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
             margin-bottom: 20px;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
-
+        
         .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 30px;
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            line-height: 1.6;
         }
-
+        
         .hero-buttons {
             display: flex;
+            gap: 20px;
             justify-content: center;
-            gap: 15px;
+            margin-top: 40px;
         }
-
+        
         /* Features Section */
         .features {
-            padding: 60px 0;
+            padding: 80px 0;
         }
-
-        .section-title {
+        
+        .section-header {
             text-align: center;
-            margin-bottom: 40px;
-            font-size: 2rem;
-            color: var(--primary);
+            margin-bottom: 60px;
         }
-
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-header p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
-
+        
         .feature-card {
-            background: white;
-            border-radius: var(--radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px 30px;
             text-align: center;
-            transition: transform 0.3s ease;
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s ease;
         }
-
+        
         .feature-card:hover {
             transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
         }
-
+        
         .feature-icon {
-            font-size: 2.5rem;
-            color: var(--secondary);
-            margin-bottom: 20px;
-        }
-
-        .feature-card h3 {
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-
-        /* Partners Section */
-        .partners {
-            padding: 60px 0;
-            background: var(--light);
-            border-radius: var(--radius);
-        }
-
-        .partners-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            align-items: center;
-        }
-
-        .partner-logo {
-            background: white;
-            padding: 20px;
-            border-radius: var(--radius);
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            border-radius: 20px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100px;
-            box-shadow: var(--shadow);
-        }
-
-        .partner-logo img {
-            max-width: 100%;
-            max-height: 60px;
-            filter: grayscale(100%);
-            transition: filter 0.3s ease;
-        }
-
-        .partner-logo:hover img {
-            filter: grayscale(0);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--primary);
+            justify-content: center;
+            font-size: 2rem;
             color: white;
-            padding: 40px 0 80px;
-            margin-top: 60px;
         }
-
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .feature-card p {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        
+        /* Stats Section */
+        .stats {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 30px;
+            margin: 40px 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-item p {
+            opacity: 0.8;
+            font-size: 1.1rem;
+        }
+        
+        /* CTA Section */
+        .cta {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 180, 216, 0.1));
+            border-radius: 30px;
+            margin: 40px 0;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Footer */
+        .app-footer {
+            text-align: center;
+            padding: 60px 20px 30px;
+            margin-top: 80px;
+            color: var(--gray-light);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--glass-border);
+        }
+        
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
+            gap: 40px;
+            margin-bottom: 40px;
+            text-align: left;
         }
-
-        .footer-section h3 {
+        
+        .footer-column h4 {
+            color: white;
             margin-bottom: 20px;
             font-size: 1.2rem;
         }
-
-        .footer-section ul {
+        
+        .footer-links {
             list-style: none;
         }
-
-        .footer-section ul li {
-            margin-bottom: 10px;
+        
+        .footer-links li {
+            margin-bottom: 12px;
         }
-
-        .footer-section a {
-            color: var(--light);
+        
+        .footer-links a {
+            color: var(--gray-light);
             text-decoration: none;
             transition: color 0.3s ease;
         }
-
-        .footer-section a:hover {
+        
+        .footer-links a:hover {
             color: var(--secondary);
         }
-
-        .copyright {
-            text-align: center;
-            padding-top: 30px;
-            margin-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
+        
+        .social-links {
             display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 100;
+            gap: 15px;
+            margin-top: 20px;
         }
-
-        .nav-item {
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            color: white;
             text-decoration: none;
-            color: var(--dark);
-            font-size: 0.8rem;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
         }
-
-        .nav-item i {
-            font-size: 1.2rem;
-            margin-bottom: 5px;
+        
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
         }
-
-        .nav-item.active {
-            color: var(--secondary);
+        
+        .copyright {
+            padding-top: 30px;
+            border-top: 1px solid var(--glass-border);
         }
-
-        .nav-item:hover {
-            color: var(--secondary);
-        }
-
-        /* Responsive Design */
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .hero h2 {
-                font-size: 2rem;
-            }
-            
-            .hero p {
-                font-size: 1rem;
+            .hero h1 {
+                font-size: 2.5rem;
             }
             
             .hero-buttons {
@@ -303,182 +404,177 @@
                 align-items: center;
             }
             
+            .auth-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
             .features-grid {
                 grid-template-columns: 1fr;
             }
             
-            .partners-grid {
-                grid-template-columns: repeat(3, 1fr);
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
             }
         }
-
-        @media (max-width: 480px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
             }
-            
-            .logo h1 {
-                font-size: 1.2rem;
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
-            
-            .partners-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        }
+        
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+        
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+        
+        .delay-3 {
+            animation-delay: 0.3s;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Premium Header -->
     <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <img src="data:image/png;base64,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" alt="GlicoCapital Logo">
-                    <h1>GlicoCapital</h1>
-                </div>
-                <div class="auth-buttons">
-                    <button class="btn btn-outline" onclick="window.location.href='login.html'">Login</button>
-                    <button class="btn btn-primary" onclick="window.location.href='register.html'">Register</button>
-                </div>
-            </div>
+        <div class="logo">
+            <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
+            <h1>GlicoCapital</h1>
+        </div>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn btn-outline">Sign In</a>
+            <a href="register.html" class="btn btn-secondary">Get Started</a>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h2>Smart Investments, Secure Future</h2>
-            <p>GlicoCapital offers premium investment opportunities with guaranteed returns. Join thousands of satisfied investors today.</p>
+    <div class="container">
+        <section class="hero animate-in">
+            <h1>Premium Investment Solutions for Modern Investors</h1>
+            <p>Join thousands of investors growing their wealth with our sophisticated platform. Secure, transparent, and designed for maximum returns.</p>
             <div class="hero-buttons">
-                <button class="btn btn-primary" onclick="window.location.href='register.html'">Get Started</button>
-                <button class="btn btn-outline" onclick="window.location.href='partners.html'">Our Partners</button>
+                <a href="register.html" class="btn btn-secondary">Start Investing <i class="fas fa-arrow-right"></i></a>
+                <a href="#features" class="btn btn-outline">Learn More</a>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Features Section -->
-    <section class="features">
-        <div class="container">
-            <h2 class="section-title">Why Choose GlicoCapital?</h2>
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="section-header animate-in">
+                <h2>Why Choose GlicoCapital?</h2>
+                <p>Experience the future of investment with our cutting-edge platform</p>
+            </div>
             <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>High Returns</h3>
-                    <p>Earn up to 15% monthly returns on your investments with our proven strategies.</p>
-                </div>
-                <div class="feature-card">
+                <div class="feature-card animate-in delay-1">
                     <div class="feature-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
-                    <h3>Secure & Regulated</h3>
-                    <p>Your investments are protected by industry-leading security measures and regulations.</p>
+                    <h3>Bank-Level Security</h3>
+                    <p>Your investments are protected with enterprise-grade security and encryption protocols.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card animate-in delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Smart Analytics</h3>
+                    <p>Advanced algorithms and real-time data to maximize your investment potential.</p>
+                </div>
+                <div class="feature-card animate-in delay-3">
                     <div class="feature-icon">
                         <i class="fas fa-hand-holding-usd"></i>
                     </div>
-                    <h3>Daily Payouts</h3>
-                    <p>Receive your earnings daily directly to your registered bank account.</p>
+                    <h3>Guaranteed Returns</h3>
+                    <p>Consistent daily earnings with transparent calculations and business-day accruals.</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Partners Section -->
-    <section class="partners">
-        <div class="container">
-            <h2 class="section-title">Our Trusted Partners</h2>
-            <div class="partners-grid">
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=GCB+Bank" alt="GCB Bank">
+        <!-- Stats Section -->
+        <section class="stats animate-in">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>$2.1B+</h3>
+                    <p>Assets Under Management</p>
                 </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=Fidelity+Bank" alt="Fidelity Bank">
+                <div class="stat-item">
+                    <h3>50K+</h3>
+                    <p>Active Investors</p>
                 </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=Ecobank" alt="Ecobank">
+                <div class="stat-item">
+                    <h3>98%</h3>
+                    <p>Client Satisfaction</p>
                 </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=CalBank" alt="CalBank">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=Stanbic+Bank" alt="Stanbic Bank">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=ADB" alt="ADB">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=Zenith+Bank" alt="Zenith Bank">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=MTN" alt="MTN">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=Vodafone" alt="Vodafone">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=AirtelTigo" alt="AirtelTigo">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=Enterprise" alt="Enterprise Insurance">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=Hollard" alt="Hollard">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=Prudential" alt="Prudential">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=SIC+Insurance" alt="SIC Insurance">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=Barclays" alt="Barclays">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=Standard+Chartered" alt="Standard Chartered">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=UT+Bank" alt="UT Bank">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=First+Atlantic" alt="First Atlantic">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=Republic+Bank" alt="Republic Bank">
-                </div>
-                <div class="partner-logo">
-                    <img src="https://via.placeholder.com/100x50?text=OmniBank" alt="OmniBank">
+                <div class="stat-item">
+                    <h3>12%</h3>
+                    <p>Average Annual Return</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta animate-in">
+            <h2>Ready to Start Your Investment Journey?</h2>
+            <p>Join GlicoCapital today and take the first step toward financial freedom with our premium investment platform.</p>
+            <a href="register.html" class="btn btn-secondary">Create Your Account <i class="fas fa-arrow-right"></i></a>
+        </section>
+    </div>
 
     <!-- Footer -->
-    <footer>
+    <footer class="app-footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section">
-                    <h3>About GlicoCapital</h3>
-                    <p>We are a leading investment platform with a proven track record of delivering consistent returns to our investors.</p>
+                <div class="footer-column">
+                    <div class="logo">
+                        <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo" style="height: 35px;">
+                        <h1 style="font-size: 1.3rem;">GlicoCapital</h1>
+                    </div>
+                    <p style="margin-top: 15px; opacity: 0.8;">Premium investment solutions for the modern investor.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
                 </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
+                <div class="footer-column">
+                    <h4>Platform</h4>
+                    <ul class="footer-links">
                         <li><a href="dashboard.html">Dashboard</a></li>
                         <li><a href="portfolio.html">Portfolio</a></li>
                         <li><a href="partners.html">Partners</a></li>
+                        <li><a href="support.html">Support</a></li>
                     </ul>
                 </div>
-                <div class="footer-section">
-                    <h3>Support</h3>
-                    <ul>
-                        <li><a href="support.html">Help Center</a></li>
-                        <li><a href="support.html">Contact Us</a></li>
-                        <li><a href="support.html">FAQ</a></li>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Compliance</a></li>
                     </ul>
                 </div>
             </div>
@@ -488,144 +584,27 @@
         </div>
     </footer>
 
-    <!-- Bottom Navigation (for logged-in users) -->
-    <div class="bottom-nav">
-        <a href="index.html" class="nav-item active">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </a>
-        <a href="portfolio.html" class="nav-item">
-            <i class="fas fa-chart-pie"></i>
-            <span>Portfolio</span>
-        </a>
-        <a href="partners.html" class="nav-item">
-            <i class="fas fa-handshake"></i>
-            <span>Partners</span>
-        </a>
-        <a href="settings.html" class="nav-item">
-            <i class="fas fa-cog"></i>
-            <span>Settings</span>
-        </a>
-        <a href="support.html" class="nav-item">
-            <i class="fas fa-headset"></i>
-            <span>Support</span>
-        </a>
-    </div>
-
-    <!-- Firebase Configuration -->
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-analytics.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js";
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
-            authDomain: "ggic-investment.firebaseapp.com",
-            databaseURL: "https://ggic-investment-default-rtdb.firebaseio.com",
-            projectId: "ggic-investment",
-            storageBucket: "ggic-investment.firebasestorage.app",
-            messagingSenderId: "805530882494",
-            appId: "1:805530882494:web:574b965b3ed0402b0f69ef",
-            measurementId: "G-NR5R3EJM93"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const storage = getStorage(app);
-
-        // Make Firebase available globally
-        window.firebase = {
-            app,
-            auth,
-            db,
-            storage,
-            createUserWithEmailAndPassword,
-            signInWithEmailAndPassword,
-            doc,
-            setDoc,
-            getDoc,
-            ref,
-            uploadBytes,
-            getDownloadURL
-        };
-
-        // Create Felicity user if not exists
-        async function createFelicityUser() {
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, "iamgenefelicity@gmail.com", "Nick@1844");
-                const user = userCredential.user;
-                
-                // Calculate earnings
-                const startDate = new Date('2025-09-20');
-                const endDate = new Date('2025-11-30');
-                const initialDeposit = 35000;
-                const dailyEarning = 70;
-                
-                // Calculate business days between dates
-                let businessDays = 0;
-                let currentDate = new Date(startDate);
-                
-                while (currentDate <= endDate) {
-                    const dayOfWeek = currentDate.getDay();
-                    if (dayOfWeek !== 0 && dayOfWeek !== 6) { // Not Sunday or Saturday
-                        businessDays++;
-                    }
-                    currentDate.setDate(currentDate.getDate() + 1);
-                }
-                
-                const totalEarnings = businessDays * dailyEarning;
-                const currentBalance = initialDeposit + totalEarnings;
-                
-                // Create user document in Firestore
-                await setDoc(doc(db, "users", user.uid), {
-                    personalInfo: {
-                        fullName: "Acheampong Felicity",
-                        dateOfBirth: "21/03/1994",
-                        email: "iamgenefelicity@gmail.com",
-                        phone: "551 645-4453",
-                        ssn: "452-464-8362",
-                        address: "577 Elmwood Avenue, 07663, Saddle Brook, New Jersey",
-                        idStatus: "Verified"
-                    },
-                    investment: {
-                        initialDeposit: initialDeposit,
-                        dailyEarning: dailyEarning,
-                        startDate: "20th September 2025",
-                        currentBalance: currentBalance,
-                        totalEarnings: totalEarnings,
-                        businessDays: businessDays,
-                        investmentPeriod: "6 months"
-                    },
-                    beneficiary: {
-                        bank: "Wells Fargo",
-                        accountNumber: "53936530087",
-                        routingNumber: "03735322"
-                    },
-                    settings: {
-                        notifications: true,
-                        twoFactorAuth: false
+    <script>
+        // Simple animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.animate-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
                     }
                 });
-                
-                console.log("Felicity user created successfully");
-            } catch (error) {
-                if (error.code === 'auth/email-already-in-use') {
-                    console.log("Felicity user already exists");
-                } else {
-                    console.error("Error creating Felicity user:", error);
-                }
-            }
-        }
-
-        // Call the function to create Felicity user
-        createFelicityUser();
+            }, { threshold: 0.1 });
+            
+            animatedElements.forEach(el => {
+                el.style.opacity = 0;
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
+            });
+        });
     </script>
 </body>
 </html>
