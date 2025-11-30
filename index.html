@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GlicoCapital | Premium Investment Platform</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Import all premium styles from dashboard */
+        /* Premium Color Scheme */
         :root {
             --primary: #1a365d;
             --primary-dark: #0f2040;
@@ -115,6 +116,7 @@
             font-size: 0.95rem;
             position: relative;
             overflow: hidden;
+            text-decoration: none;
         }
         
         .btn::before {
@@ -169,7 +171,7 @@
         .hero {
             text-align: center;
             padding: 80px 20px;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
         
@@ -195,6 +197,75 @@
             gap: 20px;
             justify-content: center;
             margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        /* Live Market Widget */
+        .market-widget {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 40px auto;
+            max-width: 1000px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .widget-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .market-indicators {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .indicator {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .indicator-name {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+        
+        .indicator-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .indicator-change {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .change-positive {
+            color: var(--success);
+        }
+        
+        .change-negative {
+            color: var(--danger);
+        }
+        
+        .market-chart {
+            height: 200px;
+            margin-top: 20px;
         }
         
         /* Features Section */
@@ -266,6 +337,146 @@
         .feature-card p {
             opacity: 0.8;
             line-height: 1.6;
+        }
+        
+        /* Investment Plans */
+        .investment-plans {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 30px;
+            margin: 40px 0;
+        }
+        
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .plan-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .plan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .plan-card.featured {
+            border: 2px solid var(--secondary);
+            transform: scale(1.05);
+        }
+        
+        .plan-card.featured:hover {
+            transform: scale(1.05) translateY(-8px);
+        }
+        
+        .plan-badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: var(--secondary);
+            color: var(--primary-dark);
+            padding: 8px 40px;
+            transform: rotate(45deg);
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        
+        .plan-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .plan-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .plan-features li {
+            padding: 8px 0;
+            opacity: 0.8;
+        }
+        
+        .plan-features li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* Partners Section */
+        .partners-section {
+            padding: 80px 0;
+        }
+        
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .partner-logo {
+            background: white;
+            border-radius: 12px;
+            padding: 25px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .partner-logo:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .partner-logo img {
+            max-width: 100%;
+            max-height: 70px;
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+        
+        .partner-logo:hover img {
+            filter: grayscale(0%);
         }
         
         /* Stats Section */
@@ -409,13 +620,26 @@
                 gap: 10px;
             }
             
-            .features-grid {
+            .features-grid, .plans-grid {
                 grid-template-columns: 1fr;
             }
             
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 30px;
+            }
+            
+            .partners-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+            
+            .plan-card.featured {
+                transform: none;
+            }
+            
+            .plan-card.featured:hover {
+                transform: translateY(-8px);
             }
         }
         
@@ -464,11 +688,47 @@
     <!-- Hero Section -->
     <div class="container">
         <section class="hero animate-in">
-            <h1>Premium Investment Solutions for Modern Investors</h1>
-            <p>Join thousands of investors growing their wealth with our sophisticated platform. Secure, transparent, and designed for maximum returns.</p>
+            <h1>Smart Investing for Exceptional Returns</h1>
+            <p>Join thousands of investors growing their wealth with our sophisticated platform. Secure, transparent, and designed for maximum returns with proven investment strategies.</p>
             <div class="hero-buttons">
                 <a href="register.html" class="btn btn-secondary">Start Investing <i class="fas fa-arrow-right"></i></a>
-                <a href="#features" class="btn btn-outline">Learn More</a>
+                <a href="#investment-plans" class="btn btn-outline">View Investment Plans</a>
+            </div>
+        </section>
+
+        <!-- Live Market Widget -->
+        <section class="market-widget animate-in delay-1">
+            <div class="widget-header">
+                <h2>Live Market Overview</h2>
+                <div class="market-status">
+                    <span class="status-indicator"></span>
+                    <span>Live</span>
+                </div>
+            </div>
+            <div class="market-indicators">
+                <div class="indicator">
+                    <div class="indicator-name">S&P 500</div>
+                    <div class="indicator-value" id="sp500">4,569.78</div>
+                    <div class="indicator-change change-positive" id="sp500-change">+0.28%</div>
+                </div>
+                <div class="indicator">
+                    <div class="indicator-name">NASDAQ</div>
+                    <div class="indicator-value" id="nasdaq">14,346.02</div>
+                    <div class="indicator-change change-positive" id="nasdaq-change">+0.45%</div>
+                </div>
+                <div class="indicator">
+                    <div class="indicator-name">DOW JONES</div>
+                    <div class="indicator-value" id="dowjones">35,654.29</div>
+                    <div class="indicator-change change-negative" id="dowjones-change">-0.12%</div>
+                </div>
+                <div class="indicator">
+                    <div class="indicator-name">GOLD</div>
+                    <div class="indicator-value" id="gold">$1,982.50</div>
+                    <div class="indicator-change change-positive" id="gold-change">+0.65%</div>
+                </div>
+            </div>
+            <div class="market-chart">
+                <canvas id="marketChart"></canvas>
             </div>
         </section>
 
@@ -476,7 +736,7 @@
         <section class="features" id="features">
             <div class="section-header animate-in">
                 <h2>Why Choose GlicoCapital?</h2>
-                <p>Experience the future of investment with our cutting-edge platform</p>
+                <p>Experience the future of investment with our cutting-edge platform and proven strategies</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card animate-in delay-1">
@@ -484,22 +744,93 @@
                         <i class="fas fa-shield-alt"></i>
                     </div>
                     <h3>Bank-Level Security</h3>
-                    <p>Your investments are protected with enterprise-grade security and encryption protocols.</p>
+                    <p>Your investments are protected with enterprise-grade security, encryption protocols, and regulatory compliance.</p>
                 </div>
                 <div class="feature-card animate-in delay-2">
                     <div class="feature-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
                     <h3>Smart Analytics</h3>
-                    <p>Advanced algorithms and real-time data to maximize your investment potential.</p>
+                    <p>Advanced algorithms and real-time market data to maximize your investment potential and identify opportunities.</p>
                 </div>
                 <div class="feature-card animate-in delay-3">
                     <div class="feature-icon">
                         <i class="fas fa-hand-holding-usd"></i>
                     </div>
                     <h3>Guaranteed Returns</h3>
-                    <p>Consistent daily earnings with transparent calculations and business-day accruals.</p>
+                    <p>Consistent daily earnings with transparent calculations, business-day accruals, and performance tracking.</p>
                 </div>
+            </div>
+        </section>
+
+        <!-- Investment Plans -->
+        <section class="investment-plans" id="investment-plans">
+            <div class="section-header animate-in">
+                <h2>Investment Plans</h2>
+                <p>Choose the plan that fits your financial goals and start building your wealth today</p>
+            </div>
+            <div class="plans-grid">
+                <div class="plan-card animate-in delay-1">
+                    <div class="plan-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Starter Plan</h3>
+                    <div class="plan-price">$5,000</div>
+                    <ul class="plan-features">
+                        <li>Daily Returns: $45 (0.9%)</li>
+                        <li>Investment Period: 6 Months</li>
+                        <li>Business Days Only</li>
+                        <li>Basic Support</li>
+                        <li>Monthly Reports</li>
+                    </ul>
+                    <a href="register.html" class="btn btn-outline">Get Started</a>
+                </div>
+                
+                <div class="plan-card featured animate-in delay-2">
+                    <div class="plan-badge">POPULAR</div>
+                    <div class="plan-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Premium Plan</h3>
+                    <div class="plan-price">$20,000 - $50,000</div>
+                    <ul class="plan-features">
+                        <li>Daily Returns: $120 (0.6% - 0.24%)</li>
+                        <li>Investment Period: 6 Months</li>
+                        <li>Business Days Only</li>
+                        <li>Priority Support</li>
+                        <li>Weekly Reports</li>
+                        <li>Dedicated Account Manager</li>
+                    </ul>
+                    <a href="register.html" class="btn btn-secondary">Get Started</a>
+                </div>
+                
+                <div class="plan-card animate-in delay-3">
+                    <div class="plan-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3>Enterprise Plan</h3>
+                    <div class="plan-price">$100,000+</div>
+                    <ul class="plan-features">
+                        <li>Daily Returns: 15%</li>
+                        <li>Investment Period: 12 Months</li>
+                        <li>Business Days Only</li>
+                        <li>24/7 Premium Support</li>
+                        <li>Real-time Reports</li>
+                        <li>Custom Investment Strategy</li>
+                    </ul>
+                    <a href="register.html" class="btn btn-outline">Contact Sales</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Partners Section -->
+        <section class="partners-section">
+            <div class="section-header animate-in">
+                <h2>Trusted by Leading Institutions</h2>
+                <p>We partner with top financial institutions to ensure the security and growth of your investments</p>
+            </div>
+            <div class="partners-grid" id="partnersGrid">
+                <!-- Partners will be loaded dynamically -->
             </div>
         </section>
 
@@ -516,10 +847,10 @@
                 </div>
                 <div class="stat-item">
                     <h3>98%</h3>
-                    <p>Client Satisfaction</p>
+                    <p>Client Satisfaction Rate</p>
                 </div>
                 <div class="stat-item">
-                    <h3>12%</h3>
+                    <h3>12.5%</h3>
                     <p>Average Annual Return</p>
                 </div>
             </div>
@@ -528,8 +859,11 @@
         <!-- CTA Section -->
         <section class="cta animate-in">
             <h2>Ready to Start Your Investment Journey?</h2>
-            <p>Join GlicoCapital today and take the first step toward financial freedom with our premium investment platform.</p>
-            <a href="register.html" class="btn btn-secondary">Create Your Account <i class="fas fa-arrow-right"></i></a>
+            <p>Join GlicoCapital today and take the first step toward financial freedom with our premium investment platform. Start with as little as $5,000 or explore our premium plans for higher returns.</p>
+            <div class="hero-buttons">
+                <a href="register.html" class="btn btn-secondary">Create Your Account <i class="fas fa-arrow-right"></i></a>
+                <a href="#investment-plans" class="btn btn-outline">View Investment Plans</a>
+            </div>
         </section>
     </div>
 
@@ -542,7 +876,7 @@
                         <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo" style="height: 35px;">
                         <h1 style="font-size: 1.3rem;">GlicoCapital</h1>
                     </div>
-                    <p style="margin-top: 15px; opacity: 0.8;">Premium investment solutions for the modern investor.</p>
+                    <p style="margin-top: 15px; opacity: 0.8;">Premium investment solutions for the modern investor. Secure, transparent, and profitable.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-linkedin"></i></a>
@@ -551,21 +885,21 @@
                     </div>
                 </div>
                 <div class="footer-column">
-                    <h4>Platform</h4>
+                    <h4>Quick Links</h4>
                     <ul class="footer-links">
-                        <li><a href="dashboard.html">Dashboard</a></li>
-                        <li><a href="portfolio.html">Portfolio</a></li>
-                        <li><a href="partners.html">Partners</a></li>
-                        <li><a href="support.html">Support</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#investment-plans">Investment Plans</a></li>
+                        <li><a href="partners.html">Our Partners</a></li>
+                        <li><a href="#">Blog</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
-                    <h4>Company</h4>
+                    <h4>Resources</h4>
                     <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press</a></li>
-                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Investment Guide</a></li>
+                        <li><a href="#">Market Analysis</a></li>
+                        <li><a href="#">Financial Reports</a></li>
+                        <li><a href="#">Blog & Insights</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
@@ -579,13 +913,263 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 GlicoCapital Investment Platform. All rights reserved.</p>
+                <p>&copy; 2025 GlicoCapital Investment Platform. All rights reserved. | SEC Registered Investment Advisor</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Simple animation on scroll
+        // Partners Data
+        const partners = [
+            {
+                "name": "MTN Ghana",
+                "sector": "Telecom / Mobile Money",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/3/33/MTN_Logo.svg"
+            },
+            {
+                "name": "Vodafone Ghana",
+                "sector": "Telecom / Communications",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/2/26/Vodafone_2017_logo.svg"
+            },
+            {
+                "name": "Ecobank Ghana PLC",
+                "sector": "Bank / Finance",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Ecobank_Logo_EN.png"
+            },
+            {
+                "name": "GCB Bank PLC",
+                "sector": "Bank / Finance",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9a/GCB_Bank_logo.svg"
+            },
+            {
+                "name": "Standard Chartered Bank Ghana PLC",
+                "sector": "Bank / Finance",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5e/Standard_Chartered_2022_logo.svg"
+            },
+            {
+                "name": "Fidelity Bank Ghana Ltd",
+                "sector": "Bank / Finance",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/en/e/e9/Fidelity_Bank_Ghana_logo.svg"
+            },
+            {
+                "name": "CAL Bank PLC",
+                "sector": "Bank / Finance",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/en/1/10/CAL_Bank_Logo.png"
+            },
+            {
+                "name": "Access Bank Ghana PLC",
+                "sector": "Bank / Finance",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Access_Bank_logo.svg"
+            },
+            {
+                "name": "GOIL Plc",
+                "sector": "Energy / Oil & Gas",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/en/3/39/GOIL_logo.png"
+            },
+            {
+                "name": "TotalEnergies Marketing Ghana PLC",
+                "sector": "Energy / Oil & Gas",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/6/66/TotalEnergies_logo.svg"
+            },
+            {
+                "name": "SIC Insurance Company Plc",
+                "sector": "Insurance / Financial Services",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/en/4/4c/SIC_Insurance_Ghana_logo.png"
+            },
+            {
+                "name": "Enterprise Insurance Company Ltd.",
+                "sector": "Insurance / Financial Services",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/en/2/27/Enterprise_Insurance_Logo.png"
+            },
+            {
+                "name": "Unilever Ghana PLC",
+                "sector": "Consumer Goods / Manufacturing",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/c/ce/Unilever_Logo_2019.svg"
+            },
+            {
+                "name": "PZ Cussons Ghana Ltd",
+                "sector": "Consumer Goods / Manufacturing",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5a/PZ_Cussons_logo.svg"
+            },
+            {
+                "name": "Kasapreko Company Limited",
+                "sector": "Beverage / Manufacturing",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/en/9/9b/Kasapreko_Company_Ltd_Logo.png"
+            },
+            {
+                "name": "Fan Milk PLC",
+                "sector": "Food & Dairy / FMCG",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/en/8/8f/Fan_Milk_logo.png"
+            },
+            {
+                "name": "Golden Star Resources / Goldfields Ghana",
+                "sector": "Mining / Natural Resources",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1c/Goldfields_logo.svg"
+            },
+            {
+                "name": "Newmont Ghana Gold Ltd",
+                "sector": "Mining / Natural Resources",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/5/51/Newmont_logo.svg"
+            },
+            {
+                "name": "Kosmos Energy Ghana",
+                "sector": "Oil & Energy / Natural Resources",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/2/24/Kosmos_Energy_logo.svg"
+            },
+            {
+                "name": "Guinness Ghana Breweries PLC",
+                "sector": "Beverage / Manufacturing",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/en/0/0e/Guinness_Ghana_logo.png"
+            },
+            {
+                "name": "Societe Generale Ghana PLC",
+                "sector": "Bank / Finance",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/5/53/Societe_Generale_Logo.svg"
+            },
+            {
+                "name": "DHL Ghana (Logistics & Transport)",
+                "sector": "Logistics / Services",
+                "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/0/07/DHL_Logo.svg"
+            }
+        ];
+
+        // Initialize Market Chart
+        function initMarketChart() {
+            const ctx = document.getElementById('marketChart').getContext('2d');
+            
+            // Generate sample market data
+            const labels = ['9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'];
+            const data = [4560, 4565, 4562, 4568, 4572, 4570, 4568, 4569];
+            
+            const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+            gradient.addColorStop(0, 'rgba(212, 175, 55, 0.4)');
+            gradient.addColorStop(1, 'rgba(212, 175, 55, 0.05)');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'S&P 500',
+                        data: data,
+                        borderColor: '#d4af37',
+                        backgroundColor: gradient,
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#d4af37',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 3,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 0.7)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 54, 93, 0.9)',
+                            titleColor: '#d4af37',
+                            bodyColor: 'white',
+                            borderColor: '#d4af37',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Load Partners
+        function loadPartners() {
+            const partnersGrid = document.getElementById('partnersGrid');
+            const uniquePartners = [];
+            const seenNames = new Set();
+
+            // Remove duplicates
+            partners.forEach(partner => {
+                if (!seenNames.has(partner.name)) {
+                    seenNames.add(partner.name);
+                    uniquePartners.push(partner);
+                }
+            });
+
+            // Display partners
+            uniquePartners.forEach(partner => {
+                const partnerElement = document.createElement('div');
+                partnerElement.className = 'partner-logo';
+                partnerElement.innerHTML = `
+                    <img src="${partner.logoUrl}" alt="${partner.name}" title="${partner.name} - ${partner.sector}">
+                `;
+                partnersGrid.appendChild(partnerElement);
+            });
+        }
+
+        // Simulate live market data updates
+        function updateMarketData() {
+            const indicators = ['sp500', 'nasdaq', 'dowjones', 'gold'];
+            const changes = ['sp500-change', 'nasdaq-change', 'dowjones-change', 'gold-change'];
+            
+            indicators.forEach((indicator, index) => {
+                const element = document.getElementById(indicator);
+                const changeElement = document.getElementById(changes[index]);
+                
+                if (element && changeElement) {
+                    // Simulate small price changes
+                    const currentValue = parseFloat(element.textContent.replace(/[^0-9.-]+/g,""));
+                    const changePercent = (Math.random() - 0.5) * 0.3;
+                    const newValue = currentValue * (1 + changePercent / 100);
+                    
+                    element.textContent = newValue.toLocaleString('en-US', { 
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 2 
+                    });
+                    
+                    changeElement.textContent = `${changePercent > 0 ? '+' : ''}${changePercent.toFixed(2)}%`;
+                    changeElement.className = `indicator-change ${changePercent > 0 ? 'change-positive' : 'change-negative'}`;
+                }
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animation on scroll
         document.addEventListener('DOMContentLoaded', function() {
             const animatedElements = document.querySelectorAll('.animate-in');
             
@@ -604,6 +1188,15 @@
                 el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
                 observer.observe(el);
             });
+
+            // Initialize market chart
+            initMarketChart();
+            
+            // Load partners
+            loadPartners();
+            
+            // Start live market updates
+            setInterval(updateMarketData, 5000);
         });
     </script>
 </body>
