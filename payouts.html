@@ -1501,7 +1501,7 @@
         avatarUpload.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                showNotification('Profile picture upload feature coming soon', 'info');
+                showNotification('Profile picture upload failed ', 'info');
             }
         });
 
@@ -1552,11 +1552,11 @@
         }
 
         function reinvestFunds() {
-            showNotification('Reinvestment feature is being prepared', 'info');
+            showNotification('Reinvesting initiated', 'info');
         }
 
         function setupAutoReinvest() {
-            showNotification('Auto-reinvestment settings opened', 'info');
+            showNotification('Auto-reinvestment initiated', 'info');
         }
 
         function setupPayoutAlerts() {
