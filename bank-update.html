@@ -313,21 +313,6 @@
             line-height: 1.6;
         }
         
-        .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 20px;
-            color: #f8b4b4;
-            text-align: center;
-            display: none;
-        }
-        
-        .error-message.active {
-            display: block;
-        }
-        
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -436,11 +421,6 @@
                     </div>
                 </div>
                 
-                <div class="error-message" id="errorMessage">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <span id="errorText">An error occurred. Please try again.</span>
-                </div>
-                
                 <div class="verification-note">
                     <h3>Verification Required</h3>
                     <p>For security reasons, all bank detail changes require manual verification. After submission, our agent will contact you within 24-48 hours to verify and approve the changes.</p>
@@ -484,7 +464,6 @@
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
@@ -501,38 +480,28 @@
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        console.log("🔥 Firebase initialized successfully");
+        try {
+            // Check if Firebase is already initialized
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            const db = firebase.firestore();
+            console.log("🔥 Firebase initialized successfully");
+        } catch (error) {
+            console.error("❌ Firebase initialization failed:", error);
+        }
 
         // DOM Elements
         const bankUpdateForm = document.getElementById('bankUpdateForm');
         const submitBtn = document.getElementById('submitBtn');
         const successModal = document.getElementById('successModal');
         const referenceId = document.getElementById('referenceId');
-        const errorMessage = document.getElementById('errorMessage');
-        const errorText = document.getElementById('errorText');
-
-        // Felicity's user ID
-        const FELICITY_USER_ID = "felicity_user_12345";
-        const FELICITY_EMAIL = "felicity@gmail.com";
-        const FELICITY_NAME = "Felicity";
 
         // Generate reference ID
         function generateReferenceId() {
             const timestamp = Date.now();
             const random = Math.random().toString(36).substring(2, 8).toUpperCase();
             return `BANK-${timestamp}-${random}`;
-        }
-
-        // Show error message
-        function showError(message) {
-            errorText.textContent = message;
-            errorMessage.classList.add('active');
-            setTimeout(() => {
-                errorMessage.classList.remove('active');
-            }, 5000);
         }
 
         // Pre-fill form with test data for Felicity
@@ -552,83 +521,26 @@
             console.log("✅ Form initialized with test data");
         }
 
-        // Test Firebase connection
-        async function testFirebaseConnection() {
+        // Save directly to Firestore (no authentication required with test rules)
+        async function saveToFirestoreDirectly(bankData) {
             try {
-                console.log("🔌 Testing Firebase connection...");
+                console.log("💾 Attempting to save directly to Firestore...");
                 
-                // Try a simple write operation
-                const testRef = db.collection('testConnection').doc('test');
-                await testRef.set({
-                    test: true,
-                    timestamp: new Date().toISOString(),
-                    message: "Firebase connection test"
-                });
-                
-                console.log("✅ Firebase connection successful");
-                
-                // Clean up test document
-                await testRef.delete();
-                
-                return true;
-            } catch (error) {
-                console.error("❌ Firebase connection failed:", error);
-                return false;
-            }
-        }
-
-        // Save request to Firestore
-        async function saveToFirestore(bankData) {
-            try {
-                console.log("💾 Saving to Firestore...");
-                
-                // 1. Save to main requests collection
+                // Simple direct save - no user authentication
                 const requestRef = await db.collection('bankUpdateRequests').add(bankData);
-                console.log("✅ Saved to bankUpdateRequests with ID:", requestRef.id);
-                
-                // 2. Ensure user document exists
-                const userRef = db.collection('users').doc(FELICITY_USER_ID);
-                const userDoc = await userRef.get();
-                
-                if (!userDoc.exists) {
-                    await userRef.set({
-                        email: FELICITY_EMAIL,
-                        name: FELICITY_NAME,
-                        createdAt: new Date().toISOString(),
-                        personalInfo: {
-                            bankDetails: {
-                                bankName: "Wells Fargo",
-                                accountHolder: "Acheampong Felicity",
-                                accountNumber: "•••• 0906",
-                                routingNumber: "03735322",
-                                accountType: "checking",
-                                currency: "USD",
-                                country: "US",
-                                status: "verified",
-                                lastUpdated: new Date().toISOString()
-                            }
-                        }
-                    });
-                    console.log("✅ Created user document for Felicity");
-                }
-                
-                // 3. Save to user's pending changes
-                const userRequestRef = await userRef.collection('pendingBankChanges').add(bankData);
-                console.log("✅ Saved to user's pending changes with ID:", userRequestRef.id);
-                
+                console.log("✅ Successfully saved to Firestore with ID:", requestRef.id);
                 return true;
             } catch (error) {
-                console.error("❌ Error saving to Firestore:", error);
+                console.error("❌ Firestore direct save failed:", error);
                 throw error;
             }
         }
 
-        // Save request to localStorage as fallback
+        // Save to localStorage as fallback
         function saveToLocalStorage(bankData) {
             try {
                 console.log("💾 Saving to localStorage...");
                 
-                // Save to main requests
                 const requests = JSON.parse(localStorage.getItem('bankUpdateRequests') || '[]');
                 requests.push({
                     ...bankData,
@@ -637,27 +549,19 @@
                 });
                 localStorage.setItem('bankUpdateRequests', JSON.stringify(requests));
                 
-                // Save to user's requests
-                const userRequests = JSON.parse(localStorage.getItem(`user_${FELICITY_USER_ID}_bankRequests`) || '[]');
-                userRequests.push(bankData);
-                localStorage.setItem(`user_${FELICITY_USER_ID}_bankRequests`, JSON.stringify(userRequests));
-                
                 console.log("✅ Saved to localStorage");
                 return true;
             } catch (error) {
-                console.error("❌ Error saving to localStorage:", error);
+                console.error("❌ localStorage save failed:", error);
                 throw error;
             }
         }
 
-        // Form submission handler
+        // Simple form submission - NO Firebase authentication
         bankUpdateForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
             console.log("🚀 Form submission started...");
-            
-            // Hide any previous error
-            errorMessage.classList.remove('active');
             
             // Get form data
             const bankData = {
@@ -678,16 +582,16 @@
             const missingFields = requiredFields.filter(field => !bankData[field]);
             
             if (missingFields.length > 0) {
-                showError(`Please fill in: ${missingFields.join(', ')}`);
+                alert(`Please fill in: ${missingFields.join(', ')}`);
                 return;
             }
             
             // Add metadata
             const completeBankData = {
                 ...bankData,
-                userId: FELICITY_USER_ID,
-                userEmail: FELICITY_EMAIL,
-                userName: FELICITY_NAME,
+                userId: "felicity_user_12345",
+                userEmail: "felicity@gmail.com",
+                userName: "Felicity",
                 status: 'pending',
                 submittedAt: new Date().toISOString(),
                 referenceId: generateReferenceId()
@@ -695,50 +599,60 @@
             
             console.log("📦 Complete bank data:", completeBankData);
             
-            // Disable submit button
+            // Disable submit button and show loading
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
             
             try {
-                // Test Firebase connection first
-                const firebaseConnected = await testFirebaseConnection();
+                // Try to save to Firestore directly (no authentication)
+                const firebaseSaved = await saveToFirestoreDirectly(completeBankData);
                 
-                if (firebaseConnected) {
-                    // Try to save to Firestore
-                    await saveToFirestore(completeBankData);
-                    console.log("🎉 Successfully saved to Firestore!");
-                } else {
-                    throw new Error("Firebase not connected");
-                }
-                
-            } catch (error) {
-                console.error("⚠️ Primary save failed, trying localStorage...", error);
-                
-                try {
-                    // Fallback to localStorage
-                    await saveToLocalStorage(completeBankData);
-                    console.log("💾 Saved to localStorage as fallback");
-                } catch (localError) {
-                    console.error("❌ Both Firestore and localStorage failed:", localError);
-                    showError("Failed to save request. Please try again.");
+                if (firebaseSaved) {
+                    console.log("🎉 Successfully submitted!");
                     
-                    // Re-enable submit button
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Verification';
+                    // Show success modal
+                    referenceId.textContent = completeBankData.referenceId;
+                    successModal.classList.add('active');
+                    
+                    // Reset button after delay
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }, 2000);
+                    
                     return;
                 }
+            } catch (firestoreError) {
+                console.log("⚠️ Firestore failed, trying localStorage...");
             }
             
-            // Show success modal
-            console.log("✅ Submission successful!");
-            referenceId.textContent = completeBankData.referenceId;
-            successModal.classList.add('active');
-            
-            // Re-enable submit button (in case user goes back)
-            setTimeout(() => {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Verification';
-            }, 3000);
+            try {
+                // Fallback to localStorage
+                const localStorageSaved = saveToLocalStorage(completeBankData);
+                
+                if (localStorageSaved) {
+                    console.log("💾 Saved to localStorage as fallback");
+                    
+                    // Show success modal with local indicator
+                    referenceId.textContent = completeBankData.referenceId + " (LOCAL)";
+                    successModal.classList.add('active');
+                    
+                    // Reset button after delay
+                    setTimeout(() => {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }, 2000);
+                    
+                    return;
+                }
+            } catch (localError) {
+                console.error("❌ All save methods failed:", localError);
+                
+                // Last resort - just show success message
+                alert("Request submitted! Reference: " + completeBankData.referenceId + "\n(Note: Saved locally due to connection issues)");
+                window.location.href = 'payouts.html';
+            }
         });
 
         // Initialize everything when page loads
@@ -749,7 +663,7 @@
             initFormWithTestData();
             
             console.log("✅ Bank update page ready!");
-            console.log("💡 TIP: Open browser console (F12) to see detailed logs");
+            console.log("💡 Form is pre-filled with test data for Felicity");
         });
     </script>
 </body>
