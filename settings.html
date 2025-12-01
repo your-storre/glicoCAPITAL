@@ -1017,7 +1017,7 @@
                 const demoUserEmail = "iamgenefelicity@gmail.com";
                 
                 // Set profile information
-                profileName.textContent = user.displayName || "Acheampong Felicity (Demo)";
+                profileName.textContent = user.displayName || "Acheampong Felicity";
                 profileEmail.textContent = user.email || demoUserEmail;
                 
                 // For demo user, always show verified
@@ -1063,7 +1063,7 @@
             } catch (error) {
                 console.error("Error loading user profile:", error);
                 // Set default demo values
-                profileName.textContent = "Acheampong Felicity (Demo)";
+                profileName.textContent = "Acheampong Felicity";
                 profileEmail.textContent = "iamgenefelicity@gmail.com";
                 profileStatus.textContent = "✓ Verified";
                 profileStatus.style.color = "var(--success)";
