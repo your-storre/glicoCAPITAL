@@ -6,7 +6,7 @@
     <title>Sign In | GlicoCapital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Premium Color Scheme */
+        /* Import all premium styles */
         :root {
             --primary: #1a365d;
             --primary-dark: #0f2040;
@@ -92,7 +92,6 @@
             font-size: 2rem;
             margin-bottom: 10px;
             font-weight: 700;
-            color: white;
         }
         
         .auth-header p {
@@ -102,13 +101,15 @@
         
         /* Premium Card Design */
         .card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             padding: 40px;
+            margin-bottom: 24px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid var(--glass-border);
-            color: white;
+            color: var(--dark);
             position: relative;
             overflow: hidden;
         }
@@ -132,7 +133,7 @@
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: white;
+            color: var(--dark);
         }
         
         .input-with-icon {
@@ -144,28 +145,23 @@
             left: 16px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--gray-light);
+            color: var(--gray);
         }
         
         input {
             width: 100%;
             padding: 16px 16px 16px 48px;
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--gray-light);
             border-radius: 12px;
             font-size: 1rem;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-        
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            background: white;
         }
         
         input:focus {
             outline: none;
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
         
         .form-options {
@@ -185,19 +181,15 @@
             width: auto;
         }
         
-        .remember-me label {
-            margin-bottom: 0;
-        }
-        
         .forgot-password {
-            color: var(--secondary);
+            color: var(--primary);
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s ease;
         }
         
         .forgot-password:hover {
-            color: white;
+            color: var(--primary-dark);
         }
         
         /* Premium Button Styles */
@@ -214,95 +206,92 @@
             gap: 10px;
             font-size: 1rem;
             width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
             color: white;
+            box-shadow: 0 5px 15px rgba(26, 54, 93, 0.4);
         }
         
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 8px 20px rgba(26, 54, 93, 0.5);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: white;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
         }
         
         .auth-footer {
             text-align: center;
             margin-top: 30px;
-            color: rgba(255, 255, 255, 0.8);
+            color: var(--dark);
         }
         
         .auth-footer a {
-            color: var(--secondary);
+            color: var(--primary);
             text-decoration: none;
             font-weight: 600;
             transition: color 0.3s ease;
         }
         
         .auth-footer a:hover {
-            color: white;
+            color: var(--primary-dark);
         }
         
-        /* Security Step Indicator */
-        .step-indicator {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-        
-        .step {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .step.active {
-            background: var(--secondary);
-            transform: scale(1.2);
-        }
-        
-        /* Security Note */
-        .security-note {
+        /* Demo Account */
+        .demo-account {
             background: rgba(212, 175, 55, 0.1);
             border-radius: 12px;
-            padding: 15px;
-            margin-top: 20px;
-            border-left: 3px solid var(--secondary);
-            font-size: 0.9rem;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .demo-account h4 {
+            margin-bottom: 10px;
+            color: var(--dark);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
-        /* Error Message */
-        .error-message {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-            color: #f8b4b4;
-            display: none;
-        }
-        
-        .error-message.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
+        .demo-account p {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--gray);
         }
         
         /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -322,24 +311,11 @@
                 <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
                 <h1>GlicoCapital</h1>
             </div>
-            <h2>Secure Sign In</h2>
-            <p>Two-step verification for enhanced security</p>
+            <h2>Welcome Back</h2>
+            <p>Sign in to your investment account</p>
         </div>
         
-        <!-- Step Indicator -->
-        <div class="step-indicator animate-in">
-            <div class="step active" id="step1"></div>
-            <div class="step" id="step2"></div>
-        </div>
-        
-        <!-- Error Message -->
-        <div class="error-message" id="errorMessage">
-            <i class="fas fa-exclamation-circle"></i>
-            <span id="errorText">Invalid credentials. Please try again.</span>
-        </div>
-        
-        <!-- Step 1: Email & Password -->
-        <div class="card animate-in" id="stepOneForm" style="animation-delay: 0.1s;">
+        <div class="card animate-in" style="animation-delay: 0.1s;">
             <form id="loginForm">
                 <div class="form-group">
                     <label for="email">Email Address</label>
@@ -362,57 +338,24 @@
                         <input type="checkbox" id="remember">
                         <label for="remember">Remember me</label>
                     </div>
-                    <a href="#" class="forgot-password" onclick="forgotPassword()">Forgot password?</a>
+                    <a href="#" class="forgot-password">Forgot password?</a>
                 </div>
                 
-                <button type="submit" class="btn btn-primary" id="loginBtn">
-                    <i class="fas fa-arrow-right"></i>
-                    Continue to Security Key
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
                 </button>
             </form>
             
-            <div class="security-note">
-                <i class="fas fa-shield-alt"></i>
-                Your account is protected with two-step verification
+            <div class="demo-account">
+                <h4><i class="fas fa-user-check"></i> Demo Account</h4>
+                <p><strong>Email:</strong> iamgenefelicity@gmail.com</p>
+                <p><strong>Password:</strong> Nick@1844</p>
             </div>
             
             <div class="auth-footer">
-                <p>Don't have an account? <a href="register.html">Contact Support</a></p>
+                <p>Don't have an account? <a href="register.html">Sign up here</a></p>
             </div>
-        </div>
-        
-        <!-- Step 2: Security Key -->
-        <div class="card animate-in" id="stepTwoForm" style="display: none; animation-delay: 0.1s;">
-            <div style="text-align: center; margin-bottom: 25px;">
-                <div style="font-size: 3rem; color: var(--secondary); margin-bottom: 15px;">
-                    <i class="fas fa-key"></i>
-                </div>
-                <h3 style="margin-bottom: 10px;">Security Key Required</h3>
-                <p style="opacity: 0.8;">Enter your secret key for additional security</p>
-            </div>
-            
-            <form id="securityKeyForm">
-                <div class="form-group">
-                    <label for="securityKey">Secret Security Key</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-key input-icon"></i>
-                        <input type="password" id="securityKey" placeholder="Enter your secret key" required>
-                    </div>
-                    <small style="opacity: 0.7; display: block; margin-top: 5px;">Set this key in your account settings for extra security</small>
-                </div>
-                
-                <div class="form-options">
-                    <a href="#" class="forgot-password" onclick="goBackToStepOne()">
-                        <i class="fas fa-arrow-left"></i>
-                        Back to login
-                    </a>
-                </div>
-                
-                <button type="submit" class="btn btn-primary" id="verifyKeyBtn">
-                    <i class="fas fa-unlock"></i>
-                    Verify & Sign In
-                </button>
-            </form>
         </div>
     </div>
 
@@ -420,10 +363,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
     <script>
-        // Firebase configuration - Using your actual Firebase config
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
             authDomain: "ggic-investment.firebaseapp.com",
@@ -439,235 +381,43 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const rtdb = firebase.database();
 
-        // State variables
-        let userCredentials = null;
-        let userEmail = '';
-        let userSecretKey = null;
-
-        // DOM Elements
-        const stepOneForm = document.getElementById('stepOneForm');
-        const stepTwoForm = document.getElementById('stepTwoForm');
-        const step1 = document.getElementById('step1');
-        const step2 = document.getElementById('step2');
-        const errorMessage = document.getElementById('errorMessage');
-        const errorText = document.getElementById('errorText');
-        const loginBtn = document.getElementById('loginBtn');
-        const verifyKeyBtn = document.getElementById('verifyKeyBtn');
-
-        // Show error message
-        function showError(message) {
-            errorText.textContent = message;
-            errorMessage.classList.add('active');
-        }
-
-        // Hide error message
-        function hideError() {
-            errorMessage.classList.remove('active');
-        }
-
-        // Step 1: Email & Password login
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            hideError();
-            
-            userEmail = document.getElementById('email').value.trim();
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
-            if (!userEmail || !password) {
-                showError('Please enter both email and password');
-                return;
-            }
-            
             // Show loading state
-            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
-            loginBtn.disabled = true;
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+            submitBtn.disabled = true;
             
-            try {
-                // Sign in with Firebase Auth
-                const userCredential = await auth.signInWithEmailAndPassword(userEmail, password);
-                userCredentials = userCredential;
-                
-                // Load user's secret key from Firebase
-                const user = userCredential.user;
-                const secretKeyRef = rtdb.ref(`secretKeys/${user.uid}`);
-                
-                const snapshot = await secretKeyRef.get();
-                if (snapshot.exists()) {
-                    userSecretKey = snapshot.val().key;
-                    console.log("Secret key found for user");
-                } else {
-                    // Check Firestore as backup
-                    const userDoc = await db.collection('users').doc(user.uid).get();
-                    if (userDoc.exists() && userDoc.data().secretKey) {
-                        userSecretKey = userDoc.data().secretKey;
-                    } else {
-                        userSecretKey = null;
-                    }
-                }
-                
-                // Move to step 2
-                goToStepTwo();
-                
-            } catch (error) {
-                console.error("Login error:", error);
-                
-                if (error.code === 'auth/user-not-found') {
-                    showError('Account not found. Please check your email.');
-                } else if (error.code === 'auth/wrong-password') {
-                    showError('Incorrect password. Please try again.');
-                } else if (error.code === 'auth/invalid-email') {
-                    showError('Invalid email format.');
-                } else if (error.code === 'auth/user-disabled') {
-                    showError('This account has been disabled.');
-                } else if (error.code === 'auth/too-many-requests') {
-                    showError('Too many failed attempts. Please try again later.');
-                } else {
-                    showError('Login failed. Please try again.');
-                }
-                
-                // Reset button
-                loginBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue to Security Key';
-                loginBtn.disabled = false;
-            }
-        });
-
-        // Step 2: Security Key verification
-        document.getElementById('securityKeyForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            hideError();
-            
-            const enteredKey = document.getElementById('securityKey').value.trim();
-            
-            if (!enteredKey) {
-                showError('Please enter your security key');
-                return;
-            }
-            
-            // Show loading state
-            verifyKeyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
-            verifyKeyBtn.disabled = true;
-            
-            // Check if secret key exists for user
-            if (!userSecretKey) {
-                // If no secret key is set, allow login (first time users)
-                showSuccessAndRedirect();
-                return;
-            }
-            
-            // Verify the entered key
-            if (enteredKey === userSecretKey) {
-                showSuccessAndRedirect();
-            } else {
-                showError('Invalid security key. Please try again.');
-                verifyKeyBtn.innerHTML = '<i class="fas fa-unlock"></i> Verify & Sign In';
-                verifyKeyBtn.disabled = false;
-            }
-        });
-
-        // Show success and redirect
-        function showSuccessAndRedirect() {
-            // Show success animation
-            verifyKeyBtn.innerHTML = '<i class="fas fa-check"></i> Success!';
-            verifyKeyBtn.style.background = 'linear-gradient(135deg, var(--success), #0da271)';
-            
-            // Redirect to dashboard
-            setTimeout(() => {
-                window.location.href = 'dashboard.html';
-            }, 1000);
-        }
-
-        // Navigate to step 2
-        function goToStepTwo() {
-            stepOneForm.style.display = 'none';
-            stepTwoForm.style.display = 'block';
-            
-            // Update step indicator
-            step1.classList.remove('active');
-            step2.classList.add('active');
-            
-            // Reset step 1 button
-            loginBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue to Security Key';
-            loginBtn.disabled = false;
-            
-            // Clear password field for security
-            document.getElementById('password').value = '';
-            
-            // If user doesn't have a secret key set, show message
-            if (!userSecretKey) {
-                document.querySelector('#securityKeyForm small').textContent = 
-                    'No security key set yet. Set one in Settings after logging in.';
-                document.getElementById('securityKey').placeholder = 'Leave blank if no key set';
-            }
-        }
-
-        // Go back to step 1
-        function goBackToStepOne() {
-            stepTwoForm.style.display = 'none';
-            stepOneForm.style.display = 'block';
-            
-            // Update step indicator
-            step2.classList.remove('active');
-            step1.classList.add('active');
-            
-            // Clear fields
-            document.getElementById('securityKey').value = '';
-            
-            // Sign out from Firebase (since we authenticated in step 1)
-            if (auth.currentUser) {
-                auth.signOut();
-            }
-        }
-
-        // Forgot password
-        function forgotPassword() {
-            const email = document.getElementById('email').value.trim();
-            
-            if (!email) {
-                showError('Please enter your email to reset password');
-                return;
-            }
-            
-            auth.sendPasswordResetEmail(email)
-                .then(() => {
-                    alert('Password reset email sent. Please check your inbox.');
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    window.location.href = 'dashboard.html';
                 })
                 .catch((error) => {
-                    if (error.code === 'auth/user-not-found') {
-                        showError('Email not found. Please check your email address.');
-                    } else {
-                        showError('Failed to send reset email. Please try again.');
-                    }
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    
+                    alert(`Login failed: ${errorMessage}`);
+                    
+                    // Reset button
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
                 });
-        }
-
-        // Remember me functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if email was saved
-            const savedEmail = localStorage.getItem('glico_remember_email');
-            if (savedEmail) {
-                document.getElementById('email').value = savedEmail;
-                document.getElementById('remember').checked = true;
-            }
-            
-            // Save email on remember me
-            document.getElementById('remember').addEventListener('change', function() {
-                if (this.checked) {
-                    const email = document.getElementById('email').value.trim();
-                    if (email) {
-                        localStorage.setItem('glico_remember_email', email);
-                    }
-                } else {
-                    localStorage.removeItem('glico_remember_email');
-                }
-            });
         });
 
-        // Close error when clicking
-        errorMessage.addEventListener('click', hideError);
+        // Auto-fill demo account
+        document.addEventListener('DOMContentLoaded', function() {
+            // You can optionally auto-fill the demo account details
+            // document.getElementById('email').value = 'iamgenefelicity@gmail.com';
+            // document.getElementById('password').value = 'Nick@1844';
+        });
     </script>
 </body>
 </html>
