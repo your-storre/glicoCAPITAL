@@ -6,62 +6,683 @@
     <title>Settings | GlicoCapital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ... (keep all previous CSS styles exactly as they were) ... */
+        /* Premium Color Scheme - Matching Dashboard */
+        :root {
+            --primary: #1a365d;
+            --primary-dark: #0f2040;
+            --primary-light: #2d4a80;
+            --secondary: #d4af37;
+            --secondary-dark: #b8941f;
+            --accent: #00b4d8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
         
-        /* Success Message Sticky - FIXED VERSION */
-        .sticky-success {
-            position: fixed;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(16, 185, 129, 0.95);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            color: var(--light);
+            min-height: 100vh;
+            padding-bottom: 90px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.03"><polygon fill="white" points="0,1000 1000,0 1000,1000"/></svg>');
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Premium Header - Matching Dashboard */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            background: rgba(26, 54, 93, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo img {
+            height: 38px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            padding: 12px 25px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            font-size: 0.9rem;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Logout Button */
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.2);
+            color: white;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        /* Welcome Section */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .welcome-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .welcome-section p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* Settings Grid */
+        .settings-grid {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .setting-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .setting-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+        
+        .setting-icon {
+            width: 50px;
+            height: 50px;
             border-radius: 12px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+        }
+        
+        .setting-content {
+            flex: 1;
+        }
+        
+        .setting-content h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+        
+        .setting-content p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Current Key Display */
+        .current-key-display {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .key-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .key-label {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+        
+        .key-value {
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+        
+        /* Password Strength Indicator */
+        .password-strength {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .strength-weak {
+            background: var(--danger);
+            width: 33%;
+        }
+        
+        .strength-medium {
+            background: var(--warning);
+            width: 66%;
+        }
+        
+        .strength-strong {
+            background: var(--success);
+            width: 100%;
+        }
+        
+        .strength-text {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            opacity: 0.7;
+        }
+        
+        /* Password Requirements */
+        .password-requirements {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .requirement-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        .requirement-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .requirement-item i {
+            font-size: 0.8rem;
+        }
+        
+        .requirement-met {
+            color: var(--success);
+        }
+        
+        .requirement-not-met {
+            color: var(--danger);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
             z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            border-radius: 20px;
+            padding: 30px;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid var(--glass-border);
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            opacity: 1;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Profile Info */
+        .profile-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .profile-item:last-child {
+            border-bottom: none;
+        }
+        
+        .profile-label {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 0.9rem;
+        }
+        
+        .profile-value {
+            font-size: 1rem;
+        }
+        
+        /* Premium Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 54, 93, 0.95);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            padding: 14px 0;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray-light);
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 6px 10px;
+            border-radius: 10px;
+            min-width: 50px;
+        }
+        
+        .nav-item.active, .nav-item:hover {
+            color: var(--secondary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            width: 24px;
+            height: 2px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-in {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        /* Loader */
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Show/Hide Password Toggle */
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 5px;
+        }
+        
+        .password-toggle:hover {
+            color: var(--secondary);
+        }
+        
+        .password-input-container {
+            position: relative;
+        }
+        
+        /* Simple Toast Notification - FIXED VERSION */
+        .toast-notification {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            z-index: 10000;
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             gap: 10px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.3);
-            animation: slideDown 0.5s ease;
-            opacity: 0;
-            visibility: hidden;
+            animation: slideInRight 0.3s ease forwards;
+            max-width: 350px;
         }
         
-        .sticky-success.show {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        @keyframes slideDown {
+        @keyframes slideInRight {
             from {
                 opacity: 0;
-                transform: translateX(-50%) translateY(-30px);
-                visibility: hidden;
+                transform: translateX(100%);
             }
             to {
                 opacity: 1;
-                transform: translateX(-50%) translateY(0);
-                visibility: visible;
+                transform: translateX(0);
             }
         }
         
-        @keyframes slideUp {
+        @keyframes slideOutRight {
             from {
                 opacity: 1;
-                transform: translateX(-50%) translateY(0);
-                visibility: visible;
+                transform: translateX(0);
             }
             to {
                 opacity: 0;
-                transform: translateX(-50%) translateY(-30px);
-                visibility: hidden;
+                transform: translateX(100%);
             }
         }
         
-        /* ... (rest of the CSS remains the same) ... */
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .logout-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .toast-notification {
+                top: 80px;
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -82,12 +703,6 @@
         </div>
     </header>
 
-    <!-- Success Message (Initially hidden) -->
-    <div class="sticky-success" id="successMessage">
-        <i class="fas fa-check-circle"></i>
-        <span id="successText">Operation successful!</span>
-    </div>
-
     <!-- Main Content -->
     <div class="container">
         <!-- Welcome Section -->
@@ -100,19 +715,19 @@
         <div class="profile-info animate-in">
             <div class="profile-item">
                 <div class="profile-label">Full Name</div>
-                <div class="profile-value" id="profileName">Loading...</div>
+                <div class="profile-value" id="profileName">Acheampong Felicity</div>
             </div>
             <div class="profile-item">
                 <div class="profile-label">Email</div>
-                <div class="profile-value" id="profileEmail">Loading...</div>
+                <div class="profile-value" id="profileEmail">iamgenefelicity@gmail.com</div>
             </div>
             <div class="profile-item">
                 <div class="profile-label">Account Created</div>
-                <div class="profile-value" id="profileCreated">Loading...</div>
+                <div class="profile-value" id="profileCreated">April 15, 2025</div>
             </div>
             <div class="profile-item">
                 <div class="profile-label">Account Status</div>
-                <div class="profile-value" style="color: var(--success);" id="profileStatus">Loading...</div>
+                <div class="profile-value" style="color: var(--success);" id="profileStatus">✓ Verified</div>
             </div>
             <!-- Current Secret Key Display -->
             <div class="profile-item">
@@ -351,14 +966,11 @@
         const profileEmail = document.getElementById('profileEmail');
         const profileCreated = document.getElementById('profileCreated');
         const profileStatus = document.getElementById('profileStatus');
-        const successMessage = document.getElementById('successMessage');
-        const successText = document.getElementById('successText');
 
         // Current user and secret key
         let currentUser = null;
         let userSecretKey = null;
         let passwordRequirementsMet = false;
-        let successTimeout = null;
 
         // Initialize page
         function initPage() {
@@ -382,130 +994,19 @@
             });
         }
 
-        // Show sticky success message - SIMPLE AND WORKING VERSION
-        function showStickySuccess(message) {
-            console.log("Showing success message:", message);
-            
-            // Clear any existing timeout
-            if (successTimeout) {
-                clearTimeout(successTimeout);
-            }
-            
-            // Hide first to reset animation
-            successMessage.classList.remove('show');
-            
-            // Update text
-            successText.textContent = message;
-            
-            // Force reflow to restart animation
-            void successMessage.offsetWidth;
-            
-            // Show with animation
-            setTimeout(() => {
-                successMessage.classList.add('show');
-            }, 10);
-            
-            // Auto-hide after 5 seconds
-            successTimeout = setTimeout(() => {
-                hideStickySuccess();
-            }, 5000);
-        }
-
-        // Hide success message
-        function hideStickySuccess() {
-            successMessage.classList.remove('show');
-        }
-
         // Load user profile information
-        async function loadUserProfile(user) {
-            try {
-                // Default Felicity user details
-                const felicityEmail = "iamgenefelicity@gmail.com";
-                
-                // Set profile information
-                if (user.email === felicityEmail) {
-                    // For Felicity user
-                    profileName.textContent = "Acheampong Felicity";
-                    profileEmail.textContent = felicityEmail;
-                    profileStatus.textContent = "✓ Verified";
-                    profileStatus.style.color = "var(--success)";
-                    
-                    // Set account creation date to April 2025
-                    profileCreated.textContent = "April 15, 2025";
-                } else {
-                    // For other users
-                    profileName.textContent = user.displayName || "User";
-                    profileEmail.textContent = user.email || "No email";
-                    
-                    // Check email verification status
-                    if (user.emailVerified) {
-                        profileStatus.textContent = "✓ Verified";
-                        profileStatus.style.color = "var(--success)";
-                    } else {
-                        profileStatus.textContent = "⚠ Not Verified";
-                        profileStatus.style.color = "var(--warning)";
-                    }
-                    
-                    // Format account creation date from Firebase
-                    if (user.metadata && user.metadata.creationTime) {
-                        const createdDate = new Date(user.metadata.creationTime);
-                        profileCreated.textContent = createdDate.toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric'
-                        });
-                    } else {
-                        profileCreated.textContent = "N/A";
-                    }
-                }
-                
-                // Try to get user data from Firestore
-                try {
-                    const userDoc = await db.collection('users').doc(user.uid).get();
-                    if (userDoc.exists()) {
-                        const userData = userDoc.data();
-                        if (userData.fullName) {
-                            profileName.textContent = userData.fullName;
-                        }
-                        if (userData.accountCreated) {
-                            profileCreated.textContent = new Date(userData.accountCreated).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                            });
-                        }
-                    }
-                } catch (dbError) {
-                    console.log("No Firestore user data found, using default");
-                }
-                
-            } catch (error) {
-                console.error("Error loading user profile:", error);
-                // Set default Felicity values
-                profileName.textContent = "Acheampong Felicity";
-                profileEmail.textContent = "iamgenefelicity@gmail.com";
-                profileStatus.textContent = "✓ Verified";
-                profileStatus.style.color = "var(--success)";
-                profileCreated.textContent = "April 15, 2025";
-            }
+        function loadUserProfile(user) {
+            // Set profile information for Felicity
+            profileName.textContent = "Acheampong Felicity";
+            profileEmail.textContent = "iamgenefelicity@gmail.com";
+            profileStatus.textContent = "✓ Verified";
+            profileStatus.style.color = "var(--success)";
+            profileCreated.textContent = "April 15, 2025";
         }
 
         // Load user avatar
         function loadUserAvatar(user) {
-            if (user.photoURL) {
-                avatarInitial.style.display = 'none';
-                userAvatar.innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
-            } else {
-                // For Felicity user, use 'F'
-                if (user.email === "iamgenefelicity@gmail.com") {
-                    avatarInitial.textContent = 'F';
-                } else if (user.displayName) {
-                    const initials = user.displayName.split(' ').map(n => n[0]).join('').toUpperCase();
-                    avatarInitial.textContent = initials || 'U';
-                } else if (user.email) {
-                    avatarInitial.textContent = user.email[0].toUpperCase();
-                }
-            }
+            avatarInitial.textContent = 'F';
         }
 
         // Load user's secret key from Firebase
@@ -730,6 +1231,49 @@
             }
         }
 
+        // SIMPLE AND RELIABLE TOAST NOTIFICATION
+        function showToast(message, type = 'success') {
+            // Remove existing toast
+            const existingToast = document.querySelector('.toast-notification');
+            if (existingToast) {
+                existingToast.remove();
+            }
+            
+            // Create toast
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            
+            // Set background color based on type
+            const bgColor = type === 'success' ? 'var(--success)' : 
+                          type === 'error' ? 'var(--danger)' : 
+                          type === 'warning' ? 'var(--warning)' : 'var(--success)';
+            
+            toast.style.background = bgColor;
+            
+            // Set icon based on type
+            const icon = type === 'success' ? 'fa-check-circle' : 
+                        type === 'error' ? 'fa-exclamation-circle' : 
+                        type === 'warning' ? 'fa-exclamation-triangle' : 'fa-check-circle';
+            
+            toast.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <span>${message}</span>
+            `;
+            
+            // Add to page
+            document.body.appendChild(toast);
+            
+            // Remove after 4 seconds
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease forwards';
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.remove();
+                    }
+                }, 300);
+            }, 4000);
+        }
+
         // Modal functions
         function changePassword() {
             document.getElementById('passwordModal').classList.add('active');
@@ -805,7 +1349,7 @@
             }
         }
 
-        // Update password function - SIMPLIFIED AND WORKING
+        // Update password function - SIMPLE AND WORKING
         async function updatePassword() {
             const currentPassword = document.getElementById('currentPassword').value;
             const newPassword = document.getElementById('newPassword').value;
@@ -814,28 +1358,28 @@
             
             // Validation
             if (!currentPassword || !newPassword || !confirmPassword) {
-                showStickySuccess('Please fill in all fields');
+                showToast('Please fill in all fields', 'error');
                 return;
             }
             
             if (newPassword !== confirmPassword) {
-                showStickySuccess('New passwords do not match');
+                showToast('New passwords do not match', 'error');
                 return;
             }
             
             if (!passwordRequirementsMet) {
-                showStickySuccess('Password does not meet all requirements');
+                showToast('Password does not meet all requirements', 'error');
                 return;
             }
             
             if (newPassword.length < 8) {
-                showStickySuccess('Password must be at least 8 characters');
+                showToast('Password must be at least 8 characters', 'error');
                 return;
             }
             
             // Check if new password is same as current
             if (newPassword === currentPassword) {
-                showStickySuccess('New password cannot be the same as current password');
+                showToast('New password cannot be the same as current password', 'error');
                 return;
             }
             
@@ -843,8 +1387,6 @@
                 // Show loading state
                 updatePasswordBtn.innerHTML = '<div class="loader"></div> Updating...';
                 updatePasswordBtn.disabled = true;
-                
-                console.log("Starting password update...");
                 
                 // Re-authenticate user
                 const credential = firebase.auth.EmailAuthProvider.credential(
@@ -864,8 +1406,8 @@
                     lastPasswordChange: firebase.firestore.FieldValue.serverTimestamp()
                 }, { merge: true });
                 
-                // Show success message
-                showStickySuccess('Password changed successfully!');
+                // Show success toast
+                showToast('Password changed successfully!', 'success');
                 
                 // Clear form and close modal
                 clearForms();
@@ -895,7 +1437,7 @@
                     errorMessage = 'Error: ' + error.message;
                 }
                 
-                showStickySuccess(errorMessage);
+                showToast(errorMessage, 'error');
                 
                 // Reset button
                 updatePasswordBtn.innerHTML = 'Update Password';
@@ -903,7 +1445,7 @@
             }
         }
 
-        // Update secret key function - SIMPLIFIED AND WORKING
+        // Update secret key function - SIMPLE AND WORKING
         async function updateSecretKey() {
             const currentPassword = document.getElementById('currentPasswordForKey').value;
             const newSecretKey = document.getElementById('newSecretKey').value;
@@ -912,17 +1454,17 @@
             
             // Validation
             if (!currentPassword || !newSecretKey || !confirmSecretKey) {
-                showStickySuccess('Please fill in all fields');
+                showToast('Please fill in all fields', 'error');
                 return;
             }
             
             if (newSecretKey !== confirmSecretKey) {
-                showStickySuccess('Security keys do not match');
+                showToast('Security keys do not match', 'error');
                 return;
             }
             
             if (newSecretKey.length < 6 || newSecretKey.length > 12) {
-                showStickySuccess('Security key must be 6-12 characters');
+                showToast('Security key must be 6-12 characters', 'error');
                 return;
             }
             
@@ -930,8 +1472,6 @@
                 // Show loading state
                 updateSecretKeyBtn.innerHTML = '<div class="loader"></div> Saving...';
                 updateSecretKeyBtn.disabled = true;
-                
-                console.log("Starting secret key update...");
                 
                 // Re-authenticate user
                 const credential = firebase.auth.EmailAuthProvider.credential(
@@ -966,10 +1506,8 @@
                 // Update UI immediately
                 updateKeyDisplay();
                 
-                // Show success message
-                showStickySuccess('Security key updated successfully!');
-                
-                console.log("Secret key updated successfully!");
+                // Show success toast
+                showToast('Security key updated successfully!', 'success');
                 
                 // Clear and close modal
                 clearForms();
@@ -998,7 +1536,7 @@
                     errorMessage = 'Error: ' + error.message;
                 }
                 
-                showStickySuccess(errorMessage);
+                showToast(errorMessage, 'error');
                 
                 // Reset button
                 updateSecretKeyBtn.innerHTML = 'Save Security Key';
@@ -1024,15 +1562,6 @@
                     closeModal();
                 }
             });
-        });
-
-        // Prevent form submission on enter
-        document.addEventListener('keydown', function(e) {
-            if (e.target.tagName === 'INPUT' && !e.target.type.includes('button')) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                }
-            }
         });
 
         // Initialize
