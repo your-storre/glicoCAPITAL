@@ -6,7 +6,7 @@
     <title>Update Bank Details | GlicoCapital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Premium Color Scheme */
+        /* Your existing CSS styles remain exactly the same */
         :root {
             --primary: #1a365d;
             --primary-dark: #0f2040;
@@ -337,19 +337,19 @@
                 <div class="details-grid">
                     <div class="detail-item">
                         <div class="detail-label">Bank Name</div>
-                        <div class="detail-value">Wells Fargo</div>
+                        <div class="detail-value" id="currentBankName">Loading...</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Account Holder</div>
-                        <div class="detail-value">Acheampong Felicity</div>
+                        <div class="detail-value" id="currentAccountHolder">Loading...</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Account Number</div>
-                        <div class="detail-value">•••• 0906</div>
+                        <div class="detail-value" id="currentAccountNumber">Loading...</div>
                     </div>
                     <div class="detail-item">
                         <div class="detail-label">Account Type</div>
-                        <div class="detail-value">Checking Account</div>
+                        <div class="detail-value" id="currentAccountType">Loading...</div>
                     </div>
                 </div>
             </div>
@@ -462,9 +462,9 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK for Realtime Database -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
     <script>
         // Firebase configuration
@@ -480,16 +480,13 @@
         };
 
         // Initialize Firebase
-        try {
-            // Check if Firebase is already initialized
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            const db = firebase.firestore();
-            console.log("🔥 Firebase initialized successfully");
-        } catch (error) {
-            console.error("❌ Firebase initialization failed:", error);
-        }
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        console.log("🔥 Firebase Realtime Database initialized");
+
+        // Felicity's user ID
+        const FELICITY_USER_ID = "user_felicity_12345";
 
         // DOM Elements
         const bankUpdateForm = document.getElementById('bankUpdateForm');
@@ -504,60 +501,76 @@
             return `BANK-${timestamp}-${random}`;
         }
 
-        // Pre-fill form with test data for Felicity
-        function initFormWithTestData() {
-            console.log("📝 Initializing form with test data...");
-            
-            // Pre-fill form with test data for Felicity
-            document.getElementById('accountHolder').value = "Acheampong Felicity";
-            document.getElementById('bankName').value = "Chase Bank";
-            document.getElementById('accountNumber').value = "9876543210";
-            document.getElementById('routingNumber').value = "021000021";
-            document.getElementById('accountType').value = "checking";
-            document.getElementById('currency').value = "USD";
-            document.getElementById('country').value = "US";
-            document.getElementById('swiftCode').value = "CHASUS33";
-            
-            console.log("✅ Form initialized with test data");
-        }
-
-        // Save directly to Firestore (no authentication required with test rules)
-        async function saveToFirestoreDirectly(bankData) {
+        // Load Felicity's current bank details from Realtime Database
+        async function loadCurrentBankDetails() {
             try {
-                console.log("💾 Attempting to save directly to Firestore...");
+                console.log("📡 Loading Felicity's bank details from database...");
                 
-                // Simple direct save - no user authentication
-                const requestRef = await db.collection('bankUpdateRequests').add(bankData);
-                console.log("✅ Successfully saved to Firestore with ID:", requestRef.id);
-                return true;
-            } catch (error) {
-                console.error("❌ Firestore direct save failed:", error);
-                throw error;
-            }
-        }
-
-        // Save to localStorage as fallback
-        function saveToLocalStorage(bankData) {
-            try {
-                console.log("💾 Saving to localStorage...");
+                const userRef = database.ref('users/' + FELICITY_USER_ID + '/bankDetails');
                 
-                const requests = JSON.parse(localStorage.getItem('bankUpdateRequests') || '[]');
-                requests.push({
-                    ...bankData,
-                    localSave: true,
-                    savedAt: new Date().toISOString()
+                userRef.on('value', (snapshot) => {
+                    if (snapshot.exists()) {
+                        const bankDetails = snapshot.val();
+                        console.log("✅ Bank details loaded:", bankDetails);
+                        
+                        // Update the display
+                        document.getElementById('currentBankName').textContent = bankDetails.bankName || "Not set";
+                        document.getElementById('currentAccountHolder').textContent = bankDetails.accountHolder || "Not set";
+                        document.getElementById('currentAccountNumber').textContent = bankDetails.accountNumber ? "•••• " + bankDetails.accountNumber.slice(-4) : "Not set";
+                        document.getElementById('currentAccountType').textContent = bankDetails.accountType ? bankDetails.accountType.charAt(0).toUpperCase() + bankDetails.accountType.slice(1) + " Account" : "Not set";
+                        
+                        // Pre-fill form with current data
+                        if (bankDetails.bankName) {
+                            document.getElementById('bankName').value = bankDetails.bankName;
+                        }
+                        if (bankDetails.accountHolder) {
+                            document.getElementById('accountHolder').value = bankDetails.accountHolder;
+                        }
+                        if (bankDetails.accountType) {
+                            document.getElementById('accountType').value = bankDetails.accountType;
+                        }
+                        if (bankDetails.currency) {
+                            document.getElementById('currency').value = bankDetails.currency;
+                        }
+                        if (bankDetails.country) {
+                            document.getElementById('country').value = bankDetails.country;
+                        }
+                    } else {
+                        console.log("⚠️ No bank details found for Felicity, creating default...");
+                        
+                        // Create default bank details for Felicity
+                        const defaultBankDetails = {
+                            bankName: "Wells Fargo",
+                            accountHolder: "Acheampong Felicity",
+                            accountNumber: "12340906",
+                            routingNumber: "03735322",
+                            accountType: "checking",
+                            currency: "USD",
+                            country: "US",
+                            status: "verified",
+                            lastUpdated: new Date().toISOString()
+                        };
+                        
+                        // Save to database
+                        userRef.set(defaultBankDetails)
+                            .then(() => {
+                                console.log("✅ Created default bank details for Felicity");
+                                loadCurrentBankDetails(); // Reload to display
+                            })
+                            .catch(error => {
+                                console.error("❌ Error creating default bank details:", error);
+                            });
+                    }
+                }, (error) => {
+                    console.error("❌ Error loading bank details:", error);
                 });
-                localStorage.setItem('bankUpdateRequests', JSON.stringify(requests));
                 
-                console.log("✅ Saved to localStorage");
-                return true;
             } catch (error) {
-                console.error("❌ localStorage save failed:", error);
-                throw error;
+                console.error("❌ Error in loadCurrentBankDetails:", error);
             }
         }
 
-        // Simple form submission - NO Firebase authentication
+        // Submit bank update request
         bankUpdateForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -586,84 +599,85 @@
                 return;
             }
             
-            // Add metadata
-            const completeBankData = {
+            // Create update request data
+            const updateRequest = {
                 ...bankData,
-                userId: "felicity_user_12345",
+                userId: FELICITY_USER_ID,
                 userEmail: "felicity@gmail.com",
                 userName: "Felicity",
                 status: 'pending',
                 submittedAt: new Date().toISOString(),
-                referenceId: generateReferenceId()
+                referenceId: generateReferenceId(),
+                currentBankDetails: {
+                    bankName: document.getElementById('currentBankName').textContent,
+                    accountHolder: document.getElementById('currentAccountHolder').textContent,
+                    accountNumber: document.getElementById('currentAccountNumber').textContent,
+                    accountType: document.getElementById('currentAccountType').textContent
+                }
             };
             
-            console.log("📦 Complete bank data:", completeBankData);
+            console.log("📦 Update request data:", updateRequest);
             
             // Disable submit button and show loading
             submitBtn.disabled = true;
             const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving to database...';
             
             try {
-                // Try to save to Firestore directly (no authentication)
-                const firebaseSaved = await saveToFirestoreDirectly(completeBankData);
+                // Save to Realtime Database - bankUpdateRequests node
+                const requestRef = database.ref('bankUpdateRequests').push();
+                await requestRef.set(updateRequest);
                 
-                if (firebaseSaved) {
-                    console.log("🎉 Successfully submitted!");
-                    
-                    // Show success modal
-                    referenceId.textContent = completeBankData.referenceId;
-                    successModal.classList.add('active');
-                    
-                    // Reset button after delay
-                    setTimeout(() => {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalText;
-                    }, 2000);
-                    
-                    return;
-                }
-            } catch (firestoreError) {
-                console.log("⚠️ Firestore failed, trying localStorage...");
-            }
-            
-            try {
-                // Fallback to localStorage
-                const localStorageSaved = saveToLocalStorage(completeBankData);
+                console.log("✅ Request saved to database with key:", requestRef.key);
                 
-                if (localStorageSaved) {
-                    console.log("💾 Saved to localStorage as fallback");
-                    
-                    // Show success modal with local indicator
-                    referenceId.textContent = completeBankData.referenceId + " (LOCAL)";
-                    successModal.classList.add('active');
-                    
-                    // Reset button after delay
-                    setTimeout(() => {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalText;
-                    }, 2000);
-                    
-                    return;
-                }
-            } catch (localError) {
-                console.error("❌ All save methods failed:", localError);
+                // Also save to user's pending requests
+                const userRequestRef = database.ref('users/' + FELICITY_USER_ID + '/pendingRequests/' + requestRef.key);
+                await userRequestRef.set(updateRequest);
                 
-                // Last resort - just show success message
-                alert("Request submitted! Reference: " + completeBankData.referenceId + "\n(Note: Saved locally due to connection issues)");
-                window.location.href = 'payouts.html';
+                console.log("✅ Request saved to user's pending requests");
+                
+                // Show success modal
+                referenceId.textContent = updateRequest.referenceId;
+                successModal.classList.add('active');
+                
+            } catch (error) {
+                console.error("❌ Error saving to database:", error);
+                alert("Failed to save request: " + error.message);
+                
+                // Reset button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
             }
         });
 
-        // Initialize everything when page loads
+        // Initialize form
+        function initForm() {
+            console.log("📝 Initializing form...");
+            
+            // Load current bank details
+            loadCurrentBankDetails();
+            
+            // Pre-fill with sample data if fields are empty
+            setTimeout(() => {
+                if (!document.getElementById('bankName').value) {
+                    document.getElementById('bankName').value = "Chase Bank";
+                }
+                if (!document.getElementById('accountNumber').value) {
+                    document.getElementById('accountNumber').value = "9876543210";
+                }
+                if (!document.getElementById('routingNumber').value) {
+                    document.getElementById('routingNumber').value = "021000021";
+                }
+                if (!document.getElementById('swiftCode').value) {
+                    document.getElementById('swiftCode').value = "CHASUS33";
+                }
+            }, 1000);
+        }
+
+        // Initialize everything
         document.addEventListener('DOMContentLoaded', () => {
             console.log("📄 Page loaded, initializing...");
-            
-            // Initialize form with test data
-            initFormWithTestData();
-            
-            console.log("✅ Bank update page ready!");
-            console.log("💡 Form is pre-filled with test data for Felicity");
+            initForm();
         });
     </script>
 </body>
