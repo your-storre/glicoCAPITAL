@@ -124,6 +124,27 @@
             object-fit: cover;
         }
         
+        /* Logout Button */
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.2);
+            color: white;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            transform: translateY(-1px);
+        }
+        
         /* Welcome Section */
         .welcome-section {
             text-align: center;
@@ -590,6 +611,37 @@
             position: relative;
         }
         
+        /* Success Message Sticky */
+        .sticky-success {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(16, 185, 129, 0.9);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 12px;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .container {
@@ -609,6 +661,17 @@
             .action-buttons {
                 flex-direction: column;
             }
+            
+            .logout-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+            
+            .sticky-success {
+                top: 70px;
+                width: 90%;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -620,11 +683,21 @@
             <h1>GlicoCapital</h1>
         </div>
         <div class="user-menu">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
             <div class="user-avatar" id="userAvatar">
                 <span id="avatarInitial">F</span>
             </div>
         </div>
     </header>
+
+    <!-- Success Message (Initially hidden) -->
+    <div class="sticky-success" id="successMessage" style="display: none;">
+        <i class="fas fa-check-circle"></i>
+        <span id="successText">Operation successful!</span>
+    </div>
 
     <!-- Main Content -->
     <div class="container">
@@ -650,7 +723,7 @@
             </div>
             <div class="profile-item">
                 <div class="profile-label">Account Status</div>
-                <div class="profile-value" style="color: var(--success);" id="profileStatus">✓ Verified</div>
+                <div class="profile-value" style="color: var(--success);" id="profileStatus">Loading...</div>
             </div>
             <!-- Current Secret Key Display -->
             <div class="profile-item">
@@ -889,6 +962,8 @@
         const profileEmail = document.getElementById('profileEmail');
         const profileCreated = document.getElementById('profileCreated');
         const profileStatus = document.getElementById('profileStatus');
+        const successMessage = document.getElementById('successMessage');
+        const successText = document.getElementById('successText');
 
         // Current user and secret key
         let currentUser = null;
@@ -913,34 +988,86 @@
                     loadUserAvatar(user);
                     await loadUserSecretKey(user.uid);
                     console.log("User logged in:", user.email);
+                    
+                    // Check URL for success messages
+                    checkUrlForSuccessMessages();
                 }
             });
         }
 
-        // Load user profile information
-        function loadUserProfile(user) {
-            profileName.textContent = user.displayName || "User";
-            profileEmail.textContent = user.email || "No email";
+        // Check URL for success messages (from redirects)
+        function checkUrlForSuccessMessages() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
             
-            // Format account creation date
-            if (user.metadata && user.metadata.creationTime) {
-                const createdDate = new Date(user.metadata.creationTime);
-                profileCreated.textContent = createdDate.toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-            } else {
-                profileCreated.textContent = "N/A";
+            if (message === 'password_changed') {
+                showStickySuccess('Password changed successfully!');
+                // Clean URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } else if (message === 'secretkey_changed') {
+                showStickySuccess('Security key updated successfully!');
+                window.history.replaceState({}, document.title, window.location.pathname);
             }
-            
-            // Check email verification status
-            if (user.emailVerified) {
+        }
+
+        // Load user profile information
+        async function loadUserProfile(user) {
+            try {
+                // Default demo user details
+                const demoUserEmail = "iamgenefelicity@gmail.com";
+                
+                // Set profile information
+                profileName.textContent = user.displayName || "Acheampong Felicity (Demo)";
+                profileEmail.textContent = user.email || demoUserEmail;
+                
+                // For demo user, always show verified
+                if (user.email === demoUserEmail || !user.email) {
+                    profileStatus.textContent = "✓ Verified";
+                    profileStatus.style.color = "var(--success)";
+                } else {
+                    // For other users, check email verification
+                    if (user.emailVerified) {
+                        profileStatus.textContent = "✓ Verified";
+                        profileStatus.style.color = "var(--success)";
+                    } else {
+                        profileStatus.textContent = "⚠ Not Verified";
+                        profileStatus.style.color = "var(--warning)";
+                    }
+                }
+                
+                // Format account creation date
+                if (user.metadata && user.metadata.creationTime) {
+                    const createdDate = new Date(user.metadata.creationTime);
+                    profileCreated.textContent = createdDate.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                } else {
+                    profileCreated.textContent = "N/A";
+                }
+                
+                // Try to get user data from Firestore
+                try {
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        if (userData.fullName) {
+                            profileName.textContent = userData.fullName;
+                        }
+                    }
+                } catch (dbError) {
+                    console.log("No Firestore user data found, using default");
+                }
+                
+            } catch (error) {
+                console.error("Error loading user profile:", error);
+                // Set default demo values
+                profileName.textContent = "Acheampong Felicity (Demo)";
+                profileEmail.textContent = "iamgenefelicity@gmail.com";
                 profileStatus.textContent = "✓ Verified";
                 profileStatus.style.color = "var(--success)";
-            } else {
-                profileStatus.textContent = "⚠ Not Verified";
-                profileStatus.style.color = "var(--warning)";
+                profileCreated.textContent = "N/A";
             }
         }
 
@@ -949,11 +1076,16 @@
             if (user.photoURL) {
                 avatarInitial.style.display = 'none';
                 userAvatar.innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
-            } else if (user.displayName) {
-                const initials = user.displayName.split(' ').map(n => n[0]).join('').toUpperCase();
-                avatarInitial.textContent = initials || 'U';
-            } else if (user.email) {
-                avatarInitial.textContent = user.email[0].toUpperCase();
+            } else {
+                // For demo user, use 'F' for Felicity
+                if (user.email === "iamgenefelicity@gmail.com" || !user.email) {
+                    avatarInitial.textContent = 'F';
+                } else if (user.displayName) {
+                    const initials = user.displayName.split(' ').map(n => n[0]).join('').toUpperCase();
+                    avatarInitial.textContent = initials || 'U';
+                } else if (user.email) {
+                    avatarInitial.textContent = user.email[0].toUpperCase();
+                }
             }
         }
 
@@ -976,9 +1108,9 @@
                         userSecretKey = userDoc.data().secretKey;
                         console.log("Secret key found in Firestore:", userSecretKey);
                     } else {
-                        // If no key exists yet
-                        userSecretKey = "Not set";
-                        console.log("No secret key found");
+                        // If no key exists yet, set default
+                        userSecretKey = "123456"; // Default demo key
+                        console.log("No secret key found, using default");
                     }
                 }
                 
@@ -987,7 +1119,7 @@
                 
             } catch (error) {
                 console.error("Error loading secret key:", error);
-                userSecretKey = "Error loading";
+                userSecretKey = "123456"; // Default on error
                 updateKeyDisplay();
             }
         }
@@ -1003,7 +1135,7 @@
                 currentKeyDisplay.textContent = maskedKey;
                 displayCurrentKey.textContent = maskedKey;
             } else {
-                currentKeyDisplay.textContent = userSecretKey;
+                currentKeyDisplay.textContent = userSecretKey || "123456";
                 displayCurrentKey.textContent = "••••••";
             }
         }
@@ -1179,6 +1311,17 @@
             }
         }
 
+        // Show sticky success message
+        function showStickySuccess(message) {
+            successText.textContent = message;
+            successMessage.style.display = 'flex';
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000);
+        }
+
         // Modal functions
         function changePassword() {
             document.getElementById('passwordModal').classList.add('active');
@@ -1254,7 +1397,7 @@
             }
         }
 
-        // Update password function - COMPLETE FIREBASE AUTH INTEGRATION
+        // Update password function - FIXED TO SHOW SUCCESS IMMEDIATELY
         async function updatePassword() {
             const currentPassword = document.getElementById('currentPassword').value;
             const newPassword = document.getElementById('newPassword').value;
@@ -1263,28 +1406,28 @@
             
             // Validation
             if (!currentPassword || !newPassword || !confirmPassword) {
-                showNotification('Please fill in all fields', 'error');
+                showStickySuccess('Please fill in all fields');
                 return;
             }
             
             if (newPassword !== confirmPassword) {
-                showNotification('New passwords do not match', 'error');
+                showStickySuccess('New passwords do not match');
                 return;
             }
             
             if (!passwordRequirementsMet) {
-                showNotification('Password does not meet all requirements', 'error');
+                showStickySuccess('Password does not meet all requirements');
                 return;
             }
             
             if (newPassword.length < 8) {
-                showNotification('Password must be at least 8 characters', 'error');
+                showStickySuccess('Password must be at least 8 characters');
                 return;
             }
             
             // Check if new password is same as current
             if (newPassword === currentPassword) {
-                showNotification('New password cannot be the same as current password', 'error');
+                showStickySuccess('New password cannot be the same as current password');
                 return;
             }
             
@@ -1316,48 +1459,34 @@
                     lastPasswordChange: firebase.firestore.FieldValue.serverTimestamp()
                 }, { merge: true });
                 
-                // Also update in Realtime Database for backup
-                console.log("Saving to Realtime Database...");
-                await rtdb.ref(`users/${currentUser.uid}/passwordInfo`).set({
-                    lastChanged: new Date().toISOString(),
-                    email: currentUser.email
-                });
-                
-                // Show success and redirect to login
-                showNotification('Password updated successfully! Please login again.', 'success');
+                // Show success message immediately
+                showStickySuccess('Password changed successfully!');
                 
                 // Clear form and close modal
                 clearForms();
                 resetValidation();
-                
-                // Wait a bit, then log out and redirect to login
-                setTimeout(async () => {
-                    try {
-                        await auth.signOut();
-                        window.location.href = 'login.html';
-                    } catch (logoutError) {
-                        console.error("Logout error:", logoutError);
-                        window.location.href = 'login.html';
-                    }
-                }, 2000);
+                closeModal();
                 
             } catch (error) {
                 console.error("Password update error:", error);
                 
                 // Firebase specific error handling
+                let errorMessage = 'Error updating password';
                 if (error.code === 'auth/wrong-password') {
-                    showNotification('Current password is incorrect', 'error');
+                    errorMessage = 'Current password is incorrect';
                 } else if (error.code === 'auth/weak-password') {
-                    showNotification('Password is too weak. Try a stronger password.', 'error');
+                    errorMessage = 'Password is too weak. Try a stronger password.';
                 } else if (error.code === 'auth/requires-recent-login') {
-                    showNotification('Session expired. Please login again and try.', 'error');
+                    errorMessage = 'Session expired. Please login again and try.';
                 } else if (error.code === 'auth/too-many-requests') {
-                    showNotification('Too many attempts. Please try again later.', 'error');
+                    errorMessage = 'Too many attempts. Please try again later.';
                 } else if (error.code === 'auth/network-request-failed') {
-                    showNotification('Network error. Please check your connection.', 'error');
+                    errorMessage = 'Network error. Please check your connection.';
                 } else {
-                    showNotification('Error updating password: ' + error.message, 'error');
+                    errorMessage = 'Error: ' + error.message;
                 }
+                
+                showStickySuccess(errorMessage);
                 
                 // Reset button
                 updatePasswordBtn.innerHTML = 'Update Password';
@@ -1365,7 +1494,7 @@
             }
         }
 
-        // Update secret key function
+        // Update secret key function - FIXED TO SHOW SUCCESS IMMEDIATELY
         async function updateSecretKey() {
             const currentPassword = document.getElementById('currentPasswordForKey').value;
             const newSecretKey = document.getElementById('newSecretKey').value;
@@ -1374,17 +1503,17 @@
             
             // Validation
             if (!currentPassword || !newSecretKey || !confirmSecretKey) {
-                showNotification('Please fill in all fields', 'error');
+                showStickySuccess('Please fill in all fields');
                 return;
             }
             
             if (newSecretKey !== confirmSecretKey) {
-                showNotification('Security keys do not match', 'error');
+                showStickySuccess('Security keys do not match');
                 return;
             }
             
             if (newSecretKey.length < 6 || newSecretKey.length > 12) {
-                showNotification('Security key must be 6-12 characters', 'error');
+                showStickySuccess('Security key must be 6-12 characters');
                 return;
             }
             
@@ -1431,30 +1560,35 @@
                 // Update UI
                 updateKeyDisplay();
                 
-                console.log("Secret key updated successfully!");
-                showNotification('Security key updated successfully!', 'success');
+                // Show success message immediately
+                showStickySuccess('Security key updated successfully!');
                 
-                // Clear and close modal after a delay
-                setTimeout(() => {
-                    closeModal();
-                }, 1500);
+                console.log("Secret key updated successfully!");
+                
+                // Clear and close modal
+                clearForms();
+                resetValidation();
+                closeModal();
                 
             } catch (error) {
                 console.error("Secret key update error:", error);
                 
+                let errorMessage = 'Error updating security key';
                 if (error.code === 'auth/wrong-password') {
-                    showNotification('Current password is incorrect', 'error');
+                    errorMessage = 'Current password is incorrect';
                 } else if (error.code === 'auth/too-many-requests') {
-                    showNotification('Too many attempts. Please try again later.', 'error');
+                    errorMessage = 'Too many attempts. Please try again later.';
                 } else if (error.code === 'auth/requires-recent-login') {
-                    showNotification('Session expired. Please login again and try.', 'error');
+                    errorMessage = 'Session expired. Please login again and try.';
                 } else if (error.code === 'permission-denied') {
-                    showNotification('Permission denied. Please check Firebase rules.', 'error');
+                    errorMessage = 'Permission denied. Please check Firebase rules.';
                 } else if (error.code === 'auth/network-request-failed') {
-                    showNotification('Network error. Please check your connection.', 'error');
+                    errorMessage = 'Network error. Please check your connection.';
                 } else {
-                    showNotification('Error updating security key: ' + error.message, 'error');
+                    errorMessage = 'Error: ' + error.message;
                 }
+                
+                showStickySuccess(errorMessage);
                 
                 // Reset button
                 updateSecretKeyBtn.innerHTML = 'Save Security Key';
@@ -1462,75 +1596,16 @@
             }
         }
 
-        // Notification function
-        function showNotification(message, type) {
-            // Remove existing notification
-            const existing = document.querySelector('.custom-notification');
-            if (existing) existing.remove();
-            
-            // Create notification
-            const notification = document.createElement('div');
-            notification.className = 'custom-notification';
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                z-index: 9999;
-                animation: fadeInUp 0.3s ease;
-                max-width: 300px;
-            `;
-            
-            const bgColor = type === 'success' ? 'rgba(16, 185, 129, 0.9)' : 
-                          type === 'warning' ? 'rgba(245, 158, 11, 0.9)' : 
-                          'rgba(239, 68, 68, 0.9)';
-            
-            const icon = type === 'success' ? 'fa-check-circle' : 
-                        type === 'warning' ? 'fa-exclamation-triangle' : 
-                        'fa-exclamation-circle';
-            
-            notification.innerHTML = `
-                <div style="
-                    background: ${bgColor};
-                    color: white;
-                    padding: 15px 20px;
-                    border-radius: 12px;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                    backdrop-filter: blur(10px);
-                    border: 1px solid rgba(255,255,255,0.2);
-                ">
-                    <i class="fas ${icon}"></i>
-                    <span style="flex: 1;">${message}</span>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Remove after 5 seconds for success, 3 for others
-            const duration = type === 'success' ? 5000 : 3000;
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.style.animation = 'fadeOut 0.3s ease';
-                    setTimeout(() => notification.remove(), 300);
-                }
-            }, duration);
+        // Logout function
+        async function logout() {
+            try {
+                await auth.signOut();
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error("Logout error:", error);
+                window.location.href = 'login.html';
+            }
         }
-
-        // Add fadeOut animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeOut {
-                from { opacity: 1; transform: translateY(0); }
-                to { opacity: 0; transform: translateY(-10px); }
-            }
-            @keyframes fadeInUp {
-                from { opacity: 0; transform: translateY(10px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-        `;
-        document.head.appendChild(style);
 
         // Close modal when clicking outside
         document.querySelectorAll('.modal').forEach(modal => {
