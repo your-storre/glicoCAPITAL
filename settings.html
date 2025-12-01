@@ -623,7 +623,7 @@
             border-radius: 12px;
             z-index: 1000;
             box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            display: flex;
+            display: none;
             align-items: center;
             gap: 10px;
             backdrop-filter: blur(10px);
@@ -694,7 +694,7 @@
     </header>
 
     <!-- Success Message (Initially hidden) -->
-    <div class="sticky-success" id="successMessage" style="display: none;">
+    <div class="sticky-success" id="successMessage">
         <i class="fas fa-check-circle"></i>
         <span id="successText">Operation successful!</span>
     </div>
@@ -1010,22 +1010,46 @@
             }
         }
 
+        // Show sticky success message - FIXED VERSION
+        function showStickySuccess(message) {
+            console.log("Showing success message:", message);
+            successText.textContent = message;
+            successMessage.style.display = 'flex';
+            
+            // Ensure animation restarts
+            successMessage.style.animation = 'none';
+            setTimeout(() => {
+                successMessage.style.animation = 'slideDown 0.3s ease';
+            }, 10);
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000);
+        }
+
         // Load user profile information
         async function loadUserProfile(user) {
             try {
-                // Default demo user details
-                const demoUserEmail = "iamgenefelicity@gmail.com";
+                // Default Felicity user details
+                const felicityEmail = "iamgenefelicity@gmail.com";
                 
                 // Set profile information
-                profileName.textContent = user.displayName || "Acheampong Felicity";
-                profileEmail.textContent = user.email || demoUserEmail;
-                
-                // For demo user, always show verified
-                if (user.email === demoUserEmail || !user.email) {
+                if (user.email === felicityEmail) {
+                    // For Felicity user
+                    profileName.textContent = "Acheampong Felicity";
+                    profileEmail.textContent = felicityEmail;
                     profileStatus.textContent = "✓ Verified";
                     profileStatus.style.color = "var(--success)";
+                    
+                    // Set account creation date to April 2025
+                    profileCreated.textContent = "April 15, 2025";
                 } else {
-                    // For other users, check email verification
+                    // For other users
+                    profileName.textContent = user.displayName || "User";
+                    profileEmail.textContent = user.email || "No email";
+                    
+                    // Check email verification status
                     if (user.emailVerified) {
                         profileStatus.textContent = "✓ Verified";
                         profileStatus.style.color = "var(--success)";
@@ -1033,18 +1057,18 @@
                         profileStatus.textContent = "⚠ Not Verified";
                         profileStatus.style.color = "var(--warning)";
                     }
-                }
-                
-                // Format account creation date
-                if (user.metadata && user.metadata.creationTime) {
-                    const createdDate = new Date(user.metadata.creationTime);
-                    profileCreated.textContent = createdDate.toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                } else {
-                    profileCreated.textContent = "N/A";
+                    
+                    // Format account creation date from Firebase
+                    if (user.metadata && user.metadata.creationTime) {
+                        const createdDate = new Date(user.metadata.creationTime);
+                        profileCreated.textContent = createdDate.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                    } else {
+                        profileCreated.textContent = "N/A";
+                    }
                 }
                 
                 // Try to get user data from Firestore
@@ -1055,6 +1079,13 @@
                         if (userData.fullName) {
                             profileName.textContent = userData.fullName;
                         }
+                        if (userData.accountCreated) {
+                            profileCreated.textContent = new Date(userData.accountCreated).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
+                        }
                     }
                 } catch (dbError) {
                     console.log("No Firestore user data found, using default");
@@ -1062,12 +1093,12 @@
                 
             } catch (error) {
                 console.error("Error loading user profile:", error);
-                // Set default demo values
+                // Set default Felicity values
                 profileName.textContent = "Acheampong Felicity";
                 profileEmail.textContent = "iamgenefelicity@gmail.com";
                 profileStatus.textContent = "✓ Verified";
                 profileStatus.style.color = "var(--success)";
-                profileCreated.textContent = "N/A";
+                profileCreated.textContent = "April 15, 2025";
             }
         }
 
@@ -1077,8 +1108,8 @@
                 avatarInitial.style.display = 'none';
                 userAvatar.innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
             } else {
-                // For demo user, use 'F' for Felicity
-                if (user.email === "iamgenefelicity@gmail.com" || !user.email) {
+                // For Felicity user, use 'F'
+                if (user.email === "iamgenefelicity@gmail.com") {
                     avatarInitial.textContent = 'F';
                 } else if (user.displayName) {
                     const initials = user.displayName.split(' ').map(n => n[0]).join('').toUpperCase();
@@ -1109,7 +1140,7 @@
                         console.log("Secret key found in Firestore:", userSecretKey);
                     } else {
                         // If no key exists yet, set default
-                        userSecretKey = "123456"; // Default demo key
+                        userSecretKey = "123456"; // Default key
                         console.log("No secret key found, using default");
                     }
                 }
@@ -1126,7 +1157,7 @@
 
         // Update key display in UI
         function updateKeyDisplay() {
-            if (userSecretKey && userSecretKey !== "Not set") {
+            if (userSecretKey) {
                 // Show first 2 and last 2 characters, hide the rest
                 const keyLength = userSecretKey.length;
                 const maskedKey = userSecretKey.substring(0, 2) + 
@@ -1135,7 +1166,7 @@
                 currentKeyDisplay.textContent = maskedKey;
                 displayCurrentKey.textContent = maskedKey;
             } else {
-                currentKeyDisplay.textContent = userSecretKey || "123456";
+                currentKeyDisplay.textContent = "123456";
                 displayCurrentKey.textContent = "••••••";
             }
         }
@@ -1311,17 +1342,6 @@
             }
         }
 
-        // Show sticky success message
-        function showStickySuccess(message) {
-            successText.textContent = message;
-            successMessage.style.display = 'flex';
-            
-            // Hide after 5 seconds
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 5000);
-        }
-
         // Modal functions
         function changePassword() {
             document.getElementById('passwordModal').classList.add('active');
@@ -1397,7 +1417,7 @@
             }
         }
 
-        // Update password function - FIXED TO SHOW SUCCESS IMMEDIATELY
+        // Update password function - FIXED SUCCESS MESSAGE
         async function updatePassword() {
             const currentPassword = document.getElementById('currentPassword').value;
             const newPassword = document.getElementById('newPassword').value;
@@ -1467,6 +1487,12 @@
                 resetValidation();
                 closeModal();
                 
+                // Reset button
+                setTimeout(() => {
+                    updatePasswordBtn.innerHTML = 'Update Password';
+                    updatePasswordBtn.disabled = false;
+                }, 500);
+                
             } catch (error) {
                 console.error("Password update error:", error);
                 
@@ -1494,7 +1520,7 @@
             }
         }
 
-        // Update secret key function - FIXED TO SHOW SUCCESS IMMEDIATELY
+        // Update secret key function - FIXED SUCCESS MESSAGE
         async function updateSecretKey() {
             const currentPassword = document.getElementById('currentPasswordForKey').value;
             const newSecretKey = document.getElementById('newSecretKey').value;
@@ -1557,7 +1583,7 @@
                 // Update local state
                 userSecretKey = newSecretKey;
                 
-                // Update UI
+                // Update UI immediately
                 updateKeyDisplay();
                 
                 // Show success message immediately
@@ -1569,6 +1595,12 @@
                 clearForms();
                 resetValidation();
                 closeModal();
+                
+                // Reset button
+                setTimeout(() => {
+                    updateSecretKeyBtn.innerHTML = 'Save Security Key';
+                    updateSecretKeyBtn.disabled = false;
+                }, 500);
                 
             } catch (error) {
                 console.error("Secret key update error:", error);
@@ -1618,8 +1650,10 @@
 
         // Prevent form submission on enter
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
-                e.preventDefault();
+            if (e.target.tagName === 'INPUT' && !e.target.type.includes('button')) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                }
             }
         });
 
