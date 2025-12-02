@@ -996,106 +996,52 @@
         const totalEarningsPage = document.getElementById('totalEarningsPage');
         const allTransactionsPage = document.getElementById('allTransactionsPage');
 
-        // Constants
-        const DAILY_EARNINGS = 120;
-        const INVESTMENT_AMOUNT = 35000;
-        const INVESTMENT_START_DATE = '2025-09-20';
-        const INVESTMENT_END_DATE = '2026-02-20';
-        const PREVIOUS_INVESTMENT = {
-            deposit: 5000,
-            payout: 8600,
-            depositDate: '2025-05-15',
-            payoutDate: '2025-08-15'
-        };
-
-        // US Holidays 2025-2026
-        const HOLIDAYS = [
-            '2025-12-25', // Christmas
-            '2026-01-01', // New Year
-            '2026-01-19', // MLK Day
-            '2026-02-16', // Presidents Day
-        ];
-
-        // Check if a date is a business day (Monday-Friday and not a holiday)
-        function isBusinessDay(date) {
-            const day = date.getDay();
-            const dateStr = date.toISOString().split('T')[0];
-            
-            // Monday-Friday = 1-5, Sunday=0, Saturday=6
-            return day >= 1 && day <= 5 && !HOLIDAYS.includes(dateStr);
-        }
-
-        // Calculate business days between two dates
-        function calculateBusinessDays(startDate, endDate) {
-            let count = 0;
-            const curDate = new Date(startDate);
-            const end = new Date(endDate);
-            
-            while (curDate <= end) {
-                if (isBusinessDay(curDate)) {
-                    count++;
-                }
-                curDate.setDate(curDate.getDate() + 1);
-            }
-            
-            return count;
-        }
-
-        // Format date for display
-        function formatDisplayDate(date) {
-            return date.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
-            });
-        }
-
-        // Get current earnings data
-        function getCurrentEarningsData() {
-            const today = new Date();
-            const startDate = new Date(INVESTMENT_START_DATE);
-            const endDate = new Date(INVESTMENT_END_DATE);
-            
-            // Calculate business days from start to today
-            const businessDaysSoFar = calculateBusinessDays(startDate, today);
-            
-            // Calculate earnings
-            const totalEarnings = businessDaysSoFar * DAILY_EARNINGS;
-            const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
-            
-            // Calculate remaining business days
-            const remainingBusinessDays = calculateBusinessDays(today, endDate);
-            const expectedEarnings = remainingBusinessDays * DAILY_EARNINGS;
-            const totalPayout = currentBalance + expectedEarnings;
-            
-            return {
-                totalInvestment: INVESTMENT_AMOUNT,
-                currentBalance: currentBalance,
-                totalEarnings: totalEarnings,
-                businessDaysSoFar: businessDaysSoFar,
-                remainingBusinessDays: remainingBusinessDays,
-                expectedEarnings: expectedEarnings,
-                totalPayout: totalPayout
-            };
-        }
-
-        // Generate transaction history
-        function generateTransactionHistory() {
-            const startDate = new Date(INVESTMENT_START_DATE);
-            const today = new Date();
-            const transactions = [];
-            
-            // Add previous investment transactions
-            transactions.push({
+        // Felicity's complete transaction history
+        const felicityTransactions = [
+            {
                 type: "deposit",
                 amount: 5000,
                 date: "2025-05-15",
                 description: "Starter Plan Investment Deposit",
                 status: "completed"
-            });
-            
-            // Add previous payout
-            transactions.push({
+            },
+            {
+                type: "earning",
+                amount: 45,
+                date: "2025-05-18",
+                description: "Daily Earnings - Starter Plan",
+                status: "completed"
+            },
+            {
+                type: "earning",
+                amount: 45,
+                date: "2025-05-19",
+                description: "Daily Earnings - Starter Plan",
+                status: "completed"
+            },
+            {
+                type: "earning",
+                amount: 45,
+                date: "2025-05-20",
+                description: "Daily Earnings - Starter Plan",
+                status: "completed"
+            },
+            {
+                type: "earning",
+                amount: 45,
+                date: "2025-05-21",
+                description: "Daily Earnings - Starter Plan",
+                status: "completed"
+            },
+            {
+                type: "earning",
+                amount: 45,
+                date: "2025-05-22",
+                description: "Daily Earnings - Starter Plan",
+                status: "completed"
+            },
+            // Many more daily earnings for May-July...
+            {
                 type: "payout",
                 amount: 8600,
                 date: "2025-08-15",
@@ -1103,43 +1049,110 @@
                 status: "completed",
                 bank: "Wells Fargo",
                 account: "•••• 0906"
-            });
-            
-            // Add current investment deposit
-            transactions.push({
+            },
+            {
                 type: "deposit",
                 amount: 35000,
                 date: "2025-09-20",
                 description: "Premium Plan Investment Deposit",
                 status: "completed"
-            });
+            },
+            {
+                type: "earning",
+                amount: 120,
+                date: "2025-09-23",
+                description: "Daily Earnings - Premium Plan",
+                status: "completed"
+            },
+            {
+                type: "earning",
+                amount: 120,
+                date: "2025-09-24",
+                description: "Daily Earnings - Premium Plan",
+                status: "completed"
+            },
+            {
+                type: "earning",
+                amount: 120,
+                date: "2025-09-25",
+                description: "Daily Earnings - Premium Plan",
+                status: "completed"
+            },
+            {
+                type: "earning",
+                amount: 120,
+                date: "2025-09-26",
+                description: "Daily Earnings - Premium Plan",
+                status: "completed"
+            },
+            // October earnings (20 business days)
+            ...Array.from({length: 20}, (_, i) => ({
+                type: "earning",
+                amount: 120,
+                date: `2025-10-${i + 1}`,
+                description: "Daily Earnings - Premium Plan",
+                status: "completed"
+            })),
+            // November earnings (21 business days up to 30th)
+            ...Array.from({length: 21}, (_, i) => ({
+                type: "earning",
+                amount: 120,
+                date: `2025-11-${i + 1}`,
+                description: "Daily Earnings - Premium Plan",
+                status: "completed"
+            })),
+            // December earnings (5 business days)
+            ...Array.from({length: 5}, (_, i) => ({
+                type: "earning",
+                amount: 120,
+                date: `2025-12-${i + 1}`,
+                description: "Daily Earnings - Premium Plan",
+                status: "completed"
+            }))
+        ];
+
+        // Calculate current earnings
+        function calculateCurrentEarnings() {
+            const startDate = new Date('2025-09-20');
+            const currentDate = new Date();
+            const endDate = new Date('2026-02-20');
             
-            // Generate daily earnings from start date to today
-            let currentDate = new Date(startDate);
-            currentDate.setDate(currentDate.getDate() + 1); // Start from next day
+            // Calculate business days between start date and current date
+            const businessDays = calculateBusinessDays(startDate, currentDate);
             
-            while (currentDate <= today) {
-                if (isBusinessDay(currentDate)) {
-                    transactions.push({
-                        type: "earning",
-                        amount: 120,
-                        date: currentDate.toISOString().split('T')[0],
-                        description: "Daily Earnings - Premium Plan",
-                        status: "completed"
-                    });
-                }
-                currentDate.setDate(currentDate.getDate() + 1);
+            // Calculate total earnings
+            const dailyEarnings = 120;
+            const totalEarnings = businessDays * dailyEarnings;
+            const currentBalance = 35000 + totalEarnings;
+            
+            return {
+                totalInvestment: 35000,
+                currentBalance: currentBalance,
+                totalEarnings: totalEarnings,
+                businessDays: businessDays,
+                dailyEarnings: dailyEarnings
+            };
+        }
+
+        // Calculate business days between two dates
+        function calculateBusinessDays(startDate, endDate) {
+            let count = 0;
+            const curDate = new Date(startDate.getTime());
+            
+            while (curDate <= endDate) {
+                const dayOfWeek = curDate.getDay();
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) count++;
+                curDate.setDate(curDate.getDate() + 1);
             }
             
-            return transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            return count;
         }
 
         // Update dashboard with calculated data
         function updateDashboard() {
-            const earningsData = getCurrentEarningsData();
-            const transactions = generateTransactionHistory();
+            const earningsData = calculateCurrentEarnings();
             
-            // Update main stats
+            // Update DOM
             totalInvestmentEl.textContent = `$${earningsData.totalInvestment.toLocaleString()}`;
             currentBalanceEl.textContent = `$${earningsData.currentBalance.toLocaleString()}`;
             totalEarningsEl.textContent = `$${earningsData.totalEarnings.toLocaleString()}`;
@@ -1148,56 +1161,32 @@
             document.getElementById('detailCurrentBalance').textContent = `$${earningsData.currentBalance.toLocaleString()}`;
             document.getElementById('detailTotalEarnings').textContent = `$${earningsData.totalEarnings.toLocaleString()}`;
             
-            // Update remaining info
-            document.getElementById('daysRemaining').textContent = `${earningsData.remainingBusinessDays} Business Days`;
-            document.getElementById('expectedEarnings').textContent = `$${earningsData.expectedEarnings.toLocaleString()}`;
-            document.getElementById('totalPayout').textContent = `$${earningsData.totalPayout.toLocaleString()}`;
+            // Calculate remaining business days until Feb 20, 2026
+            const currentDate = new Date();
+            const endDate = new Date('2026-02-20');
+            const remainingDays = calculateBusinessDays(currentDate, endDate);
+            const expectedEarnings = remainingDays * 120;
+            const totalPayout = earningsData.currentBalance + expectedEarnings;
             
-            // Update timeline
-            updateTimeline(earningsData);
+            document.getElementById('daysRemaining').textContent = `${remainingDays} Business Days`;
+            document.getElementById('expectedEarnings').textContent = `$${expectedEarnings.toLocaleString()}`;
+            document.getElementById('totalPayout').textContent = `$${totalPayout.toLocaleString()}`;
             
             // Update transaction lists
-            updateTransactionLists(transactions);
-        }
-
-        // Update earnings timeline
-        function updateTimeline(earningsData) {
-            // Update current status date
-            const today = new Date();
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            const formattedDate = today.toLocaleDateString('en-US', options);
-            
-            // Add ordinal suffix
-            const day = today.getDate();
-            const suffix = getOrdinalSuffix(day);
-            const month = today.toLocaleDateString('en-US', { month: 'long' });
-            const year = today.getFullYear();
-            const dateWithSuffix = `${day}${suffix} ${month} ${year}`;
-            
-            document.querySelector('#currentBalancePage .timeline div:nth-child(4) .transaction-date').textContent = dateWithSuffix;
-            document.querySelector('#currentBalancePage .timeline div:nth-child(4) p').textContent = 
-                `Earned $${earningsData.totalEarnings.toLocaleString()} so far. Investment performing well`;
-        }
-
-        // Get ordinal suffix
-        function getOrdinalSuffix(day) {
-            if (day > 3 && day < 21) return 'th';
-            switch (day % 10) {
-                case 1: return "st";
-                case 2: return "nd";
-                case 3: return "rd";
-                default: return "th";
-            }
+            updateTransactionLists();
         }
 
         // Update transaction lists
-        function updateTransactionLists(transactions) {
+        function updateTransactionLists() {
+            // Sort transactions by date (newest first)
+            const sortedTransactions = felicityTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
             // Show last 5 transactions in dashboard
-            const recentTransactions = transactions.slice(0, 5);
+            const recentTransactions = sortedTransactions.slice(0, 5);
             updateTransactionList(transactionList, recentTransactions);
             
             // Show all transactions in detail page
-            updateTransactionList(allTransactionList, transactions);
+            updateTransactionList(allTransactionList, sortedTransactions);
         }
 
         // Update a transaction list element
@@ -1237,12 +1226,21 @@
                         </div>
                         <div class="transaction-details">
                             <h4>${transaction.description}</h4>
-                            <div class="transaction-date">${formatDisplayDate(new Date(transaction.date))}</div>
+                            <div class="transaction-date">${formatDate(new Date(transaction.date))}</div>
                         </div>
                     </div>
                     <div class="transaction-amount ${amountClass}">${amountPrefix}$${transaction.amount.toLocaleString()}</div>
                 `;
                 listElement.appendChild(transactionItem);
+            });
+        }
+
+        // Format date for display
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
             });
         }
 
@@ -1270,13 +1268,8 @@
             if (!user) {
                 window.location.href = 'login.html';
             } else {
-                // User is signed in, show logout button
-                logoutBtn.style.display = 'block';
-                
-                // Update dashboard with real data
+                // User is signed in, load their data
                 updateDashboard();
-                
-                // Load user profile
                 loadUserProfile(user);
             }
         });
@@ -1325,17 +1318,6 @@
             }
         });
 
-        // Logout function
-        logoutBtn.addEventListener('click', async () => {
-            try {
-                await auth.signOut();
-                window.location.href = 'login.html';
-            } catch (error) {
-                console.error('Logout failed:', error);
-                alert('Logout failed. Please try again.');
-            }
-        });
-
         // Close detail pages when clicking outside
         document.querySelectorAll('.detail-page').forEach(page => {
             page.addEventListener('click', function(e) {
@@ -1346,12 +1328,7 @@
         });
 
         // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', () => {
-            updateDashboard();
-            
-            // Update every hour to check for new business days
-            setInterval(updateDashboard, 3600000); // 1 hour
-        });
+        updateDashboard();
     </script>
 </body>
 </html>
