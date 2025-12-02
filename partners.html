@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Partners | GlicoCapital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         /* Import all premium styles from dashboard */
         :root {
@@ -246,10 +247,10 @@
             font-weight: 500;
         }
         
-        /* Partners Grid */
+        /* Partners Grid - IMPROVED */
         .partners-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -258,7 +259,7 @@
             background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
             backdrop-filter: blur(15px);
             border-radius: 16px;
-            padding: 25px 20px;
+            padding: 25px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -268,16 +269,23 @@
             transition: all 0.4s ease;
             cursor: pointer;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
         
         .partner-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.02);
             background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+        }
+        
+        .partner-card:hover .partner-logo {
+            transform: scale(1.05);
         }
         
         .partner-logo {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             margin-bottom: 15px;
             border-radius: 12px;
             display: flex;
@@ -285,7 +293,9 @@
             justify-content: center;
             overflow: hidden;
             background: white;
-            padding: 10px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .partner-logo img {
@@ -314,6 +324,7 @@
             gap: 10px;
             margin-bottom: 30px;
             flex-wrap: wrap;
+            justify-content: center;
         }
         
         .category-filter {
@@ -520,6 +531,12 @@
                 gap: 15px;
             }
             
+            .partner-logo {
+                width: 80px;
+                height: 80px;
+                padding: 10px;
+            }
+            
             .benefits-grid {
                 grid-template-columns: 1fr;
             }
@@ -535,12 +552,82 @@
             }
             
             .partners-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            
+            .partner-logo {
+                width: 70px;
+                height: 70px;
+                padding: 8px;
             }
             
             .action-buttons {
                 flex-direction: column;
             }
+        }
+        
+        /* IT Company Logo Styles */
+        .logo-it-1 {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            font-weight: 700;
+        }
+        
+        .logo-it-2 {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: white;
+            font-weight: 700;
+        }
+        
+        .logo-it-3 {
+            background: linear-gradient(135deg, #1a2980, #26d0ce);
+            color: white;
+            font-weight: 700;
+        }
+        
+        .logo-it-4 {
+            background: linear-gradient(135deg, #ff512f, #dd2476);
+            color: white;
+            font-weight: 700;
+        }
+        
+        .logo-it-5 {
+            background: linear-gradient(135deg, #f46b45, #eea849);
+            color: white;
+            font-weight: 700;
+        }
+        
+        .logo-it-6 {
+            background: linear-gradient(135deg, #8e2de2, #4a00e0);
+            color: white;
+            font-weight: 700;
+        }
+        
+        /* Logo placeholder styles for different company types */
+        .bank-logo {
+            background: linear-gradient(135deg, #1a365d, #2d4a80);
+            color: white;
+        }
+        
+        .telecom-logo {
+            background: linear-gradient(135deg, #ff9900, #ff6600);
+            color: white;
+        }
+        
+        .insurance-logo {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            color: white;
+        }
+        
+        .payment-logo {
+            background: linear-gradient(135deg, #1c7ed6, #1864ab);
+            color: white;
+        }
+        
+        .consulting-logo {
+            background: linear-gradient(135deg, #5c7cfa, #3b5bdb);
+            color: white;
         }
     </style>
 </head>
@@ -604,6 +691,7 @@
             <div class="category-filter" onclick="filterPartners('banking')">Banking</div>
             <div class="category-filter" onclick="filterPartners('telecom')">Telecom</div>
             <div class="category-filter" onclick="filterPartners('insurance')">Insurance</div>
+            <div class="category-filter" onclick="filterPartners('it')">IT & Tech</div>
             <div class="category-filter" onclick="filterPartners('payment')">Payment</div>
             <div class="category-filter" onclick="filterPartners('consulting')">Consulting</div>
         </div>
@@ -612,36 +700,32 @@
         <div class="partners-grid" id="partnersGrid">
             <!-- Banking Partners -->
             <div class="partner-card animate-in" data-category="banking">
-                <div class="partner-logo">
-                    <!-- Add your logo image URL here -->
-                    <div style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">GCB BANK</div>
+                <div class="partner-logo bank-logo">
+                    <div style="font-weight: 700; font-size: 1.2rem; text-align: center;">GCB</div>
                 </div>
                 <div class="partner-name">GCB Bank</div>
                 <div class="partner-category">Banking</div>
             </div>
             
             <div class="partner-card animate-in" data-category="banking">
-                <div class="partner-logo">
-                    <!-- Add your logo image URL here -->
-                    <div style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">FIDELITY BANK</div>
+                <div class="partner-logo bank-logo">
+                    <div style="font-weight: 700; font-size: 1.1rem; text-align: center;">FIDELITY</div>
                 </div>
                 <div class="partner-name">Fidelity Bank</div>
                 <div class="partner-category">Banking</div>
             </div>
             
             <div class="partner-card animate-in" data-category="banking">
-                <div class="partner-logo">
-                    <!-- Add your logo image URL here -->
-                    <div style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">ECOBANK</div>
+                <div class="partner-logo bank-logo">
+                    <div style="font-weight: 700; font-size: 1.2rem; text-align: center;">ECOBANK</div>
                 </div>
                 <div class="partner-name">Ecobank</div>
                 <div class="partner-category">Banking</div>
             </div>
             
             <div class="partner-card animate-in" data-category="banking">
-                <div class="partner-logo">
-                    <!-- Add your logo image URL here -->
-                    <div style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">CALBANK</div>
+                <div class="partner-logo bank-logo">
+                    <div style="font-weight: 700; font-size: 1.2rem; text-align: center;">CAL</div>
                 </div>
                 <div class="partner-name">CalBank</div>
                 <div class="partner-category">Banking</div>
@@ -649,18 +733,16 @@
             
             <!-- Telecom Partners -->
             <div class="partner-card animate-in" data-category="telecom">
-                <div class="partner-logo">
-                    <!-- Add your logo image URL here -->
-                    <div style="color: var(--primary); font-weight: 700; font-size: 1rem;">MTN</div>
+                <div class="partner-logo telecom-logo">
+                    <div style="font-weight: 700; font-size: 1.4rem; text-align: center;">MTN</div>
                 </div>
                 <div class="partner-name">MTN Ghana</div>
                 <div class="partner-category">Telecom</div>
             </div>
             
             <div class="partner-card animate-in" data-category="telecom">
-                <div class="partner-logo">
-                    <!-- Add your logo image URL here -->
-                    <div style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">VODAFONE</div>
+                <div class="partner-logo telecom-logo">
+                    <div style="font-weight: 700; font-size: 1.1rem; text-align: center;">VODAFONE</div>
                 </div>
                 <div class="partner-name">Vodafone</div>
                 <div class="partner-category">Telecom</div>
@@ -668,37 +750,82 @@
             
             <!-- Insurance Partners -->
             <div class="partner-card animate-in" data-category="insurance">
-                <div class="partner-logo">
-                    <!-- Add your logo image URL here -->
-                    <div style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">SIC</div>
+                <div class="partner-logo insurance-logo">
+                    <div style="font-weight: 700; font-size: 1.3rem; text-align: center;">SIC</div>
                 </div>
                 <div class="partner-name">SIC Insurance</div>
                 <div class="partner-category">Insurance</div>
             </div>
             
             <div class="partner-card animate-in" data-category="insurance">
-                <div class="partner-logo">
-                    <!-- Add your logo image URL here -->
-                    <div style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">HOLLARD</div>
+                <div class="partner-logo insurance-logo">
+                    <div style="font-weight: 700; font-size: 1.1rem; text-align: center;">HOLLARD</div>
                 </div>
                 <div class="partner-name">Hollard Insurance</div>
                 <div class="partner-category">Insurance</div>
             </div>
             
+            <!-- IT & Tech Partners (New Section) -->
+            <div class="partner-card animate-in" data-category="it">
+                <div class="partner-logo logo-it-1">
+                    <div style="font-weight: 700; font-size: 1.3rem; text-align: center;">MICROSOFT</div>
+                </div>
+                <div class="partner-name">Microsoft</div>
+                <div class="partner-category">IT & Tech</div>
+            </div>
+            
+            <div class="partner-card animate-in" data-category="it">
+                <div class="partner-logo logo-it-2">
+                    <div style="font-weight: 700; font-size: 1.2rem; text-align: center;">IBM</div>
+                </div>
+                <div class="partner-name">IBM</div>
+                <div class="partner-category">IT & Tech</div>
+            </div>
+            
+            <div class="partner-card animate-in" data-category="it">
+                <div class="partner-logo logo-it-3">
+                    <div style="font-weight: 700; font-size: 1.1rem; text-align: center;">ORACLE</div>
+                </div>
+                <div class="partner-name">Oracle</div>
+                <div class="partner-category">IT & Tech</div>
+            </div>
+            
+            <div class="partner-card animate-in" data-category="it">
+                <div class="partner-logo logo-it-4">
+                    <div style="font-weight: 700; font-size: 1.2rem; text-align: center;">SAP</div>
+                </div>
+                <div class="partner-name">SAP</div>
+                <div class="partner-category">IT & Tech</div>
+            </div>
+            
+            <div class="partner-card animate-in" data-category="it">
+                <div class="partner-logo logo-it-5">
+                    <div style="font-weight: 700; font-size: 1.3rem; text-align: center;">SALESFORCE</div>
+                </div>
+                <div class="partner-name">Salesforce</div>
+                <div class="partner-category">IT & Tech</div>
+            </div>
+            
+            <div class="partner-card animate-in" data-category="it">
+                <div class="partner-logo logo-it-6">
+                    <div style="font-weight: 700; font-size: 1.2rem; text-align: center;">AWS</div>
+                </div>
+                <div class="partner-name">Amazon Web Services</div>
+                <div class="partner-category">IT & Tech</div>
+            </div>
+            
             <!-- Payment Partners -->
             <div class="partner-card animate-in" data-category="payment">
-                <div class="partner-logo">
-                    <!-- Add your logo image URL here -->
-                    <div style="color: var(--primary); font-weight: 700; font-size: 1.1rem;">VISA</div>
+                <div class="partner-logo payment-logo">
+                    <div style="font-weight: 700; font-size: 1.5rem; text-align: center;">VISA</div>
                 </div>
                 <div class="partner-name">Visa</div>
                 <div class="partner-category">Payment</div>
             </div>
             
             <div class="partner-card animate-in" data-category="payment">
-                <div class="partner-logo">
-                    <!-- Add your logo image URL here -->
-                    <div style="color: var(--primary); font-weight: 700; font-size: 0.9rem;">MASTERCARD</div>
+                <div class="partner-logo payment-logo">
+                    <div style="font-weight: 700; font-size: 1.1rem; text-align: center;">MASTERCARD</div>
                 </div>
                 <div class="partner-name">Mastercard</div>
                 <div class="partner-category">Payment</div>
@@ -706,18 +833,16 @@
             
             <!-- Consulting Partners -->
             <div class="partner-card animate-in" data-category="consulting">
-                <div class="partner-logo">
-                    <!-- Add your logo image URL here -->
-                    <div style="color: var(--primary); font-weight: 700; font-size: 1.1rem;">PwC</div>
+                <div class="partner-logo consulting-logo">
+                    <div style="font-weight: 700; font-size: 1.4rem; text-align: center;">PwC</div>
                 </div>
                 <div class="partner-name">PwC</div>
                 <div class="partner-category">Consulting</div>
             </div>
             
             <div class="partner-card animate-in" data-category="consulting">
-                <div class="partner-logo">
-                    <!-- Add your logo image URL here -->
-                    <div style="color: var(--primary); font-weight: 700; font-size: 1.1rem;">KPMG</div>
+                <div class="partner-logo consulting-logo">
+                    <div style="font-weight: 700; font-size: 1.4rem; text-align: center;">KPMG</div>
                 </div>
                 <div class="partner-name">KPMG</div>
                 <div class="partner-category">Consulting</div>
