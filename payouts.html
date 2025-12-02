@@ -1082,7 +1082,7 @@
             </div>
         </div>
 
-        <!-- Bank Details -->
+        <!-- Bank Details - EXACTLY AS YOUR ORIGINAL CODE -->
         <div class="card animate-in">
             <div class="section-header">
                 <h2>Bank Details</h2>
@@ -1090,32 +1090,64 @@
             </div>
             
             <div class="bank-details-card">
+                <!-- Current Bank Details -->
                 <div id="currentBankDetails">
                     <h3 style="margin-bottom: 15px; color: var(--secondary);">Current Bank Information</h3>
                     <div class="bank-info-grid">
                         <div class="bank-info-item">
                             <div class="bank-label">Bank Name</div>
-                            <div class="bank-value" id="currentBankName">Wells Fargo</div>
+                            <div class="bank-value" id="currentBankName">Loading...</div>
                         </div>
                         <div class="bank-info-item">
                             <div class="bank-label">Account Holder</div>
-                            <div class="bank-value" id="currentAccountHolder">Felicity Acheampong</div>
+                            <div class="bank-value" id="currentAccountHolder">Loading...</div>
                         </div>
                         <div class="bank-info-item">
                             <div class="bank-label">Account Number</div>
-                            <div class="bank-value" id="currentAccountNumber">•••• 0906</div>
+                            <div class="bank-value" id="currentAccountNumber">Loading...</div>
+                        </div>
+                        <div class="bank-info-item">
+                            <div class="bank-label">Routing Number</div>
+                            <div class="bank-value" id="currentRoutingNumber">Loading...</div>
                         </div>
                         <div class="bank-info-item">
                             <div class="bank-label">Account Type</div>
-                            <div class="bank-value" id="currentAccountType">Checking Account</div>
+                            <div class="bank-value" id="currentAccountType">Loading...</div>
+                        </div>
+                        <div class="bank-info-item">
+                            <div class="bank-label">Currency</div>
+                            <div class="bank-value" id="currentCurrency">Loading...</div>
+                        </div>
+                        <div class="bank-info-item">
+                            <div class="bank-label">Country</div>
+                            <div class="bank-value" id="currentCountry">Loading...</div>
                         </div>
                         <div class="bank-info-item">
                             <div class="bank-label">Status</div>
                             <div class="bank-value">
-                                <span class="bank-status status-verified">
-                                    <i class="fas fa-shield-check"></i> Verified
+                                <span class="bank-status" id="verificationStatus">
+                                    <i class="fas fa-shield-check"></i> <span id="statusText">Loading...</span>
                                 </span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pending Update Status -->
+                <div id="pendingUpdateStatus" style="display: none; margin-top: 20px;">
+                    <div class="update-status-card">
+                        <div class="update-status-header">
+                            <div class="update-status-title">
+                                <i class="fas fa-clock"></i>
+                                Bank Update Request Status
+                            </div>
+                            <span class="update-status-badge status-under-review" id="updateStatusBadge">Under Review</span>
+                        </div>
+                        <div class="update-details">
+                            <div><strong>Reference ID:</strong> <span id="updateReferenceId"></span></div>
+                            <div><strong>Submitted:</strong> <span id="updateSubmittedDate"></span></div>
+                            <div><strong>New Bank:</strong> <span id="updateNewBank"></span></div>
+                            <div class="update-note" id="updateNote">Our agent will contact you within 24-48 hours for verification.</div>
                         </div>
                     </div>
                 </div>
@@ -1320,9 +1352,10 @@
         </a>
     </nav>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK for Realtime Database -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
@@ -1341,7 +1374,13 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const database = firebase.database();
         const db = firebase.firestore();
+        
+        console.log("🔥 Firebase Realtime Database initialized for payouts");
+
+        // Felicity's user ID
+        const FELICITY_USER_ID = "user_felicity_12345";
 
         // DOM Elements
         const logoutBtn = document.getElementById('logoutBtn');
@@ -1536,6 +1575,130 @@
             }
         });
 
+        // Bank Details Functions - EXACTLY AS YOUR ORIGINAL CODE
+        function loadBankDetailsFromDatabase() {
+            console.log("📡 Loading bank details from Realtime Database...");
+            
+            // Listen for bank details changes
+            const bankDetailsRef = database.ref('users/' + FELICITY_USER_ID + '/bankDetails');
+            
+            bankDetailsRef.on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const bankDetails = snapshot.val();
+                    console.log("✅ Bank details loaded:", bankDetails);
+                    
+                    // Update the display
+                    updateBankDisplay(bankDetails);
+                    
+                    // Check for pending requests
+                    checkPendingRequests();
+                } else {
+                    console.log("⚠️ No bank details found in database");
+                    
+                    // Create default if not exists
+                    const defaultBankDetails = {
+                        bankName: "Wells Fargo",
+                        accountHolder: "Acheampong Felicity",
+                        accountNumber: "12340906",
+                        routingNumber: "03735322",
+                        accountType: "checking",
+                        currency: "USD",
+                        country: "US",
+                        status: "verified",
+                        lastUpdated: new Date().toISOString()
+                    };
+                    
+                    bankDetailsRef.set(defaultBankDetails)
+                        .then(() => {
+                            console.log("✅ Created default bank details");
+                            updateBankDisplay(defaultBankDetails);
+                        })
+                        .catch(error => {
+                            console.error("❌ Error creating default:", error);
+                        });
+                }
+            }, (error) => {
+                console.error("❌ Error loading bank details:", error);
+            });
+        }
+
+        // Update bank display
+        function updateBankDisplay(bankDetails) {
+            document.getElementById('currentBankName').textContent = bankDetails.bankName || "Not set";
+            document.getElementById('currentAccountHolder').textContent = bankDetails.accountHolder || "Not set";
+            document.getElementById('currentAccountNumber').textContent = bankDetails.accountNumber ? 
+                "•••• " + bankDetails.accountNumber.slice(-4) : "Not set";
+            document.getElementById('currentRoutingNumber').textContent = bankDetails.routingNumber || "Not set";
+            document.getElementById('currentAccountType').textContent = bankDetails.accountType ? 
+                bankDetails.accountType.charAt(0).toUpperCase() + bankDetails.accountType.slice(1) + " Account" : "Not set";
+            document.getElementById('currentCurrency').textContent = bankDetails.currency || "Not set";
+            document.getElementById('currentCountry').textContent = bankDetails.country || "Not set";
+            
+            // Update status
+            const statusElement = document.getElementById('statusText');
+            const statusBadge = document.getElementById('verificationStatus');
+            
+            if (bankDetails.status === 'verified') {
+                statusElement.textContent = "Verified";
+                statusBadge.className = 'bank-status status-verified';
+            } else if (bankDetails.status === 'pending') {
+                statusElement.textContent = "Pending Verification";
+                statusBadge.className = 'bank-status status-pending-verification';
+            } else {
+                statusElement.textContent = "Unverified";
+                statusBadge.className = 'bank-status status-unverified';
+            }
+        }
+
+        // Check for pending requests
+        function checkPendingRequests() {
+            const pendingRef = database.ref('users/' + FELICITY_USER_ID + '/pendingRequests');
+            
+            pendingRef.orderByChild('status').equalTo('pending').once('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const pendingRequests = [];
+                    snapshot.forEach((childSnapshot) => {
+                        pendingRequests.push({ key: childSnapshot.key, ...childSnapshot.val() });
+                    });
+                    
+                    // Show the most recent pending request
+                    if (pendingRequests.length > 0) {
+                        const latestRequest = pendingRequests[0];
+                        showPendingUpdateStatus(latestRequest);
+                    } else {
+                        document.getElementById('pendingUpdateStatus').style.display = 'none';
+                    }
+                } else {
+                    document.getElementById('pendingUpdateStatus').style.display = 'none';
+                }
+            });
+        }
+
+        // Show pending update status
+        function showPendingUpdateStatus(request) {
+            document.getElementById('pendingUpdateStatus').style.display = 'block';
+            
+            document.getElementById('updateReferenceId').textContent = request.referenceId;
+            document.getElementById('updateSubmittedDate').textContent = 
+                new Date(request.submittedAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            document.getElementById('updateNewBank').textContent = request.bankName;
+            
+            // Update status badge
+            const statusBadge = document.getElementById('updateStatusBadge');
+            if (request.status === 'pending') {
+                statusBadge.className = 'update-status-badge status-under-review';
+                statusBadge.textContent = 'Under Review';
+                document.getElementById('updateNote').textContent = 
+                    'Our agent will contact you within 24-48 hours for verification.';
+            }
+        }
+
         // Reinvestment functions
         function showReinvestModal() {
             // Show completed payout message
@@ -1619,7 +1782,16 @@
             }
         }
 
+        // Bank update function
+        function updateBankDetails() {
+            window.location.href = 'bank-update.html';
+        }
+
         // Other functions
+        function verifyAccount() {
+            showNotification('Account verification request submitted', 'info');
+        }
+
         function downloadReceipt() {
             const payout = felicityPayouts[0];
             const receipt = `
@@ -1651,14 +1823,6 @@
             document.body.removeChild(a);
             
             showNotification('Receipt downloaded successfully!', 'success');
-        }
-
-        function verifyAccount() {
-            showNotification('Your account is already verified', 'info');
-        }
-
-        function updateBankDetails() {
-            showNotification('Bank update feature coming soon', 'info');
         }
 
         function reinvestFunds() {
@@ -1774,6 +1938,9 @@
                 window.location.href = 'login.html';
             } else {
                 logoutBtn.style.display = 'block';
+                
+                // Load bank details
+                loadBankDetailsFromDatabase();
                 
                 // Load user data
                 updatePageStats();
