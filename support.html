@@ -656,19 +656,7 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
         const rtdb = firebase.database();
-<!-- After your Firebase scripts -->
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
 
-<!-- ADD THIS LINE -->
-<script src="session-manager.js"></script>
-
-<!-- Then your existing page script -->
-<script>
-    // Your existing page code...
-</script>
         // DOM Elements
         const userAvatar = document.getElementById('userAvatar');
         const avatarInitial = document.getElementById('avatarInitial');
