@@ -6,7 +6,7 @@
     <title>Payouts | GlicoCapital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Premium Color Scheme */
+        /* Premium Color Scheme - EXACTLY AS YOU HAD IT */
         :root {
             --primary: #1a365d;
             --primary-dark: #0f2040;
@@ -777,6 +777,72 @@
             animation: fadeInUp 0.5s ease forwards;
         }
         
+        /* Reinvestment Modal Styles */
+        .reinvest-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .reinvest-modal.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .reinvest-content {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 500px;
+            margin: 50px auto;
+            border: 1px solid var(--glass-border);
+            position: relative;
+        }
+        
+        .investment-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .investment-option {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .investment-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .investment-option.selected {
+            border-color: var(--secondary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .investment-option h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .investment-option .return-rate {
+            color: var(--success);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
@@ -822,6 +888,10 @@
             .bank-info-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .investment-options {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 480px) {
@@ -852,7 +922,7 @@
             <h1>GlicoCapital</h1>
         </div>
         <div class="user-menu">
-            <button class="btn btn-outline" id="logoutBtn" style="padding: 8px 16px; font-size: 0.85rem; display: none;">Logout</button>
+            <button class="btn btn-outline" id="logoutBtn" style="padding: 8px 16px; font-size: 0.85rem; display: none; background: rgba(239, 68, 68, 0.2); color: white; border: 1px solid var(--danger); border-radius: 8px; cursor: pointer;">Logout</button>
             <div class="user-avatar profile-upload" id="userAvatar">
                 <span id="avatarInitial">F</span>
                 <input type="file" id="avatarUpload" accept="image/*">
@@ -895,7 +965,7 @@
                     <i class="fas fa-coins"></i>
                 </div>
                 <div class="stat-label">Expected Amount</div>
-                <div class="stat-value" id="expectedPayout">$40,760+</div>
+                <div class="stat-value" id="expectedPayout">$40,760</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
                     <span>From current investment</span>
@@ -942,13 +1012,17 @@
                         <span class="detail-label">Payout Date:</span>
                         <span class="detail-value">15 Aug 2025</span>
                     </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Bank:</span>
+                        <span class="detail-value">Wells Fargo</span>
+                    </div>
                 </div>
                 
                 <div class="action-buttons">
                     <button class="btn btn-outline" onclick="downloadReceipt()">
                         <i class="fas fa-download"></i> Receipt
                     </button>
-                    <button class="btn btn-secondary" onclick="reinvestPayout()">
+                    <button class="btn btn-secondary" onclick="showReinvestModal()">
                         <i class="fas fa-redo"></i> Reinvest
                     </button>
                 </div>
@@ -961,7 +1035,7 @@
                     <i class="fas fa-calendar-alt"></i>
                 </div>
                 <h3 style="font-size: 1.3rem; margin-bottom: 10px;">Premium Plan Payout</h3>
-                <div class="payout-amount">$40,760+</div>
+                <div class="payout-amount" id="upcomingPayoutAmount">$40,760</div>
                 
                 <div class="payout-details">
                     <div class="detail-row">
@@ -970,15 +1044,19 @@
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Current Earnings:</span>
-                        <span class="detail-value">$6,000</span>
+                        <span class="detail-value" id="currentEarnings">$6,000</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Expected Earnings:</span>
-                        <span class="detail-value">$5,760</span>
+                        <span class="detail-value" id="expectedEarnings">$5,760</span>
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Payout Date:</span>
                         <span class="detail-value">20 Feb 2026</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Days Remaining:</span>
+                        <span class="detail-value" id="daysRemaining">48 Business Days</span>
                     </div>
                 </div>
                 
@@ -1000,11 +1078,11 @@
                 <button class="btn btn-outline" onclick="showAllPayouts()" style="padding: 8px 16px; font-size: 0.85rem;">View All</button>
             </div>
             <div class="transaction-list" id="recentPayouts">
-                <!-- Payouts will be populated by JavaScript -->
+                <!-- ONLY Felicity's $8,600 payout will appear here -->
             </div>
         </div>
 
-        <!-- Bank Details - READING FROM REALTIME DATABASE -->
+        <!-- Bank Details -->
         <div class="card animate-in">
             <div class="section-header">
                 <h2>Bank Details</h2>
@@ -1012,64 +1090,32 @@
             </div>
             
             <div class="bank-details-card">
-                <!-- Current Bank Details -->
                 <div id="currentBankDetails">
                     <h3 style="margin-bottom: 15px; color: var(--secondary);">Current Bank Information</h3>
                     <div class="bank-info-grid">
                         <div class="bank-info-item">
                             <div class="bank-label">Bank Name</div>
-                            <div class="bank-value" id="currentBankName">Loading...</div>
+                            <div class="bank-value" id="currentBankName">Wells Fargo</div>
                         </div>
                         <div class="bank-info-item">
                             <div class="bank-label">Account Holder</div>
-                            <div class="bank-value" id="currentAccountHolder">Loading...</div>
+                            <div class="bank-value" id="currentAccountHolder">Felicity Acheampong</div>
                         </div>
                         <div class="bank-info-item">
                             <div class="bank-label">Account Number</div>
-                            <div class="bank-value" id="currentAccountNumber">Loading...</div>
-                        </div>
-                        <div class="bank-info-item">
-                            <div class="bank-label">Routing Number</div>
-                            <div class="bank-value" id="currentRoutingNumber">Loading...</div>
+                            <div class="bank-value" id="currentAccountNumber">•••• 0906</div>
                         </div>
                         <div class="bank-info-item">
                             <div class="bank-label">Account Type</div>
-                            <div class="bank-value" id="currentAccountType">Loading...</div>
-                        </div>
-                        <div class="bank-info-item">
-                            <div class="bank-label">Currency</div>
-                            <div class="bank-value" id="currentCurrency">Loading...</div>
-                        </div>
-                        <div class="bank-info-item">
-                            <div class="bank-label">Country</div>
-                            <div class="bank-value" id="currentCountry">Loading...</div>
+                            <div class="bank-value" id="currentAccountType">Checking Account</div>
                         </div>
                         <div class="bank-info-item">
                             <div class="bank-label">Status</div>
                             <div class="bank-value">
-                                <span class="bank-status" id="verificationStatus">
-                                    <i class="fas fa-shield-check"></i> <span id="statusText">Loading...</span>
+                                <span class="bank-status status-verified">
+                                    <i class="fas fa-shield-check"></i> Verified
                                 </span>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Pending Update Status -->
-                <div id="pendingUpdateStatus" style="display: none; margin-top: 20px;">
-                    <div class="update-status-card">
-                        <div class="update-status-header">
-                            <div class="update-status-title">
-                                <i class="fas fa-clock"></i>
-                                Bank Update Request Status
-                            </div>
-                            <span class="update-status-badge status-under-review" id="updateStatusBadge">Under Review</span>
-                        </div>
-                        <div class="update-details">
-                            <div><strong>Reference ID:</strong> <span id="updateReferenceId"></span></div>
-                            <div><strong>Submitted:</strong> <span id="updateSubmittedDate"></span></div>
-                            <div><strong>New Bank:</strong> <span id="updateNewBank"></span></div>
-                            <div class="update-note" id="updateNote">Our agent will contact you within 24-48 hours for verification.</div>
                         </div>
                     </div>
                 </div>
@@ -1102,6 +1148,101 @@
         </div>
     </div>
 
+    <!-- Reinvestment Modal -->
+    <div class="reinvest-modal" id="reinvestModal">
+        <div class="reinvest-content">
+            <button class="close-detail" onclick="closeReinvestModal()">×</button>
+            <h2 style="margin-bottom: 20px; color: white;">Reinvest Funds</h2>
+            
+            <div id="reinvestCompleted">
+                <div style="text-align: center; margin: 20px 0;">
+                    <div style="font-size: 3rem; color: var(--warning); margin-bottom: 15px;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 style="margin-bottom: 10px;">Payout Not Available</h3>
+                    <p style="opacity: 0.8; margin-bottom: 20px;">
+                        This payout has already been completed and the funds are no longer available for reinvestment.
+                    </p>
+                    <p style="opacity: 0.8; font-size: 0.9rem;">
+                        Completed payouts cannot be reinvested. Only upcoming payouts are eligible for auto-reinvestment.
+                    </p>
+                </div>
+            </div>
+            
+            <div id="autoReinvestSection" style="display: none;">
+                <h3 style="margin-bottom: 15px; color: var(--secondary);">Auto-Reinvestment Setup</h3>
+                <p style="opacity: 0.8; margin-bottom: 20px;">
+                    Set up automatic reinvestment for your upcoming payout on <strong>20th February 2026</strong>.
+                </p>
+                
+                <div class="payout-info" style="margin-bottom: 20px;">
+                    <div class="info-item">
+                        <div class="info-label">Payout Amount</div>
+                        <div class="info-value" id="modalPayoutAmount">$40,760</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Auto-Reinvest Date</div>
+                        <div class="info-value">20th February 2026</div>
+                    </div>
+                </div>
+                
+                <h4 style="margin-bottom: 15px;">Select Investment Plan:</h4>
+                <div class="investment-options">
+                    <div class="investment-option" onclick="selectInvestmentOption(3)">
+                        <h4>3 Months</h4>
+                        <div class="return-rate">12% Return</div>
+                    </div>
+                    <div class="investment-option" onclick="selectInvestmentOption(6)">
+                        <h4>6 Months</h4>
+                        <div class="return-rate">17.1% Return</div>
+                    </div>
+                    <div class="investment-option" onclick="selectInvestmentOption(12)">
+                        <h4>12 Months</h4>
+                        <div class="return-rate">22% Return</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-secondary" onclick="activateAutoReinvest()" style="width: 100%;">
+                        <i class="fas fa-robot"></i> Activate Auto-Reinvestment
+                    </button>
+                </div>
+                
+                <p style="opacity: 0.7; font-size: 0.85rem; margin-top: 15px; text-align: center;">
+                    <i class="fas fa-info-circle"></i> Payout balance will automatically be used for reinvestment on the payout date.
+                </p>
+            </div>
+            
+            <div id="reinvestmentActivated" style="display: none; text-align: center; margin: 20px 0;">
+                <div style="font-size: 3rem; color: var(--success); margin-bottom: 15px;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3 style="margin-bottom: 10px; color: var(--success);">Reinvestment Activated!</h3>
+                <p style="opacity: 0.8; margin-bottom: 20px;">
+                    Your upcoming payout has been scheduled for automatic reinvestment.
+                </p>
+                <div class="payout-info">
+                    <div class="info-item">
+                        <div class="info-label">Status</div>
+                        <div class="info-value" style="color: var(--success);">Active</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Investment Plan</div>
+                        <div class="info-value" id="activatedPlan">6 Months</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Activation Date</div>
+                        <div class="info-value" id="activationDate">Today</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Payout Date</div>
+                        <div class="info-value">20th February 2026</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- All Payouts Detail Page -->
     <div class="detail-page" id="allPayoutsPage">
         <div class="detail-content">
@@ -1109,7 +1250,7 @@
             <h2 style="margin-bottom: 20px; color: white;">All Payouts</h2>
             
             <div class="transaction-list" id="allPayoutsList" style="max-height: 500px;">
-                <!-- All payouts will be populated by JavaScript -->
+                <!-- Only Felicity's payout will appear here -->
             </div>
         </div>
     </div>
@@ -1127,25 +1268,25 @@
                 </div>
                 <div class="info-item">
                     <div class="info-label">Days Remaining</div>
-                    <div class="info-value">48 Business Days</div>
+                    <div class="info-value" id="scheduleDaysRemaining">48 Business Days</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Current Earnings</div>
-                    <div class="info-value">$6,000</div>
+                    <div class="info-value" id="scheduleCurrentEarnings">$6,000</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Future Earnings</div>
-                    <div class="info-value">$5,760</div>
+                    <div class="info-value" id="scheduleFutureEarnings">$5,760</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Total Expected</div>
-                    <div class="info-value" style="color: var(--secondary);">$40,760</div>
+                    <div class="info-value" style="color: var(--secondary);" id="scheduleTotalPayout">$40,760</div>
                 </div>
             </div>
             
             <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
                 <h4 style="margin-bottom: 10px;">Calculation</h4>
-                <p style="font-size: 0.9rem; opacity: 0.8;">
+                <p style="font-size: 0.9rem; opacity: 0.8;" id="scheduleCalculation">
                     48 business days × $120 daily earnings = $5,760<br>
                     Current earnings: $6,000<br>
                     Principal investment: $35,000<br>
@@ -1179,9 +1320,10 @@
         </a>
     </nav>
 
-    <!-- Firebase SDK for Realtime Database -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
         // Firebase configuration
@@ -1197,13 +1339,9 @@
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-        
-        console.log("🔥 Firebase Realtime Database initialized for payouts");
-
-        // Felicity's user ID
-        const FELICITY_USER_ID = "user_felicity_12345";
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
         // DOM Elements
         const logoutBtn = document.getElementById('logoutBtn');
@@ -1216,8 +1354,24 @@
         // Detail pages
         const allPayoutsPage = document.getElementById('allPayoutsPage');
         const payoutSchedulePage = document.getElementById('payoutSchedulePage');
+        const reinvestModal = document.getElementById('reinvestModal');
 
-        // Felicity's payout data
+        // Constants for Felicity's investment
+        const DAILY_EARNINGS = 120;
+        const INVESTMENT_AMOUNT = 35000;
+        const INVESTMENT_START_DATE = new Date('2025-09-20');
+        const INVESTMENT_END_DATE = new Date('2026-02-20');
+        const CURRENT_DATE = new Date(); // Today's date
+
+        // US Holidays 2025-2026
+        const HOLIDAYS = [
+            '2025-12-25', // Christmas
+            '2026-01-01', // New Year
+            '2026-01-19', // MLK Day
+            '2026-02-16', // Presidents Day
+        ];
+
+        // Felicity's ONLY payout - $8,600 from Starter Plan
         const felicityPayouts = [
             {
                 id: "PAY-001",
@@ -1229,255 +1383,60 @@
                 investmentAmount: 5000,
                 earnings: 3600,
                 duration: "4 Months",
-                bank: "Wells Fargo"
-            },
-            {
-                id: "PAY-002",
-                type: "earning",
-                amount: 2500,
-                date: "2025-03-20",
-                description: "Earnings Withdrawal",
-                status: "completed",
-                investmentAmount: 10000,
-                earnings: 2500,
-                duration: "3 Months",
-                bank: "Wells Fargo"
-            },
-            {
-                id: "PAY-003",
-                type: "payout",
-                amount: 5800,
-                date: "2024-12-15",
-                description: "Intro Plan Investment Payout",
-                status: "completed",
-                investmentAmount: 5000,
-                earnings: 800,
-                duration: "2 Months",
-                bank: "Wells Fargo"
-            },
-            {
-                id: "PAY-004",
-                type: "withdrawal",
-                amount: 1500,
-                date: "2024-10-10",
-                description: "Partial Earnings Withdrawal",
-                status: "completed",
-                investmentAmount: 0,
-                earnings: 1500,
-                duration: "N/A",
-                bank: "Wells Fargo"
-            },
-            {
-                id: "PAY-005",
-                type: "reinvest",
-                amount: 5000,
-                date: "2024-08-01",
-                description: "Reinvestment - Starter Plan",
-                status: "completed",
-                investmentAmount: 5000,
-                earnings: 0,
-                duration: "4 Months",
-                bank: "N/A"
+                bank: "Wells Fargo",
+                account: "•••• 0906"
             }
         ];
 
-        // Load bank details from Realtime Database
-        function loadBankDetailsFromDatabase() {
-            console.log("📡 Loading bank details from Realtime Database...");
+        // Reinvestment state
+        let selectedInvestmentMonths = 6;
+        let autoReinvestActive = false;
+
+        // Check if date is a business day
+        function isBusinessDay(date) {
+            const day = date.getDay();
+            if (day === 0 || day === 6) return false;
             
-            // Listen for bank details changes
-            const bankDetailsRef = database.ref('users/' + FELICITY_USER_ID + '/bankDetails');
+            const dateStr = date.toISOString().split('T')[0];
+            if (HOLIDAYS.includes(dateStr)) return false;
             
-            bankDetailsRef.on('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    const bankDetails = snapshot.val();
-                    console.log("✅ Bank details loaded:", bankDetails);
-                    
-                    // Update the display
-                    updateBankDisplay(bankDetails);
-                    
-                    // Check for pending requests
-                    checkPendingRequests();
-                } else {
-                    console.log("⚠️ No bank details found in database");
-                    
-                    // Create default if not exists
-                    const defaultBankDetails = {
-                        bankName: "Wells Fargo",
-                        accountHolder: "Acheampong Felicity",
-                        accountNumber: "12340906",
-                        routingNumber: "03735322",
-                        accountType: "checking",
-                        currency: "USD",
-                        country: "US",
-                        status: "verified",
-                        lastUpdated: new Date().toISOString()
-                    };
-                    
-                    bankDetailsRef.set(defaultBankDetails)
-                        .then(() => {
-                            console.log("✅ Created default bank details");
-                            updateBankDisplay(defaultBankDetails);
-                        })
-                        .catch(error => {
-                            console.error("❌ Error creating default:", error);
-                        });
-                }
-            }, (error) => {
-                console.error("❌ Error loading bank details:", error);
-            });
+            return true;
         }
 
-        // Update bank display
-        function updateBankDisplay(bankDetails) {
-            document.getElementById('currentBankName').textContent = bankDetails.bankName || "Not set";
-            document.getElementById('currentAccountHolder').textContent = bankDetails.accountHolder || "Not set";
-            document.getElementById('currentAccountNumber').textContent = bankDetails.accountNumber ? 
-                "•••• " + bankDetails.accountNumber.slice(-4) : "Not set";
-            document.getElementById('currentRoutingNumber').textContent = bankDetails.routingNumber || "Not set";
-            document.getElementById('currentAccountType').textContent = bankDetails.accountType ? 
-                bankDetails.accountType.charAt(0).toUpperCase() + bankDetails.accountType.slice(1) + " Account" : "Not set";
-            document.getElementById('currentCurrency').textContent = bankDetails.currency || "Not set";
-            document.getElementById('currentCountry').textContent = bankDetails.country || "Not set";
+        // Calculate business days between two dates
+        function calculateBusinessDays(startDate, endDate) {
+            let businessDays = 0;
+            const current = new Date(startDate);
             
-            // Update status
-            const statusElement = document.getElementById('statusText');
-            const statusBadge = document.getElementById('verificationStatus');
-            
-            if (bankDetails.status === 'verified') {
-                statusElement.textContent = "Verified";
-                statusBadge.className = 'bank-status status-verified';
-            } else if (bankDetails.status === 'pending') {
-                statusElement.textContent = "Pending Verification";
-                statusBadge.className = 'bank-status status-pending-verification';
-            } else {
-                statusElement.textContent = "Unverified";
-                statusBadge.className = 'bank-status status-unverified';
+            while (current <= endDate) {
+                if (isBusinessDay(current)) {
+                    businessDays++;
+                }
+                current.setDate(current.getDate() + 1);
             }
+            
+            return businessDays;
         }
 
-        // Check for pending requests
-        function checkPendingRequests() {
-            const pendingRef = database.ref('users/' + FELICITY_USER_ID + '/pendingRequests');
+        // Calculate current earnings and balance
+        function calculateCurrentStats() {
+            const businessDays = calculateBusinessDays(INVESTMENT_START_DATE, CURRENT_DATE);
+            const totalEarnings = businessDays * DAILY_EARNINGS;
             
-            pendingRef.orderByChild('status').equalTo('pending').once('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    const pendingRequests = [];
-                    snapshot.forEach((childSnapshot) => {
-                        pendingRequests.push({ key: childSnapshot.key, ...childSnapshot.val() });
-                    });
-                    
-                    // Show the most recent pending request
-                    if (pendingRequests.length > 0) {
-                        const latestRequest = pendingRequests[0];
-                        showPendingUpdateStatus(latestRequest);
-                    } else {
-                        document.getElementById('pendingUpdateStatus').style.display = 'none';
-                    }
-                } else {
-                    document.getElementById('pendingUpdateStatus').style.display = 'none';
-                }
-            });
-        }
-
-        // Show pending update status
-        function showPendingUpdateStatus(request) {
-            document.getElementById('pendingUpdateStatus').style.display = 'block';
+            // Calculate remaining business days until payout
+            const remainingBusinessDays = calculateBusinessDays(CURRENT_DATE, INVESTMENT_END_DATE);
+            const expectedEarnings = remainingBusinessDays * DAILY_EARNINGS;
+            const totalPayout = INVESTMENT_AMOUNT + totalEarnings + expectedEarnings;
             
-            document.getElementById('updateReferenceId').textContent = request.referenceId;
-            document.getElementById('updateSubmittedDate').textContent = 
-                new Date(request.submittedAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            document.getElementById('updateNewBank').textContent = request.bankName;
-            
-            // Update status badge
-            const statusBadge = document.getElementById('updateStatusBadge');
-            if (request.status === 'pending') {
-                statusBadge.className = 'update-status-badge status-under-review';
-                statusBadge.textContent = 'Under Review';
-                document.getElementById('updateNote').textContent = 
-                    'Our agent will contact you within 24-48 hours for verification.';
-            }
-        }
-
-        // Update payout lists
-        function updatePayoutLists() {
-            // Sort by date (newest first)
-            const sortedPayouts = felicityPayouts.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            // Show recent 3 payouts
-            const recent = sortedPayouts.slice(0, 3);
-            updatePayoutList(recentPayouts, recent);
-            
-            // Show all payouts in detail page
-            updatePayoutList(allPayoutsList, sortedPayouts);
-            
-            // Update total payouts
-            const totalPayouts = felicityPayouts
-                .filter(p => p.type === 'payout')
-                .reduce((sum, p) => sum + p.amount, 0);
-            
-            document.getElementById('totalPayouts').textContent = `$${totalPayouts.toLocaleString()}`;
-            
-            // Update next payout date
-            const nextDate = new Date('2026-02-20');
-            document.getElementById('nextPayoutDate').textContent = 
-                `${nextDate.getDate()} ${nextDate.toLocaleString('en-US', { month: 'short' })}`;
-            
-            // Update expected payout
-            document.getElementById('expectedPayout').textContent = 
-                `$${(35000 + 6000 + 5760).toLocaleString()}+`;
-        }
-
-        // Update a payout list element
-        function updatePayoutList(listElement, payouts) {
-            listElement.innerHTML = '';
-            
-            payouts.forEach(payout => {
-                const payoutItem = document.createElement('div');
-                payoutItem.className = 'transaction-item';
-                
-                let iconClass = 'payout';
-                let icon = 'fas fa-money-check-alt';
-                let amountClass = 'positive';
-                let amountPrefix = '+';
-                
-                if (payout.type === 'earning') {
-                    iconClass = 'earning';
-                    icon = 'fas fa-coins';
-                    amountClass = 'positive';
-                    amountPrefix = '+';
-                } else if (payout.type === 'withdrawal') {
-                    iconClass = 'withdrawal';
-                    icon = 'fas fa-wallet';
-                    amountClass = 'negative';
-                    amountPrefix = '-';
-                } else if (payout.type === 'reinvest') {
-                    iconClass = 'reinvest';
-                    icon = 'fas fa-redo';
-                    amountClass = 'positive';
-                    amountPrefix = '+';
-                }
-                
-                payoutItem.innerHTML = `
-                    <div class="transaction-info">
-                        <div class="transaction-icon ${iconClass}">
-                            <i class="${icon}"></i>
-                        </div>
-                        <div class="transaction-details">
-                            <h4>${payout.description}</h4>
-                            <div class="transaction-date">${formatDate(new Date(payout.date))}</div>
-                        </div>
-                    </div>
-                    <div class="transaction-amount ${amountClass}">${amountPrefix}$${payout.amount.toLocaleString()}</div>
-                `;
-                listElement.appendChild(payoutItem);
-            });
+            return {
+                totalInvestment: INVESTMENT_AMOUNT,
+                currentBalance: INVESTMENT_AMOUNT + totalEarnings,
+                totalEarnings: totalEarnings,
+                businessDays: businessDays,
+                remainingBusinessDays: remainingBusinessDays,
+                expectedEarnings: expectedEarnings,
+                totalPayout: totalPayout
+            };
         }
 
         // Format date for display
@@ -1489,11 +1448,83 @@
             });
         }
 
+        // Update all stats on the page
+        function updatePageStats() {
+            const stats = calculateCurrentStats();
+            
+            // Update expected payout amount
+            document.getElementById('expectedPayout').textContent = `$${stats.totalPayout.toLocaleString()}`;
+            document.getElementById('upcomingPayoutAmount').textContent = `$${stats.totalPayout.toLocaleString()}`;
+            
+            // Update current and expected earnings
+            document.getElementById('currentEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            document.getElementById('expectedEarnings').textContent = `$${stats.expectedEarnings.toLocaleString()}`;
+            
+            // Update days remaining
+            document.getElementById('daysRemaining').textContent = `${stats.remainingBusinessDays} Business Days`;
+            
+            // Update modal values
+            document.getElementById('modalPayoutAmount').textContent = `$${stats.totalPayout.toLocaleString()}`;
+            document.getElementById('scheduleDaysRemaining').textContent = `${stats.remainingBusinessDays} Business Days`;
+            document.getElementById('scheduleCurrentEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            document.getElementById('scheduleFutureEarnings').textContent = `$${stats.expectedEarnings.toLocaleString()}`;
+            document.getElementById('scheduleTotalPayout').textContent = `$${stats.totalPayout.toLocaleString()}`;
+            
+            // Update calculation text
+            document.getElementById('scheduleCalculation').innerHTML = 
+                `${stats.remainingBusinessDays} business days × $120 daily earnings = $${stats.expectedEarnings.toLocaleString()}<br>
+                Current earnings: $${stats.totalEarnings.toLocaleString()}<br>
+                Principal investment: $35,000<br>
+                Total: $${stats.totalPayout.toLocaleString()}`;
+        }
+
+        // Update payout lists
+        function updatePayoutLists() {
+            // Show only Felicity's payout
+            updatePayoutList(recentPayouts, felicityPayouts);
+            updatePayoutList(allPayoutsList, felicityPayouts);
+            
+            // Update total payouts (only $8,600)
+            const totalPayouts = felicityPayouts.reduce((sum, p) => sum + p.amount, 0);
+            document.getElementById('totalPayouts').textContent = `$${totalPayouts.toLocaleString()}`;
+            
+            // Update next payout date
+            const nextDate = new Date('2026-02-20');
+            document.getElementById('nextPayoutDate').textContent = 
+                `${nextDate.getDate()} ${nextDate.toLocaleString('en-US', { month: 'short' })}`;
+        }
+
+        // Update a payout list element
+        function updatePayoutList(listElement, payouts) {
+            listElement.innerHTML = '';
+            
+            payouts.forEach(payout => {
+                const payoutItem = document.createElement('div');
+                payoutItem.className = 'transaction-item';
+                
+                payoutItem.innerHTML = `
+                    <div class="transaction-info">
+                        <div class="transaction-icon payout">
+                            <i class="fas fa-money-check-alt"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>${payout.description}</h4>
+                            <div class="transaction-date">${formatDate(new Date(payout.date))}</div>
+                        </div>
+                    </div>
+                    <div class="transaction-amount positive">+$${payout.amount.toLocaleString()}</div>
+                `;
+                listElement.appendChild(payoutItem);
+            });
+        }
+
         // Load user profile picture
         function loadUserProfile(user) {
-            if (user && user.photoURL) {
+            if (user.photoURL) {
                 avatarInitial.style.display = 'none';
                 userAvatar.innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
+            } else {
+                avatarInitial.textContent = user.displayName ? user.displayName.charAt(0).toUpperCase() : 'F';
             }
         }
 
@@ -1501,36 +1532,111 @@
         avatarUpload.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
-                showNotification('Profile picture upload failed ', 'info');
+                showNotification('Profile picture upload feature is under maintenance', 'info');
             }
         });
 
-        // Bank update function
-        function updateBankDetails() {
-            window.location.href = 'bank-update.html';
+        // Reinvestment functions
+        function showReinvestModal() {
+            // Show completed payout message
+            document.getElementById('reinvestCompleted').style.display = 'block';
+            document.getElementById('autoReinvestSection').style.display = 'none';
+            document.getElementById('reinvestmentActivated').style.display = 'none';
+            
+            reinvestModal.classList.add('active');
+        }
+
+        function setupAutoReinvest() {
+            // Show auto-reinvest section
+            document.getElementById('reinvestCompleted').style.display = 'none';
+            document.getElementById('autoReinvestSection').style.display = 'block';
+            document.getElementById('reinvestmentActivated').style.display = 'none';
+            
+            // Update modal with current payout amount
+            const stats = calculateCurrentStats();
+            document.getElementById('modalPayoutAmount').textContent = `$${stats.totalPayout.toLocaleString()}`;
+            
+            reinvestModal.classList.add('active');
+        }
+
+        function selectInvestmentOption(months) {
+            // Remove selected class from all options
+            document.querySelectorAll('.investment-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            event.currentTarget.classList.add('selected');
+            selectedInvestmentMonths = months;
+        }
+
+        function activateAutoReinvest() {
+            if (selectedInvestmentMonths === 0) {
+                showNotification('Please select an investment plan', 'error');
+                return;
+            }
+            
+            // Show activated message
+            document.getElementById('reinvestCompleted').style.display = 'none';
+            document.getElementById('autoReinvestSection').style.display = 'none';
+            document.getElementById('reinvestmentActivated').style.display = 'block';
+            
+            // Update activated plan details
+            document.getElementById('activatedPlan').textContent = `${selectedInvestmentMonths} Months`;
+            document.getElementById('activationDate').textContent = formatDate(new Date());
+            
+            autoReinvestActive = true;
+            
+            // Save to Firestore
+            saveAutoReinvestToFirestore();
+        }
+
+        async function saveAutoReinvestToFirestore() {
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    await db.collection('users').doc(user.uid).update({
+                        'autoReinvest': {
+                            active: true,
+                            investmentMonths: selectedInvestmentMonths,
+                            activationDate: new Date().toISOString(),
+                            payoutDate: '2026-02-20',
+                            expectedAmount: calculateCurrentStats().totalPayout
+                        },
+                        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    console.log('Auto-reinvest saved to Firestore');
+                }
+            } catch (error) {
+                console.error('Error saving auto-reinvest:', error);
+            }
+        }
+
+        function closeReinvestModal() {
+            reinvestModal.classList.remove('active');
+            if (autoReinvestActive) {
+                showNotification('Auto-reinvestment activated successfully!', 'success');
+            }
         }
 
         // Other functions
-        function verifyAccount() {
-            showNotification('Your Account Is Verified', 'info');
-        }
-
         function downloadReceipt() {
-            const receiptData = felicityPayouts[0];
+            const payout = felicityPayouts[0];
             const receipt = `
                 GlicoCapital - Payment Receipt
                 --------------------------------
-                Transaction ID: ${receiptData.id}
-                Date: ${formatDate(new Date(receiptData.date))}
-                Amount: $${receiptData.amount.toLocaleString()}
+                Transaction ID: ${payout.id}
+                Date: ${formatDate(new Date(payout.date))}
+                Amount: $${payout.amount.toLocaleString()}
                 Type: Investment Payout
-                Plan: Starter Plan
+                Plan: Starter Plan (4 Months)
                 Status: COMPLETED
                 --------------------------------
-                Investment Amount: $${receiptData.investmentAmount}
-                Total Earnings: $${receiptData.earnings}
-                Duration: ${receiptData.duration}
-                Bank: ${receiptData.bank}
+                Investment Amount: $${payout.investmentAmount}
+                Total Earnings: $${payout.earnings}
+                Return Rate: 72%
+                Bank: ${payout.bank}
+                Account: ${payout.account}
                 --------------------------------
                 Thank you for investing with GlicoCapital!
             `;
@@ -1539,7 +1645,7 @@
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `GlicoCapital_Receipt_${receiptData.id}.txt`;
+            a.download = `GlicoCapital_Receipt_${payout.id}.txt`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1547,16 +1653,16 @@
             showNotification('Receipt downloaded successfully!', 'success');
         }
 
-        function reinvestPayout() {
-            showNotification('Opening reinvestment options...', 'info');
+        function verifyAccount() {
+            showNotification('Your account is already verified', 'info');
+        }
+
+        function updateBankDetails() {
+            showNotification('Bank update feature coming soon', 'info');
         }
 
         function reinvestFunds() {
-            showNotification('Reinvesting initiated', 'info');
-        }
-
-        function setupAutoReinvest() {
-            showNotification('Auto-reinvestment initiated', 'info');
+            showNotification('Please use the reinvest button on the completed payout card', 'info');
         }
 
         function setupPayoutAlerts() {
@@ -1565,14 +1671,17 @@
 
         function exportHistory() {
             const csvContent = [
-                ['ID', 'Date', 'Description', 'Amount', 'Type', 'Status'],
+                ['ID', 'Date', 'Description', 'Amount', 'Type', 'Status', 'Investment', 'Earnings', 'Bank'],
                 ...felicityPayouts.map(p => [
                     p.id,
                     formatDate(new Date(p.date)),
                     p.description,
                     `$${p.amount}`,
-                    p.type.toUpperCase(),
-                    p.status.toUpperCase()
+                    'PAYOUT',
+                    'COMPLETED',
+                    `$${p.investmentAmount}`,
+                    `$${p.earnings}`,
+                    p.bank
                 ])
             ].map(row => row.join(',')).join('\n');
             
@@ -1604,11 +1713,9 @@
 
         // Notification function
         function showNotification(message, type) {
-            // Remove existing notification
             const existing = document.querySelector('.custom-notification');
             if (existing) existing.remove();
             
-            // Create notification
             const notification = document.createElement('div');
             notification.className = 'custom-notification';
             notification.style.cssText = `
@@ -1643,7 +1750,6 @@
             
             document.body.appendChild(notification);
             
-            // Remove after 3 seconds
             setTimeout(() => {
                 if (notification.parentNode) {
                     notification.style.animation = 'fadeOut 0.3s ease';
@@ -1662,26 +1768,54 @@
         `;
         document.head.appendChild(style);
 
+        // Check authentication state
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            } else {
+                logoutBtn.style.display = 'block';
+                
+                // Load user data
+                updatePageStats();
+                updatePayoutLists();
+                
+                // Load user profile
+                loadUserProfile(user);
+            }
+        });
+
+        // Logout function
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Logout failed:', error);
+                alert('Logout failed. Please try again.');
+            }
+        });
+
         // Close detail pages when clicking outside
-        document.querySelectorAll('.detail-page').forEach(page => {
+        document.querySelectorAll('.detail-page, .reinvest-modal').forEach(page => {
             page.addEventListener('click', function(e) {
                 if (e.target === this) {
-                    closeDetailPage();
+                    if (this.classList.contains('detail-page')) {
+                        closeDetailPage();
+                    } else if (this.classList.contains('reinvest-modal')) {
+                        closeReinvestModal();
+                    }
                 }
             });
         });
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("📄 Payouts page loaded, initializing...");
-            
-            // Load bank details from database
-            loadBankDetailsFromDatabase();
-            
-            // Update payout lists
+            // Update stats
+            updatePageStats();
             updatePayoutLists();
             
-            console.log("✅ Payouts page initialized successfully");
+            // Update stats every hour
+            setInterval(updatePageStats, 3600000);
         });
     </script>
 </body>
