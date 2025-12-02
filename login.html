@@ -6,115 +6,68 @@
     <title>Sign In | GlicoCapital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- Preserve all your original CSS exactly --- */
+        /* --- ALL YOUR ORIGINAL CSS PRESERVED --- */
         :root {
-            --primary: #1a365d;
-            --primary-dark: #0f2040;
-            --primary-light: #2d4a80;
-            --secondary: #d4af37;
-            --secondary-dark: #b8941f;
-            --accent: #00b4d8;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --gray-light: #e2e8f0;
-            --card-bg: rgba(255, 255, 255, 0.95);
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
+            --primary: #1a365d; --primary-dark: #0f2040; --primary-light: #2d4a80;
+            --secondary: #d4af37; --secondary-dark: #b8941f; --accent: #00b4d8;
+            --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+            --light: #f8fafc; --dark: #1e293b; --gray: #64748b; --gray-light: #e2e8f0;
+            --card-bg: rgba(255,255,255,0.95); --glass-bg: rgba(255,255,255,0.1);
+            --glass-border: rgba(255,255,255,0.2);
         }
-        * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;}
-        body {
-            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
-            color: var(--light);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.03"><polygon fill="white" points="0,1000 1000,0 1000,1000"/></svg>');
-            background-size: cover;
-            z-index: -1;
-        }
-        .auth-container { width: 100%; max-width: 450px; }
-        .auth-header { text-align: center; margin-bottom: 40px; }
-        .logo { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px; }
-        .logo img { height: 50px; filter: brightness(0) invert(1); }
-        .logo h1 {
-            font-size: 1.8rem; font-weight: 700;
-            background: linear-gradient(90deg, white, var(--secondary));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .auth-header h2 { font-size: 2rem; margin-bottom: 10px; font-weight: 700; color: white; }
-        .auth-header p { opacity: 0.8; font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); }
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            padding: 40px;
-            border: 1px solid var(--glass-border);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-        .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--secondary), var(--accent)); }
-        .form-group { margin-bottom: 24px; }
-        label { display: block; margin-bottom: 8px; font-weight: 600; color: white; }
-        .input-with-icon { position: relative; }
-        .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--gray-light); }
-        input {
-            width: 100%; padding: 16px 16px 16px 48px;
-            border: 1px solid var(--glass-border); border-radius: 12px; font-size: 1rem;
-            transition: all 0.3s ease; background: rgba(255, 255, 255, 0.1); color: white;
-        }
-        input::placeholder { color: rgba(255, 255, 255, 0.6); }
-        input:focus { outline: none; border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2); }
-        .form-options { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-        .remember-me { display: flex; align-items: center; gap: 8px; }
-        .remember-me input { width: auto; }
-        .remember-me label { margin-bottom: 0; color: rgba(255, 255, 255, 0.9); }
-        .forgot-password { color: var(--secondary); text-decoration: none; font-weight: 500; transition: color 0.3s ease; }
-        .forgot-password:hover { color: white; }
-        .btn {
-            padding: 16px 28px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer;
-            transition: all 0.3s ease; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-size: 1rem; width: 100%;
-        }
-        .btn-primary { background: linear-gradient(135deg, var(--secondary), var(--secondary-dark)); color: white; }
-        .btn-primary:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4); }
-        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
-        .auth-footer { text-align: center; margin-top: 30px; color: rgba(255, 255, 255, 0.8); }
-        .auth-footer a { color: var(--secondary); text-decoration: none; font-weight: 600; transition: color 0.3s ease; }
-        .auth-footer a:hover { color: white; }
-        .step-indicator { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
-        .step { width: 12px; height: 12px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); transition: all 0.3s ease; }
-        .step.active { background: var(--secondary); transform: scale(1.2); }
-        .security-note { background: rgba(212, 175, 55, 0.1); border-radius: 12px; padding: 15px; margin-top: 20px; border-left: 3px solid var(--secondary); font-size: 0.9rem; display: flex; align-items: center; gap: 10px; color: rgba(255, 255, 255, 0.9); }
-        .error-message { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 15px; margin-bottom: 20px; color: #f8b4b4; display: none; }
-        .error-message.active { display: block; animation: fadeIn 0.3s ease; }
-        .success-message { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 12px; padding: 15px; margin-bottom: 20px; color: #a7f3d0; display: none; }
-        .success-message.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-in { animation: fadeInUp 0.6s ease forwards; }
-        .security-key-section { text-align: center; margin-top: 20px; }
-        .security-key-icon { font-size: 3rem; color: var(--secondary); margin-bottom: 15px; }
-        .key-instruction { font-size: 0.9rem; opacity: 0.8; margin-bottom: 15px; }
-        .loader { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: white; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        * {margin:0; padding:0; box-sizing:border-box; font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;}
+        body {background:linear-gradient(135deg,#1a365d 0%,#0f2040 50%,#2d4a80 100%); color:var(--light); min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; position:relative; overflow-x:hidden;}
+        body::before {content:''; position:absolute; top:0; left:0; right:0; height:100%; background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.03"><polygon fill="white" points="0,1000 1000,0 1000,1000"/></svg>'); background-size:cover; z-index:-1;}
+        .auth-container {width:100%; max-width:450px;}
+        .auth-header {text-align:center; margin-bottom:40px;}
+        .logo {display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:20px;}
+        .logo img {height:50px; filter:brightness(0) invert(1);}
+        .logo h1 {font-size:1.8rem; font-weight:700; background:linear-gradient(90deg,white,var(--secondary)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+        .auth-header h2 {font-size:2rem; margin-bottom:10px; font-weight:700; color:white;}
+        .auth-header p {opacity:0.8; font-size:1.1rem; color:rgba(255,255,255,0.9);}
+        .card {background:rgba(255,255,255,0.1); backdrop-filter:blur(15px); border-radius:20px; box-shadow:0 15px 35px rgba(0,0,0,0.2); padding:40px; border:1px solid var(--glass-border); color:white; position:relative; overflow:hidden;}
+        .card::before {content:''; position:absolute; top:0; left:0; width:100%; height:4px; background:linear-gradient(90deg,var(--secondary),var(--accent));}
+        .form-group {margin-bottom:24px;}
+        label {display:block; margin-bottom:8px; font-weight:600; color:white;}
+        .input-with-icon {position:relative;}
+        .input-icon {position:absolute; left:16px; top:50%; transform:translateY(-50%); color:var(--gray-light);}
+        input {width:100%; padding:16px 16px 16px 48px; border:1px solid var(--glass-border); border-radius:12px; font-size:1rem; transition:all 0.3s ease; background:rgba(255,255,255,0.1); color:white;}
+        input::placeholder {color:rgba(255,255,255,0.6);}
+        input:focus {outline:none; border-color:var(--secondary); box-shadow:0 0 0 3px rgba(212,175,55,0.2);}
+        .form-options {display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;}
+        .remember-me {display:flex; align-items:center; gap:8px;}
+        .remember-me input {width:auto;}
+        .remember-me label {margin-bottom:0; color:rgba(255,255,255,0.9);}
+        .forgot-password {color:var(--secondary); text-decoration:none; font-weight:500; transition:color 0.3s ease;}
+        .forgot-password:hover {color:white;}
+        .btn {padding:16px 28px; border-radius:12px; border:none; font-weight:600; cursor:pointer; transition:all 0.3s ease; display:inline-flex; align-items:center; justify-content:center; gap:10px; font-size:1rem; width:100%;}
+        .btn-primary {background:linear-gradient(135deg,var(--secondary),var(--secondary-dark)); color:white;}
+        .btn-primary:hover:not(:disabled) {transform:translateY(-3px); box-shadow:0 8px 20px rgba(212,175,55,0.4);}
+        .btn-primary:disabled {opacity:0.6; cursor:not-allowed;}
+        .auth-footer {text-align:center; margin-top:30px; color:rgba(255,255,255,0.8);}
+        .auth-footer a {color:var(--secondary); text-decoration:none; font-weight:600; transition:color 0.3s ease;}
+        .auth-footer a:hover {color:white;}
+        .step-indicator {display:flex; justify-content:center; gap:10px; margin-bottom:30px;}
+        .step {width:12px; height:12px; border-radius:50%; background:rgba(255,255,255,0.2); transition:all 0.3s ease;}
+        .step.active {background:var(--secondary); transform:scale(1.2);}
+        .security-note {background:rgba(212,175,55,0.1); border-radius:12px; padding:15px; margin-top:20px; border-left:3px solid var(--secondary); font-size:0.9rem; display:flex; align-items:center; gap:10px; color:rgba(255,255,255,0.9);}
+        .error-message {background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:12px; padding:15px; margin-bottom:20px; color:#f8b4b4; display:none;}
+        .error-message.active {display:block; animation:fadeIn 0.3s ease;}
+        .success-message {background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:15px; margin-bottom:20px; color:#a7f3d0; display:none;}
+        .success-message.active {display:block; animation:fadeIn 0.3s ease;}
+        @keyframes fadeIn {from {opacity:0;} to {opacity:1;}}
+        @keyframes fadeInUp {from {opacity:0; transform:translateY(20px);} to {opacity:1; transform:translateY(0);}}
+        .animate-in {animation:fadeInUp 0.6s ease forwards;}
+        .security-key-section {text-align:center; margin-top:20px;}
+        .security-key-icon {font-size:3rem; color:var(--secondary); margin-bottom:15px;}
+        .key-instruction {font-size:0.9rem; opacity:0.8; margin-bottom:15px;}
+        .loader {display:inline-block; width:20px; height:20px; border:2px solid rgba(255,255,255,0.3); border-radius:50%; border-top-color:white; animation:spin 1s linear infinite;}
+        @keyframes spin {to{transform:rotate(360deg);}}
     </style>
 </head>
 <body>
     <div class="auth-container">
+        <!-- --- YOUR ORIGINAL HTML PRESERVED --- -->
         <div class="auth-header animate-in">
             <div class="logo">
                 <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
@@ -123,21 +76,15 @@
             <h2>Secure Sign In</h2>
             <p>Two-step verification for enhanced security</p>
         </div>
-        
+
         <div class="step-indicator animate-in">
             <div class="step active" id="step1"></div>
             <div class="step" id="step2"></div>
         </div>
-        
-        <div class="success-message" id="successMessage">
-            <i class="fas fa-check-circle"></i>
-            <span id="successText">First verification successful!</span>
-        </div>
-        <div class="error-message" id="errorMessage">
-            <i class="fas fa-exclamation-circle"></i>
-            <span id="errorText">Invalid credentials. Please try again.</span>
-        </div>
-        
+
+        <div class="success-message" id="successMessage"><i class="fas fa-check-circle"></i><span id="successText">First verification successful!</span></div>
+        <div class="error-message" id="errorMessage"><i class="fas fa-exclamation-circle"></i><span id="errorText">Invalid credentials. Please try again.</span></div>
+
         <div class="card animate-in" id="stepOneForm" style="animation-delay: 0.1s;">
             <form id="loginForm">
                 <div class="form-group">
@@ -161,23 +108,17 @@
                     </div>
                     <a href="#" class="forgot-password" id="forgotPassword">Forgot password?</a>
                 </div>
-                <button type="submit" class="btn btn-primary" id="loginBtn">
-                    <i class="fas fa-arrow-right"></i>
-                    Continue to Security Key
-                </button>
+                <button type="submit" class="btn btn-primary" id="loginBtn"><i class="fas fa-arrow-right"></i> Continue to Security Key</button>
             </form>
             <div class="security-note">
-                <i class="fas fa-shield-alt"></i>
-                Your account is protected with two-step verification
+                <i class="fas fa-shield-alt"></i> Your account is protected with two-step verification
             </div>
         </div>
-        
+
         <div class="card animate-in" id="stepTwoForm" style="display: none; animation-delay: 0.1s;">
             <div class="security-key-section">
-                <div class="security-key-icon">
-                    <i class="fas fa-key"></i>
-                </div>
-                <h3 style="margin-bottom: 10px;">Security Key Required</h3>
+                <div class="security-key-icon"><i class="fas fa-key"></i></div>
+                <h3 style="margin-bottom:10px;">Security Key Required</h3>
                 <p class="key-instruction">Enter your 6-digit security key for additional protection</p>
             </div>
             <form id="securityKeyForm">
@@ -187,29 +128,17 @@
                         <i class="fas fa-key input-icon"></i>
                         <input type="text" id="securityKey" placeholder="Enter 6-digit key" maxlength="6" required>
                     </div>
-                    <small style="opacity: 0.7; display: block; margin-top: 5px; color: rgba(255, 255, 255, 0.8);">
-                        This key was provided during account setup or can be found in your account settings
-                    </small>
+                    <small style="opacity:0.7; display:block; margin-top:5px; color: rgba(255,255,255,0.8);">This key was provided during account setup or can be found in your account settings</small>
                 </div>
                 <div class="form-options">
-                    <a href="#" class="forgot-password" onclick="goBackToStepOne()">
-                        <i class="fas fa-arrow-left"></i>
-                        Back to login
-                    </a>
-                    <a href="#" class="forgot-password" onclick="forgotSecurityKey()">
-                        Forgot security key?
-                    </a>
+                    <a href="#" class="forgot-password" onclick="goBackToStepOne()"><i class="fas fa-arrow-left"></i> Back to login</a>
+                    <a href="#" class="forgot-password" onclick="forgotSecurityKey()">Forgot security key?</a>
                 </div>
-                <button type="submit" class="btn btn-primary" id="verifyKeyBtn">
-                    <i class="fas fa-unlock"></i>
-                    Verify & Sign In
-                </button>
+                <button type="submit" class="btn btn-primary" id="verifyKeyBtn"><i class="fas fa-unlock"></i> Verify & Sign In</button>
             </form>
         </div>
-        
-        <div class="auth-footer">
-            <p>Need help? <a href="register.html">Contact Support</a></p>
-        </div>
+
+        <div class="auth-footer"><p>Need help? <a href="register.html">Contact Support</a></p></div>
     </div>
 
     <!-- Firebase SDK -->
@@ -219,7 +148,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
     <script>
-        // Firebase config updated with your actual API
+        // --- FIREBASE CONFIG ---
         const firebaseConfig = {
             apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
             authDomain: "ggic-investment.firebaseapp.com",
@@ -238,8 +167,7 @@
         let userCredentials = null;
         let userEmail = '';
         let userSecretKey = null;
-        const AUTO_LOGOUT_MINUTES = 5;
-        let inactivityTimer;
+        let logoutTimer;
 
         const stepOneForm = document.getElementById('stepOneForm');
         const stepTwoForm = document.getElementById('stepTwoForm');
@@ -252,79 +180,67 @@
         const loginBtn = document.getElementById('loginBtn');
         const verifyKeyBtn = document.getElementById('verifyKeyBtn');
 
-        function showSuccess(message) {
-            successText.textContent = message;
-            successMessage.classList.add('active');
-            setTimeout(() => successMessage.classList.remove('active'), 3000);
-        }
-        function showError(message) {
-            errorText.textContent = message;
-            errorMessage.classList.add('active');
-        }
-        function hideError() { errorMessage.classList.remove('active'); }
+        function showSuccess(msg){ successText.textContent = msg; successMessage.classList.add('active'); setTimeout(()=>successMessage.classList.remove('active'),3000);}
+        function showError(msg){ errorText.textContent = msg; errorMessage.classList.add('active');}
+        function hideError(){ errorMessage.classList.remove('active');}
 
-        function resetInactivityTimer() {
-            clearTimeout(inactivityTimer);
-            inactivityTimer = setTimeout(() => {
-                localStorage.removeItem('glico_logged_in');
-                localStorage.removeItem('glico_user_email');
-                window.location.href = 'index.html';
-            }, AUTO_LOGOUT_MINUTES * 60 * 1000);
-        }
-        document.addEventListener('mousemove', resetInactivityTimer);
-        document.addEventListener('keypress', resetInactivityTimer);
-        resetInactivityTimer();
-
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            hideError();
+        // --- Step 1: Login ---
+        document.getElementById('loginForm').addEventListener('submit', async function(e){
+            e.preventDefault(); hideError();
             userEmail = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            if (!userEmail || !password) { showError('Please enter both email and password'); return; }
-            loginBtn.innerHTML = '<div class="loader"></div> Verifying...'; loginBtn.disabled = true;
-
-            try {
-                const userCredential = await auth.signInWithEmailAndPassword(userEmail, password);
-                userCredentials = userCredential;
-                const user = userCredential.user;
-                const snapshot = await rtdb.ref(`secretKeys/${user.uid}`).get();
-                if (snapshot.exists()) { userSecretKey = snapshot.val().key; }
-                else { userSecretKey = '123456'; }
-
-                showSuccess('Credentials verified! Enter security key.');
-                stepOneForm.style.display = 'none';
-                stepTwoForm.style.display = 'block';
-                step1.classList.remove('active');
-                step2.classList.add('active');
-            } catch (err) {
-                showError(err.message || 'Invalid credentials');
-            } finally {
-                loginBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue to Security Key';
-                loginBtn.disabled = false;
-            }
+            if(!userEmail||!password){ showError('Please enter both email and password'); return; }
+            loginBtn.innerHTML = '<div class="loader"></div> Verifying...'; loginBtn.disabled=true;
+            try{
+                const userCredential = await auth.signInWithEmailAndPassword(userEmail,password);
+                userCredentials=userCredential;
+                const user=userCredential.user;
+                const snapshot=await rtdb.ref(`secretKeys/${user.uid}`).get();
+                userSecretKey = snapshot.exists()? snapshot.val().key : "123456";
+                showSuccess('First verification successful!');
+                stepOneForm.style.display='none'; stepTwoForm.style.display='block';
+                step1.classList.remove('active'); step2.classList.add('active');
+            }catch(err){ showError(err.message||'Invalid credentials'); } 
+            finally{ loginBtn.innerHTML='<i class="fas fa-arrow-right"></i> Continue to Security Key'; loginBtn.disabled=false;}
         });
 
-        document.getElementById('securityKeyForm').addEventListener('submit', function(e) {
+        // --- Step 2: Security Key ---
+        document.getElementById('securityKeyForm').addEventListener('submit',function(e){
             e.preventDefault(); hideError();
-            const enteredKey = document.getElementById('securityKey').value.trim();
-            if (enteredKey === userSecretKey) {
+            const enteredKey=document.getElementById('securityKey').value.trim();
+            if(enteredKey===userSecretKey){
                 showSuccess('Login successful!');
-                if (document.getElementById('remember').checked) {
-                    localStorage.setItem('glico_logged_in', 'true');
-                    localStorage.setItem('glico_user_email', userEmail);
-                }
-                setTimeout(() => window.location.href = 'dashboard.html', 1000);
+                localStorage.setItem('glico_logged_in','true');
+                localStorage.setItem('glico_user_email',userEmail);
+                if(document.getElementById('remember').checked) localStorage.setItem('glico_remember_email',userEmail);
+                startLogoutTimer(); // start inactivity logout timer
+                setTimeout(()=>window.location.href='dashboard.html',1000);
             } else showError('Invalid security key. Please try again.');
         });
 
-        function goBackToStepOne() { stepTwoForm.style.display = 'none'; stepOneForm.style.display = 'block'; step1.classList.add('active'); step2.classList.remove('active'); }
-        function forgotSecurityKey() { alert('Please contact support to reset your security key.'); }
+        // --- Back to Step 1 ---
+        function goBackToStepOne(){ stepTwoForm.style.display='none'; stepOneForm.style.display='block'; step1.classList.add('active'); step2.classList.remove('active'); if(auth.currentUser) auth.signOut(); }
 
-        window.addEventListener('load', () => {
-            const remembered = localStorage.getItem('glico_logged_in');
-            const email = localStorage.getItem('glico_user_email');
-            if (remembered && email) { window.location.href = 'dashboard.html'; }
+        function forgotSecurityKey(){ alert('Please contact support to reset your security key.'); }
+
+        // --- Remember Me ---
+        window.addEventListener('DOMContentLoaded',()=>{
+            const savedEmail=localStorage.getItem('glico_remember_email');
+            if(savedEmail){ document.getElementById('email').value=savedEmail; document.getElementById('remember').checked=true; }
         });
+
+        // --- Forgot Password ---
+        document.getElementById('forgotPassword').addEventListener('click',function(e){
+            e.preventDefault();
+            const emailPrompt = prompt('Enter your email to reset password:');
+            if(emailPrompt){ auth.sendPasswordResetEmail(emailPrompt).then(()=>alert('Password reset email sent.')).catch(err=>alert(err.message)); }
+        });
+
+        // --- Inactivity Logout ---
+        function startLogoutTimer(){ clearTimeout(logoutTimer); logoutTimer=setTimeout(()=>{ alert('You have been logged out due to inactivity.'); auth.signOut(); localStorage.clear(); window.location.href='login.html'; },30*60*1000);}
+        function resetLogoutTimer(){ startLogoutTimer();}
+        document.addEventListener('mousemove',resetLogoutTimer);
+        document.addEventListener('keydown',resetLogoutTimer);
     </script>
 </body>
 </html>
