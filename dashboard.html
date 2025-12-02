@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* Premium Color Scheme */
+        /* Premium Color Scheme - EXACTLY AS YOU HAD IT */
         :root {
             --primary: #1a365d;
             --primary-dark: #0f2040;
@@ -642,7 +642,7 @@
             <h1>GlicoCapital</h1>
         </div>
         <div class="user-menu">
-            <button class="btn btn-outline" id="logoutBtn" style="padding: 8px 16px; font-size: 0.85rem; display: none;">Logout</button>
+            <button class="btn btn-outline" id="logoutBtn" style="padding: 8px 16px; font-size: 0.85rem; display: none; background: rgba(239, 68, 68, 0.2); color: white; border: 1px solid var(--danger); border-radius: 8px; cursor: pointer;">Logout</button>
             <div class="user-avatar profile-upload" id="userAvatar">
                 <span id="avatarInitial">F</span>
                 <input type="file" id="avatarUpload" accept="image/*">
@@ -708,7 +708,7 @@
         <div class="card glass animate-in">
             <div class="section-header">
                 <h2>Recent Transactions</h2>
-                <button class="btn btn-outline" onclick="showAllTransactions()" style="padding: 8px 16px; font-size: 0.85rem;">View All</button>
+                <button class="btn btn-outline" onclick="showAllTransactions()" style="padding: 8px 16px; font-size: 0.85rem; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--glass-border); border-radius: 8px; cursor: pointer;">View All</button>
             </div>
             <div class="transaction-list" id="transactionList">
                 <!-- Transactions will be populated by JavaScript -->
@@ -831,7 +831,7 @@
             
             <div class="info-item">
                 <div class="info-label">Total Earnings</div>
-                <div class="info-value">$6,000</div>
+                <div class="info-value" id="detailEarningsTotal">$6,000</div>
             </div>
             
             <div class="info-item">
@@ -844,76 +844,23 @@
                 <div class="info-value">20th September 2025</div>
             </div>
             
-            <div class="earnings-timeline">
-                <div class="month-earnings">
-                    <div class="month-header">
-                        <div class="month-name">September 2025</div>
-                        <div class="month-total">$480</div>
-                    </div>
-                    <div class="daily-earnings">
-                        <div class="day-earning">
-                            <div class="day-date">23 Sep</div>
-                            <div class="day-amount">$120</div>
-                        </div>
-                        <div class="day-earning">
-                            <div class="day-date">24 Sep</div>
-                            <div class="day-amount">$120</div>
-                        </div>
-                        <div class="day-earning">
-                            <div class="day-date">25 Sep</div>
-                            <div class="day-amount">$120</div>
-                        </div>
-                        <div class="day-earning">
-                            <div class="day-date">26 Sep</div>
-                            <div class="day-amount">$120</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="month-earnings">
-                    <div class="month-header">
-                        <div class="month-name">October 2025</div>
-                        <div class="month-total">$2,400</div>
-                    </div>
-                    <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 10px;">
-                        20 business days × $120 = $2,400
-                    </div>
-                </div>
-                
-                <div class="month-earnings">
-                    <div class="month-header">
-                        <div class="month-name">November 2025</div>
-                        <div class="month-total">$2,520</div>
-                    </div>
-                    <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 10px;">
-                        21 business days × $120 = $2,520
-                    </div>
-                </div>
-                
-                <div class="month-earnings">
-                    <div class="month-header">
-                        <div class="month-name">December 2025</div>
-                        <div class="month-total">$600</div>
-                    </div>
-                    <div style="font-size: 0.9rem; opacity: 0.8; margin-top: 10px;">
-                        5 business days (up to 30th Nov) × $120 = $600
-                    </div>
-                </div>
+            <div class="earnings-timeline" id="earningsTimeline">
+                <!-- Dynamic earnings timeline will be populated -->
             </div>
             
             <div class="payout-info" style="margin-top: 20px;">
                 <h3 style="margin-bottom: 15px;">Future Earnings Projection</h3>
                 <div class="info-item">
                     <div class="info-label">Remaining Business Days</div>
-                    <div class="info-value">48 days</div>
+                    <div class="info-value" id="futureBusinessDays">48 days</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Future Earnings</div>
-                    <div class="info-value">$5,760</div>
+                    <div class="info-value" id="futureEarnings">$5,760</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Total Expected Earnings</div>
-                    <div class="info-value" style="color: var(--secondary);">$11,760</div>
+                    <div class="info-value" style="color: var(--secondary);" id="totalExpectedEarnings">$11,760</div>
                 </div>
             </div>
         </div>
@@ -962,7 +909,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
 
     <script>
-        // Firebase configuration
+        // Firebase configuration - EXACTLY AS YOU HAD IT
         const firebaseConfig = {
             apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
             authDomain: "ggic-investment.firebaseapp.com",
@@ -980,7 +927,7 @@
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        // DOM Elements
+        // DOM Elements - EXACTLY AS YOU HAD IT
         const logoutBtn = document.getElementById('logoutBtn');
         const totalInvestmentEl = document.getElementById('totalInvestment');
         const currentBalanceEl = document.getElementById('currentBalance');
@@ -991,195 +938,205 @@
         const userAvatar = document.getElementById('userAvatar');
         const avatarInitial = document.getElementById('avatarInitial');
         
-        // Detail pages
+        // Detail pages - EXACTLY AS YOU HAD IT
         const currentBalancePage = document.getElementById('currentBalancePage');
         const totalEarningsPage = document.getElementById('totalEarningsPage');
         const allTransactionsPage = document.getElementById('allTransactionsPage');
 
-        // Felicity's complete transaction history
-        const felicityTransactions = [
-            {
-                type: "deposit",
-                amount: 5000,
-                date: "2025-05-15",
-                description: "Starter Plan Investment Deposit",
-                status: "completed"
-            },
-            {
-                type: "earning",
-                amount: 45,
-                date: "2025-05-18",
-                description: "Daily Earnings - Starter Plan",
-                status: "completed"
-            },
-            {
-                type: "earning",
-                amount: 45,
-                date: "2025-05-19",
-                description: "Daily Earnings - Starter Plan",
-                status: "completed"
-            },
-            {
-                type: "earning",
-                amount: 45,
-                date: "2025-05-20",
-                description: "Daily Earnings - Starter Plan",
-                status: "completed"
-            },
-            {
-                type: "earning",
-                amount: 45,
-                date: "2025-05-21",
-                description: "Daily Earnings - Starter Plan",
-                status: "completed"
-            },
-            {
-                type: "earning",
-                amount: 45,
-                date: "2025-05-22",
-                description: "Daily Earnings - Starter Plan",
-                status: "completed"
-            },
-            // Many more daily earnings for May-July...
-            {
-                type: "payout",
-                amount: 8600,
-                date: "2025-08-15",
-                description: "Investment Payout - Completed",
-                status: "completed",
-                bank: "Wells Fargo",
-                account: "•••• 0906"
-            },
-            {
-                type: "deposit",
-                amount: 35000,
-                date: "2025-09-20",
-                description: "Premium Plan Investment Deposit",
-                status: "completed"
-            },
-            {
-                type: "earning",
-                amount: 120,
-                date: "2025-09-23",
-                description: "Daily Earnings - Premium Plan",
-                status: "completed"
-            },
-            {
-                type: "earning",
-                amount: 120,
-                date: "2025-09-24",
-                description: "Daily Earnings - Premium Plan",
-                status: "completed"
-            },
-            {
-                type: "earning",
-                amount: 120,
-                date: "2025-09-25",
-                description: "Daily Earnings - Premium Plan",
-                status: "completed"
-            },
-            {
-                type: "earning",
-                amount: 120,
-                date: "2025-09-26",
-                description: "Daily Earnings - Premium Plan",
-                status: "completed"
-            },
-            // October earnings (20 business days)
-            ...Array.from({length: 20}, (_, i) => ({
-                type: "earning",
-                amount: 120,
-                date: `2025-10-${i + 1}`,
-                description: "Daily Earnings - Premium Plan",
-                status: "completed"
-            })),
-            // November earnings (21 business days up to 30th)
-            ...Array.from({length: 21}, (_, i) => ({
-                type: "earning",
-                amount: 120,
-                date: `2025-11-${i + 1}`,
-                description: "Daily Earnings - Premium Plan",
-                status: "completed"
-            })),
-            // December earnings (5 business days)
-            ...Array.from({length: 5}, (_, i) => ({
-                type: "earning",
-                amount: 120,
-                date: `2025-12-${i + 1}`,
-                description: "Daily Earnings - Premium Plan",
-                status: "completed"
-            }))
+        // Constants for Felicity's investment
+        const DAILY_EARNINGS = 120;
+        const INVESTMENT_AMOUNT = 35000;
+        const INVESTMENT_START_DATE = new Date('2025-09-20');
+        const INVESTMENT_END_DATE = new Date('2026-02-20');
+        const CURRENT_DATE = new Date('2025-12-02'); // Today's date as per your request
+
+        // US Holidays 2025-2026
+        const HOLIDAYS = [
+            '2025-12-25', // Christmas
+            '2026-01-01', // New Year
+            '2026-01-19', // MLK Day
+            '2026-02-16', // Presidents Day
         ];
 
-        // Calculate current earnings
-        function calculateCurrentEarnings() {
-            const startDate = new Date('2025-09-20');
-            const currentDate = new Date();
-            const endDate = new Date('2026-02-20');
+        // Check if date is a business day (Monday-Friday, not holiday)
+        function isBusinessDay(date) {
+            const day = date.getDay();
+            if (day === 0 || day === 6) return false; // Sunday or Saturday
             
-            // Calculate business days between start date and current date
-            const businessDays = calculateBusinessDays(startDate, currentDate);
+            const dateStr = date.toISOString().split('T')[0];
+            if (HOLIDAYS.includes(dateStr)) return false;
             
-            // Calculate total earnings
-            const dailyEarnings = 120;
-            const totalEarnings = businessDays * dailyEarnings;
-            const currentBalance = 35000 + totalEarnings;
-            
-            return {
-                totalInvestment: 35000,
-                currentBalance: currentBalance,
-                totalEarnings: totalEarnings,
-                businessDays: businessDays,
-                dailyEarnings: dailyEarnings
-            };
+            return true;
         }
 
         // Calculate business days between two dates
         function calculateBusinessDays(startDate, endDate) {
-            let count = 0;
-            const curDate = new Date(startDate.getTime());
+            let businessDays = 0;
+            const current = new Date(startDate);
             
-            while (curDate <= endDate) {
-                const dayOfWeek = curDate.getDay();
-                if (dayOfWeek !== 0 && dayOfWeek !== 6) count++;
-                curDate.setDate(curDate.getDate() + 1);
+            while (current <= endDate) {
+                if (isBusinessDay(current)) {
+                    businessDays++;
+                }
+                current.setDate(current.getDate() + 1);
             }
             
-            return count;
+            return businessDays;
+        }
+
+        // Generate daily earnings from start to end date
+        function generateDailyEarnings(startDate, endDate) {
+            const earnings = [];
+            const current = new Date(startDate);
+            current.setDate(current.getDate() + 1); // Start earning from next day
+            
+            while (current <= endDate) {
+                if (isBusinessDay(current)) {
+                    earnings.push({
+                        type: "earning",
+                        amount: DAILY_EARNINGS,
+                        date: current.toISOString().split('T')[0],
+                        description: "Daily Earnings - Premium Plan",
+                        status: "completed"
+                    });
+                }
+                current.setDate(current.getDate() + 1);
+            }
+            
+            return earnings;
+        }
+
+        // Calculate Felicity's complete transaction history UP TO TODAY
+        function calculateFelicityHistory() {
+            // Previous investment history (EXACTLY AS YOU HAD IT)
+            const previousHistory = [
+                {
+                    type: "deposit",
+                    amount: 5000,
+                    date: "2025-05-15",
+                    description: "Starter Plan Investment Deposit",
+                    status: "completed"
+                },
+                // Previous daily earnings for May-July (as per your example)
+                ...Array.from({length: 60}, (_, i) => ({
+                    type: "earning",
+                    amount: 45,
+                    date: new Date(2025, 4, 16 + i).toISOString().split('T')[0], // May 16 onward
+                    description: "Daily Earnings - Starter Plan",
+                    status: "completed"
+                })),
+                {
+                    type: "payout",
+                    amount: 8600,
+                    date: "2025-08-15",
+                    description: "Investment Payout - Completed",
+                    status: "completed",
+                    bank: "Wells Fargo",
+                    account: "•••• 0906"
+                },
+                {
+                    type: "deposit",
+                    amount: 35000,
+                    date: "2025-09-20",
+                    description: "Premium Plan Investment Deposit",
+                    status: "completed"
+                }
+            ];
+            
+            // Generate daily earnings from September 23, 2025 to TODAY (December 2, 2025)
+            const dailyEarnings = generateDailyEarnings(INVESTMENT_START_DATE, CURRENT_DATE);
+            
+            // Combine all transactions
+            return [...previousHistory, ...dailyEarnings];
+        }
+
+        // Calculate current earnings and balance
+        function calculateCurrentStats() {
+            const businessDays = calculateBusinessDays(INVESTMENT_START_DATE, CURRENT_DATE);
+            const totalEarnings = businessDays * DAILY_EARNINGS;
+            const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
+            
+            // Calculate remaining business days until payout
+            const remainingBusinessDays = calculateBusinessDays(CURRENT_DATE, INVESTMENT_END_DATE);
+            const expectedEarnings = remainingBusinessDays * DAILY_EARNINGS;
+            const totalPayout = currentBalance + expectedEarnings;
+            
+            return {
+                totalInvestment: INVESTMENT_AMOUNT,
+                currentBalance: currentBalance,
+                totalEarnings: totalEarnings,
+                businessDays: businessDays,
+                remainingBusinessDays: remainingBusinessDays,
+                expectedEarnings: expectedEarnings,
+                totalPayout: totalPayout
+            };
+        }
+
+        // Format date for display
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        }
+
+        // Format date with ordinal
+        function formatDateWithOrdinal(date) {
+            const day = date.getDate();
+            const suffix = getOrdinalSuffix(day);
+            const month = date.toLocaleDateString('en-US', { month: 'long' });
+            const year = date.getFullYear();
+            return `${day}${suffix} ${month} ${year}`;
+        }
+
+        function getOrdinalSuffix(day) {
+            if (day > 3 && day < 21) return 'th';
+            switch (day % 10) {
+                case 1: return "st";
+                case 2: return "nd";
+                case 3: return "rd";
+                default: return "th";
+            }
         }
 
         // Update dashboard with calculated data
         function updateDashboard() {
-            const earningsData = calculateCurrentEarnings();
+            const stats = calculateCurrentStats();
+            const allTransactions = calculateFelicityHistory();
             
-            // Update DOM
-            totalInvestmentEl.textContent = `$${earningsData.totalInvestment.toLocaleString()}`;
-            currentBalanceEl.textContent = `$${earningsData.currentBalance.toLocaleString()}`;
-            totalEarningsEl.textContent = `$${earningsData.totalEarnings.toLocaleString()}`;
+            // Update main stats
+            totalInvestmentEl.textContent = `$${stats.totalInvestment.toLocaleString()}`;
+            currentBalanceEl.textContent = `$${stats.currentBalance.toLocaleString()}`;
+            totalEarningsEl.textContent = `$${stats.totalEarnings.toLocaleString()}`;
             
             // Update detail pages
-            document.getElementById('detailCurrentBalance').textContent = `$${earningsData.currentBalance.toLocaleString()}`;
-            document.getElementById('detailTotalEarnings').textContent = `$${earningsData.totalEarnings.toLocaleString()}`;
+            document.getElementById('detailCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
+            document.getElementById('detailTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             
-            // Calculate remaining business days until Feb 20, 2026
-            const currentDate = new Date();
-            const endDate = new Date('2026-02-20');
-            const remainingDays = calculateBusinessDays(currentDate, endDate);
-            const expectedEarnings = remainingDays * 120;
-            const totalPayout = earningsData.currentBalance + expectedEarnings;
-            
-            document.getElementById('daysRemaining').textContent = `${remainingDays} Business Days`;
-            document.getElementById('expectedEarnings').textContent = `$${expectedEarnings.toLocaleString()}`;
-            document.getElementById('totalPayout').textContent = `$${totalPayout.toLocaleString()}`;
+            // Update remaining info
+            document.getElementById('daysRemaining').textContent = `${stats.remainingBusinessDays} Business Days`;
+            document.getElementById('expectedEarnings').textContent = `$${stats.expectedEarnings.toLocaleString()}`;
+            document.getElementById('totalPayout').textContent = `$${stats.totalPayout.toLocaleString()}`;
+            document.getElementById('futureBusinessDays').textContent = `${stats.remainingBusinessDays} days`;
+            document.getElementById('futureEarnings').textContent = `$${stats.expectedEarnings.toLocaleString()}`;
+            document.getElementById('totalExpectedEarnings').textContent = `$${(stats.totalEarnings + stats.expectedEarnings).toLocaleString()}`;
             
             // Update transaction lists
-            updateTransactionLists();
+            updateTransactionLists(allTransactions);
+            
+            // Update earnings timeline
+            updateEarningsTimeline(allTransactions);
+            
+            // Update current status
+            updateCurrentStatus(stats);
         }
 
         // Update transaction lists
-        function updateTransactionLists() {
+        function updateTransactionLists(allTransactions) {
             // Sort transactions by date (newest first)
-            const sortedTransactions = felicityTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const sortedTransactions = allTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
             
             // Show last 5 transactions in dashboard
             const recentTransactions = sortedTransactions.slice(0, 5);
@@ -1235,13 +1192,151 @@
             });
         }
 
-        // Format date for display
-        function formatDate(date) {
-            return date.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
+        // Update earnings timeline
+        function updateEarningsTimeline(transactions) {
+            const timelineElement = document.getElementById('earningsTimeline');
+            if (!timelineElement) return;
+            
+            // Filter only premium plan earnings
+            const premiumEarnings = transactions.filter(t => 
+                t.type === 'earning' && t.description.includes('Premium Plan')
+            );
+            
+            // Group by month
+            const monthlyEarnings = {};
+            premiumEarnings.forEach(earning => {
+                const date = new Date(earning.date);
+                const monthYear = `${date.toLocaleString('default', { month: 'long' })} ${date.getFullYear()}`;
+                
+                if (!monthlyEarnings[monthYear]) {
+                    monthlyEarnings[monthYear] = {
+                        total: 0,
+                        days: []
+                    };
+                }
+                
+                monthlyEarnings[monthYear].total += earning.amount;
+                monthlyEarnings[monthYear].days.push({
+                    date: date,
+                    amount: earning.amount
+                });
             });
+            
+            // Build timeline HTML
+            let timelineHTML = '';
+            
+            // Sort months chronologically
+            const sortedMonths = Object.keys(monthlyEarnings).sort((a, b) => {
+                const dateA = new Date(a);
+                const dateB = new Date(b);
+                return dateA - dateB;
+            });
+            
+            sortedMonths.forEach(month => {
+                const data = monthlyEarnings[month];
+                timelineHTML += `
+                    <div class="month-earnings">
+                        <div class="month-header">
+                            <div class="month-name">${month}</div>
+                            <div class="month-total">$${data.total.toLocaleString()}</div>
+                        </div>
+                        <div class="daily-earnings">
+                            ${data.days.map(day => `
+                                <div class="day-earning ${day.date.getDay() === 0 || day.date.getDay() === 6 ? 'weekend' : ''}">
+                                    <div class="day-date">${day.date.getDate()} ${day.date.toLocaleString('default', { month: 'short' })}</div>
+                                    <div class="day-amount">$${day.amount}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            timelineElement.innerHTML = timelineHTML;
+        }
+
+        // Update current status
+        function updateCurrentStatus(stats) {
+            // Update timeline with current date
+            const currentDateElement = document.querySelector('.timeline div:nth-child(4) .transaction-date');
+            if (currentDateElement) {
+                currentDateElement.textContent = formatDateWithOrdinal(CURRENT_DATE);
+            }
+            
+            const statusTextElement = document.querySelector('.timeline div:nth-child(4) p');
+            if (statusTextElement) {
+                statusTextElement.textContent = `Earned $${stats.totalEarnings.toLocaleString()} so far. Investment performing well`;
+            }
+        }
+
+        // Firebase Functions for Offline Support
+        async function initializeUserData(userId) {
+            const userRef = db.collection('users').doc(userId);
+            const userDoc = await userRef.get();
+            
+            if (!userDoc.exists) {
+                const userData = {
+                    userId: userId,
+                    firstName: 'Felicity',
+                    lastName: 'Smith',
+                    email: auth.currentUser.email,
+                    totalInvestment: INVESTMENT_AMOUNT,
+                    currentBalance: INVESTMENT_AMOUNT,
+                    totalEarnings: 0,
+                    investmentStartDate: INVESTMENT_START_DATE.toISOString(),
+                    investmentEndDate: INVESTMENT_END_DATE.toISOString(),
+                    dailyEarnings: DAILY_EARNINGS,
+                    lastEarningDate: null,
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
+                    transactions: []
+                };
+                
+                await userRef.set(userData);
+                console.log('User data initialized in Firestore');
+            }
+        }
+
+        // Check and update earnings in Firestore
+        async function updateFirestoreEarnings(userId) {
+            try {
+                const userRef = db.collection('users').doc(userId);
+                const userDoc = await userRef.get();
+                
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    const today = new Date();
+                    const todayStr = today.toISOString().split('T')[0];
+                    
+                    // Only update if it's a business day and not already updated today
+                    if (isBusinessDay(today) && userData.lastEarningDate !== todayStr) {
+                        const stats = calculateCurrentStats();
+                        
+                        // Update Firestore
+                        await userRef.update({
+                            currentBalance: stats.currentBalance,
+                            totalEarnings: stats.totalEarnings,
+                            lastEarningDate: todayStr,
+                            lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        
+                        // Add today's earning to transactions
+                        await userRef.update({
+                            transactions: firebase.firestore.FieldValue.arrayUnion({
+                                type: "earning",
+                                amount: DAILY_EARNINGS,
+                                date: todayStr,
+                                description: "Daily Earnings - Premium Plan",
+                                status: "completed",
+                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                            })
+                        });
+                        
+                        console.log('Earnings updated in Firestore for', todayStr);
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating Firestore earnings:', error);
+            }
         }
 
         // Show detail pages
@@ -1264,12 +1359,23 @@
         }
 
         // Check authentication state
-        auth.onAuthStateChanged(user => {
+        auth.onAuthStateChanged(async (user) => {
             if (!user) {
                 window.location.href = 'login.html';
             } else {
-                // User is signed in, load their data
+                // User is signed in, show logout button
+                logoutBtn.style.display = 'block';
+                
+                // Initialize Firebase data
+                await initializeUserData(user.uid);
+                
+                // Update Firestore earnings if needed
+                await updateFirestoreEarnings(user.uid);
+                
+                // Load user data
                 updateDashboard();
+                
+                // Load user profile
                 loadUserProfile(user);
             }
         });
@@ -1279,6 +1385,10 @@
             if (user.photoURL) {
                 avatarInitial.style.display = 'none';
                 userAvatar.innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
+            } else {
+                // Show first letter of first name
+                const firstName = user.displayName ? user.displayName.split(' ')[0] : 'Felicity';
+                avatarInitial.textContent = firstName.charAt(0).toUpperCase();
             }
         }
 
@@ -1306,7 +1416,7 @@
                                 photoURL: downloadURL
                             }).then(() => {
                                 return db.collection('users').doc(user.uid).update({
-                                    'personalInfo.profilePicture': downloadURL
+                                    profilePicture: downloadURL
                                 });
                             }).then(() => {
                                 loadUserProfile(user);
@@ -1315,6 +1425,17 @@
                         });
                     }
                 );
+            }
+        });
+
+        // Logout function
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Logout failed:', error);
+                alert('Logout failed. Please try again.');
             }
         });
 
@@ -1328,7 +1449,14 @@
         });
 
         // Initialize dashboard
-        updateDashboard();
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDashboard();
+            
+            // Update every hour to check for new business days
+            setInterval(() => {
+                updateDashboard();
+            }, 3600000); // 1 hour
+        });
     </script>
 </body>
 </html>
