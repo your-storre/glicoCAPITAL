@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Account | GlicoCapital</title>
+    <title>Service Not Available | GlicoCapital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Import all premium styles from login */
@@ -124,6 +124,46 @@
             background: linear-gradient(90deg, var(--secondary), var(--accent));
         }
         
+        /* Message Icon */
+        .message-icon {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--warning), #f97316);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.5rem;
+            color: white;
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+        }
+        
+        /* Message Content */
+        .message-content {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .message-content h3 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .message-content p {
+            color: var(--gray);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
         /* Form Styles */
         .form-group {
             margin-bottom: 24px;
@@ -162,39 +202,6 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-        
-        .name-fields {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        .terms {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 24px;
-        }
-        
-        .terms input {
-            width: auto;
-            margin-top: 4px;
-        }
-        
-        .terms label {
-            font-weight: normal;
-            font-size: 0.9rem;
-        }
-        
-        .terms a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .terms a:hover {
-            text-decoration: underline;
         }
         
         /* Premium Button Styles */
@@ -252,6 +259,20 @@
             box-shadow: 0 8px 20px rgba(212, 175, 55, 0.5);
         }
         
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+            box-shadow: none;
+        }
+        
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+        }
+        
         .auth-footer {
             text-align: center;
             margin-top: 30px;
@@ -269,38 +290,45 @@
             color: var(--primary-dark);
         }
         
-        /* Password Strength */
-        .password-strength {
-            margin-top: 8px;
-            height: 6px;
-            background: var(--gray-light);
-            border-radius: 3px;
-            overflow: hidden;
+        /* Success Message */
+        .success-message {
+            text-align: center;
+            padding: 20px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            margin-bottom: 20px;
+            display: none;
         }
         
-        .strength-meter {
-            height: 100%;
-            width: 0;
-            border-radius: 3px;
-            transition: all 0.3s ease;
+        .success-message.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
         }
         
-        .strength-weak {
-            background: var(--danger);
-            width: 33%;
+        .success-message i {
+            color: var(--success);
+            font-size: 2rem;
+            margin-bottom: 10px;
         }
         
-        .strength-medium {
-            background: var(--warning);
-            width: 66%;
-        }
-        
-        .strength-strong {
-            background: var(--success);
-            width: 100%;
+        .success-message h4 {
+            color: var(--success);
+            margin-bottom: 5px;
         }
         
         /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -315,6 +343,21 @@
         .animate-in {
             animation: fadeInUp 0.6s ease forwards;
         }
+        
+        /* Loader */
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -324,75 +367,56 @@
                 <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
                 <h1>GlicoCapital</h1>
             </div>
-            <h2>Create Your Account</h2>
-            <p>Start your investment journey with us today</p>
+            <h2>Service Information</h2>
+            <p>Stay informed about our expansion</p>
         </div>
         
         <div class="card animate-in" style="animation-delay: 0.1s;">
-            <form id="registerForm">
-                <div class="name-fields">
+            <!-- Success Message (Hidden by default) -->
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <h4>Thank You!</h4>
+                <p>We've received your email. We'll notify you when GlicoCapital expands to the UK.</p>
+                <p>Redirecting you back to the homepage...</p>
+            </div>
+            
+            <!-- Main Content -->
+            <div id="mainContent">
+                <div class="message-icon">
+                    <div class="icon-circle">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                </div>
+                
+                <div class="message-content">
+                    <h3>Oh sorry! 😔</h3>
+                    <p><strong>GlicoCapital is not currently available in the United Kingdom.</strong></p>
+                    <p>We're working hard to expand our services to the UK and other regions. Our team is actively working on regulatory compliance and setting up operations to serve our UK clients.</p>
+                    <p>In the meantime, we'd love to notify you as soon as our services become available in your region.</p>
+                </div>
+                
+                <form id="notifyForm">
                     <div class="form-group">
-                        <label for="firstName">First Name</label>
+                        <label for="email">Your Email Address</label>
                         <div class="input-with-icon">
-                            <i class="fas fa-user input-icon"></i>
-                            <input type="text" id="firstName" placeholder="First name" required>
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="email" placeholder="Enter your email address" required>
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <div class="input-with-icon">
-                            <i class="fas fa-user input-icon"></i>
-                            <input type="text" id="lastName" placeholder="Last name" required>
-                        </div>
-                    </div>
-                </div>
+                    <button type="submit" class="btn btn-secondary" id="submitBtn">
+                        <i class="fas fa-bell"></i>
+                        Notify Me When Available
+                    </button>
+                </form>
                 
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-envelope input-icon"></i>
-                        <input type="email" id="email" placeholder="Enter your email" required>
-                    </div>
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-outline" onclick="goToHome()">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Homepage
+                    </button>
                 </div>
-                
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-phone input-icon"></i>
-                        <input type="tel" id="phone" placeholder="Enter your phone number" required>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="password" placeholder="Create a password" required>
-                    </div>
-                    <div class="password-strength">
-                        <div class="strength-meter" id="passwordStrength"></div>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-lock input-icon"></i>
-                        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
-                    </div>
-                </div>
-                
-                <div class="terms">
-                    <input type="checkbox" id="agreeTerms" required>
-                    <label for="agreeTerms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
-                </div>
-                
-                <button type="submit" class="btn btn-secondary">
-                    <i class="fas fa-user-plus"></i>
-                    Create Account
-                </button>
-            </form>
+            </div>
             
             <div class="auth-footer">
                 <p>Already have an account? <a href="login.html">Sign in here</a></p>
@@ -400,13 +424,12 @@
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK (Optional - if you want to save emails) -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
-        // Firebase configuration
+        // Firebase configuration (optional - if you want to save emails)
         const firebaseConfig = {
             apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
             authDomain: "ggic-investment.firebaseapp.com",
@@ -418,106 +441,74 @@
             measurementId: "G-NR5R3EJM93"
         };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+        // Initialize Firebase only if you want to save emails
+        let db = null;
+        try {
+            const app = firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            console.log("Firebase initialized for email collection");
+        } catch (error) {
+            console.log("Firebase not initialized (optional for email collection)");
+        }
 
-        // Password strength indicator
-        document.getElementById('password').addEventListener('input', function() {
-            const password = this.value;
-            const strengthMeter = document.getElementById('passwordStrength');
-            
-            // Reset classes
-            strengthMeter.className = 'strength-meter';
-            
-            if (password.length === 0) {
-                strengthMeter.style.width = '0';
-                return;
-            }
-            
-            // Simple password strength calculation
-            let strength = 0;
-            if (password.length >= 8) strength++;
-            if (/[A-Z]/.test(password)) strength++;
-            if (/[0-9]/.test(password)) strength++;
-            if (/[^A-Za-z0-9]/.test(password)) strength++;
-            
-            // Update strength meter
-            if (strength <= 1) {
-                strengthMeter.classList.add('strength-weak');
-            } else if (strength <= 3) {
-                strengthMeter.classList.add('strength-medium');
-            } else {
-                strengthMeter.classList.add('strength-strong');
-            }
-        });
-
-        // Registration form handler
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        // Form submission handler
+        document.getElementById('notifyForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
+            const email = document.getElementById('email').value.trim();
+            const submitBtn = document.getElementById('submitBtn');
             
-            // Validate passwords match
-            if (password !== confirmPassword) {
-                alert('Passwords do not match');
+            // Basic email validation
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address');
                 return;
             }
             
             // Show loading state
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+            submitBtn.innerHTML = '<div class="loader"></div> Submitting...';
             submitBtn.disabled = true;
             
-            // Create user with Firebase Auth
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // Signed up successfully
-                    const user = userCredential.user;
-                    
-                    // Create user document in Firestore
-                    return db.collection('users').doc(user.uid).set({
-                        personalInfo: {
-                            firstName: firstName,
-                            lastName: lastName,
-                            email: email,
-                            phone: phone,
-                            joinDate: new Date().toISOString()
-                        },
-                        investment: {
-                            initialDeposit: 0,
-                            currentBalance: 0,
-                            dailyEarnings: 0,
-                            startDate: null,
-                            status: 'inactive'
-                        },
-                        settings: {
-                            emailNotifications: true,
-                            twoFactorAuth: false
-                        }
+            // Save email to Firebase if available (optional)
+            if (db) {
+                try {
+                    await db.collection('uk_waitlist').add({
+                        email: email,
+                        submittedAt: new Date().toISOString(),
+                        country: 'UK',
+                        notified: false
                     });
-                })
-                .then(() => {
-                    // Redirect to dashboard
-                    window.location.href = 'dashboard.html';
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    
-                    alert(`Registration failed: ${errorMessage}`);
-                    
-                    // Reset button
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                });
+                    console.log("Email saved to Firebase");
+                } catch (error) {
+                    console.log("Could not save to Firebase (not required)");
+                }
+            }
+            
+            // Simulate saving (you can replace this with actual backend API)
+            setTimeout(() => {
+                // Show success message
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('successMessage').classList.add('show');
+                
+                // Reset button (though it's hidden now)
+                submitBtn.innerHTML = '<i class="fas fa-bell"></i> Notify Me When Available';
+                submitBtn.disabled = false;
+                
+                // Redirect to index after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000);
+                
+            }, 1000);
+        });
+
+        // Go to home function
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Auto-focus email input
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('email').focus();
         });
     </script>
 </body>
