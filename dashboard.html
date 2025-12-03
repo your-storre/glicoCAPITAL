@@ -675,7 +675,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stat-label">Current Balance</div>
-                <div class="stat-value" id="currentBalance">$41,000</div>
+                <div class="stat-value" id="currentBalance">$41,120</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
                     <span>Updated today</span>
@@ -686,7 +686,7 @@
                     <i class="fas fa-coins"></i>
                 </div>
                 <div class="stat-label">Total Earnings</div>
-                <div class="stat-value" id="totalEarnings">$6,000</div>
+                <div class="stat-value" id="totalEarnings">$6,120</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
                     <span>Since 20 Sept 2025</span>
@@ -752,10 +752,10 @@
                 
                 <div style="position: relative; margin-bottom: 20px;">
                     <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">30th November 2025</div>
+                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate">3rd December 2025</div>
                     <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
                         <h4 style="margin-bottom: 5px; font-weight: 600;">Current Status</h4>
-                        <p style="opacity: 0.8; font-size: 0.9rem;">Earned $6,000 so far. Investment performing well</p>
+                        <p style="opacity: 0.8; font-size: 0.9rem;" id="currentStatusText">Earned $6,120 so far. Investment performing well</p>
                     </div>
                 </div>
                 
@@ -779,7 +779,7 @@
             
             <div class="info-item">
                 <div class="info-label">Current Balance</div>
-                <div class="info-value" id="detailCurrentBalance">$41,000</div>
+                <div class="info-value" id="detailCurrentBalance">$41,120</div>
             </div>
             
             <div class="info-item">
@@ -789,7 +789,7 @@
             
             <div class="info-item">
                 <div class="info-label">Total Earnings</div>
-                <div class="info-value" id="detailTotalEarnings">$6,000</div>
+                <div class="info-value" id="detailTotalEarnings">$6,120</div>
             </div>
             
             <div class="info-item">
@@ -805,11 +805,11 @@
                 </div>
                 <div class="info-item">
                     <div class="info-label">Days Remaining</div>
-                    <div class="info-value" id="daysRemaining">48 Business Days</div>
+                    <div class="info-value" id="daysRemaining">47 Business Days</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Expected Earnings</div>
-                    <div class="info-value" id="expectedEarnings">$5,760</div>
+                    <div class="info-value" id="expectedEarnings">$5,640</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Total Payout</div>
@@ -831,7 +831,7 @@
             
             <div class="info-item">
                 <div class="info-label">Total Earnings</div>
-                <div class="info-value" id="detailEarningsTotal">$6,000</div>
+                <div class="info-value" id="detailEarningsTotal">$6,120</div>
             </div>
             
             <div class="info-item">
@@ -852,11 +852,11 @@
                 <h3 style="margin-bottom: 15px;">Future Earnings Projection</h3>
                 <div class="info-item">
                     <div class="info-label">Remaining Business Days</div>
-                    <div class="info-value" id="futureBusinessDays">48 days</div>
+                    <div class="info-value" id="futureBusinessDays">47 days</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Future Earnings</div>
-                    <div class="info-value" id="futureEarnings">$5,760</div>
+                    <div class="info-value" id="futureEarnings">$5,640</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Total Expected Earnings</div>
@@ -909,7 +909,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
 
     <script>
-        // Firebase configuration - EXACTLY AS YOU HAD IT
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
             authDomain: "ggic-investment.firebaseapp.com",
@@ -927,7 +927,7 @@
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        // DOM Elements - EXACTLY AS YOU HAD IT
+        // DOM Elements
         const logoutBtn = document.getElementById('logoutBtn');
         const totalInvestmentEl = document.getElementById('totalInvestment');
         const currentBalanceEl = document.getElementById('currentBalance');
@@ -938,7 +938,7 @@
         const userAvatar = document.getElementById('userAvatar');
         const avatarInitial = document.getElementById('avatarInitial');
         
-        // Detail pages - EXACTLY AS YOU HAD IT
+        // Detail pages
         const currentBalancePage = document.getElementById('currentBalancePage');
         const totalEarningsPage = document.getElementById('totalEarningsPage');
         const allTransactionsPage = document.getElementById('allTransactionsPage');
@@ -948,7 +948,9 @@
         const INVESTMENT_AMOUNT = 35000;
         const INVESTMENT_START_DATE = new Date('2025-09-20');
         const INVESTMENT_END_DATE = new Date('2026-02-20');
-        const CURRENT_DATE = new Date('2025-12-02'); // Today's date as per your request
+        
+        // TODAY'S DATE - DECEMBER 3, 2025 (A BUSINESS DAY)
+        const TODAY = new Date('2025-12-03');
 
         // US Holidays 2025-2026
         const HOLIDAYS = [
@@ -961,7 +963,7 @@
         // Check if date is a business day (Monday-Friday, not holiday)
         function isBusinessDay(date) {
             const day = date.getDay();
-            if (day === 0 || day === 6) return false; // Sunday or Saturday
+            if (day === 0 || day === 6) return false;
             
             const dateStr = date.toISOString().split('T')[0];
             if (HOLIDAYS.includes(dateStr)) return false;
@@ -1008,7 +1010,7 @@
 
         // Calculate Felicity's complete transaction history UP TO TODAY
         function calculateFelicityHistory() {
-            // Previous investment history (EXACTLY AS YOU HAD IT)
+            // Previous investment history
             const previousHistory = [
                 {
                     type: "deposit",
@@ -1017,11 +1019,11 @@
                     description: "Starter Plan Investment Deposit",
                     status: "completed"
                 },
-                // Previous daily earnings for May-July (as per your example)
+                // Previous daily earnings for May-July (60 business days × $45 = $2,700)
                 ...Array.from({length: 60}, (_, i) => ({
                     type: "earning",
                     amount: 45,
-                    date: new Date(2025, 4, 16 + i).toISOString().split('T')[0], // May 16 onward
+                    date: new Date(2025, 4, 16 + i).toISOString().split('T')[0],
                     description: "Daily Earnings - Starter Plan",
                     status: "completed"
                 })),
@@ -1043,8 +1045,8 @@
                 }
             ];
             
-            // Generate daily earnings from September 23, 2025 to TODAY (December 2, 2025)
-            const dailyEarnings = generateDailyEarnings(INVESTMENT_START_DATE, CURRENT_DATE);
+            // Generate daily earnings from September 23, 2025 to TODAY (December 3, 2025)
+            const dailyEarnings = generateDailyEarnings(INVESTMENT_START_DATE, TODAY);
             
             // Combine all transactions
             return [...previousHistory, ...dailyEarnings];
@@ -1052,12 +1054,12 @@
 
         // Calculate current earnings and balance
         function calculateCurrentStats() {
-            const businessDays = calculateBusinessDays(INVESTMENT_START_DATE, CURRENT_DATE);
+            const businessDays = calculateBusinessDays(INVESTMENT_START_DATE, TODAY);
             const totalEarnings = businessDays * DAILY_EARNINGS;
             const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
             
             // Calculate remaining business days until payout
-            const remainingBusinessDays = calculateBusinessDays(CURRENT_DATE, INVESTMENT_END_DATE);
+            const remainingBusinessDays = calculateBusinessDays(TODAY, INVESTMENT_END_DATE);
             const expectedEarnings = remainingBusinessDays * DAILY_EARNINGS;
             const totalPayout = currentBalance + expectedEarnings;
             
@@ -1105,7 +1107,7 @@
             const stats = calculateCurrentStats();
             const allTransactions = calculateFelicityHistory();
             
-            // Update main stats
+            // Update main stats - WITH TODAY'S EARNINGS (December 3rd)
             totalInvestmentEl.textContent = `$${stats.totalInvestment.toLocaleString()}`;
             currentBalanceEl.textContent = `$${stats.currentBalance.toLocaleString()}`;
             totalEarningsEl.textContent = `$${stats.totalEarnings.toLocaleString()}`;
@@ -1131,6 +1133,9 @@
             
             // Update current status
             updateCurrentStatus(stats);
+            
+            // Save today's earnings to Firestore
+            saveTodaysEarningsToFirestore(stats);
         }
 
         // Update transaction lists
@@ -1258,14 +1263,60 @@
         // Update current status
         function updateCurrentStatus(stats) {
             // Update timeline with current date
-            const currentDateElement = document.querySelector('.timeline div:nth-child(4) .transaction-date');
+            const currentDateElement = document.getElementById('currentStatusDate');
             if (currentDateElement) {
-                currentDateElement.textContent = formatDateWithOrdinal(CURRENT_DATE);
+                currentDateElement.textContent = formatDateWithOrdinal(TODAY);
             }
             
-            const statusTextElement = document.querySelector('.timeline div:nth-child(4) p');
+            const statusTextElement = document.getElementById('currentStatusText');
             if (statusTextElement) {
                 statusTextElement.textContent = `Earned $${stats.totalEarnings.toLocaleString()} so far. Investment performing well`;
+            }
+        }
+
+        // Save today's earnings to Firestore
+        async function saveTodaysEarningsToFirestore(stats) {
+            try {
+                const user = auth.currentUser;
+                if (user) {
+                    const todayStr = TODAY.toISOString().split('T')[0];
+                    
+                    // Check if earnings were already recorded today
+                    const userRef = db.collection('users').doc(user.uid);
+                    const userDoc = await userRef.get();
+                    
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+                        
+                        if (userData.lastEarningDate !== todayStr) {
+                            // Update Firestore with today's earnings
+                            await userRef.update({
+                                currentBalance: stats.currentBalance,
+                                totalEarnings: stats.totalEarnings,
+                                lastEarningDate: todayStr,
+                                lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                            
+                            // Add today's earning transaction
+                            await userRef.update({
+                                transactions: firebase.firestore.FieldValue.arrayUnion({
+                                    type: "earning",
+                                    amount: DAILY_EARNINGS,
+                                    date: todayStr,
+                                    description: "Daily Earnings - Premium Plan",
+                                    status: "completed",
+                                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                                })
+                            });
+                            
+                            console.log(`✅ Earnings recorded for ${todayStr}: $${DAILY_EARNINGS}`);
+                        } else {
+                            console.log(`✅ Earnings already recorded for ${todayStr}`);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Error saving earnings to Firestore:', error);
             }
         }
 
@@ -1275,69 +1326,45 @@
             const userDoc = await userRef.get();
             
             if (!userDoc.exists) {
+                const stats = calculateCurrentStats();
                 const userData = {
                     userId: userId,
                     firstName: 'Felicity',
                     lastName: 'Smith',
                     email: auth.currentUser.email,
                     totalInvestment: INVESTMENT_AMOUNT,
-                    currentBalance: INVESTMENT_AMOUNT,
-                    totalEarnings: 0,
+                    currentBalance: stats.currentBalance,
+                    totalEarnings: stats.totalEarnings,
                     investmentStartDate: INVESTMENT_START_DATE.toISOString(),
                     investmentEndDate: INVESTMENT_END_DATE.toISOString(),
                     dailyEarnings: DAILY_EARNINGS,
-                    lastEarningDate: null,
+                    lastEarningDate: TODAY.toISOString().split('T')[0],
                     lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
                     transactions: []
                 };
                 
                 await userRef.set(userData);
-                console.log('User data initialized in Firestore');
+                console.log('✅ User data initialized in Firestore with today\'s earnings');
             }
         }
 
-        // Check and update earnings in Firestore
-        async function updateFirestoreEarnings(userId) {
-            try {
-                const userRef = db.collection('users').doc(userId);
-                const userDoc = await userRef.get();
-                
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    const today = new Date();
-                    const todayStr = today.toISOString().split('T')[0];
-                    
-                    // Only update if it's a business day and not already updated today
-                    if (isBusinessDay(today) && userData.lastEarningDate !== todayStr) {
-                        const stats = calculateCurrentStats();
-                        
-                        // Update Firestore
-                        await userRef.update({
-                            currentBalance: stats.currentBalance,
-                            totalEarnings: stats.totalEarnings,
-                            lastEarningDate: todayStr,
-                            lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                        
-                        // Add today's earning to transactions
-                        await userRef.update({
-                            transactions: firebase.firestore.FieldValue.arrayUnion({
-                                type: "earning",
-                                amount: DAILY_EARNINGS,
-                                date: todayStr,
-                                description: "Daily Earnings - Premium Plan",
-                                status: "completed",
-                                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                            })
-                        });
-                        
-                        console.log('Earnings updated in Firestore for', todayStr);
-                    }
-                }
-            } catch (error) {
-                console.error('Error updating Firestore earnings:', error);
+        // Load user profile picture
+        function loadUserProfile(user) {
+            if (user.photoURL) {
+                avatarInitial.style.display = 'none';
+                userAvatar.innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
+            } else {
+                avatarInitial.textContent = user.displayName ? user.displayName.charAt(0).toUpperCase() : 'F';
             }
         }
+
+        // Profile picture upload
+        avatarUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                showNotification('Profile picture upload feature is under maintenance', 'info');
+            }
+        });
 
         // Show detail pages
         document.getElementById('currentBalanceCard').addEventListener('click', function() {
@@ -1363,68 +1390,16 @@
             if (!user) {
                 window.location.href = 'login.html';
             } else {
-                // User is signed in, show logout button
                 logoutBtn.style.display = 'block';
                 
                 // Initialize Firebase data
                 await initializeUserData(user.uid);
-                
-                // Update Firestore earnings if needed
-                await updateFirestoreEarnings(user.uid);
                 
                 // Load user data
                 updateDashboard();
                 
                 // Load user profile
                 loadUserProfile(user);
-            }
-        });
-
-        // Load user profile picture
-        function loadUserProfile(user) {
-            if (user.photoURL) {
-                avatarInitial.style.display = 'none';
-                userAvatar.innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
-            } else {
-                // Show first letter of first name
-                const firstName = user.displayName ? user.displayName.split(' ')[0] : 'Felicity';
-                avatarInitial.textContent = firstName.charAt(0).toUpperCase();
-            }
-        }
-
-        // Profile picture upload
-        avatarUpload.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const user = auth.currentUser;
-                const storageRef = storage.ref(`profile-pictures/${user.uid}`);
-                const uploadTask = storageRef.put(file);
-                
-                uploadTask.on('state_changed', 
-                    (snapshot) => {
-                        // Progress handling
-                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        console.log('Upload is ' + progress + '% done');
-                    }, 
-                    (error) => {
-                        console.error('Upload failed:', error);
-                        alert('Failed to upload profile picture');
-                    }, 
-                    () => {
-                        uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                            user.updateProfile({
-                                photoURL: downloadURL
-                            }).then(() => {
-                                return db.collection('users').doc(user.uid).update({
-                                    profilePicture: downloadURL
-                                });
-                            }).then(() => {
-                                loadUserProfile(user);
-                                alert('Profile picture updated successfully!');
-                            });
-                        });
-                    }
-                );
             }
         });
 
@@ -1450,9 +1425,18 @@
 
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('📊 Dashboard loaded on:', TODAY.toDateString());
+            console.log('📅 Today is a business day:', isBusinessDay(TODAY));
+            
+            // Update dashboard
             updateDashboard();
             
-            // Update every hour to check for new business days
+            // Check for updates every minute (for real-time updates)
+            setInterval(() => {
+                updateDashboard();
+            }, 60000); // 1 minute
+            
+            // Also update every hour
             setInterval(() => {
                 updateDashboard();
             }, 3600000); // 1 hour
