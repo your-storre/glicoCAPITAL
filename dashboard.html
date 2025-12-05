@@ -675,7 +675,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stat-label">Current Balance</div>
-                <div class="stat-value" id="currentBalance">$41,120</div>
+                <div class="stat-value" id="currentBalance">$41,240</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
                     <span>Updated today</span>
@@ -686,7 +686,7 @@
                     <i class="fas fa-coins"></i>
                 </div>
                 <div class="stat-label">Total Earnings</div>
-                <div class="stat-value" id="totalEarnings">$6,120</div>
+                <div class="stat-value" id="totalEarnings">$6,240</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
                     <span>Since 20 Sept 2025</span>
@@ -752,10 +752,10 @@
                 
                 <div style="position: relative; margin-bottom: 20px;">
                     <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate">3rd December 2025</div>
+                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate">5th December 2025</div>
                     <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
                         <h4 style="margin-bottom: 5px; font-weight: 600;">Current Status</h4>
-                        <p style="opacity: 0.8; font-size: 0.9rem;" id="currentStatusText">Earned $6,120 so far. Investment performing well</p>
+                        <p style="opacity: 0.8; font-size: 0.9rem;" id="currentStatusText">Earned $6,240 so far. Investment performing well</p>
                     </div>
                 </div>
                 
@@ -779,7 +779,7 @@
             
             <div class="info-item">
                 <div class="info-label">Current Balance</div>
-                <div class="info-value" id="detailCurrentBalance">$41,120</div>
+                <div class="info-value" id="detailCurrentBalance">$41,240</div>
             </div>
             
             <div class="info-item">
@@ -789,7 +789,7 @@
             
             <div class="info-item">
                 <div class="info-label">Total Earnings</div>
-                <div class="info-value" id="detailTotalEarnings">$6,120</div>
+                <div class="info-value" id="detailTotalEarnings">$6,240</div>
             </div>
             
             <div class="info-item">
@@ -805,11 +805,11 @@
                 </div>
                 <div class="info-item">
                     <div class="info-label">Days Remaining</div>
-                    <div class="info-value" id="daysRemaining">47 Business Days</div>
+                    <div class="info-value" id="daysRemaining">46 Business Days</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Expected Earnings</div>
-                    <div class="info-value" id="expectedEarnings">$5,640</div>
+                    <div class="info-value" id="expectedEarnings">$5,520</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Total Payout</div>
@@ -831,7 +831,7 @@
             
             <div class="info-item">
                 <div class="info-label">Total Earnings</div>
-                <div class="info-value" id="detailEarningsTotal">$6,120</div>
+                <div class="info-value" id="detailEarningsTotal">$6,240</div>
             </div>
             
             <div class="info-item">
@@ -852,11 +852,11 @@
                 <h3 style="margin-bottom: 15px;">Future Earnings Projection</h3>
                 <div class="info-item">
                     <div class="info-label">Remaining Business Days</div>
-                    <div class="info-value" id="futureBusinessDays">47 days</div>
+                    <div class="info-value" id="futureBusinessDays">46 days</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Future Earnings</div>
-                    <div class="info-value" id="futureEarnings">$5,640</div>
+                    <div class="info-value" id="futureEarnings">$5,520</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Total Expected Earnings</div>
@@ -909,7 +909,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
 
     <script>
-        // Firebase configuration
+        // Firebase configuration - EXACTLY AS PAYOUT PAGE
         const firebaseConfig = {
             apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
             authDomain: "ggic-investment.firebaseapp.com",
@@ -921,7 +921,7 @@
             measurementId: "G-NR5R3EJM93"
         };
 
-        // Initialize Firebase
+        // Initialize Firebase - EXACTLY AS PAYOUT PAGE
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -943,16 +943,16 @@
         const totalEarningsPage = document.getElementById('totalEarningsPage');
         const allTransactionsPage = document.getElementById('allTransactionsPage');
 
-        // Constants for Felicity's investment
+        // Constants for Felicity's investment - EXACTLY AS PAYOUT PAGE
         const DAILY_EARNINGS = 120;
         const INVESTMENT_AMOUNT = 35000;
         const INVESTMENT_START_DATE = new Date('2025-09-20');
         const INVESTMENT_END_DATE = new Date('2026-02-20');
         
-        // TODAY'S DATE - DECEMBER 3, 2025 (A BUSINESS DAY)
-        const TODAY = new Date('2025-12-03');
+        // Get TODAY'S DATE dynamically - EXACTLY AS PAYOUT PAGE
+        const TODAY = new Date();
 
-        // US Holidays 2025-2026
+        // US Holidays 2025-2026 - EXACTLY AS PAYOUT PAGE
         const HOLIDAYS = [
             '2025-12-25', // Christmas
             '2026-01-01', // New Year
@@ -960,7 +960,7 @@
             '2026-02-16', // Presidents Day
         ];
 
-        // Check if date is a business day (Monday-Friday, not holiday)
+        // Check if date is a business day - EXACTLY AS PAYOUT PAGE
         function isBusinessDay(date) {
             const day = date.getDay();
             if (day === 0 || day === 6) return false;
@@ -971,7 +971,7 @@
             return true;
         }
 
-        // Calculate business days between two dates
+        // Calculate business days between two dates - EXACTLY AS PAYOUT PAGE
         function calculateBusinessDays(startDate, endDate) {
             let businessDays = 0;
             const current = new Date(startDate);
@@ -986,7 +986,7 @@
             return businessDays;
         }
 
-        // Generate daily earnings from start to end date
+        // Generate daily earnings from start to end date - EXACTLY AS PAYOUT PAGE
         function generateDailyEarnings(startDate, endDate) {
             const earnings = [];
             const current = new Date(startDate);
@@ -1008,7 +1008,7 @@
             return earnings;
         }
 
-        // Calculate Felicity's complete transaction history UP TO TODAY
+        // Calculate Felicity's complete transaction history - EXACTLY AS PAYOUT PAGE
         function calculateFelicityHistory() {
             // Previous investment history
             const previousHistory = [
@@ -1045,14 +1045,14 @@
                 }
             ];
             
-            // Generate daily earnings from September 23, 2025 to TODAY (December 3, 2025)
+            // Generate daily earnings from September 23, 2025 to TODAY (December 5, 2025)
             const dailyEarnings = generateDailyEarnings(INVESTMENT_START_DATE, TODAY);
             
             // Combine all transactions
             return [...previousHistory, ...dailyEarnings];
         }
 
-        // Calculate current earnings and balance
+        // Calculate current earnings and balance - EXACTLY AS PAYOUT PAGE
         function calculateCurrentStats() {
             const businessDays = calculateBusinessDays(INVESTMENT_START_DATE, TODAY);
             const totalEarnings = businessDays * DAILY_EARNINGS;
@@ -1102,12 +1102,12 @@
             }
         }
 
-        // Update dashboard with calculated data
+        // Update dashboard with calculated data - USING PAYOUT PAGE LOGIC
         function updateDashboard() {
             const stats = calculateCurrentStats();
             const allTransactions = calculateFelicityHistory();
             
-            // Update main stats - WITH TODAY'S EARNINGS (December 3rd)
+            // Update main stats
             totalInvestmentEl.textContent = `$${stats.totalInvestment.toLocaleString()}`;
             currentBalanceEl.textContent = `$${stats.currentBalance.toLocaleString()}`;
             totalEarningsEl.textContent = `$${stats.totalEarnings.toLocaleString()}`;
@@ -1134,7 +1134,7 @@
             // Update current status
             updateCurrentStatus(stats);
             
-            // Save today's earnings to Firestore
+            // Save today's earnings to Firestore - EXACTLY AS PAYOUT PAGE
             saveTodaysEarningsToFirestore(stats);
         }
 
@@ -1274,45 +1274,50 @@
             }
         }
 
-        // Save today's earnings to Firestore
+        // Save today's earnings to Firestore - EXACTLY AS PAYOUT PAGE
         async function saveTodaysEarningsToFirestore(stats) {
             try {
                 const user = auth.currentUser;
                 if (user) {
                     const todayStr = TODAY.toISOString().split('T')[0];
                     
-                    // Check if earnings were already recorded today
-                    const userRef = db.collection('users').doc(user.uid);
-                    const userDoc = await userRef.get();
-                    
-                    if (userDoc.exists) {
-                        const userData = userDoc.data();
+                    // Check if today is a business day
+                    if (isBusinessDay(TODAY)) {
+                        // Check if earnings were already recorded today
+                        const userRef = db.collection('users').doc(user.uid);
+                        const userDoc = await userRef.get();
                         
-                        if (userData.lastEarningDate !== todayStr) {
-                            // Update Firestore with today's earnings
-                            await userRef.update({
-                                currentBalance: stats.currentBalance,
-                                totalEarnings: stats.totalEarnings,
-                                lastEarningDate: todayStr,
-                                lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                            });
+                        if (userDoc.exists) {
+                            const userData = userDoc.data();
                             
-                            // Add today's earning transaction
-                            await userRef.update({
-                                transactions: firebase.firestore.FieldValue.arrayUnion({
-                                    type: "earning",
-                                    amount: DAILY_EARNINGS,
-                                    date: todayStr,
-                                    description: "Daily Earnings - Premium Plan",
-                                    status: "completed",
-                                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                                })
-                            });
-                            
-                            console.log(`✅ Earnings recorded for ${todayStr}: $${DAILY_EARNINGS}`);
-                        } else {
-                            console.log(`✅ Earnings already recorded for ${todayStr}`);
+                            if (userData.lastEarningDate !== todayStr) {
+                                // Update Firestore with today's earnings
+                                await userRef.update({
+                                    currentBalance: stats.currentBalance,
+                                    totalEarnings: stats.totalEarnings,
+                                    lastEarningDate: todayStr,
+                                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                                });
+                                
+                                // Add today's earning transaction
+                                await userRef.update({
+                                    transactions: firebase.firestore.FieldValue.arrayUnion({
+                                        type: "earning",
+                                        amount: DAILY_EARNINGS,
+                                        date: todayStr,
+                                        description: "Daily Earnings - Premium Plan",
+                                        status: "completed",
+                                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                                    })
+                                });
+                                
+                                console.log(`✅ Earnings recorded for ${todayStr}: $${DAILY_EARNINGS}`);
+                            } else {
+                                console.log(`✅ Earnings already recorded for ${todayStr}`);
+                            }
                         }
+                    } else {
+                        console.log(`ℹ️ ${todayStr} is not a business day. No earnings recorded.`);
                     }
                 }
             } catch (error) {
@@ -1320,13 +1325,15 @@
             }
         }
 
-        // Firebase Functions for Offline Support
+        // Initialize user data - EXACTLY AS PAYOUT PAGE
         async function initializeUserData(userId) {
             const userRef = db.collection('users').doc(userId);
             const userDoc = await userRef.get();
             
             if (!userDoc.exists) {
                 const stats = calculateCurrentStats();
+                const todayStr = TODAY.toISOString().split('T')[0];
+                
                 const userData = {
                     userId: userId,
                     firstName: 'Felicity',
@@ -1338,7 +1345,7 @@
                     investmentStartDate: INVESTMENT_START_DATE.toISOString(),
                     investmentEndDate: INVESTMENT_END_DATE.toISOString(),
                     dailyEarnings: DAILY_EARNINGS,
-                    lastEarningDate: TODAY.toISOString().split('T')[0],
+                    lastEarningDate: todayStr,
                     lastUpdated: firebase.firestore.FieldValue.serverTimestamp(),
                     transactions: []
                 };
@@ -1427,6 +1434,11 @@
         document.addEventListener('DOMContentLoaded', () => {
             console.log('📊 Dashboard loaded on:', TODAY.toDateString());
             console.log('📅 Today is a business day:', isBusinessDay(TODAY));
+            
+            // Log business day calculations
+            const businessDays = calculateBusinessDays(INVESTMENT_START_DATE, TODAY);
+            console.log(`📈 Business days from Sept 20 to Dec 5: ${businessDays} days`);
+            console.log(`💰 Total earnings: $${businessDays * DAILY_EARNINGS}`);
             
             // Update dashboard
             updateDashboard();
