@@ -192,31 +192,25 @@
             color: var(--danger);
         }
         
-        /* Auto-Reinvestment Banner */
-        .reinvest-banner {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(255, 107, 107, 0.15));
+        /* Success Banner */
+        .success-banner {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
             backdrop-filter: blur(15px);
             border-radius: 16px;
             padding: 25px;
             margin-bottom: 20px;
-            border: 2px solid var(--secondary);
+            border: 2px solid var(--success);
             position: relative;
             overflow: hidden;
-            animation: glow 2s infinite alternate;
             color: white;
         }
         
-        @keyframes glow {
-            from { box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
-            to { box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
-        }
-        
-        .reinvest-badge {
+        .success-badge {
             position: absolute;
             top: 15px;
             right: 15px;
-            background: var(--secondary);
-            color: var(--primary-dark);
+            background: var(--success);
+            color: white;
             padding: 8px 16px;
             border-radius: 30px;
             font-weight: 700;
@@ -267,67 +261,6 @@
             font-weight: 600;
             display: inline-block;
             margin-left: 10px;
-        }
-        
-        .reinvest-countdown {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .countdown-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .countdown-label {
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-        
-        .countdown-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-        
-        .countdown-unit {
-            font-size: 0.9rem;
-            margin-left: 5px;
-            opacity: 0.8;
-        }
-        
-        /* New Investment Success Banner */
-        .success-banner {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
-            backdrop-filter: blur(15px);
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 20px;
-            border: 2px solid var(--success);
-            position: relative;
-            overflow: hidden;
-            color: white;
-        }
-        
-        .success-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--success);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
         
         /* Detail Pages */
@@ -763,11 +696,6 @@
             .reinvest-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .reinvest-countdown {
-                flex-direction: column;
-                align-items: flex-start;
-            }
         }
         
         @media (max-width: 480px) {
@@ -806,7 +734,7 @@
         </div>
 
         <!-- SUCCESS BANNER - Shown on payout day -->
-        <div id="payoutSuccessBanner" class="success-banner animate-in" style="display: none;">
+        <div id="payoutSuccessBanner" class="success-banner animate-in">
             <div class="success-badge">
                 <i class="fas fa-check-circle"></i> REINVESTMENT COMPLETED
             </div>
@@ -835,8 +763,8 @@
                 </div>
                 <div class="reinvest-item">
                     <div class="reinvest-label">First Earning</div>
-                    <div class="reinvest-value" style="color: var(--success);">TOMORROW</div>
-                    <div class="reinvest-subtext">February 21, 2026</div>
+                    <div class="reinvest-value" style="color: var(--success);">MONDAY (Feb 23)</div>
+                    <div class="reinvest-subtext">Weekend: Feb 21-22</div>
                 </div>
                 <div class="reinvest-item">
                     <div class="reinvest-label">Next Payout</div>
@@ -878,7 +806,7 @@
                 <div class="stat-label">Current Balance</div>
                 <div class="stat-value" id="currentBalance">$47,720</div>
                 <div class="stat-trend">
-                    <span>First earning tomorrow</span>
+                    <span>First earning Monday</span>
                 </div>
             </div>
             <div class="stat-card animate-in delay-2" id="totalEarningsCard">
@@ -952,15 +880,15 @@
                 
                 <div style="position: relative; margin-bottom: 20px;">
                     <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="previousEndDate">20th February 2026</div>
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);" id="previousInvestmentItem">
+                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">20th February 2026</div>
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
                         <h4 style="margin-bottom: 5px; font-weight: 600;">Premium Plan Completed</h4>
-                        <p style="opacity: 0.8; font-size: 0.9rem;">Earned $12,720 • Total payout: $47,720</p>
+                        <p style="opacity: 0.8; font-size: 0.9rem;">Earned $12,720 • Total payout: $47,720 (Reinvested)</p>
                     </div>
                 </div>
                 
                 <!-- NEW REINVESTMENT TIMELINE ITEM -->
-                <div style="position: relative; margin-bottom: 20px;" id="reinvestmentStartItem">
+                <div style="position: relative; margin-bottom: 20px;">
                     <div style="position: absolute; left: -18px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--success); border: 2px solid white; box-shadow: 0 0 0 2px var(--success);"></div>
                     <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">20th February 2026</div>
                     <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--success);">
@@ -970,7 +898,7 @@
                         </h4>
                         <p style="opacity: 0.9; font-size: 0.9rem;">$47,720 reinvested into 3 Months Promotional Plan at $220/day</p>
                         <p style="opacity: 0.8; font-size: 0.85rem; margin-top: 5px;">
-                            <i class="fas fa-clock"></i> First earning tomorrow (Feb 21) • Projected balance: $60,700 by May 20, 2026
+                            <i class="fas fa-clock"></i> First earning: Monday (Feb 23) • Projected: $60,700 by May 20
                         </p>
                     </div>
                 </div>
@@ -1021,7 +949,7 @@
                 </div>
                 <div class="info-item">
                     <div class="info-label">First Earning</div>
-                    <div class="info-value" style="color: var(--success);">TOMORROW (Feb 21)</div>
+                    <div class="info-value" style="color: var(--success);">MONDAY (Feb 23)</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">End Date</div>
@@ -1043,7 +971,7 @@
             
             <div style="margin-top: 20px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 10px; border-left: 4px solid var(--secondary);">
                 <i class="fas fa-info-circle" style="color: var(--secondary);"></i>
-                <span style="margin-left: 8px;">This is a promotional rate. First earning will be added tomorrow (Feb 21).</span>
+                <span style="margin-left: 8px;">Weekend: Feb 21-22 • First earning will be added on Monday (Feb 23).</span>
             </div>
         </div>
     </div>
@@ -1080,10 +1008,18 @@
                             <div class="day-date">20 Feb</div>
                             <div class="day-amount" style="color: var(--secondary);">Start Date</div>
                         </div>
-                        <div class="day-earning" style="opacity: 0.5;">
+                        <div class="day-earning weekend">
                             <div class="day-date">21 Feb</div>
+                            <div class="day-amount">Weekend</div>
+                        </div>
+                        <div class="day-earning weekend">
+                            <div class="day-date">22 Feb</div>
+                            <div class="day-amount">Weekend</div>
+                        </div>
+                        <div class="day-earning" style="opacity: 0.8;">
+                            <div class="day-date">23 Feb</div>
                             <div class="day-amount">$220</div>
-                            <div style="font-size: 0.7rem; color: var(--success);">Tomorrow</div>
+                            <div style="font-size: 0.7rem; color: var(--success);">First earning</div>
                         </div>
                     </div>
                 </div>
@@ -1146,9 +1082,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
 
     <script>
-        // ===========================================
-        // FIREBASE CONFIGURATION
-        // ===========================================
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
             authDomain: "ggic-investment.firebaseapp.com",
@@ -1165,9 +1099,7 @@
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        // ===========================================
-        // DOM ELEMENTS
-        // ===========================================
+        // DOM Elements
         const logoutBtn = document.getElementById('logoutBtn');
         const totalInvestmentEl = document.getElementById('totalInvestment');
         const currentBalanceEl = document.getElementById('currentBalance');
@@ -1183,7 +1115,7 @@
         const allTransactionsPage = document.getElementById('allTransactionsPage');
 
         // ===========================================
-        // CONSTANTS - TODAY IS FEB 20, 2026 (PAYOUT DAY)
+        // CONSTANTS - TODAY IS FEB 20, 2026 (FRIDAY)
         // ===========================================
         const DAILY_EARNINGS_OLD = 120;
         const DAILY_EARNINGS_NEW = 220;
@@ -1194,10 +1126,7 @@
         const INVESTMENT_START_DATE_NEW = new Date('2026-02-20');
         const INVESTMENT_END_DATE_NEW = new Date('2026-05-20');
         
-        // TODAY IS FEB 20, 2026
         const TODAY = new Date('2026-02-20');
-        
-        // Check if today is payout day
         const IS_PAYOUT_DAY = TODAY.toDateString() === INVESTMENT_END_DATE_OLD.toDateString();
 
         // US Holidays
@@ -1205,9 +1134,6 @@
             '2025-12-25', '2026-01-01', '2026-01-19', '2026-02-16'
         ];
 
-        // ===========================================
-        // BUSINESS DAY CALCULATIONS
-        // ===========================================
         function isBusinessDay(date) {
             const day = date.getDay();
             if (day === 0 || day === 6) return false;
@@ -1215,33 +1141,18 @@
             return !HOLIDAYS.includes(dateStr);
         }
 
-        function calculateBusinessDays(startDate, endDate) {
-            let businessDays = 0;
-            const current = new Date(startDate);
-            while (current <= endDate) {
-                if (isBusinessDay(current)) businessDays++;
-                current.setDate(current.getDate() + 1);
-            }
-            return businessDays;
-        }
-
-        // ===========================================
-        // ON PAYOUT DAY (FEB 20) - SHOW NEW INVESTMENT
-        // ===========================================
         function calculateCurrentStats() {
             if (IS_PAYOUT_DAY) {
-                // NEW INVESTMENT STARTS TODAY
                 return {
                     totalInvestment: INVESTMENT_AMOUNT_NEW,
                     currentBalance: INVESTMENT_AMOUNT_NEW,
                     totalEarnings: 0,
                     dailyRate: DAILY_EARNINGS_NEW,
-                    firstEarningDate: new Date('2026-02-21'),
+                    firstEarningDate: new Date('2026-02-23'), // Monday
                     projectedEarnings: 59 * DAILY_EARNINGS_NEW,
                     projectedBalance: INVESTMENT_AMOUNT_NEW + (59 * DAILY_EARNINGS_NEW)
                 };
             } else {
-                // REGULAR CALCULATION FOR OTHER DAYS
                 const businessDays = calculateBusinessDays(INVESTMENT_START_DATE_NEW, TODAY);
                 const totalEarnings = businessDays * DAILY_EARNINGS_NEW;
                 const currentBalance = INVESTMENT_AMOUNT_NEW + totalEarnings;
@@ -1258,9 +1169,16 @@
             }
         }
 
-        // ===========================================
-        // GENERATE TRANSACTION HISTORY
-        // ===========================================
+        function calculateBusinessDays(startDate, endDate) {
+            let businessDays = 0;
+            const current = new Date(startDate);
+            while (current <= endDate) {
+                if (isBusinessDay(current)) businessDays++;
+                current.setDate(current.getDate() + 1);
+            }
+            return businessDays;
+        }
+
         function generateDailyEarnings(startDate, endDate, amount) {
             const earnings = [];
             const current = new Date(startDate);
@@ -1282,7 +1200,6 @@
         }
 
         function calculateFelicityHistory() {
-            // Previous investments history
             const previousHistory = [
                 { type: "deposit", amount: 5000, date: "2025-05-15", description: "Starter Plan Investment Deposit", status: "completed" },
                 ...Array.from({length: 60}, (_, i) => ({
@@ -1294,10 +1211,8 @@
                 { type: "deposit", amount: 35000, date: "2025-09-20", description: "Premium Plan Investment Deposit", status: "completed" }
             ];
             
-            // Premium plan earnings (Sept 23, 2025 - Feb 19, 2026)
             const premiumEarnings = generateDailyEarnings(new Date('2025-09-20'), new Date('2026-02-19'), 120);
             
-            // Add reinvestment transaction for today
             const reinvestmentTransaction = {
                 type: "reinvest",
                 amount: 47720,
@@ -1309,35 +1224,19 @@
             return [...previousHistory, ...premiumEarnings, reinvestmentTransaction];
         }
 
-        // ===========================================
-        // UPDATE DASHBOARD
-        // ===========================================
         function updateDashboard() {
             const stats = calculateCurrentStats();
             const allTransactions = calculateFelicityHistory();
             
-            // Show/hide payout day banner
-            if (IS_PAYOUT_DAY) {
-                document.getElementById('payoutSuccessBanner').style.display = 'block';
-            } else {
-                document.getElementById('payoutSuccessBanner').style.display = 'none';
-            }
-            
-            // Update main stats
             totalInvestmentEl.textContent = `$${stats.totalInvestment.toLocaleString()}`;
             currentBalanceEl.textContent = `$${stats.currentBalance.toLocaleString()}`;
             totalEarningsEl.textContent = `$${stats.totalEarnings.toLocaleString()}`;
             
-            // Update detail pages
             document.getElementById('detailCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
             document.getElementById('detailTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             
-            // Update transaction lists
             updateTransactionLists(allTransactions);
-            
-            // Update timeline dates
-            updateCurrentStatus();
         }
 
         function updateTransactionLists(allTransactions) {
@@ -1410,14 +1309,6 @@
             }
         }
 
-        function updateCurrentStatus() {
-            const todayStr = formatDateWithOrdinal(TODAY);
-            document.getElementById('previousEndDate').textContent = todayStr;
-        }
-
-        // ===========================================
-        // DETAIL PAGE FUNCTIONS
-        // ===========================================
         document.getElementById('currentBalanceCard').addEventListener('click', function() {
             currentBalancePage.classList.add('active');
         });
@@ -1436,9 +1327,6 @@
             allTransactionsPage.classList.remove('active');
         }
 
-        // ===========================================
-        // AUTH STATE
-        // ===========================================
         auth.onAuthStateChanged(async (user) => {
             if (!user) {
                 window.location.href = 'login.html';
@@ -1446,7 +1334,7 @@
                 logoutBtn.style.display = 'block';
                 updateDashboard();
                 loadUserProfile(user);
-                console.log(`📊 Dashboard loaded - Today is ${formatDateWithOrdinal(TODAY)} - Payout Day: ${IS_PAYOUT_DAY}`);
+                console.log(`📊 Dashboard loaded - Today is Friday, Feb 20, 2026 - First earning: Monday (Feb 23)`);
             }
         });
 
