@@ -469,7 +469,7 @@
             color: var(--success);
         }
         
-        /* Bank Details */
+        /* Bank Details - UPDATED for Firebase */
         .bank-details-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 16px;
@@ -514,6 +514,50 @@
         .status-verified {
             background: rgba(16, 185, 129, 0.1);
             color: var(--success);
+        }
+        
+        /* Pending Update Status */
+        .update-status-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .update-status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .update-status-title {
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .update-status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-under-review {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .update-details {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         /* Detail Pages */
@@ -909,39 +953,72 @@
             </div>
         </div>
 
-        <!-- Bank Details -->
+        <!-- Bank Details - LOADS FROM FIREBASE REALTIME DATABASE -->
         <div class="card animate-in">
             <div class="section-header">
                 <h2>Bank Details</h2>
-                <button class="btn btn-outline" onclick="updateBankDetails()">Update</button>
+                <button class="btn btn-outline" onclick="updateBankDetails()">Update Bank Details</button>
             </div>
             
             <div class="bank-details-card">
-                <div class="bank-info-grid">
-                    <div class="bank-info-item">
-                        <div class="bank-label">Bank Name</div>
-                        <div class="bank-value">Wells Fargo</div>
-                    </div>
-                    <div class="bank-info-item">
-                        <div class="bank-label">Account Holder</div>
-                        <div class="bank-value">Felicity Acheampong</div>
-                    </div>
-                    <div class="bank-info-item">
-                        <div class="bank-label">Account Number</div>
-                        <div class="bank-value">•••• 0906</div>
-                    </div>
-                    <div class="bank-info-item">
-                        <div class="bank-label">Account Type</div>
-                        <div class="bank-value">Checking Account</div>
-                    </div>
-                    <div class="bank-info-item">
-                        <div class="bank-label">Status</div>
-                        <div class="bank-value">
-                            <span class="bank-status status-verified">
-                                <i class="fas fa-shield-check"></i> Verified
-                            </span>
+                <!-- Current Bank Details - LOADS FROM FIREBASE -->
+                <div id="currentBankDetails">
+                    <h3 style="margin-bottom: 15px; color: var(--secondary);">Current Bank Information</h3>
+                    <div class="bank-info-grid">
+                        <div class="bank-info-item">
+                            <div class="bank-label">Bank Name</div>
+                            <div class="bank-value" id="currentBankName">Loading...</div>
+                        </div>
+                        <div class="bank-info-item">
+                            <div class="bank-label">Account Holder</div>
+                            <div class="bank-value" id="currentAccountHolder">Loading...</div>
+                        </div>
+                        <div class="bank-info-item">
+                            <div class="bank-label">Account Number</div>
+                            <div class="bank-value" id="currentAccountNumber">Loading...</div>
+                        </div>
+                        <div class="bank-info-item">
+                            <div class="bank-label">Routing/Sort Code</div>
+                            <div class="bank-value" id="currentRoutingNumber">Loading...</div>
+                        </div>
+                        <div class="bank-info-item">
+                            <div class="bank-label">Account Type</div>
+                            <div class="bank-value" id="currentAccountType">Loading...</div>
+                        </div>
+                        <div class="bank-info-item">
+                            <div class="bank-label">Status</div>
+                            <div class="bank-value">
+                                <span class="bank-status" id="verificationStatus">
+                                    <i class="fas fa-shield-check"></i> <span id="statusText">Loading...</span>
+                                </span>
+                            </div>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Pending Update Status - LOADS FROM FIREBASE -->
+                <div id="pendingUpdateStatus" style="display: none; margin-top: 20px;">
+                    <div class="update-status-card">
+                        <div class="update-status-header">
+                            <div class="update-status-title">
+                                <i class="fas fa-clock"></i>
+                                Bank Update Request Status
+                            </div>
+                            <span class="update-status-badge status-under-review" id="updateStatusBadge">Under Review</span>
+                        </div>
+                        <div class="update-details">
+                            <div><strong>Reference ID:</strong> <span id="updateReferenceId"></span></div>
+                            <div><strong>Submitted:</strong> <span id="updateSubmittedDate"></span></div>
+                            <div><strong>New Bank:</strong> <span id="updateNewBank"></span></div>
+                            <div class="update-note" id="updateNote">Our agent will contact you within 24-48 hours for verification.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="action-buttons" style="margin-top: 20px;">
+                    <button class="btn btn-outline" onclick="verifyAccount()">
+                        <i class="fas fa-shield-alt"></i> Verify Account
+                    </button>
                 </div>
             </div>
         </div>
@@ -1054,9 +1131,10 @@
         </a>
     </nav>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK for Realtime Database -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
@@ -1075,6 +1153,7 @@
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
+        const database = firebase.database();
         const db = firebase.firestore();
 
         // DOM Elements
@@ -1088,6 +1167,9 @@
         // Detail pages
         const allPayoutsPage = document.getElementById('allPayoutsPage');
         const reinvestmentPage = document.getElementById('reinvestmentPage');
+
+        // Felicity's user ID (should come from auth in production)
+        const FELICITY_USER_ID = "user_felicity_12345";
 
         // Constants - TODAY IS FEB 20, 2026 (FRIDAY - PAYOUT DAY)
         const TODAY = new Date('2026-02-20');
@@ -1118,6 +1200,130 @@
                 reinvestPlan: "3 Months Promotional"
             }
         ];
+
+        // ===========================================
+        // LOAD BANK DETAILS FROM FIREBASE REALTIME DATABASE
+        // ===========================================
+        function loadBankDetailsFromDatabase() {
+            console.log("📡 Loading bank details from Realtime Database...");
+            
+            // Listen for bank details changes (REAL-TIME UPDATES)
+            const bankDetailsRef = database.ref('users/' + FELICITY_USER_ID + '/bankDetails');
+            
+            bankDetailsRef.on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const bankDetails = snapshot.val();
+                    console.log("✅ Bank details loaded:", bankDetails);
+                    
+                    // Update the display with CURRENT bank details
+                    updateBankDisplay(bankDetails);
+                    
+                    // Check for pending requests
+                    checkPendingRequests();
+                } else {
+                    console.log("⚠️ No bank details found in database");
+                    
+                    // Create default if not exists - using UPDATED Maurice Campbell details
+                    const defaultBankDetails = {
+                        bankName: "Metro Bank",
+                        accountHolder: "Maurice Campbell",
+                        accountNumber: "44288478",
+                        routingNumber: "230580",
+                        accountType: "checking",
+                        currency: "USD",
+                        country: "US",
+                        status: "verified",
+                        lastUpdated: new Date().toISOString()
+                    };
+                    
+                    bankDetailsRef.set(defaultBankDetails)
+                        .then(() => {
+                            console.log("✅ Created default bank details");
+                            updateBankDisplay(defaultBankDetails);
+                        })
+                        .catch(error => {
+                            console.error("❌ Error creating default:", error);
+                        });
+                }
+            }, (error) => {
+                console.error("❌ Error loading bank details:", error);
+            });
+        }
+
+        // Update bank display with CURRENT data from Firebase
+        function updateBankDisplay(bankDetails) {
+            document.getElementById('currentBankName').textContent = bankDetails.bankName || "Not set";
+            document.getElementById('currentAccountHolder').textContent = bankDetails.accountHolder || "Not set";
+            document.getElementById('currentAccountNumber').textContent = bankDetails.accountNumber ? 
+                (bankDetails.accountNumber.length > 4 ? "•••• " + bankDetails.accountNumber.slice(-4) : bankDetails.accountNumber) : "Not set";
+            document.getElementById('currentRoutingNumber').textContent = bankDetails.routingNumber || "Not set";
+            document.getElementById('currentAccountType').textContent = bankDetails.accountType ? 
+                bankDetails.accountType.charAt(0).toUpperCase() + bankDetails.accountType.slice(1) + " Account" : "Not set";
+            
+            // Update status
+            const statusElement = document.getElementById('statusText');
+            const statusBadge = document.getElementById('verificationStatus');
+            
+            if (bankDetails.status === 'verified') {
+                statusElement.textContent = "Verified";
+                statusBadge.className = 'bank-status status-verified';
+            } else if (bankDetails.status === 'pending') {
+                statusElement.textContent = "Pending Verification";
+                statusBadge.className = 'bank-status status-pending-verification';
+            } else {
+                statusElement.textContent = "Unverified";
+                statusBadge.className = 'bank-status status-unverified';
+            }
+        }
+
+        // Check for pending bank update requests
+        function checkPendingRequests() {
+            const pendingRef = database.ref('users/' + FELICITY_USER_ID + '/pendingRequests');
+            
+            pendingRef.orderByChild('status').equalTo('pending').once('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const pendingRequests = [];
+                    snapshot.forEach((childSnapshot) => {
+                        pendingRequests.push({ key: childSnapshot.key, ...childSnapshot.val() });
+                    });
+                    
+                    // Show the most recent pending request
+                    if (pendingRequests.length > 0) {
+                        const latestRequest = pendingRequests[0];
+                        showPendingUpdateStatus(latestRequest);
+                    } else {
+                        document.getElementById('pendingUpdateStatus').style.display = 'none';
+                    }
+                } else {
+                    document.getElementById('pendingUpdateStatus').style.display = 'none';
+                }
+            });
+        }
+
+        // Show pending update status
+        function showPendingUpdateStatus(request) {
+            document.getElementById('pendingUpdateStatus').style.display = 'block';
+            
+            document.getElementById('updateReferenceId').textContent = request.referenceId || 'REF-' + Date.now();
+            document.getElementById('updateSubmittedDate').textContent = 
+                new Date(request.submittedAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            document.getElementById('updateNewBank').textContent = request.bankName || 'New Bank';
+            
+            // Update status badge
+            const statusBadge = document.getElementById('updateStatusBadge');
+            if (request.status === 'pending') {
+                statusBadge.className = 'update-status-badge status-under-review';
+                statusBadge.textContent = 'Under Review';
+                document.getElementById('updateNote').textContent = 
+                    'Our agent will contact you within 24-48 hours for verification.';
+            }
+        }
 
         // Format date
         function formatDate(date) {
@@ -1225,6 +1431,10 @@
             alert('Contact support at support@glicocapital.com');
         }
 
+        function verifyAccount() {
+            alert('Account verification request submitted');
+        }
+
         // Load user profile
         function loadUserProfile(user) {
             if (user.photoURL) {
@@ -1241,11 +1451,19 @@
                 window.location.href = 'login.html';
             } else {
                 logoutBtn.style.display = 'block';
+                
+                // Load bank details from Firebase Realtime Database
+                loadBankDetailsFromDatabase();
+                
+                // Update payout lists
                 updatePayoutLists();
+                
+                // Load user profile
                 loadUserProfile(user);
                 
                 console.log(`📊 Payouts page loaded - Today is Friday, Feb 20, 2026`);
                 console.log(`📅 First earning: Monday, Feb 23, 2026`);
+                console.log(`🏦 Bank details loading from Firebase...`);
             }
         });
 
