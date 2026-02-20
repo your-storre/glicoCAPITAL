@@ -409,12 +409,6 @@
             color: white;
         }
         
-        .btn-danger {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid var(--danger);
-            color: var(--danger);
-        }
-        
         /* Card */
         .card {
             background: var(--glass-bg);
@@ -493,11 +487,6 @@
             color: var(--success);
         }
         
-        .transaction-icon.withdrawal {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--danger);
-        }
-        
         .transaction-icon.reinvest {
             background: rgba(212, 175, 55, 0.2);
             color: var(--secondary);
@@ -521,10 +510,6 @@
         
         .transaction-amount.positive {
             color: var(--success);
-        }
-        
-        .transaction-amount.negative {
-            color: var(--danger);
         }
         
         /* Bank Details */
@@ -824,7 +809,8 @@
             min-width: 50px;
         }
         
-        .nav-item.active, .nav-item:hover {
+        .nav-item.active,
+        .nav-item:hover {
             color: var(--secondary);
             background: rgba(212, 175, 55, 0.1);
         }
@@ -870,6 +856,49 @@
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        /* Watermarks */
+        .receipt-watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.1;
+        }
+        
+        .receipt-watermark::before {
+            content: 'GLICOCAPITAL GLICOCAPITAL GLICOCAPITAL';
+            position: absolute;
+            top: 10%;
+            left: -20%;
+            right: -20%;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1a365d;
+            transform: rotate(-30deg);
+            white-space: nowrap;
+            letter-spacing: 10px;
+            opacity: 0.1;
+        }
+        
+        .receipt-watermark::after {
+            content: '✓ PAID ✓ PAID ✓ PAID';
+            position: absolute;
+            bottom: 10%;
+            right: -20%;
+            left: -20%;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #d4af37;
+            transform: rotate(15deg);
+            white-space: nowrap;
+            letter-spacing: 10px;
+            opacity: 0.1;
         }
         
         .receipt-header {
@@ -877,6 +906,8 @@
             color: white;
             padding: 30px 20px;
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
         
         .receipt-header img {
@@ -893,6 +924,8 @@
         .receipt-body {
             padding: 30px;
             background: white;
+            position: relative;
+            z-index: 2;
         }
         
         .receipt-row {
@@ -924,24 +957,89 @@
             border-top: 2px solid #1a365d;
         }
         
+        /* Official Stamp */
+        .receipt-stamp {
+            position: absolute;
+            bottom: 100px;
+            right: 30px;
+            width: 120px;
+            height: 120px;
+            border: 3px solid #d4af37;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            transform: rotate(-5deg);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 3;
+            opacity: 0.9;
+        }
+        
+        .receipt-stamp .stamp-icon {
+            font-size: 1.8rem;
+            color: #d4af37;
+            margin-bottom: 5px;
+        }
+        
+        .receipt-stamp .stamp-text {
+            font-weight: 800;
+            color: #1a365d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .receipt-stamp .stamp-date {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 3px;
+        }
+        
         .receipt-footer {
             background: #f8f9fa;
             padding: 20px;
             text-align: center;
             font-size: 0.9rem;
             color: #666;
+            position: relative;
+            z-index: 2;
         }
         
         .receipt-actions {
             display: flex;
             gap: 10px;
-            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Watermark background */
+        .watermark-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(45deg,
+                    rgba(212, 175, 55, 0.02) 0px,
+                    rgba(212, 175, 55, 0.02) 20px,
+                    rgba(26, 54, 93, 0.02) 20px,
+                    rgba(26, 54, 93, 0.02) 40px);
+            pointer-events: none;
+            z-index: 1;
         }
         
         /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
         
         @keyframes fadeInUp {
@@ -964,14 +1062,24 @@
             .payout-cards {
                 grid-template-columns: 1fr;
             }
+        
             .action-buttons {
                 flex-direction: column;
             }
+        
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+        
             .investment-options {
                 grid-template-columns: 1fr;
+            }
+        
+            .receipt-stamp {
+                width: 100px;
+                height: 100px;
+                bottom: 120px;
+                right: 15px;
             }
         }
         
@@ -982,6 +1090,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Premium Header -->
     <header>
@@ -1016,13 +1125,13 @@
                 </div>
                 <div>
                     <h3 style="font-size: 1.5rem; margin-bottom: 5px;">
-                        Your payout has been reinvested! 
+                        Your payout has been reinvested!
                         <span class="promo-tag">PROMO OFFER ACTIVE</span>
                     </h3>
                     <p>Your <strong>$47,720</strong> payout has been automatically reinvested into the <strong>3 Months Promotional Plan</strong>.</p>
                 </div>
             </div>
-            
+
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px;">
                 <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px;">
                     <div style="opacity:0.7;">New Investment</div>
@@ -1042,7 +1151,7 @@
                     <div style="font-size:1.3rem; font-weight:700;">May 20</div>
                 </div>
             </div>
-            
+
             <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                     <div>
@@ -1113,7 +1222,7 @@
                 </div>
                 <h3>Starter Plan Payout</h3>
                 <div class="payout-amount">$8,600</div>
-                
+
                 <div class="payout-details">
                     <div class="detail-row">
                         <span class="detail-label">Investment:</span>
@@ -1132,17 +1241,14 @@
                         <span class="detail-value">15 Aug 2025</span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">Bank:</span>
-                        <span class="detail-value">Wells Fargo</span>
+                        <span class="detail-label">Paid To:</span>
+                        <span class="detail-value">Wells Fargo •••• 0906</span>
                     </div>
                 </div>
-                
+
                 <div class="action-buttons">
                     <button class="btn btn-outline" onclick="downloadReceipt('starter')">
                         <i class="fas fa-download"></i> Receipt
-                    </button>
-                    <button class="btn btn-secondary" onclick="showReinvestModal()">
-                        <i class="fas fa-redo"></i> Reinvest
                     </button>
                 </div>
             </div>
@@ -1153,11 +1259,11 @@
                 <div class="payout-icon">
                     <i class="fas fa-check-circle"></i>
                 </div>
-                <h3>Premium Plan Payout 
+                <h3>Premium Plan Payout
                     <span class="reinvest-badge">Reinvested</span>
                 </h3>
                 <div class="payout-amount">$47,720</div>
-                
+
                 <div class="payout-details">
                     <div class="detail-row">
                         <span class="detail-label">Investment:</span>
@@ -1176,8 +1282,8 @@
                         <span class="detail-value">20 Feb 2026</span>
                     </div>
                     <div class="detail-row">
-                        <span class="detail-label">Bank:</span>
-                        <span class="detail-value">Wells Fargo</span>
+                        <span class="detail-label">Paid To:</span>
+                        <span class="detail-value">Glico Holdings (Reinvested)</span>
                     </div>
                     <div class="detail-row" style="background: rgba(212, 175, 55, 0.1); border-radius: 4px; margin-top: 5px;">
                         <span class="detail-label">
@@ -1186,7 +1292,7 @@
                         <span class="detail-value" style="color: var(--success);">3 Months Promotional</span>
                     </div>
                 </div>
-                
+
                 <div class="action-buttons">
                     <button class="btn btn-outline" onclick="downloadReceipt('premium')">
                         <i class="fas fa-download"></i> Receipt
@@ -1203,11 +1309,11 @@
                 <div class="payout-icon">
                     <i class="fas fa-fire"></i>
                 </div>
-                <h3>3 Months Promotional Plan 
+                <h3>3 Months Promotional Plan
                     <span class="promo-tag">PROMO</span>
                 </h3>
                 <div class="payout-amount">$47,720</div>
-                
+
                 <div class="payout-details">
                     <div class="detail-row">
                         <span class="detail-label">Daily Rate:</span>
@@ -1238,13 +1344,10 @@
                         <span class="detail-value" style="color: var(--success);">$60,700</span>
                     </div>
                 </div>
-                
+
                 <div class="action-buttons">
                     <button class="btn btn-outline" onclick="viewProjections()">
                         <i class="fas fa-chart-line"></i> Projections
-                    </button>
-                    <button class="btn btn-secondary" onclick="setupWithdrawal()">
-                        <i class="fas fa-money-bill-wave"></i> Withdraw
                     </button>
                 </div>
             </div>
@@ -1267,7 +1370,7 @@
                 <h2>Bank Details</h2>
                 <button class="btn btn-outline" onclick="window.location.href='bank-update.html'">Update Bank Details</button>
             </div>
-            
+
             <div class="bank-details-card">
                 <!-- Current Bank Details - LOADS FROM FIREBASE -->
                 <div id="currentBankDetails">
@@ -1311,7 +1414,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Pending Update Status - LOADS FROM FIREBASE -->
                 <div id="pendingUpdateStatus" style="display: none; margin-top: 20px;">
                     <div class="update-status-card">
@@ -1330,7 +1433,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="action-buttons" style="margin-top: 20px;">
                     <button class="btn btn-outline" onclick="verifyAccount()">
                         <i class="fas fa-shield-alt"></i> Verify Account
@@ -1344,7 +1447,7 @@
             <div class="section-header">
                 <h2>Quick Actions</h2>
             </div>
-            
+
             <div class="action-buttons">
                 <button class="btn btn-secondary" onclick="reinvestFunds()" style="flex: 1;">
                     <i class="fas fa-redo"></i> Reinvest Funds
@@ -1355,9 +1458,6 @@
                 <button class="btn btn-outline" onclick="exportHistory()" style="flex: 1;">
                     <i class="fas fa-file-export"></i> Export History
                 </button>
-                <button class="btn btn-danger" onclick="withdrawFunds()" style="flex: 1;">
-                    <i class="fas fa-money-bill-wave"></i> Withdraw
-                </button>
             </div>
         </div>
     </div>
@@ -1367,7 +1467,7 @@
         <div class="detail-content">
             <button class="close-detail" onclick="closeDetailPage()">×</button>
             <h2 style="margin-bottom: 20px; color: white;">All Payouts</h2>
-            
+
             <div class="transaction-list" id="allPayoutsList" style="max-height: 500px;">
                 <!-- Will be populated by JavaScript -->
             </div>
@@ -1379,7 +1479,7 @@
         <div class="detail-content">
             <button class="close-detail" onclick="closeDetailPage()">×</button>
             <h2 style="margin-bottom: 20px; color: white;">Reinvestment Details</h2>
-            
+
             <div class="payout-info">
                 <div class="info-item">
                     <span class="info-label">Investment Plan</span>
@@ -1418,7 +1518,7 @@
                     <span class="info-value" style="color: var(--success);">$60,700</span>
                 </div>
             </div>
-            
+
             <div style="margin-top: 20px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 10px;">
                 <h4 style="margin-bottom: 10px; color: var(--secondary);">Calculation</h4>
                 <p style="font-size: 0.9rem;">
@@ -1434,7 +1534,7 @@
         <div class="reinvest-content">
             <button class="close-detail" onclick="closeReinvestModal()">×</button>
             <h2 style="margin-bottom: 20px; color: white;">Reinvest Funds</h2>
-            
+
             <div id="reinvestCompleted">
                 <div style="text-align: center; margin: 20px 0;">
                     <div style="font-size: 3rem; color: var(--warning); margin-bottom: 15px;">
@@ -1449,13 +1549,13 @@
                     </p>
                 </div>
             </div>
-            
+
             <div id="autoReinvestSection" style="display: none;">
                 <h3 style="margin-bottom: 15px; color: var(--secondary);">Auto-Reinvestment Setup</h3>
                 <p style="opacity: 0.8; margin-bottom: 20px;">
                     Set up automatic reinvestment for your upcoming payout.
                 </p>
-                
+
                 <div class="payout-info" style="margin-bottom: 20px;">
                     <div class="info-item">
                         <div class="info-label">Payout Amount</div>
@@ -1466,7 +1566,7 @@
                         <div class="info-value">20th February 2026</div>
                     </div>
                 </div>
-                
+
                 <h4 style="margin-bottom: 15px;">Select Investment Plan:</h4>
                 <div class="investment-options">
                     <div class="investment-option promo" onclick="selectInvestmentOption(3, 220, '3 Months Promotional', true)">
@@ -1488,18 +1588,18 @@
                         <div style="font-size: 0.8rem; opacity: 0.7;">Projected: $46,250</div>
                     </div>
                 </div>
-                
+
                 <div style="margin-top: 20px;">
                     <button class="btn btn-promo" onclick="activateAutoReinvest()" style="width: 100%;">
                         <i class="fas fa-robot"></i> Activate Auto-Reinvestment
                     </button>
                 </div>
-                
+
                 <p style="opacity: 0.7; font-size: 0.85rem; margin-top: 15px; text-align: center;">
                     <i class="fas fa-info-circle"></i> Payout balance will automatically be used for reinvestment on the payout date.
                 </p>
             </div>
-            
+
             <div id="reinvestmentActivated" style="display: none; text-align: center; margin: 20px 0;">
                 <div style="font-size: 3rem; color: var(--success); margin-bottom: 15px;">
                     <i class="fas fa-check-circle"></i>
@@ -1534,27 +1634,39 @@
         </div>
     </div>
 
-    <!-- Receipt Modal - IMPROVED with real logo -->
+    <!-- Receipt Modal - IMPROVED with watermark, stamp, and working download -->
     <div class="receipt-modal" id="receiptModal">
-        <div class="receipt-content">
+        <div class="receipt-content" id="receiptContent">
+            <div class="watermark-bg"></div>
+            <div class="receipt-watermark"></div>
+
             <div class="receipt-header">
                 <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
-                <h2>PAYMENT RECEIPT</h2>
-                <p>Official Investment Payout Confirmation</p>
+                <h2>OFFICIAL PAYMENT RECEIPT</h2>
+                <p>Investment Payout Confirmation</p>
             </div>
+
             <div class="receipt-body" id="receiptBody">
                 <!-- Content will be populated by JavaScript -->
             </div>
+
+            <!-- Official Stamp -->
+            <div class="receipt-stamp" id="receiptStamp">
+                <div class="stamp-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stamp-text">PAID</div>
+                <div class="stamp-date" id="stampDate"></div>
+            </div>
+
             <div class="receipt-footer">
                 <p>This is an electronically generated receipt. Valid without signature.</p>
-                <p>For support: payouts@glicocapital.com</p>
+                <p>For support: payouts@glicocapital.com | +1 (555) 123-4567</p>
             </div>
+
             <div class="receipt-actions">
-                <button class="btn btn-secondary" onclick="printReceipt()" style="flex: 1;">
-                    <i class="fas fa-print"></i> Print
-                </button>
-                <button class="btn btn-outline" onclick="downloadReceiptPdf()" style="flex: 1;">
-                    <i class="fas fa-download"></i> Download PDF
+                <button class="btn btn-secondary" onclick="downloadReceiptAsPDF()" style="flex: 1;">
+                    <i class="fas fa-download"></i> Download Receipt
                 </button>
                 <button class="btn btn-outline" onclick="closeReceiptModal()" style="flex: 1;">
                     <i class="fas fa-times"></i> Close
@@ -1594,7 +1706,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
-        // Firebase configuration
+        // ===========================================
+        // FIREBASE CONFIGURATION
+        // ===========================================
         const firebaseConfig = {
             apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
             authDomain: "ggic-investment.firebaseapp.com",
@@ -1612,14 +1726,16 @@
         const database = firebase.database();
         const db = firebase.firestore();
 
-        // DOM Elements
+        // ===========================================
+        // DOM ELEMENTS
+        // ===========================================
         const logoutBtn = document.getElementById('logoutBtn');
         const recentPayouts = document.getElementById('recentPayouts');
         const allPayoutsList = document.getElementById('allPayoutsList');
         const avatarUpload = document.getElementById('avatarUpload');
         const userAvatar = document.getElementById('userAvatar');
         const avatarInitial = document.getElementById('avatarInitial');
-        
+
         // Detail pages
         const allPayoutsPage = document.getElementById('allPayoutsPage');
         const reinvestmentPage = document.getElementById('reinvestmentPage');
@@ -1629,19 +1745,23 @@
         // Felicity's user ID
         const FELICITY_USER_ID = "user_felicity_12345";
 
-        // Constants
+        // ===========================================
+        // CONSTANTS
+        // ===========================================
         const DAILY_EARNINGS = 220;
         const INVESTMENT_AMOUNT = 47720;
         const INVESTMENT_START_DATE = new Date('2026-02-20');
         const INVESTMENT_END_DATE = new Date('2026-05-20');
-        
+
         // TODAY IS FEB 20, 2026 (PAYOUT DAY)
         const TODAY = new Date('2026-02-20');
-        const IS_PAYOUT_DAY = true; // Today is payout day
-        
+        const IS_PAYOUT_DAY = true;
+
+        // Current receipt data
+        let currentReceiptPayout = null;
+
         // Payout history
-        const payoutHistory = [
-            {
+        const payoutHistory = [{
                 id: "PAY-001",
                 type: "payout",
                 amount: 8600,
@@ -1653,7 +1773,8 @@
                 duration: "4 Months",
                 bank: "Wells Fargo",
                 account: "•••• 0906",
-                transactionId: "TRX-20250815-001"
+                transactionId: "TRX-20250815-001",
+                paidTo: "Wells Fargo •••• 0906"
             },
             {
                 id: "PAY-002",
@@ -1665,11 +1786,12 @@
                 investmentAmount: 35000,
                 earnings: 12720,
                 duration: "6 Months",
-                bank: "Wells Fargo",
-                account: "•••• 0906",
+                bank: "Glico Holdings",
+                account: "Reinvested",
                 reinvested: true,
                 reinvestPlan: "3 Months Promotional",
-                transactionId: "TRX-20260220-001"
+                transactionId: "TRX-20260220-001",
+                paidTo: "Glico Holdings (Reinvested)"
             }
         ];
 
@@ -1684,9 +1806,9 @@
         // ===========================================
         function loadBankDetailsFromDatabase() {
             console.log("📡 Loading bank details from Realtime Database...");
-            
+
             const bankDetailsRef = database.ref('users/' + FELICITY_USER_ID + '/bankDetails');
-            
+
             bankDetailsRef.on('value', (snapshot) => {
                 if (snapshot.exists()) {
                     const bankDetails = snapshot.val();
@@ -1695,7 +1817,7 @@
                     checkPendingRequests();
                 } else {
                     console.log("⚠️ No bank details found in database");
-                    
+
                     // Default to Maurice Campbell's Metro Bank
                     const defaultBankDetails = {
                         bankName: "Metro Bank",
@@ -1708,7 +1830,7 @@
                         status: "verified",
                         lastUpdated: new Date().toISOString()
                     };
-                    
+
                     bankDetailsRef.set(defaultBankDetails)
                         .then(() => {
                             console.log("✅ Created default bank details");
@@ -1726,17 +1848,17 @@
         function updateBankDisplay(bankDetails) {
             document.getElementById('currentBankName').textContent = bankDetails.bankName || "Not set";
             document.getElementById('currentAccountHolder').textContent = bankDetails.accountHolder || "Not set";
-            document.getElementById('currentAccountNumber').textContent = bankDetails.accountNumber ? 
+            document.getElementById('currentAccountNumber').textContent = bankDetails.accountNumber ?
                 (bankDetails.accountNumber.length > 4 ? "•••• " + bankDetails.accountNumber.slice(-4) : bankDetails.accountNumber) : "Not set";
             document.getElementById('currentRoutingNumber').textContent = bankDetails.routingNumber || "Not set";
-            document.getElementById('currentAccountType').textContent = bankDetails.accountType ? 
+            document.getElementById('currentAccountType').textContent = bankDetails.accountType ?
                 bankDetails.accountType.charAt(0).toUpperCase() + bankDetails.accountType.slice(1) + " Account" : "Not set";
             document.getElementById('currentCurrency').textContent = bankDetails.currency || "Not set";
             document.getElementById('currentCountry').textContent = bankDetails.country || "Not set";
-            
+
             const statusElement = document.getElementById('statusText');
             const statusBadge = document.getElementById('verificationStatus');
-            
+
             if (bankDetails.status === 'verified') {
                 statusElement.textContent = "Verified";
                 statusBadge.className = 'bank-status status-verified';
@@ -1751,14 +1873,14 @@
 
         function checkPendingRequests() {
             const pendingRef = database.ref('users/' + FELICITY_USER_ID + '/pendingRequests');
-            
+
             pendingRef.orderByChild('status').equalTo('pending').once('value', (snapshot) => {
                 if (snapshot.exists()) {
                     const pendingRequests = [];
                     snapshot.forEach((childSnapshot) => {
                         pendingRequests.push({ key: childSnapshot.key, ...childSnapshot.val() });
                     });
-                    
+
                     if (pendingRequests.length > 0) {
                         const latestRequest = pendingRequests[0];
                         showPendingUpdateStatus(latestRequest);
@@ -1773,9 +1895,9 @@
 
         function showPendingUpdateStatus(request) {
             document.getElementById('pendingUpdateStatus').style.display = 'block';
-            
+
             document.getElementById('updateReferenceId').textContent = request.referenceId || 'REF-' + Date.now();
-            document.getElementById('updateSubmittedDate').textContent = 
+            document.getElementById('updateSubmittedDate').textContent =
                 new Date(request.submittedAt).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
@@ -1784,12 +1906,12 @@
                     minute: '2-digit'
                 });
             document.getElementById('updateNewBank').textContent = request.bankName || 'New Bank';
-            
+
             const statusBadge = document.getElementById('updateStatusBadge');
             if (request.status === 'pending') {
                 statusBadge.className = 'update-status-badge status-under-review';
                 statusBadge.textContent = 'Under Review';
-                document.getElementById('updateNote').textContent = 
+                document.getElementById('updateNote').textContent =
                     'Our agent will contact you within 24-48 hours for verification.';
             }
         }
@@ -1807,7 +1929,7 @@
             // First earning is Monday, Feb 23
             const firstEarningDate = new Date('2026-02-23');
             const today = new Date();
-            
+
             if (today < firstEarningDate) {
                 return {
                     currentBalance: INVESTMENT_AMOUNT,
@@ -1820,7 +1942,7 @@
                 let earnings = 0;
                 let days = 0;
                 const current = new Date(firstEarningDate);
-                
+
                 while (current <= today) {
                     if (isBusinessDay(current)) {
                         earnings += DAILY_EARNINGS;
@@ -1828,7 +1950,7 @@
                     }
                     current.setDate(current.getDate() + 1);
                 }
-                
+
                 return {
                     currentBalance: INVESTMENT_AMOUNT + earnings,
                     totalEarnings: earnings,
@@ -1842,10 +1964,10 @@
         // FORMATTING FUNCTIONS
         // ===========================================
         function formatDate(date) {
-            return date.toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'short', 
-                day: 'numeric' 
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
             });
         }
 
@@ -1860,10 +1982,14 @@
         function getOrdinalSuffix(day) {
             if (day > 3 && day < 21) return 'th';
             switch (day % 10) {
-                case 1: return "st";
-                case 2: return "nd";
-                case 3: return "rd";
-                default: return "th";
+                case 1:
+                    return "st";
+                case 2:
+                    return "nd";
+                case 3:
+                    return "rd";
+                default:
+                    return "th";
             }
         }
 
@@ -1873,13 +1999,13 @@
         function updatePayoutLists() {
             recentPayouts.innerHTML = '';
             allPayoutsList.innerHTML = '';
-            
+
             payoutHistory.forEach(payout => {
                 const item = createPayoutItem(payout);
                 recentPayouts.appendChild(item.cloneNode(true));
                 allPayoutsList.appendChild(item.cloneNode(true));
             });
-            
+
             const earnings = calculateCurrentEarnings();
             document.getElementById('totalPayouts').textContent = '$8,600';
             document.getElementById('currentInvestment').textContent = `$${earnings.currentBalance.toLocaleString()}`;
@@ -1888,10 +2014,10 @@
         function createPayoutItem(payout) {
             const item = document.createElement('div');
             item.className = 'transaction-item';
-            
-            let reinvestIcon = payout.reinvested ? 
+
+            let reinvestIcon = payout.reinvested ?
                 '<span style="margin-left: 10px; color: var(--secondary);"><i class="fas fa-sync-alt"></i> Reinvested</span>' : '';
-            
+
             item.innerHTML = `
                 <div class="transaction-info">
                     <div class="transaction-icon payout">
@@ -1904,22 +2030,27 @@
                 </div>
                 <div class="transaction-amount positive">+$${payout.amount.toLocaleString()}</div>
             `;
-            
+
             return item;
         }
 
         // ===========================================
-        // RECEIPT FUNCTIONS - IMPROVED with real logo
+        // RECEIPT FUNCTIONS - WORKING DOWNLOAD
         // ===========================================
         function downloadReceipt(type) {
             const payout = type === 'starter' ? payoutHistory[0] : payoutHistory[1];
+            currentReceiptPayout = payout;
             showReceipt(payout);
         }
 
         function showReceipt(payout) {
             const receiptBody = document.getElementById('receiptBody');
-            const today = new Date();
-            
+            const stampDate = document.getElementById('stampDate');
+            const payoutDate = new Date(payout.date);
+
+            // Format stamp date
+            stampDate.textContent = formatDateWithOrdinal(payoutDate);
+
             receiptBody.innerHTML = `
                 <div class="receipt-row">
                     <span class="receipt-label">Receipt Number:</span>
@@ -1927,11 +2058,11 @@
                 </div>
                 <div class="receipt-row">
                     <span class="receipt-label">Transaction Date:</span>
-                    <span class="receipt-value">${formatDate(new Date(payout.date))}</span>
+                    <span class="receipt-value">${formatDateWithOrdinal(payoutDate)}</span>
                 </div>
                 <div class="receipt-row">
                     <span class="receipt-label">Print Date:</span>
-                    <span class="receipt-value">${formatDate(today)}</span>
+                    <span class="receipt-value">${formatDateWithOrdinal(new Date())}</span>
                 </div>
                 <div class="receipt-row">
                     <span class="receipt-label">Description:</span>
@@ -1950,8 +2081,8 @@
                     <span class="receipt-value">${payout.duration}</span>
                 </div>
                 <div class="receipt-row">
-                    <span class="receipt-label">Bank:</span>
-                    <span class="receipt-value">${payout.bank} ${payout.account}</span>
+                    <span class="receipt-label">Paid To:</span>
+                    <span class="receipt-value">${payout.paidTo}</span>
                 </div>
                 <div class="receipt-row receipt-total">
                     <span class="receipt-label">TOTAL PAID:</span>
@@ -1964,20 +2095,135 @@
                 </div>
                 ` : ''}
             `;
-            
+
             receiptModal.classList.add('active');
         }
 
-        function printReceipt() {
-            window.print();
-        }
+        function downloadReceiptAsPDF() {
+            if (!currentReceiptPayout) {
+                alert('No receipt to download');
+                return;
+            }
 
-        function downloadReceiptPdf() {
-            alert('PDF download feature coming soon');
+            const payout = currentReceiptPayout;
+            const payoutDate = new Date(payout.date);
+            const fileName = `GlicoCapital_Receipt_${payout.transactionId}_${formatDate(payoutDate).replace(/\s/g, '_')}.html`;
+
+            // Create receipt HTML content for download
+            const receiptHTML = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>GlicoCapital Receipt ${payout.transactionId}</title>
+                <style>
+                    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; padding: 20px; }
+                    .receipt-container { max-width: 500px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; }
+                    .watermark { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; pointer-events: none; background: repeating-linear-gradient(45deg, #d4af37 0px, #d4af37 20px, #1a365d 20px, #1a365d 40px); }
+                    .watermark-text { position: absolute; top: 20%; left: 0; right: 0; transform: rotate(-30deg); font-size: 48px; font-weight: 800; color: #1a365d; text-align: center; white-space: nowrap; opacity: 0.1; }
+                    .header { background: linear-gradient(135deg, #1a365d, #0f2040); color: white; padding: 30px 20px; text-align: center; }
+                    .header img { height: 50px; margin-bottom: 15px; filter: brightness(0) invert(1); }
+                    .header h2 { margin: 5px 0; }
+                    .body { padding: 30px; position: relative; z-index: 2; }
+                    .row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #eaeaea; }
+                    .label { color: #666; }
+                    .value { font-weight: 700; color: #1a365d; }
+                    .total { font-size: 1.3rem; color: #d4af37; margin-top: 15px; padding-top: 15px; border-top: 2px solid #1a365d; }
+                    .stamp { position: absolute; bottom: 100px; right: 30px; width: 120px; height: 120px; border: 3px solid #d4af37; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; transform: rotate(-5deg); box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 3; }
+                    .stamp i { font-size: 1.8rem; color: #d4af37; }
+                    .stamp .paid { font-weight: 800; color: #1a365d; font-size: 1rem; }
+                    .stamp .date { font-size: 0.7rem; color: #666; }
+                    .footer { background: #f8f9fa; padding: 20px; text-align: center; font-size: 0.9rem; color: #666; }
+                </style>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            </head>
+            <body>
+                <div class="receipt-container">
+                    <div class="watermark"></div>
+                    <div class="watermark-text">GLICOCAPITAL GLICOCAPITAL</div>
+                    
+                    <div class="header">
+                        <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital">
+                        <h2>OFFICIAL PAYMENT RECEIPT</h2>
+                        <p>Investment Payout Confirmation</p>
+                    </div>
+                    
+                    <div class="body">
+                        <div class="row">
+                            <span class="label">Receipt Number:</span>
+                            <span class="value">${payout.transactionId}</span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Transaction Date:</span>
+                            <span class="value">${formatDateWithOrdinal(payoutDate)}</span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Print Date:</span>
+                            <span class="value">${formatDateWithOrdinal(new Date())}</span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Description:</span>
+                            <span class="value">${payout.description}</span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Investment Amount:</span>
+                            <span class="value">$${payout.investmentAmount.toLocaleString()}</span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Total Earnings:</span>
+                            <span class="value">$${payout.earnings.toLocaleString()}</span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Duration:</span>
+                            <span class="value">${payout.duration}</span>
+                        </div>
+                        <div class="row">
+                            <span class="label">Paid To:</span>
+                            <span class="value">${payout.paidTo}</span>
+                        </div>
+                        <div class="row total">
+                            <span class="label">TOTAL PAID:</span>
+                            <span class="value">$${payout.amount.toLocaleString()}</span>
+                        </div>
+                        ${payout.reinvested ? `
+                        <div class="row" style="color: #d4af37;">
+                            <span class="label">Reinvested:</span>
+                            <span class="value">${payout.reinvestPlan}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="stamp">
+                        <i class="fas fa-check-circle"></i>
+                        <div class="paid">PAID</div>
+                        <div class="date">${formatDateWithOrdinal(payoutDate)}</div>
+                    </div>
+                    
+                    <div class="footer">
+                        <p>This is an electronically generated receipt. Valid without signature.</p>
+                        <p>For support: payouts@glicocapital.com | +1 (555) 123-4567</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+            `;
+
+            // Create download link
+            const blob = new Blob([receiptHTML], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            showNotification('Receipt downloaded successfully!', 'success');
         }
 
         function closeReceiptModal() {
             receiptModal.classList.remove('active');
+            currentReceiptPayout = null;
         }
 
         // ===========================================
@@ -2010,11 +2256,11 @@
             document.getElementById('reinvestCompleted').style.display = 'none';
             document.getElementById('autoReinvestSection').style.display = 'none';
             document.getElementById('reinvestmentActivated').style.display = 'block';
-            
+
             document.getElementById('activatedPlan').textContent = selectedPlanName;
             document.getElementById('activatedDailyRate').textContent = `$${selectedDailyRate}/day`;
             document.getElementById('activationDate').textContent = formatDateWithOrdinal(TODAY);
-            
+
             saveAutoReinvestToFirestore();
         }
 
@@ -2078,26 +2324,20 @@
         }
 
         function exportHistory() {
-            const csv = payoutHistory.map(p => 
-                `${p.date},${p.description},$${p.amount},${p.status}`
-            ).join('\n');
-            
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
+            const csvContent = "Date,Description,Amount,Status\n" +
+                payoutHistory.map(p => `${p.date},${p.description},$${p.amount},${p.status}`).join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = 'payout_history.csv';
+            document.body.appendChild(a);
             a.click();
-            
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
             showNotification('Payout history exported!', 'success');
-        }
-
-        function withdrawFunds() {
-            showNotification('Withdrawal request submitted', 'info');
-        }
-
-        function setupWithdrawal() {
-            showNotification('Withdrawal setup opened', 'info');
         }
 
         function showPayoutStats() {
@@ -2131,6 +2371,7 @@
                 background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
                 color: white;
                 animation: fadeInUp 0.3s ease;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             `;
             notification.textContent = message;
             document.body.appendChild(notification);
@@ -2167,15 +2408,20 @@
                 loadBankDetailsFromDatabase();
                 updatePayoutLists();
                 loadUserProfile(user);
-                
+
                 console.log('📊 Payouts page loaded - Today: Feb 20, 2026');
                 console.log('📅 First earning: Monday, Feb 23, 2026');
             }
         });
 
         logoutBtn.addEventListener('click', async () => {
-            await auth.signOut();
-            window.location.href = 'login.html';
+            try {
+                await auth.signOut();
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Logout failed:', error);
+                showNotification('Logout failed', 'error');
+            }
         });
 
         // ===========================================
@@ -2196,7 +2442,7 @@
         // ===========================================
         document.addEventListener('DOMContentLoaded', () => {
             updatePayoutLists();
-            
+
             // Banner only shows on payout day
             if (!IS_PAYOUT_DAY) {
                 document.getElementById('payoutSuccessBanner').style.display = 'none';
@@ -2204,4 +2450,5 @@
         });
     </script>
 </body>
+
 </html>
