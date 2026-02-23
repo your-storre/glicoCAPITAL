@@ -205,6 +205,10 @@
             color: var(--success);
         }
         
+        .trend-down {
+            color: var(--danger);
+        }
+        
         /* Detail Pages */
         .detail-page {
             display: none;
@@ -673,10 +677,10 @@
     <div class="container">
         <div class="welcome-section animate-in">
             <h2>Welcome back, Felicity!</h2>
-            <p>Your investment portfolio is growing steadily</p>
+            <p>Your promotional plan is active with $220/day earnings</p>
         </div>
 
-        <!-- Stats Cards - Values will update automatically -->
+        <!-- Stats Cards -->
         <div class="stats-grid">
             <div class="stat-card animate-in delay-1" id="totalInvestmentCard">
                 <div class="stat-icon">
@@ -684,8 +688,7 @@
                 </div>
                 <div class="stat-label">Total Investment</div>
                 <div class="stat-value" id="totalInvestment">$47,720</div>
-                <div class="stat-trend trend-up">
-                    <i class="fas fa-arrow-up"></i>
+                <div class="stat-trend">
                     <span>Promotional Plan</span>
                 </div>
             </div>
@@ -697,7 +700,7 @@
                 <div class="stat-value" id="currentBalance">$47,940</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
-                    <span>Updated today</span>
+                    <span>+$220 today</span>
                 </div>
             </div>
             <div class="stat-card animate-in delay-2" id="totalEarningsCard">
@@ -706,9 +709,8 @@
                 </div>
                 <div class="stat-label">Total Earnings</div>
                 <div class="stat-value" id="totalEarnings">$220</div>
-                <div class="stat-trend trend-up">
-                    <i class="fas fa-arrow-up"></i>
-                    <span>Since 20 Feb 2026</span>
+                <div class="stat-trend">
+                    <span>Since 23 Feb 2026</span>
                 </div>
             </div>
             <div class="stat-card animate-in delay-2">
@@ -778,7 +780,7 @@
                     </div>
                 </div>
                 
-                <div style="position: relative; margin-bottom: 20px;" id="currentStatusContainer">
+                <div style="position: relative; margin-bottom: 20px;">
                     <div style="position: absolute; left: -18px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--success); border: 2px solid white; box-shadow: 0 0 0 2px var(--success);"></div>
                     <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate">23rd February 2026</div>
                     <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--success);">
@@ -787,6 +789,7 @@
                             <span style="background: var(--promo-gradient); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">$220/DAY</span>
                         </h4>
                         <p style="opacity: 0.9; font-size: 0.9rem;" id="currentStatusText">Earned $220 so far. Current balance: $47,940</p>
+                        <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 5px; color: var(--success);" id="remainingDaysText">58 business days remaining until payout</p>
                     </div>
                 </div>
                 
@@ -840,8 +843,8 @@
                     <div class="info-value">20th February 2026</div>
                 </div>
                 <div class="info-item">
-                    <div class="info-label">Days Earned</div>
-                    <div class="info-value" id="detailDaysEarned">1 day</div>
+                    <div class="info-label">First Earning Date</div>
+                    <div class="info-value" style="color: var(--success);">23rd February 2026</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Days Remaining</div>
@@ -884,8 +887,8 @@
             </div>
             
             <div class="info-item">
-                <div class="info-label">Investment Start</div>
-                <div class="info-value">20th February 2026</div>
+                <div class="info-label">First Earning</div>
+                <div class="info-value">23rd February 2026</div>
             </div>
             
             <div class="earnings-timeline" id="earningsTimeline">
@@ -895,7 +898,7 @@
             <div class="payout-info" style="margin-top: 20px;">
                 <h3 style="margin-bottom: 15px;">Future Projection</h3>
                 <div class="info-item">
-                    <div class="info-label">Remaining Days</div>
+                    <div class="info-label">Days Remaining</div>
                     <div class="info-value" id="futureDays">58 days</div>
                 </div>
                 <div class="info-item">
@@ -953,9 +956,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
 
     <script>
-        // ===========================================
-        // FIREBASE CONFIGURATION
-        // ===========================================
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
             authDomain: "ggic-investment.firebaseapp.com",
@@ -967,14 +968,13 @@
             measurementId: "G-NR5R3EJM93"
         };
 
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        // ===========================================
-        // DOM ELEMENTS
-        // ===========================================
+        // DOM Elements
         const logoutBtn = document.getElementById('logoutBtn');
         const totalInvestmentEl = document.getElementById('totalInvestment');
         const currentBalanceEl = document.getElementById('currentBalance');
@@ -985,67 +985,66 @@
         const userAvatar = document.getElementById('userAvatar');
         const avatarInitial = document.getElementById('avatarInitial');
         
+        // Detail pages
         const currentBalancePage = document.getElementById('currentBalancePage');
         const totalEarningsPage = document.getElementById('totalEarningsPage');
         const allTransactionsPage = document.getElementById('allTransactionsPage');
 
         // ===========================================
-        // CONSTANTS - FULLY DYNAMIC
+        // CONSTANTS - CORRECT FOR FEB 23, 2026
         // ===========================================
         const DAILY_EARNINGS = 220;
         const INVESTMENT_AMOUNT = 47720;
-        const INVESTMENT_START_DATE = new Date('2026-02-20');
-        const INVESTMENT_END_DATE = new Date('2026-05-20');
+        const REINVESTMENT_DATE = new Date('2026-02-20');
+        const FIRST_EARNING_DATE = new Date('2026-02-23');
+        const MATURITY_DATE = new Date('2026-05-20');
         
-        // TODAY'S DATE - AUTOMATIC (UPDATES DAILY)
+        // TODAY'S DATE - AUTOMATIC
         const TODAY = new Date();
 
-        // US Holidays 2025-2026 (optional - can be expanded)
-        const HOLIDAYS = [
-            '2025-12-25', // Christmas
-            '2026-01-01', // New Year
-            '2026-01-19', // MLK Day
-            '2026-02-16', // Presidents Day
-        ];
+        // Holidays
+        const HOLIDAYS = ['2025-12-25', '2026-01-01', '2026-01-19', '2026-02-16'];
 
         // ===========================================
-        // BUSINESS DAY CALCULATIONS - FULLY AUTOMATIC
+        // BUSINESS DAY CALCULATIONS
         // ===========================================
         function isBusinessDay(date) {
             const day = date.getDay();
-            if (day === 0 || day === 6) return false; // Saturday or Sunday
-            
+            if (day === 0 || day === 6) return false;
             const dateStr = date.toISOString().split('T')[0];
             if (HOLIDAYS.includes(dateStr)) return false;
-            
             return true;
         }
 
         function calculateBusinessDays(startDate, endDate) {
-            let businessDays = 0;
+            let count = 0;
             const current = new Date(startDate);
-            
             while (current <= endDate) {
-                if (isBusinessDay(current)) {
-                    businessDays++;
-                }
+                if (isBusinessDay(current)) count++;
                 current.setDate(current.getDate() + 1);
             }
-            
-            return businessDays;
+            return count;
         }
 
         // ===========================================
-        // CALCULATE CURRENT STATS - UPDATES DAILY
+        // CALCULATE CURRENT STATS - ONLY SHOWS REMAINING DAYS
         // ===========================================
         function calculateCurrentStats() {
-            // Business days from Feb 20 to TODAY
-            const daysEarned = calculateBusinessDays(INVESTMENT_START_DATE, TODAY);
+            // Calculate days earned from FIRST_EARNING_DATE to TODAY
+            let daysEarned = 0;
+            if (TODAY >= FIRST_EARNING_DATE) {
+                daysEarned = calculateBusinessDays(FIRST_EARNING_DATE, TODAY);
+            }
+            
             const totalEarnings = daysEarned * DAILY_EARNINGS;
             const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
             
-            // Days remaining
-            const daysRemaining = calculateBusinessDays(TODAY, INVESTMENT_END_DATE);
+            // Calculate days remaining from TOMORROW to MATURITY
+            const tomorrow = new Date(TODAY);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const daysRemaining = calculateBusinessDays(tomorrow, MATURITY_DATE);
+            
+            // Future earnings
             const futureEarnings = daysRemaining * DAILY_EARNINGS;
             const totalProjectedEarnings = totalEarnings + futureEarnings;
             
@@ -1061,30 +1060,10 @@
         }
 
         // ===========================================
-        // GENERATE TRANSACTION HISTORY - INCLUDES TODAY
+        // GENERATE TRANSACTION HISTORY
         // ===========================================
-        function generateDailyEarnings() {
-            const earnings = [];
-            const current = new Date(INVESTMENT_START_DATE);
-            
-            while (current <= TODAY) {
-                if (isBusinessDay(current)) {
-                    earnings.push({
-                        type: "earning",
-                        amount: DAILY_EARNINGS,
-                        date: new Date(current),
-                        description: "Daily Earnings - Promotional Plan",
-                        status: "completed"
-                    });
-                }
-                current.setDate(current.getDate() + 1);
-            }
-            
-            return earnings;
-        }
-
-        function calculateCompleteHistory() {
-            // Previous investment history (Starter Plan and Premium Plan)
+        function generateCompleteHistory() {
+            // Previous investment history
             const previousHistory = [
                 {
                     type: "deposit",
@@ -1123,11 +1102,26 @@
                 }
             ];
             
-            // Current promotional plan earnings (Feb 23 onward)
-            const promotionalEarnings = generateDailyEarnings();
+            // Generate promotional earnings from FIRST_EARNING_DATE to TODAY
+            const promotionalEarnings = [];
+            if (TODAY >= FIRST_EARNING_DATE) {
+                const current = new Date(FIRST_EARNING_DATE);
+                while (current <= TODAY) {
+                    if (isBusinessDay(current)) {
+                        promotionalEarnings.push({
+                            type: "earning",
+                            amount: DAILY_EARNINGS,
+                            date: new Date(current),
+                            description: "Daily Earnings - Promotional Plan",
+                            status: "completed"
+                        });
+                    }
+                    current.setDate(current.getDate() + 1);
+                }
+            }
             
-            // Combine all transactions
-            return [...previousHistory, ...promotionalEarnings];
+            // Combine and sort by date (newest first)
+            return [...previousHistory, ...promotionalEarnings].sort((a, b) => b.date - a.date);
         }
 
         // ===========================================
@@ -1160,11 +1154,11 @@
         }
 
         // ===========================================
-        // UPDATE DASHBOARD - RUNS EVERY PAGE LOAD
+        // UPDATE DASHBOARD
         // ===========================================
         function updateDashboard() {
             const stats = calculateCurrentStats();
-            const allTransactions = calculateCompleteHistory();
+            const allTransactions = generateCompleteHistory();
             
             // Update main stats
             totalInvestmentEl.textContent = `$${stats.totalInvestment.toLocaleString()}`;
@@ -1176,39 +1170,37 @@
             document.getElementById('detailTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             
-            // Update days info
-            document.getElementById('detailDaysEarned').textContent = `${stats.daysEarned} ${stats.daysEarned === 1 ? 'day' : 'days'}`;
+            // Update days remaining - CONSISTENT 58 DAYS
             document.getElementById('detailDaysRemaining').textContent = `${stats.daysRemaining} days`;
             document.getElementById('futureDays').textContent = `${stats.daysRemaining} days`;
+            document.getElementById('remainingDaysText').textContent = `${stats.daysRemaining} business days remaining until payout`;
+            
+            // Update future earnings
             document.getElementById('futureEarnings').textContent = `$${stats.futureEarnings.toLocaleString()}`;
             document.getElementById('totalExpected').textContent = `$${stats.totalProjectedEarnings.toLocaleString()}`;
             
-            // Update current status in timeline
+            // Update current status
             document.getElementById('currentStatusDate').textContent = formatDateWithOrdinal(TODAY);
-            document.getElementById('currentStatusText').innerHTML = `Earned $${stats.totalEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
+            document.getElementById('currentStatusText').innerHTML = 
+                `Earned $${stats.totalEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
             
             // Update transaction lists
             updateTransactionLists(allTransactions);
             
             // Update earnings timeline
             updateEarningsTimeline(allTransactions);
-            
-            console.log(`✅ Dashboard updated for ${formatDate(TODAY)} - Balance: $${stats.currentBalance}`);
         }
 
         // ===========================================
         // TRANSACTION LIST FUNCTIONS
         // ===========================================
         function updateTransactionLists(allTransactions) {
-            // Sort transactions by date (newest first)
-            const sortedTransactions = allTransactions.sort((a, b) => b.date - a.date);
-            
             // Show last 5 transactions in dashboard
-            const recentTransactions = sortedTransactions.slice(0, 5);
+            const recentTransactions = allTransactions.slice(0, 5);
             updateTransactionList(transactionList, recentTransactions);
             
             // Show all transactions in detail page
-            updateTransactionList(allTransactionList, sortedTransactions);
+            updateTransactionList(allTransactionList, allTransactions);
         }
 
         function updateTransactionList(listElement, transactions) {
@@ -1226,15 +1218,19 @@
                 if (transaction.type === 'payout') {
                     iconClass = 'payout';
                     icon = 'fa-money-check';
+                    amountClass = 'positive';
                 } else if (transaction.type === 'earning') {
                     iconClass = 'income';
                     icon = 'fa-coins';
+                    amountClass = 'positive';
                 } else if (transaction.type === 'deposit') {
                     iconClass = 'income';
                     icon = 'fa-wallet';
+                    amountClass = 'positive';
                 } else if (transaction.type === 'reinvest') {
                     iconClass = 'reinvest';
                     icon = 'fa-sync-alt';
+                    amountClass = 'positive';
                 }
                 
                 transactionItem.innerHTML = `
@@ -1264,6 +1260,11 @@
             const promoEarnings = transactions.filter(t => 
                 t.type === 'earning' && t.description.includes('Promotional')
             );
+            
+            if (promoEarnings.length === 0) {
+                timelineElement.innerHTML = '<div class="month-earnings">No earnings yet. First earning starts Feb 23, 2026.</div>';
+                return;
+            }
             
             // Group by month
             const monthlyEarnings = {};
@@ -1389,13 +1390,11 @@
             } else {
                 logoutBtn.style.display = 'block';
                 
-                // Update dashboard with current date's data
+                // Update dashboard
                 updateDashboard();
                 
                 // Load user profile
                 loadUserProfile(user);
-                
-                console.log(`📊 Dashboard loaded for ${formatDate(TODAY)}`);
             }
         });
 
@@ -1424,12 +1423,12 @@
         });
 
         // ===========================================
-        // INITIALIZE DASHBOARD - WILL UPDATE DAILY
+        // INITIALIZE DASHBOARD
         // ===========================================
         document.addEventListener('DOMContentLoaded', () => {
             updateDashboard();
             
-            // Auto-refresh every hour to catch date changes
+            // Auto-refresh every hour
             setInterval(updateDashboard, 3600000);
         });
     </script>
