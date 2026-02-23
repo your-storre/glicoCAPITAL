@@ -677,7 +677,7 @@
     <div class="container">
         <div class="welcome-section animate-in">
             <h2>Welcome back, Felicity!</h2>
-            <p>Your promotional plan is active with $220/day earnings</p>
+            <p>Your promotional plan is active with $220/day earnings (business days only)</p>
         </div>
 
         <!-- Stats Cards -->
@@ -789,7 +789,7 @@
                             <span style="background: var(--promo-gradient); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">$220/DAY</span>
                         </h4>
                         <p style="opacity: 0.9; font-size: 0.9rem;" id="currentStatusText">Earned $220 so far. Current balance: $47,940</p>
-                        <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 5px; color: var(--success);" id="remainingDaysText">58 business days remaining until payout</p>
+                        <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 5px; color: var(--success);" id="remainingDaysText"><i class="fas fa-briefcase"></i> 58 business days remaining until payout (May 20, 2026)</p>
                     </div>
                 </div>
                 
@@ -847,7 +847,11 @@
                     <div class="info-value" style="color: var(--success);">23rd February 2026</div>
                 </div>
                 <div class="info-item">
-                    <div class="info-label">Days Remaining</div>
+                    <div class="info-label">Business Days Earned</div>
+                    <div class="info-value" id="detailDaysEarned">1 day</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Business Days Remaining</div>
                     <div class="info-value" id="detailDaysRemaining">58 days</div>
                 </div>
                 <div class="info-item">
@@ -898,7 +902,7 @@
             <div class="payout-info" style="margin-top: 20px;">
                 <h3 style="margin-bottom: 15px;">Future Projection</h3>
                 <div class="info-item">
-                    <div class="info-label">Days Remaining</div>
+                    <div class="info-label">Business Days Remaining</div>
                     <div class="info-value" id="futureDays">58 days</div>
                 </div>
                 <div class="info-item">
@@ -996,53 +1000,60 @@
         const DAILY_EARNINGS = 220;
         const INVESTMENT_AMOUNT = 47720;
         const REINVESTMENT_DATE = new Date('2026-02-20');
-        const FIRST_EARNING_DATE = new Date('2026-02-23');
-        const MATURITY_DATE = new Date('2026-05-20');
+        const FIRST_EARNING_DATE = new Date('2026-02-23'); // First earning day (Monday)
+        const MATURITY_DATE = new Date('2026-05-20');      // Final payout date
         
         // TODAY'S DATE - AUTOMATIC
         const TODAY = new Date();
 
-        // Holidays
-        const HOLIDAYS = ['2025-12-25', '2026-01-01', '2026-01-19', '2026-02-16'];
+        // US Holidays 2025-2026
+        const HOLIDAYS = [
+            '2025-12-25', // Christmas
+            '2026-01-01', // New Year
+            '2026-01-19', // MLK Day
+            '2026-02-16', // Presidents Day
+        ];
 
         // ===========================================
         // BUSINESS DAY CALCULATIONS
         // ===========================================
         function isBusinessDay(date) {
             const day = date.getDay();
-            if (day === 0 || day === 6) return false;
+            if (day === 0 || day === 6) return false; // Saturday or Sunday
+            
             const dateStr = date.toISOString().split('T')[0];
             if (HOLIDAYS.includes(dateStr)) return false;
+            
             return true;
         }
 
-        function calculateBusinessDays(startDate, endDate) {
+        function countBusinessDays(startDate, endDate) {
             let count = 0;
             const current = new Date(startDate);
-            while (current <= endDate) {
-                if (isBusinessDay(current)) count++;
+            current.setHours(0, 0, 0, 0);
+            const end = new Date(endDate);
+            end.setHours(0, 0, 0, 0);
+            
+            while (current <= end) {
+                if (isBusinessDay(current)) {
+                    count++;
+                }
                 current.setDate(current.getDate() + 1);
             }
             return count;
         }
 
         // ===========================================
-        // CALCULATE CURRENT STATS - ONLY SHOWS REMAINING DAYS
+        // CALCULATE CURRENT STATS - HARDCODED TO 58 DAYS FOR FEB 23
         // ===========================================
         function calculateCurrentStats() {
-            // Calculate days earned from FIRST_EARNING_DATE to TODAY
-            let daysEarned = 0;
-            if (TODAY >= FIRST_EARNING_DATE) {
-                daysEarned = calculateBusinessDays(FIRST_EARNING_DATE, TODAY);
-            }
-            
+            // Days earned from FIRST_EARNING_DATE to TODAY
+            const daysEarned = countBusinessDays(FIRST_EARNING_DATE, TODAY);
             const totalEarnings = daysEarned * DAILY_EARNINGS;
             const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
             
-            // Calculate days remaining from TOMORROW to MATURITY
-            const tomorrow = new Date(TODAY);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const daysRemaining = calculateBusinessDays(tomorrow, MATURITY_DATE);
+            // HARDCODE to 58 for Feb 23, 2026 - YOU CAN CHANGE THIS NUMBER MANUALLY
+            const daysRemaining = 58;
             
             // Future earnings
             const futureEarnings = daysRemaining * DAILY_EARNINGS;
@@ -1060,7 +1071,7 @@
         }
 
         // ===========================================
-        // GENERATE TRANSACTION HISTORY
+        // GENERATE COMPLETE TRANSACTION HISTORY
         // ===========================================
         function generateCompleteHistory() {
             // Previous investment history
@@ -1070,6 +1081,20 @@
                     amount: 5000,
                     date: new Date('2025-05-15'),
                     description: "Starter Plan Investment Deposit",
+                    status: "completed"
+                },
+                {
+                    type: "earning",
+                    amount: 45,
+                    date: new Date('2025-05-16'),
+                    description: "Daily Earnings - Starter Plan",
+                    status: "completed"
+                },
+                {
+                    type: "earning",
+                    amount: 45,
+                    date: new Date('2025-05-17'),
+                    description: "Daily Earnings - Starter Plan",
                     status: "completed"
                 },
                 {
@@ -1084,6 +1109,13 @@
                     amount: 35000,
                     date: new Date('2025-09-20'),
                     description: "Premium Plan Investment Deposit",
+                    status: "completed"
+                },
+                {
+                    type: "earning",
+                    amount: 120,
+                    date: new Date('2025-09-23'),
+                    description: "Daily Earnings - Premium Plan",
                     status: "completed"
                 },
                 {
@@ -1170,10 +1202,11 @@
             document.getElementById('detailTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             
-            // Update days remaining - CONSISTENT 58 DAYS
+            // Update days earned and remaining
+            document.getElementById('detailDaysEarned').textContent = `${stats.daysEarned} ${stats.daysEarned === 1 ? 'day' : 'days'}`;
             document.getElementById('detailDaysRemaining').textContent = `${stats.daysRemaining} days`;
             document.getElementById('futureDays').textContent = `${stats.daysRemaining} days`;
-            document.getElementById('remainingDaysText').textContent = `${stats.daysRemaining} business days remaining until payout`;
+            document.getElementById('remainingDaysText').innerHTML = `<i class="fas fa-briefcase"></i> ${stats.daysRemaining} business days remaining until payout (May 20, 2026)`;
             
             // Update future earnings
             document.getElementById('futureEarnings').textContent = `$${stats.futureEarnings.toLocaleString()}`;
@@ -1189,6 +1222,8 @@
             
             // Update earnings timeline
             updateEarningsTimeline(allTransactions);
+            
+            console.log(`📊 Dashboard: ${stats.daysEarned} days earned, ${stats.daysRemaining} days remaining`);
         }
 
         // ===========================================
