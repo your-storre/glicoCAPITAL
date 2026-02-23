@@ -440,16 +440,6 @@
             color: #2563eb;
         }
         
-        .transaction-icon.earning {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-        }
-        
-        .transaction-icon.reinvest {
-            background: rgba(212, 175, 55, 0.2);
-            color: var(--secondary);
-        }
-        
         .transaction-details h4 {
             font-weight: 600;
             margin-bottom: 4px;
@@ -963,10 +953,10 @@
                     <i class="fas fa-money-check-alt"></i>
                 </div>
                 <div class="stat-label">Total Payouts</div>
-                <div class="stat-value" id="totalPayouts">$8,600</div>
+                <div class="stat-value" id="totalPayouts">$56,320</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
-                    <span>All time</span>
+                    <span>Both investments</span>
                 </div>
             </div>
             <div class="stat-card animate-in delay-1" onclick="showCurrentInvestment()">
@@ -1043,7 +1033,7 @@
                 </div>
                 <div class="action-buttons">
                     <button class="btn btn-outline" onclick="downloadReceipt('premium')"><i class="fas fa-download"></i> Receipt</button>
-                    <button class="btn btn-promo" onclick="viewReinvestmentDetails()"><i class="fas fa-chart-line"></i> View Details</button>
+                    <button class="btn btn-promo" onclick="viewCompletedInvestment()"><i class="fas fa-history"></i> View Details</button>
                 </div>
             </div>
 
@@ -1133,19 +1123,27 @@
         </div>
     </div>
 
-    <!-- Reinvestment Details Page -->
-    <div class="detail-page" id="reinvestmentPage">
+    <!-- Completed Premium Plan Details Page -->
+    <div class="detail-page" id="completedInvestmentPage">
         <div class="detail-content">
             <button class="close-detail" onclick="closeDetailPage()">×</button>
-            <h2 style="margin-bottom: 20px; color: white;">Reinvestment Details</h2>
+            <h2 style="margin-bottom: 20px; color: white;">Premium Plan Details</h2>
             <div class="payout-info">
-                <div class="info-item"><span class="info-label">Investment Plan</span><span class="info-value">3 Months Promotional</span></div>
-                <div class="info-item"><span class="info-label">Amount Reinvested</span><span class="info-value">$47,720</span></div>
-                <div class="info-item"><span class="info-label">Daily Rate</span><span class="info-value" style="color: var(--secondary);">$220/day</span></div>
-                <div class="info-item"><span class="info-label">Start Date</span><span class="info-value">20 Feb 2026</span></div>
-                <div class="info-item"><span class="info-label">Maturity Date</span><span class="info-value">20 May 2026</span></div>
-                <div class="info-item"><span class="info-label">Projected Earnings</span><span class="info-value" style="color: var(--success);">$12,980</span></div>
-                <div class="info-item"><span class="info-label">Projected Payout</span><span class="info-value" style="color: var(--success);">$60,700</span></div>
+                <div class="info-item"><span class="info-label">Investment Plan</span><span class="info-value">Premium Plan (6 Months)</span></div>
+                <div class="info-item"><span class="info-label">Initial Investment</span><span class="info-value">$35,000</span></div>
+                <div class="info-item"><span class="info-label">Total Earnings</span><span class="info-value" style="color: var(--success);">$12,720</span></div>
+                <div class="info-item"><span class="info-label">Total Payout</span><span class="info-value" style="color: var(--secondary);">$47,720</span></div>
+                <div class="info-item"><span class="info-label">Start Date</span><span class="info-value">20 Sep 2025</span></div>
+                <div class="info-item"><span class="info-label">Maturity Date</span><span class="info-value">20 Feb 2026</span></div>
+                <div class="info-item"><span class="info-label">Duration</span><span class="info-value">6 Months</span></div>
+                <div class="info-item"><span class="info-label">Status</span><span class="info-value" style="color: var(--success);">Completed & Reinvested</span></div>
+                <div class="info-item"><span class="info-label">Reinvested Into</span><span class="info-value">3 Months Promotional Plan</span></div>
+            </div>
+            <div style="margin-top: 20px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 10px;">
+                <h4 style="margin-bottom: 10px; color: var(--secondary);">Investment Summary</h4>
+                <p style="font-size: 0.9rem;">
+                    This investment matured on February 20, 2026. The full payout of $47,720 was automatically reinvested into the 3 Months Promotional Plan at $220/day.
+                </p>
             </div>
         </div>
     </div>
@@ -1218,79 +1216,54 @@
         const avatarInitial = document.getElementById('avatarInitial');
         
         const allPayoutsPage = document.getElementById('allPayoutsPage');
-        const reinvestmentPage = document.getElementById('reinvestmentPage');
+        const completedInvestmentPage = document.getElementById('completedInvestmentPage');
         const receiptModal = document.getElementById('receiptModal');
 
         const FELICITY_USER_ID = "user_felicity_12345";
 
         // ===========================================
-        // CONSTANTS - CORRECT FOR FEB 23, 2026
+        // CONSTANTS
         // ===========================================
-        const DAILY_EARNINGS = 220;
         const INVESTMENT_AMOUNT = 47720;
-        const FIRST_EARNING_DATE = new Date('2026-02-23'); // First earning day
-        const MATURITY_DATE = new Date('2026-05-20');
         
         const TODAY = new Date();
         
         // Current receipt data
         let currentReceiptPayout = null;
 
-        // Payout history
-        const payoutHistory = [{
-            id: "PAY-001",
-            amount: 8600,
-            date: "2025-08-15",
-            description: "Starter Plan Investment Payout",
-            investmentAmount: 5000,
-            earnings: 3600,
-            duration: "4 Months",
-            paidTo: "Wells Fargo •••• 0906",
-            transactionId: "TRX-20250815-001"
-        }];
-
-        // ===========================================
-        // BUSINESS DAY CALCULATIONS
-        // ===========================================
-        function isBusinessDay(date) {
-            const day = date.getDay();
-            return day >= 1 && day <= 5; // Monday-Friday
-        }
-
-        function countBusinessDays(startDate, endDate) {
-            let count = 0;
-            const current = new Date(startDate);
-            while (current <= endDate) {
-                if (isBusinessDay(current)) count++;
-                current.setDate(current.getDate() + 1);
+        // Payout history - TWO SEPARATE PAYOUTS
+        const payoutHistory = [
+            {
+                id: "PAY-001",
+                type: "starter",
+                amount: 8600,
+                date: "2025-08-15",
+                description: "Starter Plan Investment Payout",
+                investmentAmount: 5000,
+                earnings: 3600,
+                duration: "4 Months",
+                paidTo: "Wells Fargo •••• 0906",
+                transactionId: "TRX-20250815-001",
+                bank: "Wells Fargo",
+                account: "0906"
+            },
+            {
+                id: "PAY-002",
+                type: "premium",
+                amount: 47720,
+                date: "2026-02-20",
+                description: "Premium Plan Investment Payout",
+                investmentAmount: 35000,
+                earnings: 12720,
+                duration: "6 Months",
+                paidTo: "Glico Holdings (Reinvested)",
+                transactionId: "TRX-20260220-001",
+                reinvested: true,
+                reinvestPlan: "3 Months Promotional",
+                bank: "Glico Holdings",
+                account: "Reinvested"
             }
-            return count;
-        }
-
-        // ===========================================
-        // CALCULATE CURRENT STATS - NO EARNINGS INCLUDED
-        // ===========================================
-        function calculateCurrentStats() {
-            // Current investment is still $47,720 (no earnings added to principal)
-            const currentBalance = INVESTMENT_AMOUNT;
-            
-            // Days earned from FIRST_EARNING_DATE to YESTERDAY (for information only)
-            const yesterday = new Date(TODAY);
-            yesterday.setDate(yesterday.getDate() - 1);
-            const daysEarned = countBusinessDays(FIRST_EARNING_DATE, yesterday);
-            
-            // Days remaining from TOMORROW to MATURITY
-            const tomorrow = new Date(TODAY);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const daysRemaining = countBusinessDays(tomorrow, MATURITY_DATE);
-            
-            return {
-                currentBalance: currentBalance,
-                daysEarned: daysEarned,
-                daysRemaining: daysRemaining,
-                totalBusinessDays: 59
-            };
-        }
+        ];
 
         // ===========================================
         // FORMATTING FUNCTIONS
@@ -1353,8 +1326,6 @@
         // UPDATE PAYOUT LISTS
         // ===========================================
         function updatePayoutLists() {
-            const stats = calculateCurrentStats();
-            
             recentPayouts.innerHTML = '';
             allPayoutsList.innerHTML = '';
 
@@ -1364,18 +1335,23 @@
                 allPayoutsList.appendChild(item.cloneNode(true));
             });
 
-            document.getElementById('totalPayouts').textContent = '$8,600';
-            document.getElementById('currentInvestment').textContent = `$${stats.currentBalance.toLocaleString()}`;
+            // Calculate total payouts (both investments)
+            const totalPayouts = payoutHistory.reduce((sum, p) => sum + p.amount, 0);
+            document.getElementById('totalPayouts').textContent = `$${totalPayouts.toLocaleString()}`;
+            document.getElementById('currentInvestment').textContent = `$${INVESTMENT_AMOUNT.toLocaleString()}`;
         }
 
         function createPayoutItem(payout) {
             const item = document.createElement('div');
             item.className = 'transaction-item';
+            
+            let reinvestBadge = payout.reinvested ? ' <span style="color: var(--secondary);">(Reinvested)</span>' : '';
+            
             item.innerHTML = `
                 <div class="transaction-info">
                     <div class="transaction-icon payout"><i class="fas fa-money-check-alt"></i></div>
                     <div class="transaction-details">
-                        <h4>${payout.description}</h4>
+                        <h4>${payout.description}${reinvestBadge}</h4>
                         <div class="transaction-date">${formatDate(new Date(payout.date))}</div>
                     </div>
                 </div>
@@ -1385,10 +1361,13 @@
         }
 
         // ===========================================
-        // RECEIPT FUNCTIONS - WITH WORKING LOGO
+        // RECEIPT FUNCTIONS - SEPARATE FOR EACH PAYOUT
         // ===========================================
         function downloadReceipt(type) {
-            const payout = payoutHistory[0];
+            // Find the correct payout based on type
+            const payout = payoutHistory.find(p => p.type === type);
+            if (!payout) return;
+            
             currentReceiptPayout = payout;
             showReceipt(payout);
         }
@@ -1408,6 +1387,7 @@
                 <div class="receipt-row"><span class="receipt-label">Total Earnings:</span><span class="receipt-value">$${payout.earnings.toLocaleString()}</span></div>
                 <div class="receipt-row"><span class="receipt-label">Duration:</span><span class="receipt-value">${payout.duration}</span></div>
                 <div class="receipt-row"><span class="receipt-label">Paid To:</span><span class="receipt-value">${payout.paidTo}</span></div>
+                ${payout.reinvested ? '<div class="receipt-row"><span class="receipt-label">Reinvested:</span><span class="receipt-value" style="color: #d4af37;">Yes - 3 Months Promotional</span></div>' : ''}
                 <div class="receipt-row receipt-total"><span class="receipt-label">TOTAL PAID:</span><span class="receipt-value">$${payout.amount.toLocaleString()}</span></div>
             `;
             receiptModal.classList.add('active');
@@ -1469,6 +1449,7 @@
                         <div class="row"><span class="label">Total Earnings:</span><span class="value">$${payout.earnings.toLocaleString()}</span></div>
                         <div class="row"><span class="label">Duration:</span><span class="value">${payout.duration}</span></div>
                         <div class="row"><span class="label">Paid To:</span><span class="value">${payout.paidTo}</span></div>
+                        ${payout.reinvested ? '<div class="row"><span class="label">Reinvested:</span><span class="value" style="color: #d4af37;">Yes - 3 Months Promotional</span></div>' : ''}
                         <div class="row total"><span class="label">TOTAL PAID:</span><span class="value">$${payout.amount.toLocaleString()}</span></div>
                     </div>
                     
@@ -1505,14 +1486,22 @@
         }
 
         // ===========================================
+        // VIEW COMPLETED INVESTMENT DETAILS
+        // ===========================================
+        function viewCompletedInvestment() {
+            completedInvestmentPage.classList.add('active');
+        }
+
+        // ===========================================
         // NAVIGATION FUNCTIONS
         // ===========================================
         function showAllPayouts() { allPayoutsPage.classList.add('active'); }
-        function viewReinvestmentDetails() { reinvestmentPage.classList.add('active'); }
-        function viewProjections() { reinvestmentPage.classList.add('active'); }
+        function viewProjections() { 
+            alert('View current investment projections on the Dashboard'); 
+        }
         function closeDetailPage() { 
             allPayoutsPage.classList.remove('active'); 
-            reinvestmentPage.classList.remove('active'); 
+            completedInvestmentPage.classList.remove('active');
         }
 
         // ===========================================
@@ -1521,8 +1510,8 @@
         function verifyAccount() { alert('Account verification request submitted'); }
         function exportHistory() { alert('Payout history exported!'); }
         function contactSupport() { alert('Contact support at support@glicocapital.online'); }
-        function showPayoutStats() { alert('Total payouts: $8,600'); }
-        function showCurrentInvestment() { alert('Current investment: $47,720 in Promotional Plan'); }
+        function showPayoutStats() { alert('Total payouts from all investments: $56,320'); }
+        function showCurrentInvestment() { alert('Current investment: $47,720 in 3 Months Promotional Plan'); }
         function showDailyRate() { alert('Daily rate: $220 (Promotional)'); }
         function showNextPayout() { alert('Next payout: May 20, 2026'); }
 
