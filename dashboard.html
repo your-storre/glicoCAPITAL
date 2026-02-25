@@ -697,7 +697,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stat-label">Current Balance</div>
-                <div class="stat-value" id="currentBalance">$47,940</div>
+                <div class="stat-value" id="currentBalance">$48,380</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
                     <span>+$220 today</span>
@@ -708,7 +708,7 @@
                     <i class="fas fa-coins"></i>
                 </div>
                 <div class="stat-label">Total Earnings</div>
-                <div class="stat-value" id="totalEarnings">$220</div>
+                <div class="stat-value" id="totalEarnings">$660</div>
                 <div class="stat-trend">
                     <span>Since 23 Feb 2026</span>
                 </div>
@@ -782,14 +782,14 @@
                 
                 <div style="position: relative; margin-bottom: 20px;">
                     <div style="position: absolute; left: -18px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--success); border: 2px solid white; box-shadow: 0 0 0 2px var(--success);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate">23rd February 2026</div>
+                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate">25th February 2026</div>
                     <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--success);">
                         <h4 style="margin-bottom: 5px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
                             <i class="fas fa-bolt" style="color: var(--success);"></i> Promotional Plan Active
                             <span style="background: var(--promo-gradient); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">$220/DAY</span>
                         </h4>
-                        <p style="opacity: 0.9; font-size: 0.9rem;" id="currentStatusText">Earned $220 so far. Current balance: $47,940</p>
-                        <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 5px; color: var(--success);" id="remainingDaysText"><i class="fas fa-briefcase"></i> 58 business days remaining until payout (May 20, 2026)</p>
+                        <p style="opacity: 0.9; font-size: 0.9rem;" id="currentStatusText">Earned $660 so far. Current balance: $48,380</p>
+                        <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 5px; color: var(--success);" id="remainingDaysText"><i class="fas fa-briefcase"></i> <span id="daysRemainingSpan">56</span> business days remaining until payout (May 20, 2026)</p>
                     </div>
                 </div>
                 
@@ -813,7 +813,7 @@
             
             <div class="info-item">
                 <div class="info-label">Current Balance</div>
-                <div class="info-value" id="detailCurrentBalance">$47,940</div>
+                <div class="info-value" id="detailCurrentBalance">$48,380</div>
             </div>
             
             <div class="info-item">
@@ -833,7 +833,7 @@
             
             <div class="info-item">
                 <div class="info-label">Total Earnings</div>
-                <div class="info-value" id="detailTotalEarnings">$220</div>
+                <div class="info-value" id="detailTotalEarnings">$660</div>
             </div>
             
             <div class="payout-info">
@@ -848,11 +848,11 @@
                 </div>
                 <div class="info-item">
                     <div class="info-label">Business Days Earned</div>
-                    <div class="info-value" id="detailDaysEarned">1 day</div>
+                    <div class="info-value" id="detailDaysEarned">3 days</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Business Days Remaining</div>
-                    <div class="info-value" id="detailDaysRemaining">58 days</div>
+                    <div class="info-value" id="detailDaysRemaining">56 days</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Maturity Date</div>
@@ -882,7 +882,7 @@
             
             <div class="info-item">
                 <div class="info-label">Total Earnings</div>
-                <div class="info-value" id="detailEarningsTotal">$220</div>
+                <div class="info-value" id="detailEarningsTotal">$660</div>
             </div>
             
             <div class="info-item">
@@ -903,11 +903,11 @@
                 <h3 style="margin-bottom: 15px;">Future Projection</h3>
                 <div class="info-item">
                     <div class="info-label">Business Days Remaining</div>
-                    <div class="info-value" id="futureDays">58 days</div>
+                    <div class="info-value" id="futureDays">56 days</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Future Earnings</div>
-                    <div class="info-value" id="futureEarnings">$12,760</div>
+                    <div class="info-value" id="futureEarnings">$12,320</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Total Expected</div>
@@ -995,7 +995,7 @@
         const allTransactionsPage = document.getElementById('allTransactionsPage');
 
         // ===========================================
-        // CONSTANTS - CORRECT FOR FEB 23, 2026
+        // CONSTANTS - AUTOMATIC DATE-BASED CALCULATION
         // ===========================================
         const DAILY_EARNINGS = 220;
         const INVESTMENT_AMOUNT = 47720;
@@ -1003,7 +1003,7 @@
         const FIRST_EARNING_DATE = new Date('2026-02-23'); // First earning day (Monday)
         const MATURITY_DATE = new Date('2026-05-20');      // Final payout date
         
-        // TODAY'S DATE - AUTOMATIC
+        // TODAY'S DATE - AUTOMATIC (will be Feb 25, 2026 when you use it)
         const TODAY = new Date();
 
         // US Holidays 2025-2026
@@ -1015,7 +1015,7 @@
         ];
 
         // ===========================================
-        // BUSINESS DAY CALCULATIONS
+        // BUSINESS DAY CALCULATIONS - 100% ACCURATE
         // ===========================================
         function isBusinessDay(date) {
             const day = date.getDay();
@@ -1044,16 +1044,22 @@
         }
 
         // ===========================================
-        // CALCULATE CURRENT STATS - HARDCODED TO 58 DAYS FOR FEB 23
+        // CALCULATE CURRENT STATS - UPDATED DAILY
         // ===========================================
         function calculateCurrentStats() {
-            // Days earned from FIRST_EARNING_DATE to TODAY
+            // Days earned from FIRST_EARNING_DATE to TODAY (including today)
             const daysEarned = countBusinessDays(FIRST_EARNING_DATE, TODAY);
             const totalEarnings = daysEarned * DAILY_EARNINGS;
             const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
             
-            // HARDCODE to 58 for Feb 23, 2026 - YOU CAN CHANGE THIS NUMBER MANUALLY
-            const daysRemaining = 58;
+            // Days remaining from TOMORROW to MATURITY
+            const tomorrow = new Date(TODAY);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            const daysRemaining = countBusinessDays(tomorrow, MATURITY_DATE);
+            
+            // Total business days in the whole period (Feb 23 to May 20)
+            const totalBusinessDays = countBusinessDays(FIRST_EARNING_DATE, MATURITY_DATE);
             
             // Future earnings
             const futureEarnings = daysRemaining * DAILY_EARNINGS;
@@ -1066,7 +1072,8 @@
                 daysEarned: daysEarned,
                 daysRemaining: daysRemaining,
                 futureEarnings: futureEarnings,
-                totalProjectedEarnings: totalProjectedEarnings
+                totalProjectedEarnings: totalProjectedEarnings,
+                totalBusinessDays: totalBusinessDays
             };
         }
 
@@ -1134,22 +1141,20 @@
                 }
             ];
             
-            // Generate promotional earnings from FIRST_EARNING_DATE to TODAY
+            // Generate promotional earnings from FIRST_EARNING_DATE to TODAY (including today)
             const promotionalEarnings = [];
-            if (TODAY >= FIRST_EARNING_DATE) {
-                const current = new Date(FIRST_EARNING_DATE);
-                while (current <= TODAY) {
-                    if (isBusinessDay(current)) {
-                        promotionalEarnings.push({
-                            type: "earning",
-                            amount: DAILY_EARNINGS,
-                            date: new Date(current),
-                            description: "Daily Earnings - Promotional Plan",
-                            status: "completed"
-                        });
-                    }
-                    current.setDate(current.getDate() + 1);
+            const current = new Date(FIRST_EARNING_DATE);
+            while (current <= TODAY) {
+                if (isBusinessDay(current)) {
+                    promotionalEarnings.push({
+                        type: "earning",
+                        amount: DAILY_EARNINGS,
+                        date: new Date(current),
+                        description: "Daily Earnings - Promotional Plan",
+                        status: "completed"
+                    });
                 }
+                current.setDate(current.getDate() + 1);
             }
             
             // Combine and sort by date (newest first)
@@ -1186,7 +1191,7 @@
         }
 
         // ===========================================
-        // UPDATE DASHBOARD
+        // UPDATE DASHBOARD - RUNS EVERY PAGE LOAD
         // ===========================================
         function updateDashboard() {
             const stats = calculateCurrentStats();
@@ -1206,7 +1211,7 @@
             document.getElementById('detailDaysEarned').textContent = `${stats.daysEarned} ${stats.daysEarned === 1 ? 'day' : 'days'}`;
             document.getElementById('detailDaysRemaining').textContent = `${stats.daysRemaining} days`;
             document.getElementById('futureDays').textContent = `${stats.daysRemaining} days`;
-            document.getElementById('remainingDaysText').innerHTML = `<i class="fas fa-briefcase"></i> ${stats.daysRemaining} business days remaining until payout (May 20, 2026)`;
+            document.getElementById('daysRemainingSpan').textContent = stats.daysRemaining;
             
             // Update future earnings
             document.getElementById('futureEarnings').textContent = `$${stats.futureEarnings.toLocaleString()}`;
@@ -1223,7 +1228,7 @@
             // Update earnings timeline
             updateEarningsTimeline(allTransactions);
             
-            console.log(`📊 Dashboard: ${stats.daysEarned} days earned, ${stats.daysRemaining} days remaining`);
+            console.log(`📊 Dashboard: ${stats.daysEarned} days earned, ${stats.daysRemaining} days remaining (as of ${formatDate(TODAY)})`);
         }
 
         // ===========================================
@@ -1463,7 +1468,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateDashboard();
             
-            // Auto-refresh every hour
+            // Auto-refresh every hour to catch date changes
             setInterval(updateDashboard, 3600000);
         });
     </script>
