@@ -59,7 +59,7 @@
             padding: 20px;
         }
         
-        /* Premium Header */
+        /* Premium Header - Only Logo */
         header {
             display: flex;
             justify-content: space-between;
@@ -76,23 +76,9 @@
             border-bottom: 1px solid var(--glass-border);
         }
         
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
         .logo img {
             height: 38px;
             filter: brightness(0) invert(1);
-        }
-        
-        .logo h1 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, white, var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
         
         .user-menu {
@@ -602,11 +588,10 @@
     </style>
 </head>
 <body>
-    <!-- Premium Header -->
+    <!-- Premium Header - Only Logo Image -->
     <header>
         <div class="logo">
             <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
-            <h1>GlicoCapital</h1>
         </div>
         <div class="user-menu">
             <button class="btn btn-outline" id="logoutBtn" style="padding: 8px 16px; display: none;">Logout</button>
@@ -865,12 +850,10 @@
                     if (userData.referralCode) {
                         userReferralCode = userData.referralCode;
                     } else {
-                        // Generate new referral code if none exists
                         userReferralCode = generateReferralCode();
                         await userRef.update({ referralCode: userReferralCode });
                     }
                     
-                    // Load referral stats
                     if (userData.referralStats) {
                         referralStats = userData.referralStats;
                     }
@@ -879,7 +862,6 @@
                 }
             } catch (error) {
                 console.error('Error loading referral data:', error);
-                // Use demo data for testing
                 useDemoData();
             }
         }
@@ -924,18 +906,15 @@
 
         // Update display with referral data
         function updateDisplay() {
-            // Update invite code and link
             document.getElementById('inviteCode').textContent = userReferralCode;
             document.getElementById('inviteLink').textContent = `https://glicocapital.com/ref/${userReferralCode}`;
             document.getElementById('modalInviteCode').textContent = userReferralCode;
             
-            // Update stats
             document.getElementById('totalInvites').textContent = referralStats.totalInvites;
             document.getElementById('activeMembers').textContent = referralStats.activeMembers;
             document.getElementById('totalEarned').textContent = `$${referralStats.totalEarned.toLocaleString()}`;
             document.getElementById('pendingEarnings').textContent = `$${referralStats.pendingEarnings.toLocaleString()}`;
             
-            // Update referral list
             updateReferralList();
         }
 
