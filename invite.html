@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invite & Earn | GlicoCapital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Premium Color Scheme */
+        :root {
+            --primary: #1a365d;
+            --primary-dark: #0f2040;
+            --primary-light: #2d4a80;
+            --secondary: #d4af37;
+            --secondary-dark: #b8941f;
+            --accent: #00b4d8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            color: var(--light);
+            min-height: 100vh;
+            padding-bottom: 90px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.03"><polygon fill="white" points="0,1000 1000,0 1000,1000"/></svg>');
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Premium Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            background: rgba(26, 54, 93, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo img {
+            height: 38px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            font-size: 0.9rem;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Welcome Banner */
+        .invite-banner {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(0, 180, 216, 0.2));
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .invite-banner h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .invite-banner p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .commission-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: var(--primary-dark);
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 25px 20px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Invite Code Card */
+        .invite-code-card {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(0, 180, 216, 0.1));
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid var(--secondary);
+            text-align: center;
+        }
+        
+        .invite-code-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+        
+        .invite-code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 16px;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: var(--secondary);
+            font-family: monospace;
+            margin-bottom: 20px;
+            border: 1px dashed var(--secondary);
+        }
+        
+        .invite-link {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1rem;
+            word-break: break-all;
+            margin-bottom: 20px;
+            color: var(--gray-light);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: var(--primary-dark);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: var(--primary-dark);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #0c9e6e;
+            transform: translateY(-2px);
+        }
+        
+        /* Referral List */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+        
+        /* Referral Table */
+        .referral-table {
+            width: 100%;
+            overflow-x: auto;
+        }
+        
+        .referral-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .referral-table th,
+        .referral-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .referral-table th {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .referral-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+        
+        .status-invested {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        /* How It Works */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .step-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin: 0 auto 15px;
+        }
+        
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .step-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .modal.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            margin: 50px auto;
+            border: 1px solid var(--glass-border);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .modal h3 {
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .share-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .share-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+        
+        .share-telegram {
+            background: #0088cc;
+            color: white;
+        }
+        
+        .share-twitter {
+            background: #1DA1F2;
+            color: white;
+        }
+        
+        .share-facebook {
+            background: #1877F2;
+            color: white;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 54, 93, 0.95);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            padding: 14px 0;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray-light);
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            padding: 6px 10px;
+            border-radius: 10px;
+        }
+        
+        .nav-item.active,
+        .nav-item:hover {
+            color: var(--secondary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-in {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        @media (max-width: 768px) {
+            .invite-banner h1 {
+                font-size: 1.8rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .invite-code {
+                font-size: 1.2rem;
+                letter-spacing: 2px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+            
+            .referral-table th,
+            .referral-table td {
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .step-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Premium Header -->
+    <header>
+        <div class="logo">
+            <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
+            <h1>GlicoCapital</h1>
+        </div>
+        <div class="user-menu">
+            <button class="btn btn-outline" id="logoutBtn" style="padding: 8px 16px; display: none;">Logout</button>
+            <div class="user-avatar profile-upload" id="userAvatar">
+                <span id="avatarInitial">F</span>
+                <input type="file" id="avatarUpload" accept="image/*">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Invite Banner -->
+        <div class="invite-banner animate-in">
+            <h1>Invite Friends, Earn Together! 🤝</h1>
+            <p>Share the gift of financial growth with your friends and family. When they invest, you earn <strong>10%</strong> of their investment earnings!</p>
+            <div class="commission-badge">
+                🎁 10% Lifetime Commission on Friends' Earnings
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card animate-in delay-1">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-value" id="totalInvites">0</div>
+                <div class="stat-label">Total Invites Sent</div>
+            </div>
+            <div class="stat-card animate-in delay-1">
+                <div class="stat-icon">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="stat-value" id="activeMembers">0</div>
+                <div class="stat-label">Active Members</div>
+            </div>
+            <div class="stat-card animate-in delay-2">
+                <div class="stat-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="stat-value" id="totalEarned">$0</div>
+                <div class="stat-label">Total Commission Earned</div>
+            </div>
+            <div class="stat-card animate-in delay-2">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-value" id="pendingEarnings">$0</div>
+                <div class="stat-label">Pending Commission</div>
+            </div>
+        </div>
+
+        <!-- Invite Code Card -->
+        <div class="invite-code-card animate-in delay-1">
+            <div class="invite-code-title">
+                <i class="fas fa-ticket-alt"></i> Your Personal Invitation Code
+            </div>
+            <div class="invite-code" id="inviteCode">GLICO-ABCD-1234</div>
+            <div class="invite-link" id="inviteLink">
+                <i class="fas fa-link"></i> https://glicocapital.com/ref/GLICO-ABCD-1234
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="copyInviteCode()">
+                    <i class="fas fa-copy"></i> Copy Code
+                </button>
+                <button class="btn btn-outline" onclick="copyInviteLink()">
+                    <i class="fas fa-link"></i> Copy Link
+                </button>
+                <button class="btn btn-success" onclick="openShareModal()">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+                <button class="btn btn-outline" onclick="generateNewCode()">
+                    <i class="fas fa-sync-alt"></i> Generate New Code
+                </button>
+            </div>
+        </div>
+
+        <!-- Referral List -->
+        <div class="card animate-in delay-2">
+            <div class="section-header">
+                <h2>My Referrals</h2>
+                <button class="btn btn-outline" onclick="refreshReferrals()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            <div class="referral-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Investment</th>
+                            <th>Your Earnings</th>
+                            <th>Joined Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="referralList">
+                        <tr>
+                            <td colspan="6" style="text-align: center;">No referrals yet. Share your invite code to get started!</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="card animate-in delay-2">
+            <div class="section-header">
+                <h2>How It Works</h2>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Share Your Code</div>
+                    <div class="step-desc">Share your unique invitation code or link with friends via WhatsApp, Telegram, or social media.</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Friend Signs Up</div>
+                    <div class="step-desc">Your friend registers using your invitation code. They'll see your code confirmed on their dashboard.</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-title">They Invest</div>
+                    <div class="step-desc">When your friend invests, you earn 10% commission on their investment earnings!</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Earn Forever</div>
+                    <div class="step-desc">Commission is paid on every earning your referral makes. Lifetime earnings!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeShareModal()">×</button>
+            <h3 style="text-align: center;">Share Your Invitation</h3>
+            <div style="text-align: center; margin: 20px 0;">
+                <div class="invite-code" style="font-size: 1.2rem; display: inline-block; padding: 10px 20px;" id="modalInviteCode">GLICO-ABCD-1234</div>
+            </div>
+            <div class="share-buttons">
+                <button class="share-btn share-whatsapp" onclick="shareWhatsApp()">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
+                <button class="share-btn share-telegram" onclick="shareTelegram()">
+                    <i class="fab fa-telegram"></i> Telegram
+                </button>
+                <button class="share-btn share-twitter" onclick="shareTwitter()">
+                    <i class="fab fa-twitter"></i> Twitter
+                </button>
+                <button class="share-btn share-facebook" onclick="shareFacebook()">
+                    <i class="fab fa-facebook"></i> Facebook
+                </button>
+            </div>
+            <div style="margin-top: 20px; text-align: center;">
+                <button class="btn btn-primary" onclick="copyInviteCodeFromModal()" style="width: 100%;">
+                    <i class="fas fa-copy"></i> Copy Invite Code
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item">
+            <span class="nav-icon"><i class="fas fa-home"></i></span>
+            <span>Home</span>
+        </a>
+        <a href="invite.html" class="nav-item active">
+            <span class="nav-icon"><i class="fas fa-user-plus"></i></span>
+            <span>Invite</span>
+        </a>
+        <a href="payouts.html" class="nav-item">
+            <span class="nav-icon"><i class="fas fa-wallet"></i></span>
+            <span>Payouts</span>
+        </a>
+        <a href="partners.html" class="nav-item">
+            <span class="nav-icon"><i class="fas fa-handshake"></i></span>
+            <span>Partners</span>
+        </a>
+        <a href="support.html" class="nav-item">
+            <span class="nav-icon"><i class="fas fa-headset"></i></span>
+            <span>Support</span>
+        </a>
+    </nav>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
+            authDomain: "ggic-investment.firebaseapp.com",
+            databaseURL: "https://ggic-investment-default-rtdb.firebaseio.com",
+            projectId: "ggic-investment",
+            storageBucket: "ggic-investment.firebasestorage.app",
+            messagingSenderId: "805530882494",
+            appId: "1:805530882494:web:574b965b3ed0402b0f69ef",
+            measurementId: "G-NR5R3EJM93"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        // DOM Elements
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userAvatar = document.getElementById('userAvatar');
+        const avatarInitial = document.getElementById('avatarInitial');
+        const avatarUpload = document.getElementById('avatarUpload');
+        
+        // User data
+        let currentUser = null;
+        let userReferralCode = "";
+        let referralStats = {
+            totalInvites: 0,
+            activeMembers: 0,
+            totalEarned: 0,
+            pendingEarnings: 0,
+            referrals: []
+        };
+
+        // Generate random referral code
+        function generateReferralCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+            let code = 'GLICO-';
+            for (let i = 0; i < 4; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            code += '-';
+            for (let i = 0; i < 4; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
+        // Load user referral data from Firestore
+        async function loadReferralData(userId) {
+            try {
+                const userRef = db.collection('users').doc(userId);
+                const userDoc = await userRef.get();
+                
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.referralCode) {
+                        userReferralCode = userData.referralCode;
+                    } else {
+                        // Generate new referral code if none exists
+                        userReferralCode = generateReferralCode();
+                        await userRef.update({ referralCode: userReferralCode });
+                    }
+                    
+                    // Load referral stats
+                    if (userData.referralStats) {
+                        referralStats = userData.referralStats;
+                    }
+                    
+                    updateDisplay();
+                }
+            } catch (error) {
+                console.error('Error loading referral data:', error);
+                // Use demo data for testing
+                useDemoData();
+            }
+        }
+
+        // Demo data for testing
+        function useDemoData() {
+            userReferralCode = "GLICO-FELI-CITY";
+            referralStats = {
+                totalInvites: 3,
+                activeMembers: 2,
+                totalEarned: 2450,
+                pendingEarnings: 880,
+                referrals: [
+                    {
+                        name: "James Wilson",
+                        email: "james.wilson@example.com",
+                        status: "active",
+                        investment: 25000,
+                        earnings: 1250,
+                        joinedDate: "2026-02-15"
+                    },
+                    {
+                        name: "Sarah Johnson",
+                        email: "sarah.j@example.com",
+                        status: "invested",
+                        investment: 15000,
+                        earnings: 750,
+                        joinedDate: "2026-02-18"
+                    },
+                    {
+                        name: "Michael Brown",
+                        email: "michael.b@example.com",
+                        status: "pending",
+                        investment: 0,
+                        earnings: 0,
+                        joinedDate: "2026-02-20"
+                    }
+                ]
+            };
+            updateDisplay();
+        }
+
+        // Update display with referral data
+        function updateDisplay() {
+            // Update invite code and link
+            document.getElementById('inviteCode').textContent = userReferralCode;
+            document.getElementById('inviteLink').textContent = `https://glicocapital.com/ref/${userReferralCode}`;
+            document.getElementById('modalInviteCode').textContent = userReferralCode;
+            
+            // Update stats
+            document.getElementById('totalInvites').textContent = referralStats.totalInvites;
+            document.getElementById('activeMembers').textContent = referralStats.activeMembers;
+            document.getElementById('totalEarned').textContent = `$${referralStats.totalEarned.toLocaleString()}`;
+            document.getElementById('pendingEarnings').textContent = `$${referralStats.pendingEarnings.toLocaleString()}`;
+            
+            // Update referral list
+            updateReferralList();
+        }
+
+        // Update referral table
+        function updateReferralList() {
+            const tbody = document.getElementById('referralList');
+            
+            if (!referralStats.referrals || referralStats.referrals.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No referrals yet. Share your invite code to get started!</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            referralStats.referrals.forEach(ref => {
+                const row = document.createElement('tr');
+                
+                let statusClass = '';
+                let statusText = '';
+                if (ref.status === 'active') {
+                    statusClass = 'status-active';
+                    statusText = 'Active';
+                } else if (ref.status === 'invested') {
+                    statusClass = 'status-invested';
+                    statusText = 'Invested';
+                } else {
+                    statusClass = 'status-pending';
+                    statusText = 'Pending';
+                }
+                
+                row.innerHTML = `
+                    <td>${ref.name}</td>
+                    <td>${ref.email}</td>
+                    <td><span class="referral-status ${statusClass}">${statusText}</span></td>
+                    <td>$${ref.investment.toLocaleString()}</td>
+                    <td style="color: var(--success);">$${ref.earnings.toLocaleString()}</td>
+                    <td>${ref.joinedDate}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Copy invite code
+        function copyInviteCode() {
+            navigator.clipboard.writeText(userReferralCode);
+            showNotification('Invite code copied!', 'success');
+        }
+
+        // Copy invite link
+        function copyInviteLink() {
+            const link = `https://glicocapital.com/ref/${userReferralCode}`;
+            navigator.clipboard.writeText(link);
+            showNotification('Invite link copied!', 'success');
+        }
+
+        // Generate new code
+        async function generateNewCode() {
+            const newCode = generateReferralCode();
+            if (confirm('Are you sure you want to generate a new invite code? Your old code will no longer work.')) {
+                userReferralCode = newCode;
+                if (currentUser) {
+                    await db.collection('users').doc(currentUser.uid).update({ referralCode: userReferralCode });
+                }
+                updateDisplay();
+                showNotification('New invite code generated!', 'success');
+            }
+        }
+
+        // Share functions
+        function openShareModal() {
+            document.getElementById('shareModal').classList.add('active');
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.remove('active');
+        }
+
+        function copyInviteCodeFromModal() {
+            navigator.clipboard.writeText(userReferralCode);
+            showNotification('Invite code copied!', 'success');
+            closeShareModal();
+        }
+
+        function shareWhatsApp() {
+            const message = encodeURIComponent(`Join me on GlicoCapital and start earning! Use my invite code: ${userReferralCode} to get started. https://glicocapital.com/ref/${userReferralCode}`);
+            window.open(`https://wa.me/?text=${message}`, '_blank');
+        }
+
+        function shareTelegram() {
+            const message = encodeURIComponent(`Join me on GlicoCapital and start earning! Use my invite code: ${userReferralCode} to get started. https://glicocapital.com/ref/${userReferralCode}`);
+            window.open(`https://t.me/share/url?url=https://glicocapital.com/ref/${userReferralCode}&text=${message}`, '_blank');
+        }
+
+        function shareTwitter() {
+            const message = encodeURIComponent(`Join me on GlicoCapital and start earning! Use my invite code: ${userReferralCode} to get started. https://glicocapital.com/ref/${userReferralCode}`);
+            window.open(`https://twitter.com/intent/tweet?text=${message}`, '_blank');
+        }
+
+        function shareFacebook() {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=https://glicocapital.com/ref/${userReferralCode}`, '_blank');
+        }
+
+        function refreshReferrals() {
+            if (currentUser) {
+                loadReferralData(currentUser.uid);
+            }
+            showNotification('Referral data refreshed!', 'success');
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                padding: 15px 20px;
+                border-radius: 12px;
+                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
+                color: white;
+                animation: fadeInUp 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Load user profile
+        function loadUserProfile(user) {
+            if (user.photoURL) {
+                avatarInitial.style.display = 'none';
+                userAvatar.innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
+            } else {
+                avatarInitial.textContent = user.displayName ? user.displayName.charAt(0).toUpperCase() : 'F';
+            }
+        }
+
+        // Auth state
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            } else {
+                currentUser = user;
+                logoutBtn.style.display = 'block';
+                loadUserProfile(user);
+                await loadReferralData(user.uid);
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                window.location.href = 'login.html';
+            } catch (error) {
+                console.error('Logout failed:', error);
+                showNotification('Logout failed', 'error');
+            }
+        });
+
+        // Profile upload
+        avatarUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                showNotification('Profile picture upload coming soon', 'info');
+            }
+        });
+
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeShareModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
