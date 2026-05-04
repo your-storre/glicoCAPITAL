@@ -907,7 +907,7 @@
         // Update display with referral data
         function updateDisplay() {
             document.getElementById('inviteCode').textContent = userReferralCode;
-            document.getElementById('inviteLink').textContent = `https://glicocapital.com/ref/${userReferralCode}`;
+            document.getElementById('inviteLink').textContent = `https://glicocapital.online/ref/${userReferralCode}`;
             document.getElementById('modalInviteCode').textContent = userReferralCode;
             
             document.getElementById('totalInvites').textContent = referralStats.totalInvites;
@@ -998,22 +998,22 @@
         }
 
         function shareWhatsApp() {
-            const message = encodeURIComponent(`Join me on GlicoCapital and start earning! Use my invite code: ${userReferralCode} to get started. https://glicocapital.com/ref/${userReferralCode}`);
+            const message = encodeURIComponent(`Join me on GlicoCapital and start earning! Use my invite code: ${userReferralCode} to get started. https://glicocapital.online/ref/${userReferralCode}`);
             window.open(`https://wa.me/?text=${message}`, '_blank');
         }
 
         function shareTelegram() {
-            const message = encodeURIComponent(`Join me on GlicoCapital and start earning! Use my invite code: ${userReferralCode} to get started. https://glicocapital.com/ref/${userReferralCode}`);
+            const message = encodeURIComponent(`Join me on GlicoCapital and start earning! Use my invite code: ${userReferralCode} to get started. https://glicocapital.online/ref/${userReferralCode}`);
             window.open(`https://t.me/share/url?url=https://glicocapital.com/ref/${userReferralCode}&text=${message}`, '_blank');
         }
 
         function shareTwitter() {
-            const message = encodeURIComponent(`Join me on GlicoCapital and start earning! Use my invite code: ${userReferralCode} to get started. https://glicocapital.com/ref/${userReferralCode}`);
+            const message = encodeURIComponent(`Join me on GlicoCapital and start earning! Use my invite code: ${userReferralCode} to get started. https://glicocapital.online/ref/${userReferralCode}`);
             window.open(`https://twitter.com/intent/tweet?text=${message}`, '_blank');
         }
 
         function shareFacebook() {
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=https://glicocapital.com/ref/${userReferralCode}`, '_blank');
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=https://glicocapital.online/ref/${userReferralCode}`, '_blank');
         }
 
         function refreshReferrals() {
