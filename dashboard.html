@@ -1104,11 +1104,11 @@
                     </div>
                     <div class="info-item">
                         <div class="info-label">Future Earnings</div>
-                        <div class="info-value" id="futureEarnings">$1,320</div>
+                        <div class="info-value" id="futureEarnings">$2,200</div>
                     </div>
                     <div class="info-item">
                         <div class="info-label">Total Expected</div>
-                        <div class="info-value" style="color: var(--secondary);" id="totalExpected">$12,980</div>
+                        <div class="info-value" style="color: var(--secondary);" id="totalExpected">$13,860</div>
                     </div>
                 </div>
             </div>
@@ -1204,40 +1204,20 @@
         const verifyNowBtn = document.getElementById('verifyNowBtn');
         
         // ===========================================
-        // CONSTANTS - DYNAMIC DATE
+        // CONSTANTS - DYNAMIC DATE FOR MAY 6, 2026
         // ===========================================
         const DAILY_EARNINGS = 220;
         const INVESTMENT_AMOUNT = 47720;
         const FIRST_EARNING_DATE = new Date('2026-02-23');
         const MATURITY_DATE = new Date('2026-05-20');
         
-        // TODAY'S DATE - DYNAMIC (May 6, 2026)
+        // TODAY'S DATE - MAY 6, 2026 (Wednesday)
         const TODAY = new Date();
 
-        // US Holidays
-        const HOLIDAYS = [
-            '2025-12-25', '2026-01-01', '2026-01-19', '2026-02-16'
-        ];
-
-        // Verification data
-        let verificationData = {
-            status: 'not_started',
-            taxApproved: false,
-            appointmentBooked: false,
-            appointmentDate: null,
-            appointmentTime: null,
-            loaded: false
-        };
-
-        // ===========================================
-        // BUSINESS DAY CALCULATIONS
-        // ===========================================
+        // Business day function - Monday-Friday only
         function isBusinessDay(date) {
             const day = date.getDay();
-            if (day === 0 || day === 6) return false;
-            const dateStr = date.toISOString().split('T')[0];
-            if (HOLIDAYS.includes(dateStr)) return false;
-            return true;
+            return day >= 1 && day <= 5; // 1=Monday, 5=Friday
         }
 
         function countBusinessDays(startDate, endDate) {
@@ -1254,18 +1234,24 @@
         // CALCULATE CURRENT STATS - FOR MAY 6, 2026
         // ===========================================
         function calculateCurrentStats() {
-            // Days earned from FIRST_EARNING_DATE to TODAY (May 6 = 53 days)
+            // Days earned from FIRST_EARNING_DATE to TODAY (including today)
             const daysEarned = countBusinessDays(FIRST_EARNING_DATE, TODAY);
             const totalEarnings = daysEarned * DAILY_EARNINGS;
             const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
             
-            // Days remaining from TOMORROW to MATURITY (May 7-20 = 10 days)
+            // Days remaining from TOMORROW to MATURITY
             const tomorrow = new Date(TODAY);
             tomorrow.setDate(tomorrow.getDate() + 1);
             const daysRemaining = countBusinessDays(tomorrow, MATURITY_DATE);
             
             const futureEarnings = daysRemaining * DAILY_EARNINGS;
             const totalProjectedEarnings = totalEarnings + futureEarnings;
+            
+            console.log(`📊 Calculation for ${TODAY.toDateString()}:`);
+            console.log(`   Days earned: ${daysEarned}`);
+            console.log(`   Total earnings: $${totalEarnings}`);
+            console.log(`   Current balance: $${currentBalance}`);
+            console.log(`   Days remaining: ${daysRemaining}`);
             
             return {
                 totalInvestment: INVESTMENT_AMOUNT,
@@ -1337,8 +1323,16 @@
         }
 
         // ===========================================
-        // LOAD VERIFICATION STATUS FROM FIRESTORE (FAST)
+        // LOAD VERIFICATION STATUS
         // ===========================================
+        let verificationData = {
+            status: 'not_started',
+            taxApproved: false,
+            appointmentBooked: false,
+            appointmentDate: null,
+            appointmentTime: null
+        };
+
         async function loadVerificationStatus() {
             try {
                 const user = auth.currentUser;
@@ -1387,18 +1381,15 @@
                     }
                 }
                 
-                verificationData.loaded = true;
-                
             } catch (error) {
                 console.error('Error loading verification status:', error);
-                verificationData.loaded = true;
             }
             
             updateVerificationBanner();
         }
 
         // ===========================================
-        // UPDATE VERIFICATION BANNER BASED ON STATUS
+        // UPDATE VERIFICATION BANNER
         // ===========================================
         function updateVerificationBanner() {
             const bannerClosed = localStorage.getItem('bogBannerClosed');
@@ -1508,10 +1499,12 @@
             const stats = calculateCurrentStats();
             const allTransactions = generateCompleteHistory();
             
+            // Update main stats
             totalInvestmentEl.textContent = `$${stats.totalInvestment.toLocaleString()}`;
             currentBalanceEl.textContent = `$${stats.currentBalance.toLocaleString()}`;
             totalEarningsEl.textContent = `$${stats.totalEarnings.toLocaleString()}`;
             
+            // Update detail pages
             document.getElementById('detailCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
             document.getElementById('detailTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
@@ -1525,7 +1518,10 @@
             document.getElementById('currentStatusText').innerHTML = 
                 `Earned $${stats.totalEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
             
+            // Update transaction lists
             updateTransactionLists(allTransactions);
+            
+            // Update earnings timeline
             updateEarningsTimeline(allTransactions);
         }
 
@@ -1711,7 +1707,7 @@
         }
 
         // ===========================================
-        // AUTH STATE - LOAD EVERYTHING BEFORE SHOWING
+        // AUTH STATE
         // ===========================================
         auth.onAuthStateChanged(async (user) => {
             if (!user) {
@@ -1720,13 +1716,12 @@
             }
             
             try {
-                // Show loading spinner
                 loadingSpinner.classList.remove('hidden');
                 
-                // Load verification status first (fast)
+                // Load verification status
                 await loadVerificationStatus();
                 
-                // Load all dashboard data
+                // Update dashboard
                 updateDashboard();
                 
                 // Load user profile
@@ -1735,40 +1730,37 @@
                 // Show logout button
                 logoutBtn.style.display = 'block';
                 
-                // Hide loading spinner and show content
+                // Hide spinner and show content
                 setTimeout(() => {
                     loadingSpinner.classList.add('hidden');
                     mainContent.style.display = 'block';
                 }, 500);
                 
+                const stats = calculateCurrentStats();
                 console.log(`✅ Dashboard loaded for: ${formatDate(TODAY)}`);
-                console.log(`   Days earned: ${calculateCurrentStats().daysEarned}`);
-                console.log(`   Days remaining: ${calculateCurrentStats().daysRemaining}`);
+                console.log(`💰 Earnings: ${stats.daysEarned} days = $${stats.totalEarnings}`);
+                console.log(`📅 Remaining: ${stats.daysRemaining} days until payout`);
                 
             } catch (error) {
                 console.error('Error loading dashboard:', error);
                 loadingSpinner.classList.add('hidden');
                 mainContent.style.display = 'block';
-                showNotification('Some data may be delayed, refreshing...', 'info');
             }
         });
 
         // ===========================================
-        // LOGOUT FUNCTION
+        // LOGOUT
         // ===========================================
         logoutBtn.addEventListener('click', async () => {
             try {
                 await auth.signOut();
                 window.location.href = 'login.html';
             } catch (error) {
-                console.error('Logout failed:', error);
                 showNotification('Logout failed', 'error');
             }
         });
 
-        // ===========================================
-        // CLOSE DETAIL PAGES
-        // ===========================================
+        // Close detail pages when clicking outside
         document.querySelectorAll('.detail-page').forEach(page => {
             page.addEventListener('click', function(e) {
                 if (e.target === this) {
@@ -1777,14 +1769,12 @@
             });
         });
 
-        // ===========================================
-        // INITIALIZE - SET INTERVAL FOR AUTO UPDATE
-        // ===========================================
-        let updateInterval = setInterval(() => {
+        // Auto-refresh every hour
+        setInterval(() => {
             if (auth.currentUser) {
                 updateDashboard();
             }
-        }, 3600000); // Update every hour
+        }, 3600000);
     </script>
 </body>
 </html>
