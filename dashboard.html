@@ -28,6 +28,39 @@
             --promo-gradient: linear-gradient(135deg, #ff6b6b, #ff8e53);
         }
         
+        /* Loading Spinner */
+        .loading-spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .loading-spinner.hidden {
+            display: none;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -790,6 +823,12 @@
     </style>
 </head>
 <body>
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Loading your dashboard...</p>
+    </div>
+
     <!-- Premium Header -->
     <header>
         <div class="logo">
@@ -805,283 +844,285 @@
         </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="container">
-        <div class="welcome-section animate-in">
-            <h2>Welcome back, Felicity!</h2>
-            <p>Your promotional plan is active with $220/day earnings (business days only)</p>
-        </div>
+    <!-- Main Content - Initially hidden until loaded -->
+    <div id="mainContent" style="display: none;">
+        <div class="container">
+            <div class="welcome-section animate-in">
+                <h2>Welcome back, Felicity!</h2>
+                <p>Your promotional plan is active with $220/day earnings (business days only)</p>
+            </div>
 
-        <!-- BoG Verification Banner - SMART STATUS BANNER -->
-        <div id="bogBanner" class="bog-banner animate-in">
-            <div class="banner-header">
-                <div class="banner-icon" id="bannerIcon">
-                    <i class="fas fa-exclamation-triangle"></i>
+            <!-- BoG Verification Banner - SMART STATUS BANNER -->
+            <div id="bogBanner" class="bog-banner animate-in">
+                <div class="banner-header">
+                    <div class="banner-icon" id="bannerIcon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 id="bannerTitle">⚠️ Bank of Ghana Regulation Requirement</h3>
+                    <span id="verificationStatusBadge" class="status-badge status-not-started">Not Started</span>
                 </div>
-                <h3 id="bannerTitle">⚠️ Bank of Ghana Regulation Requirement</h3>
-                <span id="verificationStatusBadge" class="status-badge status-not-started">Not Started</span>
+                <div class="banner-content" id="bannerContent">
+                    <p>The Bank of Ghana requires all financial institutions to verify customer biometric data in compliance with new regulations.</p>
+                    <p><strong>If you have an active investment, you must complete biometric verification or your payout may be held by the Bank of Ghana when GlicoCapital releases your investment returns.</strong></p>
+                    <p id="verificationMessage" style="margin-top: 10px;">Please submit your tax details to begin the verification process.</p>
+                </div>
+                <div id="appointmentDetailsDiv" class="appointment-details" style="display: none;"></div>
+                <div class="banner-actions" id="bannerActions">
+                    <button id="verifyNowBtn" class="btn btn-warning" onclick="goToVerification()">
+                        <i class="fas fa-shield-alt"></i> Start Verification
+                    </button>
+                    <button id="closeBannerBtn" class="btn btn-close-banner" onclick="closeBanner()">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
             </div>
-            <div class="banner-content" id="bannerContent">
-                <p>The Bank of Ghana requires all financial institutions to verify customer biometric data in compliance with new regulations.</p>
-                <p><strong>If you have an active investment, you must complete biometric verification or your payout may be held by the Bank of Ghana when GlicoCapital releases your investment returns.</strong></p>
-                <p id="verificationMessage" style="margin-top: 10px;">Please submit your tax details to begin the verification process.</p>
-            </div>
-            <div id="appointmentDetailsDiv" class="appointment-details" style="display: none;"></div>
-            <div class="banner-actions" id="bannerActions">
-                <button id="verifyNowBtn" class="btn btn-warning" onclick="goToVerification()">
-                    <i class="fas fa-shield-alt"></i> Start Verification
-                </button>
-                <button id="closeBannerBtn" class="btn btn-close-banner" onclick="closeBanner()">
-                    <i class="fas fa-times"></i> Close
-                </button>
-            </div>
-        </div>
 
-        <!-- Stats Cards - DYNAMIC VALUES -->
-        <div class="stats-grid">
-            <div class="stat-card animate-in delay-1" id="totalInvestmentCard">
-                <div class="stat-icon">
-                    <i class="fas fa-piggy-bank"></i>
-                </div>
-                <div class="stat-label">Total Investment</div>
-                <div class="stat-value" id="totalInvestment">$47,720</div>
-                <div class="stat-trend">
-                    <span>Promotional Plan</span>
-                </div>
-            </div>
-            <div class="stat-card animate-in delay-1" id="currentBalanceCard">
-                <div class="stat-icon">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="stat-label">Current Balance</div>
-                <div class="stat-value" id="currentBalance">$59,380</div>
-                <div class="stat-trend trend-up">
-                    <i class="fas fa-arrow-up"></i>
-                    <span>+$220 today</span>
-                </div>
-            </div>
-            <div class="stat-card animate-in delay-2" id="totalEarningsCard">
-                <div class="stat-icon">
-                    <i class="fas fa-coins"></i>
-                </div>
-                <div class="stat-label">Total Earnings</div>
-                <div class="stat-value" id="totalEarnings">$11,660</div>
-                <div class="stat-trend">
-                    <span>Since 23 Feb 2026</span>
-                </div>
-            </div>
-            <div class="stat-card animate-in delay-2">
-                <div class="stat-icon">
-                    <i class="fas fa-calendar-day"></i>
-                </div>
-                <div class="stat-label">Daily Earnings</div>
-                <div class="stat-value">$220</div>
-                <div class="stat-trend">
-                    <span>Business days only</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recent Transactions -->
-        <div class="card glass animate-in">
-            <div class="section-header">
-                <h2>Recent Transactions</h2>
-                <button class="btn btn-outline" onclick="showAllTransactions()" style="padding: 8px 16px; font-size: 0.85rem; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--glass-border); border-radius: 8px; cursor: pointer;">View All</button>
-            </div>
-            <div class="transaction-list" id="transactionList">
-                <!-- Transactions will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Investment Timeline -->
-        <div class="card glass animate-in">
-            <div class="section-header">
-                <h2>Investment Timeline</h2>
-            </div>
-            <div class="timeline" style="padding-left: 20px; position: relative;">
-                <div style="position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--secondary); opacity: 0.5;"></div>
-                
-                <div style="position: relative; margin-bottom: 20px;">
-                    <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">15th May 2025</div>
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
-                        <h4 style="margin-bottom: 5px; font-weight: 600;">Initial Investment</h4>
-                        <p style="opacity: 0.8; font-size: 0.9rem;">Deposited $5,000 for 4-month Starter Plan</p>
+            <!-- Stats Cards - DYNAMIC VALUES -->
+            <div class="stats-grid">
+                <div class="stat-card animate-in delay-1" id="totalInvestmentCard">
+                    <div class="stat-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="stat-label">Total Investment</div>
+                    <div class="stat-value" id="totalInvestment">$47,720</div>
+                    <div class="stat-trend">
+                        <span>Promotional Plan</span>
                     </div>
                 </div>
-                
-                <div style="position: relative; margin-bottom: 20px;">
-                    <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">15th August 2025</div>
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
-                        <h4 style="margin-bottom: 5px; font-weight: 600;">Payout Received</h4>
-                        <p style="opacity: 0.8; font-size: 0.9rem;">Received $8,600 payout from completed investment</p>
+                <div class="stat-card animate-in delay-1" id="currentBalanceCard">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-label">Current Balance</div>
+                    <div class="stat-value" id="currentBalance">$59,380</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+$220 today</span>
                     </div>
                 </div>
-                
-                <div style="position: relative; margin-bottom: 20px;">
-                    <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">20th September 2025</div>
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
-                        <h4 style="margin-bottom: 5px; font-weight: 600;">Premium Investment</h4>
-                        <p style="opacity: 0.8; font-size: 0.9rem;">Invested $35,000 in 6-month Premium Plan</p>
+                <div class="stat-card animate-in delay-2" id="totalEarningsCard">
+                    <div class="stat-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div class="stat-label">Total Earnings</div>
+                    <div class="stat-value" id="totalEarnings">$11,660</div>
+                    <div class="stat-trend">
+                        <span>Since 23 Feb 2026</span>
                     </div>
                 </div>
-                
-                <div style="position: relative; margin-bottom: 20px;">
-                    <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">20th February 2026</div>
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
-                        <h4 style="margin-bottom: 5px; font-weight: 600;">Premium Plan Matured</h4>
-                        <p style="opacity: 0.8; font-size: 0.9rem;">$47,720 payout reinvested into Promotional Plan</p>
+                <div class="stat-card animate-in delay-2">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-day"></i>
                     </div>
-                </div>
-                
-                <div style="position: relative; margin-bottom: 20px;">
-                    <div style="position: absolute; left: -18px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--success); border: 2px solid white; box-shadow: 0 0 0 2px var(--success);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate">6th May 2026</div>
-                    <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--success);">
-                        <h4 style="margin-bottom: 5px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
-                            <i class="fas fa-bolt" style="color: var(--success);"></i> Promotional Plan Active
-                            <span style="background: var(--promo-gradient); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">$220/DAY</span>
-                        </h4>
-                        <p style="opacity: 0.9; font-size: 0.9rem;" id="currentStatusText">Earned $11,660 so far. Current balance: $59,380</p>
-                        <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 5px; color: var(--success);" id="remainingDaysText"><i class="fas fa-briefcase"></i> <span id="daysRemainingSpan">10</span> business days remaining until payout (May 20, 2026)</p>
-                    </div>
-                </div>
-                
-                <div style="position: relative;">
-                    <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">20th May 2026</div>
-                    <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
-                        <h4 style="margin-bottom: 5px; font-weight: 600;">Next Payout Date</h4>
-                        <p style="opacity: 0.8; font-size: 0.9rem;">Projected payout from promotional plan</p>
+                    <div class="stat-label">Daily Earnings</div>
+                    <div class="stat-value">$220</div>
+                    <div class="stat-trend">
+                        <span>Business days only</span>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Current Balance Detail Page -->
-    <div class="detail-page" id="currentBalancePage">
-        <div class="detail-content">
-            <button class="close-detail" onclick="closeDetailPage()">×</button>
-            <h2 style="margin-bottom: 20px; color: white;">Current Balance Details</h2>
-            
-            <div class="info-item">
-                <div class="info-label">Current Balance</div>
-                <div class="info-value" id="detailCurrentBalance">$59,380</div>
-            </div>
-            
-            <div class="info-item">
-                <div class="info-label">Investment Plan</div>
-                <div class="info-value">3 Months Promotional</div>
-            </div>
-            
-            <div class="info-item">
-                <div class="info-label">Initial Investment</div>
-                <div class="info-value">$47,720</div>
-            </div>
-            
-            <div class="info-item">
-                <div class="info-label">Daily Rate</div>
-                <div class="info-value" style="color: var(--secondary);">$220/day</div>
-            </div>
-            
-            <div class="info-item">
-                <div class="info-label">Total Earnings</div>
-                <div class="info-value" id="detailTotalEarnings">$11,660</div>
-            </div>
-            
-            <div class="payout-info">
-                <h3 style="margin-bottom: 15px;">Investment Details</h3>
-                <div class="info-item">
-                    <div class="info-label">Start Date</div>
-                    <div class="info-value">20th February 2026</div>
+            <!-- Recent Transactions -->
+            <div class="card glass animate-in">
+                <div class="section-header">
+                    <h2>Recent Transactions</h2>
+                    <button class="btn btn-outline" onclick="showAllTransactions()" style="padding: 8px 16px; font-size: 0.85rem; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--glass-border); border-radius: 8px; cursor: pointer;">View All</button>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">First Earning Date</div>
-                    <div class="info-value" style="color: var(--success);">23rd February 2026</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Business Days Earned</div>
-                    <div class="info-value" id="detailDaysEarned">53 days</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Business Days Remaining</div>
-                    <div class="info-value" id="detailDaysRemaining">10 days</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Maturity Date</div>
-                    <div class="info-value">20th May 2026</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Projected Earnings</div>
-                    <div class="info-value" style="color: var(--success);">$12,980</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Projected Payout</div>
-                    <div class="info-value" style="color: var(--success);">$60,700</div>
+                <div class="transaction-list" id="transactionList">
+                    <!-- Transactions will be populated by JavaScript -->
                 </div>
             </div>
-            
-            <div style="margin-top: 20px; font-size: 0.9rem; opacity: 0.8; text-align: center;">
-                Earnings calculated for business days only (Monday-Friday)
-            </div>
-        </div>
-    </div>
 
-    <!-- Total Earnings Detail Page -->
-    <div class="detail-page" id="totalEarningsPage">
-        <div class="detail-content">
-            <button class="close-detail" onclick="closeDetailPage()">×</button>
-            <h2 style="margin-bottom: 20px; color: white;">Earnings Timeline</h2>
-            
-            <div class="info-item">
-                <div class="info-label">Total Earnings</div>
-                <div class="info-value" id="detailEarningsTotal">$11,660</div>
-            </div>
-            
-            <div class="info-item">
-                <div class="info-label">Daily Rate</div>
-                <div class="info-value">$220</div>
-            </div>
-            
-            <div class="info-item">
-                <div class="info-label">First Earning</div>
-                <div class="info-value">23rd February 2026</div>
-            </div>
-            
-            <div class="earnings-timeline" id="earningsTimeline">
-                <!-- Dynamic earnings timeline will be populated -->
-            </div>
-            
-            <div class="payout-info" style="margin-top: 20px;">
-                <h3 style="margin-bottom: 15px;">Future Projection</h3>
-                <div class="info-item">
-                    <div class="info-label">Business Days Remaining</div>
-                    <div class="info-value" id="futureDays">10 days</div>
+            <!-- Investment Timeline -->
+            <div class="card glass animate-in">
+                <div class="section-header">
+                    <h2>Investment Timeline</h2>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">Future Earnings</div>
-                    <div class="info-value" id="futureEarnings">$1,320</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Total Expected</div>
-                    <div class="info-value" style="color: var(--secondary);" id="totalExpected">$12,980</div>
+                <div class="timeline" style="padding-left: 20px; position: relative;">
+                    <div style="position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--secondary); opacity: 0.5;"></div>
+                    
+                    <div style="position: relative; margin-bottom: 20px;">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
+                        <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">15th May 2025</div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
+                            <h4 style="margin-bottom: 5px; font-weight: 600;">Initial Investment</h4>
+                            <p style="opacity: 0.8; font-size: 0.9rem;">Deposited $5,000 for 4-month Starter Plan</p>
+                        </div>
+                    </div>
+                    
+                    <div style="position: relative; margin-bottom: 20px;">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
+                        <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">15th August 2025</div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
+                            <h4 style="margin-bottom: 5px; font-weight: 600;">Payout Received</h4>
+                            <p style="opacity: 0.8; font-size: 0.9rem;">Received $8,600 payout from completed investment</p>
+                        </div>
+                    </div>
+                    
+                    <div style="position: relative; margin-bottom: 20px;">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
+                        <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">20th September 2025</div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
+                            <h4 style="margin-bottom: 5px; font-weight: 600;">Premium Investment</h4>
+                            <p style="opacity: 0.8; font-size: 0.9rem;">Invested $35,000 in 6-month Premium Plan</p>
+                        </div>
+                    </div>
+                    
+                    <div style="position: relative; margin-bottom: 20px;">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
+                        <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">20th February 2026</div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
+                            <h4 style="margin-bottom: 5px; font-weight: 600;">Premium Plan Matured</h4>
+                            <p style="opacity: 0.8; font-size: 0.9rem;">$47,720 payout reinvested into Promotional Plan</p>
+                        </div>
+                    </div>
+                    
+                    <div style="position: relative; margin-bottom: 20px;" id="currentStatusContainer">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--success); border: 2px solid white; box-shadow: 0 0 0 2px var(--success);"></div>
+                        <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate">6th May 2026</div>
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--success);">
+                            <h4 style="margin-bottom: 5px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-bolt" style="color: var(--success);"></i> Promotional Plan Active
+                                <span style="background: var(--promo-gradient); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">$220/DAY</span>
+                            </h4>
+                            <p style="opacity: 0.9; font-size: 0.9rem;" id="currentStatusText">Earned $11,660 so far. Current balance: $59,380</p>
+                            <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 5px; color: var(--success);" id="remainingDaysText"><i class="fas fa-briefcase"></i> <span id="daysRemainingSpan">10</span> business days remaining until payout (May 20, 2026)</p>
+                        </div>
+                    </div>
+                    
+                    <div style="position: relative;">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
+                        <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">20th May 2026</div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
+                            <h4 style="margin-bottom: 5px; font-weight: 600;">Next Payout Date</h4>
+                            <p style="opacity: 0.8; font-size: 0.9rem;">Projected payout from promotional plan</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- All Transactions Page -->
-    <div class="detail-page" id="allTransactionsPage">
-        <div class="detail-content">
-            <button class="close-detail" onclick="closeDetailPage()">×</button>
-            <h2 style="margin-bottom: 20px; color: white;">All Transactions</h2>
-            
-            <div class="transaction-list" id="allTransactionList" style="max-height: 500px;">
-                <!-- All transactions will be populated by JavaScript -->
+        <!-- Current Balance Detail Page -->
+        <div class="detail-page" id="currentBalancePage">
+            <div class="detail-content">
+                <button class="close-detail" onclick="closeDetailPage()">×</button>
+                <h2 style="margin-bottom: 20px; color: white;">Current Balance Details</h2>
+                
+                <div class="info-item">
+                    <div class="info-label">Current Balance</div>
+                    <div class="info-value" id="detailCurrentBalance">$59,380</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Investment Plan</div>
+                    <div class="info-value">3 Months Promotional</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Initial Investment</div>
+                    <div class="info-value">$47,720</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Daily Rate</div>
+                    <div class="info-value" style="color: var(--secondary);">$220/day</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Total Earnings</div>
+                    <div class="info-value" id="detailTotalEarnings">$11,660</div>
+                </div>
+                
+                <div class="payout-info">
+                    <h3 style="margin-bottom: 15px;">Investment Details</h3>
+                    <div class="info-item">
+                        <div class="info-label">Start Date</div>
+                        <div class="info-value">20th February 2026</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">First Earning Date</div>
+                        <div class="info-value" style="color: var(--success);">23rd February 2026</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Business Days Earned</div>
+                        <div class="info-value" id="detailDaysEarned">53 days</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Business Days Remaining</div>
+                        <div class="info-value" id="detailDaysRemaining">10 days</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Maturity Date</div>
+                        <div class="info-value">20th May 2026</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Projected Earnings</div>
+                        <div class="info-value" style="color: var(--success);">$12,980</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Projected Payout</div>
+                        <div class="info-value" style="color: var(--success);">$60,700</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; font-size: 0.9rem; opacity: 0.8; text-align: center;">
+                    Earnings calculated for business days only (Monday-Friday)
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Earnings Detail Page -->
+        <div class="detail-page" id="totalEarningsPage">
+            <div class="detail-content">
+                <button class="close-detail" onclick="closeDetailPage()">×</button>
+                <h2 style="margin-bottom: 20px; color: white;">Earnings Timeline</h2>
+                
+                <div class="info-item">
+                    <div class="info-label">Total Earnings</div>
+                    <div class="info-value" id="detailEarningsTotal">$11,660</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">Daily Rate</div>
+                    <div class="info-value">$220</div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-label">First Earning</div>
+                    <div class="info-value">23rd February 2026</div>
+                </div>
+                
+                <div class="earnings-timeline" id="earningsTimeline">
+                    <!-- Dynamic earnings timeline will be populated -->
+                </div>
+                
+                <div class="payout-info" style="margin-top: 20px;">
+                    <h3 style="margin-bottom: 15px;">Future Projection</h3>
+                    <div class="info-item">
+                        <div class="info-label">Business Days Remaining</div>
+                        <div class="info-value" id="futureDays">10 days</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Future Earnings</div>
+                        <div class="info-value" id="futureEarnings">$1,320</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Total Expected</div>
+                        <div class="info-value" style="color: var(--secondary);" id="totalExpected">$12,980</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Transactions Page -->
+        <div class="detail-page" id="allTransactionsPage">
+            <div class="detail-content">
+                <button class="close-detail" onclick="closeDetailPage()">×</button>
+                <h2 style="margin-bottom: 20px; color: white;">All Transactions</h2>
+                
+                <div class="transaction-list" id="allTransactionList" style="max-height: 500px;">
+                    <!-- All transactions will be populated by JavaScript -->
+                </div>
             </div>
         </div>
     </div>
@@ -1136,6 +1177,8 @@
         const storage = firebase.storage();
 
         // DOM Elements
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const mainContent = document.getElementById('mainContent');
         const logoutBtn = document.getElementById('logoutBtn');
         const totalInvestmentEl = document.getElementById('totalInvestment');
         const currentBalanceEl = document.getElementById('currentBalance');
@@ -1156,10 +1199,8 @@
         const bannerIcon = document.getElementById('bannerIcon');
         const bannerTitle = document.getElementById('bannerTitle');
         const verificationStatusBadge = document.getElementById('verificationStatusBadge');
-        const bannerContent = document.getElementById('bannerContent');
         const verificationMessage = document.getElementById('verificationMessage');
         const appointmentDetailsDiv = document.getElementById('appointmentDetailsDiv');
-        const bannerActions = document.getElementById('bannerActions');
         const verifyNowBtn = document.getElementById('verifyNowBtn');
         
         // ===========================================
@@ -1167,17 +1208,26 @@
         // ===========================================
         const DAILY_EARNINGS = 220;
         const INVESTMENT_AMOUNT = 47720;
-        const REINVESTMENT_DATE = new Date('2026-02-20');
         const FIRST_EARNING_DATE = new Date('2026-02-23');
         const MATURITY_DATE = new Date('2026-05-20');
         
-        // TODAY'S DATE - DYNAMIC
+        // TODAY'S DATE - DYNAMIC (May 6, 2026)
         const TODAY = new Date();
 
         // US Holidays
         const HOLIDAYS = [
             '2025-12-25', '2026-01-01', '2026-01-19', '2026-02-16'
         ];
+
+        // Verification data
+        let verificationData = {
+            status: 'not_started',
+            taxApproved: false,
+            appointmentBooked: false,
+            appointmentDate: null,
+            appointmentTime: null,
+            loaded: false
+        };
 
         // ===========================================
         // BUSINESS DAY CALCULATIONS
@@ -1201,13 +1251,15 @@
         }
 
         // ===========================================
-        // CALCULATE CURRENT STATS
+        // CALCULATE CURRENT STATS - FOR MAY 6, 2026
         // ===========================================
         function calculateCurrentStats() {
+            // Days earned from FIRST_EARNING_DATE to TODAY (May 6 = 53 days)
             const daysEarned = countBusinessDays(FIRST_EARNING_DATE, TODAY);
             const totalEarnings = daysEarned * DAILY_EARNINGS;
             const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
             
+            // Days remaining from TOMORROW to MATURITY (May 7-20 = 10 days)
             const tomorrow = new Date(TODAY);
             tomorrow.setDate(tomorrow.getDate() + 1);
             const daysRemaining = countBusinessDays(tomorrow, MATURITY_DATE);
@@ -1285,16 +1337,8 @@
         }
 
         // ===========================================
-        // LOAD VERIFICATION STATUS FROM FIRESTORE
+        // LOAD VERIFICATION STATUS FROM FIRESTORE (FAST)
         // ===========================================
-        let verificationData = {
-            status: 'not_started',
-            taxApproved: false,
-            appointmentBooked: false,
-            appointmentDate: null,
-            appointmentTime: null
-        };
-
         async function loadVerificationStatus() {
             try {
                 const user = auth.currentUser;
@@ -1323,27 +1367,31 @@
                         }
                     }
                 }
+                
+                // Also check localStorage as backup
+                const localStatus = localStorage.getItem('taxVerificationStatus');
+                if (localStatus === 'approved' && !verificationData.taxApproved) {
+                    verificationData.status = 'tax_approved';
+                    verificationData.taxApproved = true;
+                }
+                
+                const localAppointment = localStorage.getItem('appointmentBooked');
+                if (localAppointment === 'true' && !verificationData.appointmentBooked) {
+                    verificationData.status = 'appointment_booked';
+                    verificationData.appointmentBooked = true;
+                    const appointmentData = localStorage.getItem('appointmentData');
+                    if (appointmentData) {
+                        const appt = JSON.parse(appointmentData);
+                        verificationData.appointmentDate = appt.date;
+                        verificationData.appointmentTime = appt.timeSlot;
+                    }
+                }
+                
+                verificationData.loaded = true;
+                
             } catch (error) {
                 console.error('Error loading verification status:', error);
-            }
-            
-            // Also check localStorage as backup
-            const localStatus = localStorage.getItem('taxVerificationStatus');
-            if (localStatus === 'approved' && !verificationData.taxApproved) {
-                verificationData.status = 'tax_approved';
-                verificationData.taxApproved = true;
-            }
-            
-            const localAppointment = localStorage.getItem('appointmentBooked');
-            if (localAppointment === 'true' && !verificationData.appointmentBooked) {
-                verificationData.status = 'appointment_booked';
-                verificationData.appointmentBooked = true;
-                const appointmentData = localStorage.getItem('appointmentData');
-                if (appointmentData) {
-                    const appt = JSON.parse(appointmentData);
-                    verificationData.appointmentDate = appt.date;
-                    verificationData.appointmentTime = appt.timeSlot;
-                }
+                verificationData.loaded = true;
             }
             
             updateVerificationBanner();
@@ -1364,7 +1412,6 @@
             switch (verificationData.status) {
                 case 'not_started':
                     bogBanner.className = 'bog-banner';
-                    bannerIcon.className = 'banner-icon';
                     bannerIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
                     bannerTitle.innerHTML = '⚠️ Bank of Ghana Regulation Requirement';
                     verificationStatusBadge.className = 'status-badge status-not-started';
@@ -1377,7 +1424,6 @@
                     
                 case 'tax_approved':
                     bogBanner.className = 'bog-banner success';
-                    bannerIcon.className = 'banner-icon';
                     bannerIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
                     bannerTitle.innerHTML = '✅ Tax Verification Complete';
                     verificationStatusBadge.className = 'status-badge status-approved';
@@ -1390,7 +1436,6 @@
                     
                 case 'appointment_booked':
                     bogBanner.className = 'bog-banner booked';
-                    bannerIcon.className = 'banner-icon';
                     bannerIcon.innerHTML = '<i class="fas fa-calendar-alt"></i>';
                     bannerTitle.innerHTML = '📅 Appointment Booked';
                     verificationStatusBadge.className = 'status-badge status-booked';
@@ -1399,7 +1444,6 @@
                     verifyNowBtn.className = 'btn btn-info';
                     verifyNowBtn.innerHTML = '<i class="fas fa-eye"></i> View Appointment';
                     
-                    // Show appointment details
                     if (verificationData.appointmentDate) {
                         const appointmentDate = new Date(verificationData.appointmentDate);
                         const isToday = appointmentDate.toDateString() === new Date().toDateString();
@@ -1429,7 +1473,6 @@
                     
                 case 'biometric_completed':
                     bogBanner.className = 'bog-banner success';
-                    bannerIcon.className = 'banner-icon';
                     bannerIcon.innerHTML = '<i class="fas fa-check-double"></i>';
                     bannerTitle.innerHTML = '✅ Fully Verified';
                     verificationStatusBadge.className = 'status-badge status-completed';
@@ -1668,16 +1711,45 @@
         }
 
         // ===========================================
-        // AUTH STATE
+        // AUTH STATE - LOAD EVERYTHING BEFORE SHOWING
         // ===========================================
         auth.onAuthStateChanged(async (user) => {
             if (!user) {
                 window.location.href = 'login.html';
-            } else {
-                logoutBtn.style.display = 'block';
-                updateDashboard();
-                loadUserProfile(user);
+                return;
+            }
+            
+            try {
+                // Show loading spinner
+                loadingSpinner.classList.remove('hidden');
+                
+                // Load verification status first (fast)
                 await loadVerificationStatus();
+                
+                // Load all dashboard data
+                updateDashboard();
+                
+                // Load user profile
+                loadUserProfile(user);
+                
+                // Show logout button
+                logoutBtn.style.display = 'block';
+                
+                // Hide loading spinner and show content
+                setTimeout(() => {
+                    loadingSpinner.classList.add('hidden');
+                    mainContent.style.display = 'block';
+                }, 500);
+                
+                console.log(`✅ Dashboard loaded for: ${formatDate(TODAY)}`);
+                console.log(`   Days earned: ${calculateCurrentStats().daysEarned}`);
+                console.log(`   Days remaining: ${calculateCurrentStats().daysRemaining}`);
+                
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                loadingSpinner.classList.add('hidden');
+                mainContent.style.display = 'block';
+                showNotification('Some data may be delayed, refreshing...', 'info');
             }
         });
 
@@ -1706,12 +1778,13 @@
         });
 
         // ===========================================
-        // INITIALIZE
+        // INITIALIZE - SET INTERVAL FOR AUTO UPDATE
         // ===========================================
-        document.addEventListener('DOMContentLoaded', () => {
-            updateDashboard();
-            setInterval(updateDashboard, 3600000);
-        });
+        let updateInterval = setInterval(() => {
+            if (auth.currentUser) {
+                updateDashboard();
+            }
+        }, 3600000); // Update every hour
     </script>
 </body>
 </html>
