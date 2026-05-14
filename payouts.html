@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payouts | GlicoCapital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Premium Color Scheme */
+        :root {
+            --primary: #1a365d;
+            --primary-dark: #0f2040;
+            --primary-light: #2d4a80;
+            --secondary: #d4af37;
+            --secondary-dark: #b8941f;
+            --accent: #00b4d8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --promo-gradient: linear-gradient(135deg, #ff6b6b, #ff8e53);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            color: var(--light);
+            min-height: 100vh;
+            padding-bottom: 90px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.03"><polygon fill="white" points="0,1000 1000,0 1000,1000"/></svg>');
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Premium Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            background: rgba(26, 54, 93, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo img {
+            height: 38px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            font-size: 0.9rem;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Welcome Section */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .welcome-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .welcome-section p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* Extension Banner */
+        .extension-banner {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(16, 185, 129, 0.1));
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid var(--warning);
+            position: relative;
+        }
+        
+        .extension-banner.success {
+            border-color: var(--success);
+        }
+        
+        .extension-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .extension-badge {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--glass-border);
+            color: white;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            opacity: 0.8;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 12px 0;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            color: var(--gray-light);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-top: 8px;
+            font-size: 0.8rem;
+        }
+        
+        .trend-up {
+            color: var(--success);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+        
+        /* Payout Cards */
+        .payout-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .payout-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--glass-border);
+            transition: all 0.4s ease;
+            position: relative;
+            color: white;
+        }
+        
+        .payout-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .payout-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .status-active {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .status-extended {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+        
+        .payout-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .payout-amount {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 15px 0;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .payout-details {
+            margin: 20px 0;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .detail-label {
+            opacity: 0.8;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+        }
+        
+        .promo-tag {
+            background: var(--promo-gradient);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .reinvest-badge {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .extended-badge {
+            background: #f59e0b;
+            color: var(--primary-dark);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .btn-promo {
+            background: var(--promo-gradient);
+            color: white;
+        }
+        
+        /* Card */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
+            color: white;
+        }
+        
+        /* Transaction List */
+        .transaction-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .transaction-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .transaction-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .transaction-list::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 10px;
+        }
+        
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .transaction-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        
+        .transaction-icon.payout {
+            background: rgba(37, 99, 235, 0.2);
+            color: #2563eb;
+        }
+        
+        .transaction-icon.earning {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .transaction-icon.reinvest {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--secondary);
+        }
+        
+        .transaction-icon.extend {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+        
+        .transaction-details h4 {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+        }
+        
+        .transaction-date {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .transaction-amount.positive {
+            color: var(--success);
+        }
+        
+        /* Bank Details */
+        .bank-details-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .bank-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .bank-info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .bank-label {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+        
+        .bank-value {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .bank-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+        
+        .status-verified {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+        
+        /* Pending Update Status */
+        .update-status-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .update-status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .update-status-title {
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .update-status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-under-review {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+        
+        .update-details {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .update-note {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        /* Detail Pages */
+        .detail-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .detail-page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .detail-content {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 500px;
+            margin: 50px auto;
+            border: 1px solid var(--glass-border);
+            position: relative;
+        }
+        
+        .close-detail {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        /* Payout Info */
+        .payout-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 54, 93, 0.95);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            padding: 14px 0;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray-light);
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            padding: 6px 10px;
+            border-radius: 10px;
+            min-width: 50px;
+        }
+        
+        .nav-item.active,
+        .nav-item:hover {
+            color: var(--secondary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            width: 24px;
+            height: 2px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+        
+        /* Receipt Modal */
+        .receipt-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .receipt-modal.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .receipt-content {
+            max-width: 500px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        /* Watermarks */
+        .receipt-watermark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.1;
+        }
+        
+        .receipt-watermark::before {
+            content: 'GLICOCAPITAL GLICOCAPITAL GLICOCAPITAL';
+            position: absolute;
+            top: 10%;
+            left: -20%;
+            right: -20%;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1a365d;
+            transform: rotate(-30deg);
+            white-space: nowrap;
+            letter-spacing: 10px;
+            opacity: 0.1;
+        }
+        
+        .receipt-watermark::after {
+            content: '✓ PAID ✓ PAID ✓ PAID';
+            position: absolute;
+            bottom: 10%;
+            right: -20%;
+            left: -20%;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #d4af37;
+            transform: rotate(15deg);
+            white-space: nowrap;
+            letter-spacing: 10px;
+            opacity: 0.1;
+        }
+        
+        .receipt-header {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .receipt-header img {
+            height: 50px;
+            margin-bottom: 15px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .receipt-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .receipt-body {
+            padding: 30px;
+            background: white;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed #eaeaea;
+        }
+        
+        .receipt-row:last-child {
+            border-bottom: none;
+        }
+        
+        .receipt-label {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .receipt-value {
+            font-weight: 700;
+            color: #1a365d;
+        }
+        
+        .receipt-total {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #1a365d;
+        }
+        
+        /* Official Stamp */
+        .receipt-stamp {
+            position: absolute;
+            bottom: 100px;
+            right: 30px;
+            width: 120px;
+            height: 120px;
+            border: 3px solid #d4af37;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            transform: rotate(-5deg);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 3;
+            opacity: 0.9;
+        }
+        
+        .receipt-stamp .stamp-icon {
+            font-size: 1.8rem;
+            color: #d4af37;
+            margin-bottom: 5px;
+        }
+        
+        .receipt-stamp .stamp-text {
+            font-weight: 800;
+            color: #1a365d;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .receipt-stamp .stamp-date {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 3px;
+        }
+        
+        .receipt-footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .receipt-actions {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            background: white;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Watermark background */
+        .watermark-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(45deg,
+                    rgba(212, 175, 55, 0.02) 0px,
+                    rgba(212, 175, 55, 0.02) 20px,
+                    rgba(26, 54, 93, 0.02) 20px,
+                    rgba(26, 54, 93, 0.02) 40px);
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-in {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .payout-cards {
+                grid-template-columns: 1fr;
+            }
+            .action-buttons {
+                flex-direction: column;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .receipt-stamp {
+                width: 100px;
+                height: 100px;
+                bottom: 120px;
+                right: 15px;
+            }
+            .extension-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Premium Header -->
+    <header>
+        <div class="logo">
+            <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
+            <h1>GlicoCapital</h1>
+        </div>
+        <div class="user-menu">
+            <button class="btn btn-outline" id="logoutBtn" style="padding: 8px 16px; display: none;">Logout</button>
+            <div class="user-avatar profile-upload" id="userAvatar">
+                <span id="avatarInitial">F</span>
+                <input type="file" id="avatarUpload" accept="image/*">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="welcome-section animate-in">
+            <h2>Payouts & Withdrawals</h2>
+            <p>Manage your investment payouts and withdrawals</p>
+        </div>
+
+        <!-- Extension Banner - Shows when investment is extended -->
+        <div id="extensionBanner" class="extension-banner animate-in" style="display: none;">
+            <div class="extension-info">
+                <div>
+                    <i class="fas fa-clock" style="color: var(--warning); font-size: 1.5rem;"></i>
+                </div>
+                <div style="flex: 1;">
+                    <strong>Investment Extended</strong><br>
+                    Your payout date has been extended to <strong id="extendedPayoutDate">June 19, 2026</strong>
+                </div>
+                <div>
+                    <span class="extension-badge">Daily Rate: $120/day</span>
+                </div>
+                <div>
+                    <span class="extension-badge">+30 Days</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card animate-in delay-1" onclick="showPayoutStats()">
+                <div class="stat-icon">
+                    <i class="fas fa-money-check-alt"></i>
+                </div>
+                <div class="stat-label">Total Payouts</div>
+                <div class="stat-value" id="totalPayouts">$56,320</div>
+                <div class="stat-trend trend-up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Both investments</span>
+                </div>
+            </div>
+            <div class="stat-card animate-in delay-1" onclick="showCurrentInvestment()">
+                <div class="stat-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="stat-label">Current Investment</div>
+                <div class="stat-value" id="currentInvestment">$47,720</div>
+                <div class="stat-trend" id="investmentTrend">
+                    <span>Promotional Plan</span>
+                </div>
+            </div>
+            <div class="stat-card animate-in delay-2" onclick="showDailyRate()">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-day"></i>
+                </div>
+                <div class="stat-label">Daily Rate</div>
+                <div class="stat-value" id="dailyRateValue">$220</div>
+                <div class="stat-trend trend-up" id="dailyRateTrend">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>Promotional rate</span>
+                </div>
+            </div>
+            <div class="stat-card animate-in delay-2" onclick="showNextPayout()">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-label">Next Payout</div>
+                <div class="stat-value" id="nextPayoutValue">May 20</div>
+                <div class="stat-trend" id="nextPayoutTrend">
+                    <span>2026</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payout Cards -->
+        <div class="payout-cards">
+            <!-- Completed Payout - Starter Plan -->
+            <div class="payout-card animate-in">
+                <div class="payout-status status-completed">Completed</div>
+                <div class="payout-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Starter Plan Payout</h3>
+                <div class="payout-amount">$8,600</div>
+                <div class="payout-details">
+                    <div class="detail-row"><span class="detail-label">Investment:</span><span class="detail-value">$5,000</span></div>
+                    <div class="detail-row"><span class="detail-label">Earnings:</span><span class="detail-value">$3,600</span></div>
+                    <div class="detail-row"><span class="detail-label">Duration:</span><span class="detail-value">4 Months</span></div>
+                    <div class="detail-row"><span class="detail-label">Payout Date:</span><span class="detail-value">15 Aug 2025</span></div>
+                    <div class="detail-row"><span class="detail-label">Paid To:</span><span class="detail-value">Wells Fargo •••• 0906</span></div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-outline" onclick="downloadReceipt('starter')"><i class="fas fa-download"></i> Receipt</button>
+                </div>
+            </div>
+
+            <!-- Completed Premium Plan Payout - Reinvested -->
+            <div class="payout-card animate-in">
+                <div class="payout-status status-completed">Completed</div>
+                <div class="payout-icon"><i class="fas fa-check-circle"></i></div>
+                <h3>Premium Plan Payout <span class="reinvest-badge">Reinvested</span></h3>
+                <div class="payout-amount">$47,720</div>
+                <div class="payout-details">
+                    <div class="detail-row"><span class="detail-label">Investment:</span><span class="detail-value">$35,000</span></div>
+                    <div class="detail-row"><span class="detail-label">Total Earnings:</span><span class="detail-value">$12,720</span></div>
+                    <div class="detail-row"><span class="detail-label">Duration:</span><span class="detail-value">6 Months</span></div>
+                    <div class="detail-row"><span class="detail-label">Payout Date:</span><span class="detail-value">20 Feb 2026</span></div>
+                    <div class="detail-row"><span class="detail-label">Paid To:</span><span class="detail-value">Glico Holdings (Reinvested)</span></div>
+                    <div class="detail-row" style="background: rgba(212, 175, 55, 0.1); border-radius: 4px; margin-top: 5px;">
+                        <span class="detail-label"><i class="fas fa-sync-alt" style="color: var(--secondary);"></i> Reinvested:</span>
+                        <span class="detail-value" style="color: var(--success);">3 Months Promotional</span>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-outline" onclick="downloadReceipt('premium')"><i class="fas fa-download"></i> Receipt</button>
+                    <button class="btn btn-promo" onclick="viewCompletedInvestment()"><i class="fas fa-history"></i> View Details</button>
+                </div>
+            </div>
+
+            <!-- Current Active Investment - Updates based on extension status -->
+            <div class="payout-card animate-in" id="activeInvestmentCard">
+                <div class="payout-status" id="activeStatus">Active</div>
+                <div class="payout-icon"><i class="fas fa-fire" id="activeIcon"></i></div>
+                <h3 id="activePlanName">3 Months Promotional Plan <span class="promo-tag">PROMO</span></h3>
+                <div class="payout-amount" id="activePayoutAmount">$47,720</div>
+                <div class="payout-details" id="activePayoutDetails">
+                    <div class="detail-row"><span class="detail-label">Daily Rate:</span><span class="detail-value" id="activeDailyRate" style="color: var(--secondary);">$220/day</span></div>
+                    <div class="detail-row"><span class="detail-label">Start Date:</span><span class="detail-value">20 Feb 2026</span></div>
+                    <div class="detail-row"><span class="detail-label">First Earning:</span><span class="detail-value" style="color: var(--success);">23 Feb 2026</span></div>
+                    <div class="detail-row"><span class="detail-label">Maturity Date:</span><span class="detail-value" id="activeMaturityDate">20 May 2026</span></div>
+                    <div class="detail-row"><span class="detail-label">Projected Earnings:</span><span class="detail-value" style="color: var(--success);" id="activeProjectedEarnings">$13,860</span></div>
+                    <div class="detail-row"><span class="detail-label">Projected Payout:</span><span class="detail-value" style="color: var(--success);" id="activeProjectedPayout">$61,580</span></div>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn btn-outline" onclick="viewProjections()"><i class="fas fa-chart-line"></i> Projections</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Payouts -->
+        <div class="card animate-in">
+            <div class="section-header">
+                <h2>Recent Payouts</h2>
+                <button class="btn btn-outline" onclick="showAllPayouts()">View All</button>
+            </div>
+            <div class="transaction-list" id="recentPayouts">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Bank Details -->
+        <div class="card animate-in">
+            <div class="section-header">
+                <h2>Bank Details</h2>
+                <button class="btn btn-outline" onclick="window.location.href='bank-update.html'">Update Bank Details</button>
+            </div>
+
+            <div class="bank-details-card">
+                <div id="currentBankDetails">
+                    <h3 style="margin-bottom: 15px; color: var(--secondary);">Current Bank Information</h3>
+                    <div class="bank-info-grid">
+                        <div class="bank-info-item"><div class="bank-label">Bank Name</div><div class="bank-value" id="currentBankName">Loading...</div></div>
+                        <div class="bank-info-item"><div class="bank-label">Account Holder</div><div class="bank-value" id="currentAccountHolder">Loading...</div></div>
+                        <div class="bank-info-item"><div class="bank-label">Account Number</div><div class="bank-value" id="currentAccountNumber">Loading...</div></div>
+                        <div class="bank-info-item"><div class="bank-label">Routing/Sort Code</div><div class="bank-value" id="currentRoutingNumber">Loading...</div></div>
+                        <div class="bank-info-item"><div class="bank-label">Account Type</div><div class="bank-value" id="currentAccountType">Loading...</div></div>
+                        <div class="bank-info-item"><div class="bank-label">Status</div><div class="bank-value"><span class="bank-status" id="verificationStatus"><i class="fas fa-shield-check"></i> <span id="statusText">Loading...</span></span></div></div>
+                    </div>
+                </div>
+                <div id="pendingUpdateStatus" style="display: none; margin-top: 20px;">
+                    <div class="update-status-card">
+                        <div class="update-status-header"><div class="update-status-title"><i class="fas fa-clock"></i> Bank Update Request Status</div><span class="update-status-badge status-under-review" id="updateStatusBadge">Under Review</span></div>
+                        <div class="update-details">
+                            <div><strong>Reference ID:</strong> <span id="updateReferenceId"></span></div>
+                            <div><strong>Submitted:</strong> <span id="updateSubmittedDate"></span></div>
+                            <div><strong>New Bank:</strong> <span id="updateNewBank"></span></div>
+                            <div class="update-note" id="updateNote">Our agent will contact you within 24-48 hours for verification.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons" style="margin-top: 20px;">
+                    <button class="btn btn-outline" onclick="verifyAccount()"><i class="fas fa-shield-alt"></i> Verify Account</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card animate-in">
+            <div class="section-header"><h2>Quick Actions</h2></div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="exportHistory()" style="flex: 1;"><i class="fas fa-file-export"></i> Export History</button>
+                <button class="btn btn-outline" onclick="contactSupport()" style="flex: 1;"><i class="fas fa-headset"></i> Support</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Payouts Detail Page -->
+    <div class="detail-page" id="allPayoutsPage">
+        <div class="detail-content">
+            <button class="close-detail" onclick="closeDetailPage()">×</button>
+            <h2 style="margin-bottom: 20px; color: white;">All Payouts</h2>
+            <div class="transaction-list" id="allPayoutsList" style="max-height: 500px;"></div>
+        </div>
+    </div>
+
+    <!-- Completed Premium Plan Details Page -->
+    <div class="detail-page" id="completedInvestmentPage">
+        <div class="detail-content">
+            <button class="close-detail" onclick="closeDetailPage()">×</button>
+            <h2 style="margin-bottom: 20px; color: white;">Premium Plan Details</h2>
+            <div class="payout-info">
+                <div class="info-item"><span class="info-label">Investment Plan</span><span class="info-value">Premium Plan (6 Months)</span></div>
+                <div class="info-item"><span class="info-label">Initial Investment</span><span class="info-value">$35,000</span></div>
+                <div class="info-item"><span class="info-label">Total Earnings</span><span class="info-value" style="color: var(--success);">$12,720</span></div>
+                <div class="info-item"><span class="info-label">Total Payout</span><span class="info-value" style="color: var(--secondary);">$47,720</span></div>
+                <div class="info-item"><span class="info-label">Start Date</span><span class="info-value">20 Sep 2025</span></div>
+                <div class="info-item"><span class="info-label">Maturity Date</span><span class="info-value">20 Feb 2026</span></div>
+                <div class="info-item"><span class="info-label">Duration</span><span class="info-value">6 Months</span></div>
+                <div class="info-item"><span class="info-label">Status</span><span class="info-value" style="color: var(--success);">Completed & Reinvested</span></div>
+                <div class="info-item"><span class="info-label">Reinvested Into</span><span class="info-value">3 Months Promotional Plan</span></div>
+            </div>
+            <div style="margin-top: 20px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 10px;">
+                <h4 style="margin-bottom: 10px; color: var(--secondary);">Investment Summary</h4>
+                <p style="font-size: 0.9rem;">
+                    This investment matured on February 20, 2026. The full payout of $47,720 was automatically reinvested into the 3 Months Promotional Plan at $220/day.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div class="receipt-modal" id="receiptModal">
+        <div class="receipt-content" id="receiptContent">
+            <div class="watermark-bg"></div>
+            <div class="receipt-watermark"></div>
+            <div class="receipt-header">
+                <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
+                <h2>OFFICIAL PAYMENT RECEIPT</h2>
+                <p>Investment Payout Confirmation</p>
+            </div>
+            <div class="receipt-body" id="receiptBody"></div>
+            <div class="receipt-stamp" id="receiptStamp">
+                <div class="stamp-icon"><i class="fas fa-check-circle"></i></div>
+                <div class="stamp-text">PAID</div>
+                <div class="stamp-date" id="stampDate"></div>
+            </div>
+            <div class="receipt-footer">
+                <p>This is an electronically generated receipt. Valid without signature.</p>
+                <p>For support: support@glicocapital.online</p>
+            </div>
+            <div class="receipt-actions">
+                <button class="btn btn-secondary" onclick="downloadReceiptAsPDF()" style="flex: 1;"><i class="fas fa-download"></i> Download Receipt</button>
+                <button class="btn btn-outline" onclick="closeReceiptModal()" style="flex: 1;"><i class="fas fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item"><span class="nav-icon"><i class="fas fa-home"></i></span><span>Home</span></a>
+        <a href="payouts.html" class="nav-item active"><span class="nav-icon"><i class="fas fa-wallet"></i></span><span>Payouts</span></a>
+        <a href="partners.html" class="nav-item"><span class="nav-icon"><i class="fas fa-handshake"></i></span><span>Partners</span></a>
+        <a href="settings.html" class="nav-item"><span class="nav-icon"><i class="fas fa-cog"></i></span><span>Settings</span></a>
+        <a href="support.html" class="nav-item"><span class="nav-icon"><i class="fas fa-headset"></i></span><span>Support</span></a>
+    </nav>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
+            authDomain: "ggic-investment.firebaseapp.com",
+            databaseURL: "https://ggic-investment-default-rtdb.firebaseio.com",
+            projectId: "ggic-investment",
+            storageBucket: "ggic-investment.firebasestorage.app",
+            messagingSenderId: "805530882494",
+            appId: "1:805530882494:web:574b965b3ed0402b0f69ef"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+        const db = firebase.firestore();
+
+        // DOM Elements
+        const logoutBtn = document.getElementById('logoutBtn');
+        const recentPayouts = document.getElementById('recentPayouts');
+        const allPayoutsList = document.getElementById('allPayoutsList');
+        const avatarUpload = document.getElementById('avatarUpload');
+        const userAvatar = document.getElementById('userAvatar');
+        const avatarInitial = document.getElementById('avatarInitial');
+        
+        const allPayoutsPage = document.getElementById('allPayoutsPage');
+        const completedInvestmentPage = document.getElementById('completedInvestmentPage');
+        const receiptModal = document.getElementById('receiptModal');
+
+        const FELICITY_USER_ID = "user_felicity_12345";
+
+        // ===========================================
+        // CONSTANTS
+        // ===========================================
+        const INVESTMENT_AMOUNT = 47720;
+        const PROMO_DAILY_RATE = 220;
+        const STANDARD_DAILY_RATE = 120;
+        const ORIGINAL_MATURITY = new Date('2026-05-20');
+        const TODAY = new Date('2026-05-14');
+        
+        // Extension state - LOADS FROM FIRESTORE
+        let isExtended = false;
+        let extendedMaturityDate = new Date(ORIGINAL_MATURITY);
+        let currentDailyRate = PROMO_DAILY_RATE;
+        let currentPlanName = "3 Months Promotional";
+        
+        // Current receipt data
+        let currentReceiptPayout = null;
+
+        // Payout history
+        const payoutHistory = [
+            {
+                id: "PAY-001",
+                type: "starter",
+                amount: 8600,
+                date: "2025-08-15",
+                description: "Starter Plan Investment Payout",
+                investmentAmount: 5000,
+                earnings: 3600,
+                duration: "4 Months",
+                paidTo: "Wells Fargo •••• 0906",
+                transactionId: "TRX-20250815-001",
+                bank: "Wells Fargo",
+                account: "0906"
+            },
+            {
+                id: "PAY-002",
+                type: "premium",
+                amount: 47720,
+                date: "2026-02-20",
+                description: "Premium Plan Investment Payout",
+                investmentAmount: 35000,
+                earnings: 12720,
+                duration: "6 Months",
+                paidTo: "Glico Holdings (Reinvested)",
+                transactionId: "TRX-20260220-001",
+                reinvested: true,
+                reinvestPlan: "3 Months Promotional",
+                bank: "Glico Holdings",
+                account: "Reinvested"
+            }
+        ];
+
+        // ===========================================
+        // BUSINESS DAY CALCULATIONS
+        // ===========================================
+        function isBusinessDay(date) {
+            const day = date.getDay();
+            return day >= 1 && day <= 5;
+        }
+
+        function countBusinessDays(startDate, endDate) {
+            let count = 0;
+            const current = new Date(startDate);
+            while (current <= endDate) {
+                if (isBusinessDay(current)) count++;
+                current.setDate(current.getDate() + 1);
+            }
+            return count;
+        }
+
+        // ===========================================
+        // LOAD EXTENSION STATUS FROM FIRESTORE
+        // ===========================================
+        async function loadExtensionStatus() {
+            try {
+                const user = auth.currentUser;
+                if (!user) return;
+                
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.investmentExtended) {
+                        isExtended = true;
+                        extendedMaturityDate = new Date(userData.newMaturityDate || ORIGINAL_MATURITY);
+                        currentDailyRate = userData.newDailyRate || STANDARD_DAILY_RATE;
+                        currentPlanName = "Standard Plan (Extended)";
+                        
+                        // Show extension banner
+                        document.getElementById('extensionBanner').style.display = 'block';
+                        document.getElementById('extendedPayoutDate').textContent = formatDateWithOrdinal(extendedMaturityDate);
+                    } else {
+                        document.getElementById('extensionBanner').style.display = 'none';
+                    }
+                }
+                
+                // Also check localStorage as backup
+                const localExtended = localStorage.getItem('investmentExtended');
+                if (localExtended === 'true' && !isExtended) {
+                    isExtended = true;
+                    const localMaturity = localStorage.getItem('newMaturityDate');
+                    const localRate = localStorage.getItem('newDailyRate');
+                    if (localMaturity) extendedMaturityDate = new Date(localMaturity);
+                    if (localRate) currentDailyRate = parseInt(localRate);
+                    currentPlanName = "Standard Plan (Extended)";
+                    document.getElementById('extensionBanner').style.display = 'block';
+                }
+                
+                updatePayoutDisplay();
+                
+            } catch (error) {
+                console.error('Error loading extension status:', error);
+            }
+        }
+
+        // ===========================================
+        // CALCULATE CURRENT PROJECTIONS
+        // ===========================================
+        function calculateProjections() {
+            const startDate = new Date('2026-02-23');
+            
+            // Days earned from start to today
+            const daysEarned = countBusinessDays(startDate, TODAY);
+            const pastEarnings = daysEarned * PROMO_DAILY_RATE;
+            const currentBalance = INVESTMENT_AMOUNT + pastEarnings;
+            
+            // Future earnings based on extension status
+            let futureEarnings = 0;
+            let maturityDate;
+            
+            if (isExtended) {
+                maturityDate = extendedMaturityDate;
+                const tomorrow = new Date(TODAY);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const daysRemaining = countBusinessDays(tomorrow, maturityDate);
+                futureEarnings = daysRemaining * STANDARD_DAILY_RATE;
+            } else {
+                maturityDate = ORIGINAL_MATURITY;
+                const tomorrow = new Date(TODAY);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const daysRemaining = countBusinessDays(tomorrow, maturityDate);
+                futureEarnings = daysRemaining * PROMO_DAILY_RATE;
+            }
+            
+            const totalProjectedEarnings = pastEarnings + futureEarnings;
+            const totalProjectedPayout = INVESTMENT_AMOUNT + totalProjectedEarnings;
+            
+            return {
+                pastEarnings: pastEarnings,
+                currentBalance: currentBalance,
+                futureEarnings: futureEarnings,
+                totalProjectedEarnings: totalProjectedEarnings,
+                totalProjectedPayout: totalProjectedPayout,
+                maturityDate: maturityDate,
+                dailyRate: isExtended ? STANDARD_DAILY_RATE : PROMO_DAILY_RATE,
+                planName: isExtended ? "Standard Plan (Extended)" : "3 Months Promotional"
+            };
+        }
+
+        // ===========================================
+        // UPDATE PAYOUT DISPLAY
+        // ===========================================
+        function updatePayoutDisplay() {
+            const projections = calculateProjections();
+            
+            // Update stats cards
+            document.getElementById('currentInvestment').textContent = `$${INVESTMENT_AMOUNT.toLocaleString()}`;
+            
+            // Update active investment card
+            if (isExtended) {
+                document.getElementById('activeStatus').className = 'payout-status status-extended';
+                document.getElementById('activeStatus').innerHTML = '<i class="fas fa-clock"></i> Extended';
+                document.getElementById('activeIcon').className = 'fas fa-clock';
+                document.getElementById('activePlanName').innerHTML = 'Standard Plan <span class="extended-badge">EXTENDED</span>';
+                document.getElementById('activeDailyRate').innerHTML = `$${STANDARD_DAILY_RATE}/day`;
+                document.getElementById('activeDailyRate').style.color = '#f59e0b';
+                document.getElementById('activeMaturityDate').innerHTML = formatDateWithOrdinal(extendedMaturityDate);
+                document.getElementById('dailyRateValue').innerHTML = `$${STANDARD_DAILY_RATE}`;
+                document.getElementById('dailyRateTrend').innerHTML = '<span>Standard rate</span>';
+                document.getElementById('investmentTrend').innerHTML = '<span>Standard Plan</span>';
+                
+                const nextPayoutMonth = extendedMaturityDate.toLocaleDateString('en-US', { month: 'short' });
+                const nextPayoutDay = extendedMaturityDate.getDate();
+                document.getElementById('nextPayoutValue').innerHTML = `${nextPayoutDay} ${nextPayoutMonth}`;
+                document.getElementById('nextPayoutTrend').innerHTML = '<span>2026 (Extended)</span>';
+            } else {
+                document.getElementById('activeStatus').className = 'payout-status status-active';
+                document.getElementById('activeStatus').innerHTML = 'Active';
+                document.getElementById('activeIcon').className = 'fas fa-fire';
+                document.getElementById('activePlanName').innerHTML = '3 Months Promotional Plan <span class="promo-tag">PROMO</span>';
+                document.getElementById('activeDailyRate').innerHTML = `$${PROMO_DAILY_RATE}/day`;
+                document.getElementById('activeDailyRate').style.color = 'var(--secondary)';
+                document.getElementById('activeMaturityDate').innerHTML = '20 May 2026';
+                document.getElementById('dailyRateValue').innerHTML = `$${PROMO_DAILY_RATE}`;
+                document.getElementById('dailyRateTrend').innerHTML = '<i class="fas fa-arrow-up"></i><span>Promotional rate</span>';
+                document.getElementById('investmentTrend').innerHTML = '<span>Promotional Plan</span>';
+                document.getElementById('nextPayoutValue').innerHTML = 'May 20';
+                document.getElementById('nextPayoutTrend').innerHTML = '<span>2026</span>';
+            }
+            
+            // Update projected values
+            document.getElementById('activeProjectedEarnings').innerHTML = `$${projections.totalProjectedEarnings.toLocaleString()}`;
+            document.getElementById('activeProjectedPayout').innerHTML = `$${projections.totalProjectedPayout.toLocaleString()}`;
+            
+            // Update total payouts
+            const totalPayouts = payoutHistory.reduce((sum, p) => sum + p.amount, 0);
+            document.getElementById('totalPayouts').textContent = `$${totalPayouts.toLocaleString()}`;
+        }
+
+        // ===========================================
+        // FORMATTING FUNCTIONS
+        // ===========================================
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function formatDateWithOrdinal(date) {
+            const day = date.getDate();
+            const suffix = day > 3 && day < 21 ? 'th' : ['st', 'nd', 'rd'][(day % 10) - 1] || 'th';
+            const month = date.toLocaleDateString('en-US', { month: 'long' });
+            return `${day}${suffix} ${month} ${date.getFullYear()}`;
+        }
+
+        // ===========================================
+        // LOAD BANK DETAILS FROM FIREBASE
+        // ===========================================
+        function loadBankDetailsFromDatabase() {
+            const bankDetailsRef = database.ref('users/' + FELICITY_USER_ID + '/bankDetails');
+            bankDetailsRef.on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    const bankDetails = snapshot.val();
+                    updateBankDisplay(bankDetails);
+                } else {
+                    const defaultBankDetails = {
+                        bankName: "Metro Bank",
+                        accountHolder: "Maurice Campbell",
+                        accountNumber: "44288478",
+                        routingNumber: "230580",
+                        accountType: "checking",
+                        status: "verified"
+                    };
+                    bankDetailsRef.set(defaultBankDetails);
+                    updateBankDisplay(defaultBankDetails);
+                }
+            });
+        }
+
+        function updateBankDisplay(bankDetails) {
+            document.getElementById('currentBankName').textContent = bankDetails.bankName || "Not set";
+            document.getElementById('currentAccountHolder').textContent = bankDetails.accountHolder || "Not set";
+            document.getElementById('currentAccountNumber').textContent = bankDetails.accountNumber ? "•••• " + bankDetails.accountNumber.slice(-4) : "Not set";
+            document.getElementById('currentRoutingNumber').textContent = bankDetails.routingNumber || "Not set";
+            document.getElementById('currentAccountType').textContent = bankDetails.accountType ? bankDetails.accountType.charAt(0).toUpperCase() + bankDetails.accountType.slice(1) + " Account" : "Not set";
+            
+            const statusElement = document.getElementById('statusText');
+            const statusBadge = document.getElementById('verificationStatus');
+            
+            if (bankDetails.status === 'verified') {
+                statusElement.textContent = "Verified";
+                statusBadge.className = 'bank-status status-verified';
+            } else {
+                statusElement.textContent = "Unverified";
+                statusBadge.className = 'bank-status status-unverified';
+            }
+        }
+
+        // ===========================================
+        // UPDATE PAYOUT LISTS
+        // ===========================================
+        function updatePayoutLists() {
+            recentPayouts.innerHTML = '';
+            allPayoutsList.innerHTML = '';
+
+            payoutHistory.forEach(payout => {
+                const item = createPayoutItem(payout);
+                recentPayouts.appendChild(item.cloneNode(true));
+                allPayoutsList.appendChild(item.cloneNode(true));
+            });
+        }
+
+        function createPayoutItem(payout) {
+            const item = document.createElement('div');
+            item.className = 'transaction-item';
+            
+            let reinvestBadge = payout.reinvested ? ' <span style="color: var(--secondary);">(Reinvested)</span>' : '';
+            
+            item.innerHTML = `
+                <div class="transaction-info">
+                    <div class="transaction-icon payout"><i class="fas fa-money-check-alt"></i></div>
+                    <div class="transaction-details">
+                        <h4>${payout.description}${reinvestBadge}</h4>
+                        <div class="transaction-date">${formatDate(new Date(payout.date))}</div>
+                    </div>
+                </div>
+                <div class="transaction-amount positive">+$${payout.amount.toLocaleString()}</div>
+            `;
+            return item;
+        }
+
+        // ===========================================
+        // RECEIPT FUNCTIONS
+        // ===========================================
+        function downloadReceipt(type) {
+            const payout = payoutHistory.find(p => p.type === type);
+            if (!payout) return;
+            
+            currentReceiptPayout = payout;
+            showReceipt(payout);
+        }
+
+        function showReceipt(payout) {
+            const receiptBody = document.getElementById('receiptBody');
+            const stampDate = document.getElementById('stampDate');
+            const payoutDate = new Date(payout.date);
+            stampDate.textContent = formatDateWithOrdinal(payoutDate);
+
+            receiptBody.innerHTML = `
+                <div class="receipt-row"><span class="receipt-label">Receipt Number:</span><span class="receipt-value">${payout.transactionId}</span></div>
+                <div class="receipt-row"><span class="receipt-label">Transaction Date:</span><span class="receipt-value">${formatDateWithOrdinal(payoutDate)}</span></div>
+                <div class="receipt-row"><span class="receipt-label">Print Date:</span><span class="receipt-value">${formatDateWithOrdinal(new Date())}</span></div>
+                <div class="receipt-row"><span class="receipt-label">Description:</span><span class="receipt-value">${payout.description}</span></div>
+                <div class="receipt-row"><span class="receipt-label">Investment Amount:</span><span class="receipt-value">$${payout.investmentAmount.toLocaleString()}</span></div>
+                <div class="receipt-row"><span class="receipt-label">Total Earnings:</span><span class="receipt-value">$${payout.earnings.toLocaleString()}</span></div>
+                <div class="receipt-row"><span class="receipt-label">Duration:</span><span class="receipt-value">${payout.duration}</span></div>
+                <div class="receipt-row"><span class="receipt-label">Paid To:</span><span class="receipt-value">${payout.paidTo}</span></div>
+                ${payout.reinvested ? '<div class="receipt-row"><span class="receipt-label">Reinvested:</span><span class="receipt-value" style="color: #d4af37;">Yes - 3 Months Promotional</span></div>' : ''}
+                <div class="receipt-row receipt-total"><span class="receipt-label">TOTAL PAID:</span><span class="receipt-value">$${payout.amount.toLocaleString()}</span></div>
+            `;
+            receiptModal.classList.add('active');
+        }
+
+        function downloadReceiptAsPDF() {
+            if (!currentReceiptPayout) {
+                alert('No receipt to download');
+                return;
+            }
+
+            const payout = currentReceiptPayout;
+            const payoutDate = new Date(payout.date);
+            const fileName = `GlicoCapital_Receipt_${payout.transactionId}_${formatDate(payoutDate).replace(/\s/g, '_')}.html`;
+
+            const receiptHTML = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>GlicoCapital Receipt ${payout.transactionId}</title>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                <style>
+                    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; padding: 20px; }
+                    .receipt-container { max-width: 500px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; }
+                    .watermark { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; pointer-events: none; background: repeating-linear-gradient(45deg, #d4af37 0px, #d4af37 20px, #1a365d 20px, #1a365d 40px); }
+                    .watermark-text { position: absolute; top: 20%; left: 0; right: 0; transform: rotate(-30deg); font-size: 48px; font-weight: 800; color: #1a365d; text-align: center; white-space: nowrap; opacity: 0.1; }
+                    .header { background: linear-gradient(135deg, #1a365d, #0f2040); color: white; padding: 30px 20px; text-align: center; }
+                    .header img { height: 50px; margin-bottom: 15px; filter: brightness(0) invert(1); }
+                    .header h2 { margin: 5px 0; }
+                    .body { padding: 30px; position: relative; z-index: 2; }
+                    .row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #eaeaea; }
+                    .label { color: #666; }
+                    .value { font-weight: 700; color: #1a365d; }
+                    .total { font-size: 1.3rem; color: #d4af37; margin-top: 15px; padding-top: 15px; border-top: 2px solid #1a365d; }
+                    .stamp { position: absolute; bottom: 100px; right: 30px; width: 120px; height: 120px; border: 3px solid #d4af37; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; transform: rotate(-5deg); box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 3; }
+                    .stamp i { font-size: 1.8rem; color: #d4af37; }
+                    .stamp .paid { font-weight: 800; color: #1a365d; font-size: 1rem; }
+                    .stamp .date { font-size: 0.7rem; color: #666; }
+                    .footer { background: #f8f9fa; padding: 20px; text-align: center; font-size: 0.9rem; color: #666; }
+                </style>
+            </head>
+            <body>
+                <div class="receipt-container">
+                    <div class="watermark"></div>
+                    <div class="watermark-text">GLICOCAPITAL GLICOCAPITAL</div>
+                    
+                    <div class="header">
+                        <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
+                        <h2>OFFICIAL PAYMENT RECEIPT</h2>
+                        <p>Investment Payout Confirmation</p>
+                    </div>
+                    
+                    <div class="body">
+                        <div class="row"><span class="label">Receipt Number:</span><span class="value">${payout.transactionId}</span></div>
+                        <div class="row"><span class="label">Transaction Date:</span><span class="value">${formatDateWithOrdinal(payoutDate)}</span></div>
+                        <div class="row"><span class="label">Print Date:</span><span class="value">${formatDateWithOrdinal(new Date())}</span></div>
+                        <div class="row"><span class="label">Description:</span><span class="value">${payout.description}</span></div>
+                        <div class="row"><span class="label">Investment Amount:</span><span class="value">$${payout.investmentAmount.toLocaleString()}</span></div>
+                        <div class="row"><span class="label">Total Earnings:</span><span class="value">$${payout.earnings.toLocaleString()}</span></div>
+                        <div class="row"><span class="label">Duration:</span><span class="value">${payout.duration}</span></div>
+                        <div class="row"><span class="label">Paid To:</span><span class="value">${payout.paidTo}</span></div>
+                        ${payout.reinvested ? '<div class="row"><span class="label">Reinvested:</span><span class="value" style="color: #d4af37;">Yes - 3 Months Promotional</span></div>' : ''}
+                        <div class="row total"><span class="label">TOTAL PAID:</span><span class="value">$${payout.amount.toLocaleString()}</span></div>
+                    </div>
+                    
+                    <div class="stamp">
+                        <i class="fas fa-check-circle"></i>
+                        <div class="paid">PAID</div>
+                        <div class="date">${formatDateWithOrdinal(payoutDate)}</div>
+                    </div>
+                    
+                    <div class="footer">
+                        <p>This is an electronically generated receipt. Valid without signature.</p>
+                        <p>For support: support@glicocapital.online</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+            `;
+
+            const blob = new Blob([receiptHTML], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            alert('Receipt downloaded successfully!');
+        }
+
+        function closeReceiptModal() {
+            receiptModal.classList.remove('active');
+            currentReceiptPayout = null;
+        }
+
+        // ===========================================
+        // NAVIGATION FUNCTIONS
+        // ===========================================
+        function showAllPayouts() { allPayoutsPage.classList.add('active'); }
+        function viewCompletedInvestment() { completedInvestmentPage.classList.add('active'); }
+        function viewProjections() { 
+            alert('View current investment projections on the Dashboard'); 
+        }
+        function closeDetailPage() { 
+            allPayoutsPage.classList.remove('active'); 
+            completedInvestmentPage.classList.remove('active');
+        }
+
+        // ===========================================
+        // ACTION FUNCTIONS
+        // ===========================================
+        function verifyAccount() { alert('Account verification request submitted'); }
+        function exportHistory() { alert('Payout history exported!'); }
+        function contactSupport() { alert('Contact support at support@glicocapital.online'); }
+        function showPayoutStats() { alert('Total payouts from all investments: $56,320'); }
+        function showCurrentInvestment() { 
+            const projections = calculateProjections();
+            alert(`Current investment: $${INVESTMENT_AMOUNT.toLocaleString()} in ${projections.planName}`); 
+        }
+        function showDailyRate() { 
+            const rate = isExtended ? STANDARD_DAILY_RATE : PROMO_DAILY_RATE;
+            alert(`Daily rate: $${rate}${isExtended ? ' (Standard rate after extension)' : ' (Promotional)'}`); 
+        }
+        function showNextPayout() { 
+            const projections = calculateProjections();
+            alert(`Next payout: ${formatDateWithOrdinal(projections.maturityDate)}`); 
+        }
+
+        // ===========================================
+        // PROFILE FUNCTIONS
+        // ===========================================
+        function loadUserProfile(user) {
+            if (user.photoURL) {
+                avatarInitial.style.display = 'none';
+                userAvatar.innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
+            } else {
+                avatarInitial.textContent = user.displayName ? user.displayName.charAt(0).toUpperCase() : 'F';
+            }
+        }
+
+        avatarUpload.addEventListener('change', function(e) {
+            alert('Profile picture upload coming soon');
+        });
+
+        // ===========================================
+        // AUTH STATE - LOADS EXTENSION STATUS FIRST
+        // ===========================================
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            } else {
+                logoutBtn.style.display = 'block';
+                
+                // Load extension status FIRST
+                await loadExtensionStatus();
+                
+                // Then load other data
+                loadBankDetailsFromDatabase();
+                updatePayoutLists();
+                loadUserProfile(user);
+                
+                console.log(`📊 Payouts page loaded - Extended: ${isExtended}`);
+                if (isExtended) {
+                    console.log(`   New payout date: ${formatDateWithOrdinal(extendedMaturityDate)}`);
+                    console.log(`   New daily rate: $${currentDailyRate}/day`);
+                }
+            }
+        });
+
+        logoutBtn.addEventListener('click', async () => {
+            await auth.signOut();
+            window.location.href = 'login.html';
+        });
+
+        document.querySelectorAll('.detail-page, .receipt-modal').forEach(el => {
+            el.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    if (this.classList.contains('detail-page')) closeDetailPage();
+                    if (this.classList.contains('receipt-modal')) closeReceiptModal();
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePayoutLists();
+        });
+    </script>
+</body>
+</html>
