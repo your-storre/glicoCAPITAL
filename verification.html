@@ -107,6 +107,39 @@
             object-fit: cover;
         }
         
+        /* Loading Overlay */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .loading-overlay.active {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         /* Progress Steps */
         .progress-steps {
             display: flex;
@@ -250,45 +283,52 @@
             opacity: 0.7;
         }
         
-        /* Loading Overlay */
-        .loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-        
-        .loading-overlay.active {
+        /* Week Navigation */
+        .week-navigation {
             display: flex;
-        }
-        
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid var(--glass-border);
-            border-top-color: var(--secondary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .week-nav-btn {
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .week-nav-btn:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--secondary);
+        }
+        
+        .week-nav-btn.active {
+            background: var(--secondary);
+            color: var(--primary-dark);
+            border-color: var(--secondary);
+        }
+        
+        .week-range {
+            font-weight: 600;
+            color: var(--secondary);
         }
         
         /* Calendar Grid */
         .calendar-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 15px;
             margin-bottom: 30px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 5px;
         }
         
         .calendar-date {
@@ -304,11 +344,24 @@
         .calendar-date:hover {
             border-color: var(--secondary);
             background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-2px);
         }
         
         .calendar-date.selected {
             border-color: var(--secondary);
             background: rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+        
+        .calendar-date.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .calendar-date.disabled:hover {
+            border-color: var(--glass-border);
+            background: rgba(0, 0, 0, 0.3);
         }
         
         .calendar-date .day-name {
@@ -322,14 +375,24 @@
             margin: 5px 0;
         }
         
+        .calendar-date .month {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
         .calendar-date .slots-left {
             font-size: 0.7rem;
             color: var(--success);
+            margin-top: 5px;
         }
         
-        .calendar-date.disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
+        .calendar-date.urgent {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        .calendar-date.urgent .slots-left {
+            color: var(--danger);
         }
         
         /* Time Slots */
@@ -386,6 +449,27 @@
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 30px;
+        }
+        
+        /* Status Cards */
+        .status-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .status-card.success {
+            border-left-color: var(--success);
+        }
+        
+        .status-card.warning {
+            border-left-color: var(--warning);
+        }
+        
+        .status-card.danger {
+            border-left-color: var(--danger);
         }
         
         /* Buttons */
@@ -460,47 +544,6 @@
             color: #3b82f6;
         }
         
-        .status-completed {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-        }
-        
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-            padding: 15px 20px;
-            border-radius: 12px;
-            color: white;
-            animation: fadeInUp 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        .notification.success {
-            background: #10b981;
-        }
-        
-        .notification.error {
-            background: #ef4444;
-        }
-        
-        .notification.info {
-            background: #3b82f6;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
         /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
@@ -540,6 +583,42 @@
             margin-bottom: 4px;
         }
         
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: white;
+            animation: fadeInUp 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .notification.success {
+            background: #10b981;
+        }
+        
+        .notification.error {
+            background: #ef4444;
+        }
+        
+        .notification.info {
+            background: #3b82f6;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .form-row {
@@ -558,6 +637,11 @@
             
             .btn-group {
                 flex-direction: column;
+            }
+            
+            .week-navigation {
+                flex-direction: column;
+                align-items: stretch;
             }
         }
     </style>
@@ -633,11 +717,11 @@
             <div class="form-row">
                 <div class="form-group">
                     <label>Full Name (as on ID)</label>
-                    <input type="text" id="fullName" placeholder="Enter your full name">
+                    <input type="text" id="fullName" placeholder="Enter your full name" value="Felicity Acheampong">
                 </div>
                 <div class="form-group">
                     <label>Date of Birth</label>
-                    <input type="date" id="dob">
+                    <input type="date" id="dob" value="1990-01-01">
                 </div>
             </div>
             
@@ -666,10 +750,11 @@
             <h2><i class="fas fa-calendar-check"></i> Book Biometric Appointment</h2>
             <p style="margin-bottom: 20px; opacity: 0.8;">Your tax details have been approved. Please book an appointment to visit our office for biometric data capture. <strong>This cannot be done online.</strong></p>
             
-            <!-- Verification Status Display -->
-            <div style="background: rgba(212, 175, 55, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px; border-left: 4px solid var(--success);">
-                <div><i class="fas fa-check-circle" style="color: var(--success);"></i> <strong>Tax Verification Status:</strong> <span style="color: var(--success);">APPROVED</span></div>
-                <div style="font-size: 0.85rem; opacity: 0.8; margin-top: 5px;">Your tax details have been verified successfully. You can now book your biometric appointment.</div>
+            <!-- Status Display -->
+            <div id="verificationStatusCard" class="status-card">
+                <div id="statusIcon"><i class="fas fa-check-circle"></i></div>
+                <div id="statusTitle">Tax Verification Complete</div>
+                <div id="statusMessage">Your tax details have been verified. Please book your biometric appointment.</div>
             </div>
             
             <!-- Office Info -->
@@ -680,18 +765,33 @@
                 <p><i class="fas fa-clock"></i> Working Hours: Monday - Friday, 9:00 AM - 4:00 PM</p>
             </div>
             
-            <!-- Current Appointment (if exists) -->
-            <div id="currentAppointmentDiv" style="display: none;"></div>
-            
-            <h3 style="margin-bottom: 15px;">Select Available Date</h3>
-            <div id="calendarGrid" class="calendar-grid">
-                <!-- Dates will be populated by JavaScript -->
+            <!-- Week Navigation -->
+            <div class="week-navigation">
+                <button class="week-nav-btn" onclick="changeWeek(-1)">
+                    <i class="fas fa-chevron-left"></i> Previous Week
+                </button>
+                <div class="week-range" id="weekRange">Loading dates...</div>
+                <button class="week-nav-btn" onclick="changeWeek(1)">
+                    Next Week <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
             
+            <!-- Calendar Grid -->
+            <h3 style="margin-bottom: 15px;">Select Available Date</h3>
+            <div id="calendarGrid" class="calendar-grid">
+                <div style="text-align: center; grid-column: 1/-1; padding: 40px;">
+                    <i class="fas fa-spinner fa-spin"></i> Loading available dates...
+                </div>
+            </div>
+            
+            <!-- Time Slots -->
             <h3 style="margin-bottom: 15px;">Select Time Slot</h3>
             <div id="timeSlots" class="time-slots">
                 <!-- Time slots will be populated by JavaScript -->
             </div>
+            
+            <!-- Current Appointment -->
+            <div id="currentAppointmentDiv" style="display: none;"></div>
             
             <div class="btn-group">
                 <button class="btn btn-primary" onclick="confirmBooking()" id="confirmBookingBtn" disabled>
@@ -735,8 +835,8 @@
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="spinner"></div>
-        <h3>Verifying your information...</h3>
-        <p style="opacity: 0.7; margin-top: 10px;">Please wait while we process your details</p>
+        <h3>Processing your request...</h3>
+        <p style="opacity: 0.7; margin-top: 10px;">Please wait</p>
     </div>
 
     <!-- Bottom Navigation -->
@@ -793,6 +893,7 @@
         const userAvatar = document.getElementById('userAvatar');
         const avatarInitial = document.getElementById('avatarInitial');
         const avatarUpload = document.getElementById('avatarUpload');
+        const loadingOverlay = document.getElementById('loadingOverlay');
         
         // Variables
         let currentUser = null;
@@ -800,246 +901,166 @@
         let selectedTimeSlot = null;
         let uploadedFile = null;
         let currentStep = 1;
+        let currentWeekOffset = 0;
+        let availableDates = [];
         
         // Time slots (9 AM - 4 PM)
         const TIME_SLOTS = ['9:00 AM', '10:00 AM', '11:00 AM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM'];
         
         // Max slots per day
         const MAX_SLOTS_PER_DAY = 10;
+        
+        // TODAY IS MAY 14, 2026
+        const TODAY = new Date('2026-05-14');
+        const PAYOUT_DATE = new Date('2026-05-20');
+        const DAYS_TO_PAYOUT = Math.ceil((PAYOUT_DATE - TODAY) / (1000 * 60 * 60 * 24));
 
         // ===========================================
-        // FILE UPLOAD HANDLER - OPTIONAL
+        // BUSINESS DAYS AND DATE UTILITIES
         // ===========================================
-        document.getElementById('idDocument').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                uploadedFile = file;
-                document.getElementById('fileName').textContent = file.name;
-            }
-        });
-
-        // Show notification
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `
-                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
-                <span style="margin-left: 10px;">${message}</span>
-            `;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'fadeOut 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
-            }, 4000);
+        function isBusinessDay(date) {
+            const day = date.getDay();
+            return day >= 1 && day <= 5;
         }
 
-        // ===========================================
-        // SUBMIT TAX VERIFICATION - SIMPLIFIED & WORKING
-        // ===========================================
-        async function submitTaxVerification() {
-            // Validate inputs
-            const country = document.getElementById('country').value;
-            const taxIdType = document.getElementById('taxIdType').value;
-            const taxIdNumber = document.getElementById('taxIdNumber').value;
-            const fullName = document.getElementById('fullName').value;
-            const dob = document.getElementById('dob').value;
-            
-            if (!country || !taxIdType || !taxIdNumber || !fullName || !dob) {
-                showNotification('Please fill in all required fields', 'error');
-                return;
-            }
-            
-            // Show loading overlay
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            loadingOverlay.classList.add('active');
-            
-            try {
-                // Save tax details to Firestore (skip file upload if fails)
-                let documentUrl = null;
-                
-                // Try to upload file if exists, but don't fail if it doesn't work
-                if (uploadedFile) {
-                    try {
-                        const storageRef = storage.ref(`verification/${currentUser.uid}/id_document_${Date.now()}`);
-                        const uploadTask = await storageRef.put(uploadedFile);
-                        documentUrl = await uploadTask.ref.getDownloadURL();
-                    } catch (uploadError) {
-                        console.warn('File upload failed, but continuing with verification:', uploadError);
-                        showNotification('ID upload failed, but verification will continue', 'info');
-                    }
-                }
-                
-                // Tax details object
-                const taxDetails = {
-                    country,
-                    taxIdType,
-                    taxIdNumber,
-                    fullName,
-                    dateOfBirth: dob,
-                    idDocumentUrl: documentUrl || null,
-                    status: 'approved',
-                    submittedAt: new Date().toISOString(),
-                    approvedAt: new Date().toISOString()
-                };
-                
-                // Save to Firestore
-                await db.collection('users').doc(currentUser.uid).set({
-                    verification: {
-                        status: 'tax_approved',
-                        taxDetails: taxDetails,
-                        updatedAt: new Date().toISOString()
-                    }
-                }, { merge: true });
-                
-                console.log('Tax verification saved to Firestore');
-                
-                // Also save to localStorage for backup
-                localStorage.setItem('taxVerificationStatus', 'approved');
-                localStorage.setItem('taxVerificationData', JSON.stringify(taxDetails));
-                
-                // Show success message after 2 seconds loading
-                setTimeout(() => {
-                    loadingOverlay.classList.remove('active');
-                    showNotification('Tax details approved! You can now book your appointment.', 'success');
-                    goToStep2();
-                }, 2000);
-                
-            } catch (error) {
-                console.error('Error submitting verification:', error);
-                loadingOverlay.classList.remove('active');
-                
-                // Still allow to proceed even if Firebase fails (using localStorage)
-                if (confirm('There was an issue saving your details, but you can still proceed with booking your appointment. Continue?')) {
-                    // Save to localStorage
-                    const taxDetails = {
-                        country, taxIdType, taxIdNumber, fullName, dateOfBirth: dob,
-                        status: 'approved', submittedAt: new Date().toISOString()
-                    };
-                    localStorage.setItem('taxVerificationStatus', 'approved');
-                    localStorage.setItem('taxVerificationData', JSON.stringify(taxDetails));
-                    
-                    showNotification('Tax details saved locally. You can now book your appointment.', 'success');
-                    goToStep2();
-                } else {
-                    showNotification('Error submitting verification. Please try again.', 'error');
-                }
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function formatDateWithOrdinal(date) {
+            const day = date.getDate();
+            const suffix = getOrdinalSuffix(day);
+            const month = date.toLocaleDateString('en-US', { month: 'long' });
+            const year = date.getFullYear();
+            return `${day}${suffix} ${month} ${year}`;
+        }
+
+        function getOrdinalSuffix(day) {
+            if (day > 3 && day < 21) return 'th';
+            switch (day % 10) {
+                case 1: return "st";
+                case 2: return "nd";
+                case 3: return "rd";
+                default: return "th";
             }
         }
 
+        function getDayName(date) {
+            return date.toLocaleDateString('en-US', { weekday: 'short' });
+        }
+
+        function getMonthName(date) {
+            return date.toLocaleDateString('en-US', { month: 'short' });
+        }
+
         // ===========================================
-        // SKIP FOR NOW
+        // GENERATE AVAILABLE DATES (SMART & DYNAMIC)
         // ===========================================
-        function skipForNow() {
-            if (confirm('You can complete verification later. Your payout may be delayed if not completed. Continue?')) {
-                window.location.href = 'dashboard.html';
+        async function generateAvailableDates() {
+            const startDate = new Date(TODAY);
+            startDate.setDate(startDate.getDate() + 1); // Start from tomorrow
+            
+            // Calculate target date based on week offset
+            const targetDate = new Date(startDate);
+            targetDate.setDate(targetDate.getDate() + (currentWeekOffset * 7));
+            
+            // Get start of week (Monday)
+            const startOfWeek = new Date(targetDate);
+            const dayOfWeek = startOfWeek.getDay();
+            const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+            startOfWeek.setDate(startOfWeek.getDate() - daysToMonday);
+            
+            // Get end of week (Friday)
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 4);
+            
+            // Update week range display
+            const weekRangeElement = document.getElementById('weekRange');
+            if (weekRangeElement) {
+                weekRangeElement.innerHTML = `${formatDate(startOfWeek)} - ${formatDate(endOfWeek)}`;
             }
-        }
-
-        // ===========================================
-        // GO TO STEP 2 (Book Appointment)
-        // ===========================================
-        function goToStep2() {
-            currentStep = 2;
-            document.getElementById('step1Content').style.display = 'none';
-            document.getElementById('step2Content').style.display = 'block';
-            document.getElementById('step3Content').style.display = 'none';
             
-            // Update progress steps
-            document.getElementById('step1').classList.remove('active');
-            document.getElementById('step1').classList.add('completed');
-            document.getElementById('step2').classList.add('active');
+            // Get booked appointments from Firestore (simulated for demo)
+            const bookedSlots = {};
             
-            // Load available dates and current appointment
-            loadAvailableDates();
-            loadCurrentAppointment();
-        }
-
-        // ===========================================
-        // GO BACK TO STEP 1
-        // ===========================================
-        function goBackToStep1() {
-            currentStep = 1;
-            document.getElementById('step1Content').style.display = 'block';
-            document.getElementById('step2Content').style.display = 'none';
-            document.getElementById('step3Content').style.display = 'none';
-            
-            // Update progress steps
-            document.getElementById('step1').classList.add('active');
-            document.getElementById('step1').classList.remove('completed');
-            document.getElementById('step2').classList.remove('active');
-        }
-
-        // ===========================================
-        // LOAD AVAILABLE DATES
-        // ===========================================
-        async function loadAvailableDates() {
-            const calendarGrid = document.getElementById('calendarGrid');
-            calendarGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1;">Loading available dates...</div>';
-            
-            try {
-                // Generate available dates (next 30 days)
-                const today = new Date();
-                const availableDates = [];
-                let slotsCount = 0;
+            // Generate dates for the week
+            const dates = [];
+            for (let i = 0; i < 5; i++) {
+                const date = new Date(startOfWeek);
+                date.setDate(startOfWeek.getDate() + i);
                 
-                for (let i = 1; i <= 30; i++) {
-                    const date = new Date(today);
-                    date.setDate(today.getDate() + i);
-                    
-                    const dayOfWeek = date.getDay();
-                    if (dayOfWeek === 0 || dayOfWeek === 6) continue; // Skip weekends
-                    
+                if (date >= TODAY) {
                     const dateKey = date.toISOString().split('T')[0];
-                    const availableSlots = 5; // Default available slots
+                    const bookedCount = bookedSlots[dateKey] ? bookedSlots[dateKey].length : 0;
+                    const availableSlots = MAX_SLOTS_PER_DAY - bookedCount;
                     
-                    const month = date.getMonth();
+                    // Check if date is before payout (for urgent indicator)
+                    const isUrgent = date < PAYOUT_DATE && DAYS_TO_PAYOUT <= 5;
                     
-                    // Limit slots for this month
-                    if (month === today.getMonth() && slotsCount >= 2) continue;
-                    if (month === today.getMonth() + 1 && slotsCount >= 4) continue;
-                    
-                    availableDates.push({ date, availableSlots, dateKey });
-                    slotsCount++;
-                    
-                    if (availableDates.length >= 15) break;
+                    dates.push({
+                        date: date,
+                        dateKey: dateKey,
+                        availableSlots: availableSlots,
+                        isUrgent: isUrgent,
+                        isPast: date < TODAY
+                    });
+                }
+            }
+            
+            return dates;
+        }
+
+        // ===========================================
+        // RENDER CALENDAR
+        // ===========================================
+        async function renderCalendar() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1; padding: 20px;"><i class="fas fa-spinner fa-spin"></i> Loading dates...</div>';
+            
+            try {
+                availableDates = await generateAvailableDates();
+                
+                if (availableDates.length === 0) {
+                    calendarGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1; padding: 20px;">No available dates this week. Please try next week.</div>';
+                    return;
                 }
                 
-                // Render calendar
                 calendarGrid.innerHTML = '';
-                availableDates.forEach(item => {
+                
+                availableDates.forEach(dateInfo => {
+                    if (dateInfo.isPast) return;
+                    
                     const dateDiv = document.createElement('div');
                     dateDiv.className = 'calendar-date';
-                    dateDiv.setAttribute('data-date', item.dateKey);
-                    dateDiv.setAttribute('data-date-obj', item.date);
-                    dateDiv.setAttribute('data-slots', item.availableSlots);
+                    if (dateInfo.isUrgent) dateDiv.classList.add('urgent');
+                    dateDiv.setAttribute('data-date', dateInfo.dateKey);
+                    dateDiv.setAttribute('data-date-obj', dateInfo.date);
+                    dateDiv.setAttribute('data-slots', dateInfo.availableSlots);
+                    
+                    const isWeekend = dateInfo.date.getDay() === 0 || dateInfo.date.getDay() === 6;
+                    
                     dateDiv.innerHTML = `
-                        <div class="day-name">${getDayName(item.date)}</div>
-                        <div class="day-number">${item.date.getDate()}</div>
-                        <div class="month">${getMonthName(item.date)}</div>
-                        <div class="slots-left">${item.availableSlots} slots left</div>
+                        <div class="day-name">${getDayName(dateInfo.date)}</div>
+                        <div class="day-number">${dateInfo.date.getDate()}</div>
+                        <div class="month">${getMonthName(dateInfo.date)}</div>
+                        <div class="slots-left">${dateInfo.availableSlots} slots left</div>
+                        ${dateInfo.isUrgent ? '<div style="color: var(--danger); font-size: 0.7rem; margin-top: 5px;">⚠️ Before payout!</div>' : ''}
                     `;
-                    dateDiv.onclick = () => selectDate(dateDiv, item.dateKey, item.date);
+                    
+                    dateDiv.onclick = () => selectDate(dateDiv, dateInfo.dateKey, dateInfo.date);
                     calendarGrid.appendChild(dateDiv);
                 });
                 
-                if (availableDates.length === 0) {
-                    calendarGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1;">No available dates. Please check back later.</div>';
-                }
-                
-                // Load time slots
-                loadTimeSlots();
-                
             } catch (error) {
-                console.error('Error loading dates:', error);
-                calendarGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1;">Error loading dates. Please refresh.</div>';
+                console.error('Error rendering calendar:', error);
+                calendarGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1; padding: 20px;">Error loading dates. Please refresh.</div>';
             }
         }
 
         // ===========================================
-        // LOAD TIME SLOTS
+        // RENDER TIME SLOTS
         // ===========================================
-        function loadTimeSlots() {
+        function renderTimeSlots() {
             const timeSlotsContainer = document.getElementById('timeSlots');
             timeSlotsContainer.innerHTML = '';
             
@@ -1085,6 +1106,18 @@
         }
 
         // ===========================================
+        // CHANGE WEEK
+        // ===========================================
+        async function changeWeek(direction) {
+            currentWeekOffset += direction;
+            await renderCalendar();
+            // Clear selected date and time
+            selectedDate = null;
+            selectedTimeSlot = null;
+            checkConfirmButton();
+        }
+
+        // ===========================================
         // LOAD CURRENT APPOINTMENT
         // ===========================================
         async function loadCurrentAppointment() {
@@ -1097,20 +1130,15 @@
                     const appt = userData.verification.appointment;
                     const currentAppointmentDiv = document.getElementById('currentAppointmentDiv');
                     const apptDate = new Date(appt.date);
-                    
-                    // Check if appointment is in the past
-                    const isPast = apptDate < new Date();
+                    const isPast = apptDate < TODAY;
                     
                     currentAppointmentDiv.innerHTML = `
                         <div class="appointment-summary" style="margin-bottom: 20px;">
                             <h3 style="color: var(--success);"><i class="fas fa-calendar-check"></i> Your Current Appointment</h3>
-                            <div><strong>Date:</strong> ${formatDate(apptDate)}</div>
+                            <div><strong>Date:</strong> ${formatDateWithOrdinal(apptDate)}</div>
                             <div><strong>Time:</strong> ${appt.timeSlot}</div>
                             <div><strong>Status:</strong> <span class="status-badge status-booked">Confirmed</span></div>
-                            <div class="btn-group" style="margin-top: 15px;">
-                                ${!isPast ? '<button class="btn btn-outline" onclick="rescheduleFromStep2()">Reschedule</button>' : ''}
-                                ${!isPast ? '<button class="btn btn-danger" onclick="cancelFromStep2()">Cancel</button>' : ''}
-                            </div>
+                            ${!isPast ? '<div class="btn-group" style="margin-top: 15px;"><button class="btn btn-outline" onclick="rescheduleFromStep2()">Reschedule</button><button class="btn btn-danger" onclick="cancelFromStep2()">Cancel</button></div>' : ''}
                         </div>
                     `;
                     currentAppointmentDiv.style.display = 'block';
@@ -1123,6 +1151,143 @@
         }
 
         // ===========================================
+        // FILE UPLOAD HANDLER
+        // ===========================================
+        document.getElementById('idDocument').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                uploadedFile = file;
+                document.getElementById('fileName').textContent = file.name;
+            }
+        });
+
+        // ===========================================
+        // SUBMIT TAX VERIFICATION (FAST)
+        // ===========================================
+        async function submitTaxVerification() {
+            const country = document.getElementById('country').value;
+            const taxIdType = document.getElementById('taxIdType').value;
+            const taxIdNumber = document.getElementById('taxIdNumber').value;
+            const fullName = document.getElementById('fullName').value;
+            const dob = document.getElementById('dob').value;
+            
+            if (!country || !taxIdType || !taxIdNumber || !fullName || !dob) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            loadingOverlay.classList.add('active');
+            
+            try {
+                let documentUrl = null;
+                if (uploadedFile) {
+                    try {
+                        const storageRef = storage.ref(`verification/${currentUser.uid}/id_document_${Date.now()}`);
+                        const uploadTask = await storageRef.put(uploadedFile);
+                        documentUrl = await uploadTask.ref.getDownloadURL();
+                    } catch (uploadError) {
+                        console.warn('File upload failed:', uploadError);
+                    }
+                }
+                
+                const taxDetails = {
+                    country, taxIdType, taxIdNumber, fullName, dateOfBirth: dob,
+                    idDocumentUrl: documentUrl || null,
+                    status: 'approved',
+                    submittedAt: new Date().toISOString(),
+                    approvedAt: new Date().toISOString()
+                };
+                
+                await db.collection('users').doc(currentUser.uid).set({
+                    verification: {
+                        status: 'tax_approved',
+                        taxDetails: taxDetails,
+                        updatedAt: new Date().toISOString()
+                    }
+                }, { merge: true });
+                
+                localStorage.setItem('taxVerificationStatus', 'approved');
+                
+                setTimeout(() => {
+                    loadingOverlay.classList.remove('active');
+                    showNotification('Tax details approved! You can now book your appointment.', 'success');
+                    goToStep2();
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Error submitting verification:', error);
+                loadingOverlay.classList.remove('active');
+                if (confirm('Could not save to database, but you can still proceed. Continue?')) {
+                    localStorage.setItem('taxVerificationStatus', 'approved');
+                    showNotification('Tax details saved locally. You can now book your appointment.', 'success');
+                    goToStep2();
+                } else {
+                    showNotification('Error submitting verification. Please try again.', 'error');
+                }
+            }
+        }
+
+        // ===========================================
+        // SKIP FOR NOW
+        // ===========================================
+        function skipForNow() {
+            if (confirm('You can complete verification later. Your payout may be delayed if not completed. Continue?')) {
+                window.location.href = 'dashboard.html';
+            }
+        }
+
+        // ===========================================
+        // GO TO STEP 2
+        // ===========================================
+        async function goToStep2() {
+            currentStep = 2;
+            document.getElementById('step1Content').style.display = 'none';
+            document.getElementById('step2Content').style.display = 'block';
+            document.getElementById('step3Content').style.display = 'none';
+            
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step1').classList.add('completed');
+            document.getElementById('step2').classList.add('active');
+            
+            // Update status card based on days to payout
+            const statusCard = document.getElementById('verificationStatusCard');
+            if (DAYS_TO_PAYOUT <= 5) {
+                statusCard.className = 'status-card danger';
+                document.getElementById('statusIcon').innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                document.getElementById('statusTitle').innerHTML = 'URGENT: Action Required';
+                document.getElementById('statusMessage').innerHTML = `Your payout is in ${DAYS_TO_PAYOUT} days. Please book your appointment immediately to avoid payout delay.`;
+            } else if (DAYS_TO_PAYOUT <= 10) {
+                statusCard.className = 'status-card warning';
+                document.getElementById('statusIcon').innerHTML = '<i class="fas fa-clock"></i>';
+                document.getElementById('statusTitle').innerHTML = 'Action Required Soon';
+                document.getElementById('statusMessage').innerHTML = `Your payout is in ${DAYS_TO_PAYOUT} days. Book your appointment soon.`;
+            } else {
+                statusCard.className = 'status-card success';
+                document.getElementById('statusIcon').innerHTML = '<i class="fas fa-check-circle"></i>';
+                document.getElementById('statusTitle').innerHTML = 'Tax Verification Complete';
+                document.getElementById('statusMessage').innerHTML = 'Your tax details have been verified. Please book your biometric appointment.';
+            }
+            
+            await renderCalendar();
+            renderTimeSlots();
+            await loadCurrentAppointment();
+        }
+
+        // ===========================================
+        // GO BACK TO STEP 1
+        // ===========================================
+        function goBackToStep1() {
+            currentStep = 1;
+            document.getElementById('step1Content').style.display = 'block';
+            document.getElementById('step2Content').style.display = 'none';
+            document.getElementById('step3Content').style.display = 'none';
+            
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('step1').classList.remove('completed');
+            document.getElementById('step2').classList.remove('active');
+        }
+
+        // ===========================================
         // CONFIRM BOOKING
         // ===========================================
         async function confirmBooking() {
@@ -1131,8 +1296,9 @@
                 return;
             }
             
+            loadingOverlay.classList.add('active');
+            
             try {
-                // Create appointment object
                 const appointment = {
                     date: selectedDate.dateKey,
                     dateObj: selectedDate.dateObj.toISOString(),
@@ -1142,7 +1308,6 @@
                     officeLocation: "3A Digya Lane, Airport Residential Area, Accra, Ghana"
                 };
                 
-                // Save to Firestore
                 await db.collection('users').doc(currentUser.uid).set({
                     verification: {
                         status: 'appointment_booked',
@@ -1151,19 +1316,18 @@
                     }
                 }, { merge: true });
                 
-                // Also save to localStorage
                 localStorage.setItem('appointmentBooked', 'true');
-                localStorage.setItem('appointmentDate', selectedDate.dateKey);
-                localStorage.setItem('appointmentTime', selectedTimeSlot);
+                localStorage.setItem('appointmentData', JSON.stringify(appointment));
                 
+                loadingOverlay.classList.remove('active');
                 showNotification('Appointment booked successfully!', 'success');
                 goToStep3();
                 
             } catch (error) {
                 console.error('Error booking appointment:', error);
+                loadingOverlay.classList.remove('active');
                 
-                // Still allow to proceed using localStorage
-                if (confirm('Could not save to database, but we can still proceed with your booking locally. Continue?')) {
+                if (confirm('Could not save to database, but you can still proceed. Continue?')) {
                     const appointment = {
                         date: selectedDate.dateKey,
                         timeSlot: selectedTimeSlot,
@@ -1172,7 +1336,6 @@
                     };
                     localStorage.setItem('appointmentBooked', 'true');
                     localStorage.setItem('appointmentData', JSON.stringify(appointment));
-                    
                     showNotification('Appointment booked locally!', 'success');
                     goToStep3();
                 } else {
@@ -1187,9 +1350,7 @@
         async function goToStep3() {
             currentStep = 3;
             
-            // Get appointment data
             let appointment = null;
-            
             try {
                 const userDoc = await db.collection('users').doc(currentUser.uid).get();
                 const userData = userDoc.data();
@@ -1197,8 +1358,6 @@
                     appointment = userData.verification.appointment;
                 }
             } catch (error) {
-                console.error('Error getting appointment:', error);
-                // Fallback to localStorage
                 const localAppointment = localStorage.getItem('appointmentData');
                 if (localAppointment) {
                     appointment = JSON.parse(localAppointment);
@@ -1206,7 +1365,6 @@
             }
             
             if (!appointment) {
-                // Use selected date if available
                 appointment = {
                     date: selectedDate ? selectedDate.dateKey : new Date().toISOString().split('T')[0],
                     timeSlot: selectedTimeSlot || '10:00 AM',
@@ -1214,13 +1372,17 @@
                 };
             }
             
+            const apptDate = new Date(appointment.date);
+            const isBeforePayout = apptDate < PAYOUT_DATE;
+            
             const summaryDiv = document.getElementById('appointmentSummary');
             summaryDiv.innerHTML = `
                 <h3 style="color: var(--success); margin-bottom: 15px;">✓ Appointment Confirmed!</h3>
-                <div><strong>Date:</strong> ${formatDate(new Date(appointment.date))}</div>
+                <div><strong>Date:</strong> ${formatDateWithOrdinal(apptDate)}</div>
                 <div><strong>Time:</strong> ${appointment.timeSlot}</div>
                 <div><strong>Location:</strong> ${appointment.officeLocation}</div>
                 <div><strong>Reference ID:</strong> BIO-${currentUser.uid.slice(-8)}-${appointment.date.replace(/-/g, '')}</div>
+                ${isBeforePayout ? '<div style="margin-top: 15px; padding: 15px; background: rgba(239,68,68,0.1); border-radius: 8px;"><i class="fas fa-check-circle"></i> ✅ Your appointment is scheduled before your payout date!</div>' : '<div style="margin-top: 15px; padding: 15px; background: rgba(245,158,11,0.1); border-radius: 8px;"><i class="fas fa-exclamation-triangle"></i> ⚠️ Your appointment is after your payout date. Please contact support.</div>'}
                 <div style="margin-top: 15px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px;">
                     <p><i class="fas fa-envelope"></i> A confirmation has been saved to your account.</p>
                     <p><i class="fas fa-bell"></i> Please arrive 10 minutes early for your appointment.</p>
@@ -1231,14 +1393,13 @@
             document.getElementById('step2Content').style.display = 'none';
             document.getElementById('step3Content').style.display = 'block';
             
-            // Update progress steps
             document.getElementById('step2').classList.remove('active');
             document.getElementById('step2').classList.add('completed');
             document.getElementById('step3').classList.add('active');
         }
 
         // ===========================================
-        // RESCHEDULE APPOINTMENT
+        // RESCHEDULE FUNCTIONS
         // ===========================================
         async function rescheduleAppointment() {
             if (confirm('Are you sure you want to reschedule your appointment?')) {
@@ -1250,22 +1411,16 @@
             }
         }
 
-        // ===========================================
-        // RESCHEDULE FROM STEP 2
-        // ===========================================
         async function rescheduleFromStep2() {
             if (confirm('Are you sure you want to reschedule your current appointment?')) {
                 await db.collection('users').doc(currentUser.uid).update({
                     'verification.appointment.status': 'pending_reschedule'
                 });
                 showNotification('Please select a new date and time', 'info');
-                loadAvailableDates();
+                await renderCalendar();
             }
         }
 
-        // ===========================================
-        // CANCEL APPOINTMENT
-        // ===========================================
         async function cancelAppointment() {
             if (confirm('Are you sure you want to cancel your appointment? You will need to book a new one to complete verification.')) {
                 try {
@@ -1273,80 +1428,56 @@
                         'verification.appointment.status': 'cancelled',
                         'verification.appointment.cancelledAt': new Date().toISOString()
                     });
-                } catch (error) {
-                    console.error('Error cancelling appointment:', error);
-                }
-                
+                } catch (error) {}
                 localStorage.removeItem('appointmentBooked');
                 localStorage.removeItem('appointmentData');
-                
                 showNotification('Appointment cancelled. Please book a new one.', 'info');
                 goBackToStep2();
-                loadAvailableDates();
+                await renderCalendar();
             }
         }
 
-        // ===========================================
-        // CANCEL FROM STEP 2
-        // ===========================================
         async function cancelFromStep2() {
             if (confirm('Are you sure you want to cancel your appointment?')) {
                 try {
                     await db.collection('users').doc(currentUser.uid).update({
-                        'verification.appointment.status': 'cancelled',
-                        'verification.appointment.cancelledAt': new Date().toISOString()
+                        'verification.appointment.status': 'cancelled'
                     });
-                } catch (error) {
-                    console.error('Error cancelling appointment:', error);
-                }
-                
+                } catch (error) {}
                 localStorage.removeItem('appointmentBooked');
                 localStorage.removeItem('appointmentData');
-                
                 showNotification('Appointment cancelled.', 'info');
-                loadAvailableDates();
+                await renderCalendar();
                 document.getElementById('currentAppointmentDiv').style.display = 'none';
             }
         }
 
-        // ===========================================
-        // HELPER FUNCTIONS
-        // ===========================================
-        function getDayName(date) {
-            return date.toLocaleDateString('en-US', { weekday: 'short' });
-        }
-        
-        function getMonthName(date) {
-            return date.toLocaleDateString('en-US', { month: 'short' });
-        }
-        
-        function formatDate(date) {
-            return date.toLocaleDateString('en-US', { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-        }
-        
         function goToDashboard() {
             window.location.href = 'dashboard.html';
         }
 
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i><span style="margin-left: 10px;">${message}</span>`;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
         // ===========================================
-        // LOAD USER VERIFICATION STATUS ON PAGE LOAD
+        // LOAD USER STATUS (FAST)
         // ===========================================
         async function loadUserVerificationStatus() {
             try {
-                // Check localStorage first for quick status
                 const localStatus = localStorage.getItem('taxVerificationStatus');
                 if (localStatus === 'approved') {
-                    // User already has tax approved, go to step 2
                     goToStep2();
                     return;
                 }
                 
-                // Check Firestore
                 const userDoc = await db.collection('users').doc(currentUser.uid).get();
                 const userData = userDoc.data();
                 const verification = userData ? userData.verification : null;
@@ -1361,16 +1492,11 @@
                         setTimeout(() => goToDashboard(), 2000);
                     }
                 }
-                
             } catch (error) {
                 console.error('Error loading verification status:', error);
-                // Stay on step 1
             }
         }
 
-        // ===========================================
-        // LOAD USER PROFILE
-        // ===========================================
         function loadUserProfile(user) {
             if (user.photoURL) {
                 avatarInitial.style.display = 'none';
@@ -1390,26 +1516,25 @@
                 currentUser = user;
                 logoutBtn.style.display = 'block';
                 loadUserProfile(user);
-                await loadUserVerificationStatus();
+                
+                // Show loading briefly for smooth transition
+                loadingOverlay.classList.add('active');
+                setTimeout(async () => {
+                    await loadUserVerificationStatus();
+                    loadingOverlay.classList.remove('active');
+                }, 500);
             }
         });
 
-        // ===========================================
-        // LOGOUT
-        // ===========================================
         logoutBtn.addEventListener('click', async () => {
             try {
                 await auth.signOut();
                 window.location.href = 'login.html';
             } catch (error) {
-                console.error('Logout failed:', error);
                 showNotification('Logout failed', 'error');
             }
         });
 
-        // ===========================================
-        // PROFILE UPLOAD
-        // ===========================================
         avatarUpload.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
