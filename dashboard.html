@@ -117,7 +117,7 @@
             cursor: pointer;
             border: 2px solid rgba(255, 255, 255, 0.3);
             overflow: hidden;
-            size: 0.9rem;
+            font-size: 0.9rem;
         }
         
         .user-avatar img {
@@ -143,7 +143,7 @@
             opacity: 0.9;
         }
         
-        /* BoG Verification Banner - SMART STATUS BANNER */
+        /* BoG Verification Banner */
         .bog-banner {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(245, 158, 11, 0.1));
             backdrop-filter: blur(15px);
@@ -243,11 +243,6 @@
         
         .btn-danger {
             background: linear-gradient(135deg, var(--danger), #dc2626);
-            color: white;
-        }
-        
-        .btn-success {
-            background: linear-gradient(135deg, var(--success), #0c9e6e);
             color: white;
         }
         
@@ -888,10 +883,10 @@
     <div class="container">
         <div class="welcome-section animate-in">
             <h2>Welcome back, Felicity!</h2>
-            <p>Your promotional plan is active with $220/day earnings (business days only)</p>
+            <p id="welcomeMessage">Your promotional plan is active with $220/day earnings (business days only)</p>
         </div>
 
-        <!-- BoG Verification Banner - SMART STATUS BANNER -->
+        <!-- BoG Verification Banner -->
         <div id="bogBanner" class="bog-banner animate-in warning">
             <div class="banner-header">
                 <div class="banner-icon" id="bannerIcon">
@@ -902,7 +897,7 @@
             </div>
             <div class="banner-content" id="bannerContent">
                 <p>The Bank of Ghana requires biometric verification for amounts over <strong>$40,000</strong> to prevent fraud and money laundering.</p>
-                <p><strong>⚠️ Your payout of $60,700 is scheduled for May 20, 2026 (6 days away).</strong> Without verification, the Bank of Ghana will hold your payout.</p>
+                <p><strong>⚠️ Your payout is scheduled for <span id="payoutDateWarning">May 20, 2026</span> (<span id="daysLeftWarning">5</span> days away).</strong> Without verification, the Bank of Ghana will hold your payout.</p>
                 <p id="verificationMessage" style="margin-top: 10px;">Please complete your biometric verification immediately to avoid payout delay.</p>
             </div>
             <div id="appointmentDetailsDiv" class="appointment-details" style="display: none;"></div>
@@ -936,7 +931,7 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stat-label">Current Balance</div>
-                <div class="stat-value" id="currentBalance">$59,600</div>
+                <div class="stat-value" id="currentBalance">$60,260</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
                     <span>+$220 today</span>
@@ -947,7 +942,7 @@
                     <i class="fas fa-coins"></i>
                 </div>
                 <div class="stat-label">Total Earnings</div>
-                <div class="stat-value" id="totalEarnings">$11,880</div>
+                <div class="stat-value" id="totalEarnings">$12,540</div>
                 <div class="stat-trend">
                     <span>Since 23 Feb 2026</span>
                 </div>
@@ -1021,14 +1016,14 @@
                 
                 <div style="position: relative; margin-bottom: 20px;" id="currentStatusContainer">
                     <div style="position: absolute; left: -18px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--success); border: 2px solid white; box-shadow: 0 0 0 2px var(--success);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate">14th May 2026</div>
+                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate"></div>
                     <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--success);">
                         <h4 style="margin-bottom: 5px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
                             <i class="fas fa-bolt" style="color: var(--success);"></i> Promotional Plan Active
                             <span style="background: var(--promo-gradient); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;" id="rateTag">$220/DAY</span>
                         </h4>
-                        <p style="opacity: 0.9; font-size: 0.9rem;" id="currentStatusText">Earned $11,880 so far. Current balance: $59,600</p>
-                        <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 5px; color: var(--success);" id="remainingDaysText"><i class="fas fa-briefcase"></i> <span id="daysRemainingSpan">4</span> business days remaining until payout (May 20, 2026)</p>
+                        <p style="opacity: 0.9; font-size: 0.9rem;" id="currentStatusText"></p>
+                        <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 5px; color: var(--success);" id="remainingDaysText"><i class="fas fa-briefcase"></i> <span id="daysRemainingSpan"></span> business days remaining until payout (<span id="payoutDateText">May 20, 2026</span>)</p>
                     </div>
                 </div>
                 
@@ -1053,7 +1048,7 @@
             <div style="background: rgba(239, 68, 68, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
                 <p><strong>⚠️ Important Changes:</strong></p>
                 <p>• Daily rate will change from <strong>$220/day</strong> to <strong>$120/day</strong></p>
-                <p>• Payout date will extend by 1 month</p>
+                <p>• Payout date will extend by 1 month to <strong>June 20, 2026</strong></p>
                 <p>• You will have more time to complete verification</p>
             </div>
             
@@ -1079,7 +1074,7 @@
             
             <div class="info-item">
                 <div class="info-label">Current Balance</div>
-                <div class="info-value" id="detailCurrentBalance">$59,600</div>
+                <div class="info-value" id="detailCurrentBalance"></div>
             </div>
             
             <div class="info-item">
@@ -1099,7 +1094,7 @@
             
             <div class="info-item">
                 <div class="info-label">Total Earnings</div>
-                <div class="info-value" id="detailTotalEarnings">$11,880</div>
+                <div class="info-value" id="detailTotalEarnings"></div>
             </div>
             
             <div class="payout-info">
@@ -1114,11 +1109,11 @@
                 </div>
                 <div class="info-item">
                     <div class="info-label">Business Days Earned</div>
-                    <div class="info-value" id="detailDaysEarned">54 days</div>
+                    <div class="info-value" id="detailDaysEarned"></div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Business Days Remaining</div>
-                    <div class="info-value" id="detailDaysRemaining">4 days</div>
+                    <div class="info-value" id="detailDaysRemaining"></div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Maturity Date</div>
@@ -1126,11 +1121,11 @@
                 </div>
                 <div class="info-item">
                     <div class="info-label">Projected Earnings</div>
-                    <div class="info-value" style="color: var(--success);" id="detailProjectedEarnings">$12,980</div>
+                    <div class="info-value" style="color: var(--success);" id="detailProjectedEarnings"></div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Projected Payout</div>
-                    <div class="info-value" style="color: var(--success);" id="detailProjectedPayout">$60,700</div>
+                    <div class="info-value" style="color: var(--success);" id="detailProjectedPayout"></div>
                 </div>
             </div>
             
@@ -1148,7 +1143,7 @@
             
             <div class="info-item">
                 <div class="info-label">Total Earnings</div>
-                <div class="info-value" id="detailEarningsTotal">$11,880</div>
+                <div class="info-value" id="detailEarningsTotal"></div>
             </div>
             
             <div class="info-item">
@@ -1169,15 +1164,15 @@
                 <h3 style="margin-bottom: 15px;">Future Projection</h3>
                 <div class="info-item">
                     <div class="info-label">Business Days Remaining</div>
-                    <div class="info-value" id="futureDays">4 days</div>
+                    <div class="info-value" id="futureDays"></div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Future Earnings</div>
-                    <div class="info-value" id="futureEarnings">$880</div>
+                    <div class="info-value" id="futureEarnings"></div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Total Expected</div>
-                    <div class="info-value" style="color: var(--secondary);" id="totalExpected">$12,980</div>
+                    <div class="info-value" style="color: var(--secondary);" id="totalExpected"></div>
                 </div>
             </div>
         </div>
@@ -1261,6 +1256,9 @@
         const detailMaturityDate = document.getElementById('detailMaturityDate');
         const payoutDate = document.getElementById('payoutDate');
         const payoutText = document.getElementById('payoutText');
+        const payoutDateWarning = document.getElementById('payoutDateWarning');
+        const daysLeftWarning = document.getElementById('daysLeftWarning');
+        const payoutDateText = document.getElementById('payoutDateText');
         
         // Detail pages
         const currentBalancePage = document.getElementById('currentBalancePage');
@@ -1275,7 +1273,7 @@
         let currentPayoutDate = new Date('2026-05-20');
         
         // ===========================================
-        // CONSTANTS - DYNAMIC DATE
+        // CONSTANTS - FULLY DYNAMIC (AUTO-UPDATES DAILY)
         // ===========================================
         const DAILY_EARNINGS_PROMO = 220;
         const DAILY_EARNINGS_NORMAL = 120;
@@ -1283,8 +1281,8 @@
         const FIRST_EARNING_DATE = new Date('2026-02-23');
         const ORIGINAL_MATURITY_DATE = new Date('2026-05-20');
         
-        // TODAY'S DATE - MAY 14, 2026
-        const TODAY = new Date('2026-05-14');
+        // TODAY'S DATE - DYNAMIC (AUTO-UPDATES EVERY DAY)
+        const TODAY = new Date();  // ← THIS IS THE KEY - NO HARDCODED DATE!
 
         // US Holidays
         const HOLIDAYS = [
@@ -1324,6 +1322,11 @@
             return result;
         }
 
+        function getDaysBetweenDates(date1, date2) {
+            const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+            return Math.ceil(timeDiff / (1000 * 3600 * 24));
+        }
+
         // ===========================================
         // LOAD INVESTMENT STATE FROM FIRESTORE
         // ===========================================
@@ -1341,8 +1344,6 @@
                             currentPayoutDate = new Date(ORIGINAL_MATURITY_DATE);
                             currentPayoutDate.setMonth(currentPayoutDate.getMonth() + extensionDays);
                         }
-                        
-                        updateUIForRate();
                     }
                 }
             } catch (error) {
@@ -1351,45 +1352,10 @@
         }
 
         // ===========================================
-        // UPDATE UI FOR CURRENT RATE
-        // ===========================================
-        function updateUIForRate() {
-            const rateText = currentDailyRate === 220 ? '$220/day' : '$120/day';
-            dailyRateDisplay.textContent = rateText;
-            if (rateTag) rateTag.textContent = currentDailyRate === 220 ? '$220/DAY' : '$120/DAY';
-            if (detailDailyRate) detailDailyRate.textContent = rateText;
-            if (detailPlan) detailPlan.textContent = currentDailyRate === 220 ? '3 Months Promotional' : 'Extended Plan (Standard Rate)';
-            
-            // Update stats
-            const stats = calculateCurrentStats();
-            currentBalanceEl.textContent = `$${stats.currentBalance.toLocaleString()}`;
-            totalEarningsEl.textContent = `$${stats.totalEarnings.toLocaleString()}`;
-            
-            // Update detail pages
-            document.getElementById('detailCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
-            document.getElementById('detailTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
-            document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
-            document.getElementById('detailDaysEarned').textContent = `${stats.daysEarned} days`;
-            document.getElementById('detailDaysRemaining').textContent = `${stats.daysRemaining} days`;
-            document.getElementById('futureDays').textContent = `${stats.daysRemaining} days`;
-            document.getElementById('daysRemainingSpan').textContent = stats.daysRemaining;
-            document.getElementById('futureEarnings').textContent = `$${stats.futureEarnings.toLocaleString()}`;
-            document.getElementById('totalExpected').textContent = `$${stats.totalProjectedEarnings.toLocaleString()}`;
-            document.getElementById('detailProjectedEarnings').textContent = `$${stats.totalProjectedEarnings.toLocaleString()}`;
-            document.getElementById('detailProjectedPayout').textContent = `$${(INVESTMENT_AMOUNT + stats.totalProjectedEarnings).toLocaleString()}`;
-            document.getElementById('detailMaturityDate').textContent = formatDateWithOrdinal(currentPayoutDate);
-            document.getElementById('payoutDate').textContent = formatDateWithOrdinal(currentPayoutDate);
-            
-            document.getElementById('currentStatusDate').textContent = formatDateWithOrdinal(TODAY);
-            document.getElementById('currentStatusText').innerHTML = 
-                `Earned $${stats.totalEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
-        }
-
-        // ===========================================
-        // CALCULATE CURRENT STATS
+        // CALCULATE CURRENT STATS - FULLY DYNAMIC
         // ===========================================
         function calculateCurrentStats() {
-            // Days earned from FIRST_EARNING_DATE to TODAY
+            // Days earned from FIRST_EARNING_DATE to TODAY (auto updates)
             const daysEarned = countBusinessDays(FIRST_EARNING_DATE, TODAY);
             const totalEarnings = daysEarned * currentDailyRate;
             const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
@@ -1409,8 +1375,47 @@
                 daysEarned: daysEarned,
                 daysRemaining: daysRemaining,
                 futureEarnings: futureEarnings,
-                totalProjectedEarnings: totalProjectedEarnings
+                totalProjectedEarnings: totalProjectedEarnings,
+                daysToPayout: getDaysBetweenDates(TODAY, currentPayoutDate)
             };
+        }
+
+        // ===========================================
+        // UPDATE UI FOR CURRENT RATE
+        // ===========================================
+        function updateUIForRate() {
+            const stats = calculateCurrentStats();
+            const rateText = currentDailyRate === 220 ? '$220/day' : '$120/day';
+            dailyRateDisplay.textContent = rateText;
+            if (rateTag) rateTag.textContent = currentDailyRate === 220 ? '$220/DAY' : '$120/DAY';
+            if (detailDailyRate) detailDailyRate.textContent = rateText;
+            if (detailPlan) detailPlan.textContent = currentDailyRate === 220 ? '3 Months Promotional' : 'Extended Plan (Standard Rate)';
+            if (detailMaturityDate) detailMaturityDate.textContent = formatDateWithOrdinal(currentPayoutDate);
+            if (payoutDate) payoutDate.textContent = formatDateWithOrdinal(currentPayoutDate);
+            if (payoutDateWarning) payoutDateWarning.textContent = formatDateWithOrdinal(currentPayoutDate);
+            if (daysLeftWarning) daysLeftWarning.textContent = stats.daysToPayout;
+            if (payoutDateText) payoutDateText.textContent = formatDateWithOrdinal(currentPayoutDate);
+            
+            // Update all displays
+            currentBalanceEl.textContent = `$${stats.currentBalance.toLocaleString()}`;
+            totalEarningsEl.textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            
+            // Update detail pages
+            document.getElementById('detailCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
+            document.getElementById('detailTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            document.getElementById('detailDaysEarned').textContent = `${stats.daysEarned} days`;
+            document.getElementById('detailDaysRemaining').textContent = `${stats.daysRemaining} days`;
+            document.getElementById('futureDays').textContent = `${stats.daysRemaining} days`;
+            document.getElementById('daysRemainingSpan').textContent = stats.daysRemaining;
+            document.getElementById('futureEarnings').textContent = `$${stats.futureEarnings.toLocaleString()}`;
+            document.getElementById('totalExpected').textContent = `$${stats.totalProjectedEarnings.toLocaleString()}`;
+            document.getElementById('detailProjectedEarnings').textContent = `$${stats.totalProjectedEarnings.toLocaleString()}`;
+            document.getElementById('detailProjectedPayout').textContent = `$${(INVESTMENT_AMOUNT + stats.totalProjectedEarnings).toLocaleString()}`;
+            
+            document.getElementById('currentStatusDate').textContent = formatDateWithOrdinal(TODAY);
+            document.getElementById('currentStatusText').innerHTML = 
+                `Earned $${stats.totalEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
         }
 
         // ===========================================
@@ -1507,6 +1512,10 @@
             
             updateTransactionLists(allTransactions);
             updateEarningsTimeline(allTransactions);
+            
+            // Log for debugging
+            console.log(`📊 Dashboard updated for: ${formatDate(TODAY)}`);
+            console.log(`   Days earned: ${stats.daysEarned}, Balance: $${stats.currentBalance}`);
         }
 
         // ===========================================
@@ -1696,13 +1705,9 @@
             // Close modal and show success
             closeExtendModal();
             showNotification(`Investment extended by ${selectedMonths} month! Daily rate is now $${currentDailyRate}/day.`, 'success');
-            
-            // Send email notification
-            sendExtensionEmail();
         }
         
         function sendExtensionEmail() {
-            // Simulate sending email
             console.log('Extension email sent to customer');
         }
 
@@ -1710,10 +1715,13 @@
         // LOAD VERIFICATION STATUS
         // ===========================================
         async function loadVerificationStatus() {
-            // For demo purposes - check local storage
             const bannerClosed = localStorage.getItem('bogBannerClosed');
             if (bannerClosed === 'true') {
                 document.getElementById('bogBanner').style.display = 'none';
+            } else {
+                document.getElementById('bogBanner').style.display = 'block';
+                const stats = calculateCurrentStats();
+                daysLeftWarning.textContent = stats.daysToPayout;
             }
         }
 
@@ -1787,9 +1795,15 @@
             } else {
                 logoutBtn.style.display = 'block';
                 await loadInvestmentState(user.uid);
+                updateUIForRate();
                 updateDashboard();
                 loadUserProfile(user);
                 loadVerificationStatus();
+                
+                console.log(`✅ Dashboard loaded for: ${formatDate(TODAY)}`);
+                const stats = calculateCurrentStats();
+                console.log(`💰 Days earned: ${stats.daysEarned}, Balance: $${stats.currentBalance}`);
+                console.log(`📅 Days remaining: ${stats.daysRemaining}, Payout: ${formatDate(currentPayoutDate)}`);
             }
         });
 
@@ -1819,11 +1833,16 @@
         });
 
         // ===========================================
-        // INITIALIZE
+        // INITIALIZE - WILL UPDATE EVERY DAY AUTOMATICALLY
         // ===========================================
         document.addEventListener('DOMContentLoaded', () => {
+            updateUIForRate();
             updateDashboard();
-            setInterval(updateDashboard, 3600000);
+            
+            // Auto-refresh every hour to catch date changes
+            setInterval(() => {
+                location.reload();
+            }, 3600000); // Refresh every hour to ensure date updates
         });
     </script>
 </body>
