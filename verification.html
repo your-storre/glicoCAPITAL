@@ -283,6 +283,34 @@
             to { transform: rotate(360deg); }
         }
         
+        /* Month Selector */
+        .month-selector {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .month-nav {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .month-nav:hover {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--secondary);
+        }
+        
+        .current-month {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
         /* Calendar Grid */
         .calendar-grid {
             display: grid;
@@ -294,14 +322,14 @@
         .calendar-date {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--glass-border);
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 15px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         
-        .calendar-date:hover {
+        .calendar-date:hover:not(.disabled) {
             border-color: var(--secondary);
             background: rgba(212, 175, 55, 0.1);
         }
@@ -314,7 +342,7 @@
         .calendar-date.disabled {
             opacity: 0.4;
             cursor: not-allowed;
-            pointer-events: none;
+            background: rgba(0, 0, 0, 0.5);
         }
         
         .calendar-date .day-name {
@@ -331,6 +359,12 @@
         .calendar-date .slots-left {
             font-size: 0.7rem;
             color: var(--success);
+        }
+        
+        .calendar-date.past-date {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.5);
         }
         
         /* Time Slots */
@@ -350,7 +384,7 @@
             transition: all 0.3s ease;
         }
         
-        .time-slot:hover {
+        .time-slot:hover:not(.disabled) {
             border-color: var(--secondary);
             background: rgba(212, 175, 55, 0.1);
         }
@@ -360,10 +394,15 @@
             background: rgba(212, 175, 55, 0.2);
         }
         
+        .time-slot.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
         /* Office Info */
         .office-info {
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 20px;
             margin-bottom: 30px;
         }
@@ -384,7 +423,7 @@
         .appointment-summary {
             background: rgba(212, 175, 55, 0.1);
             border: 1px solid var(--secondary);
-            border-radius: 16px;
+            border-radius: 12px;
             padding: 20px;
             margin-bottom: 30px;
         }
@@ -461,6 +500,11 @@
             color: #3b82f6;
         }
         
+        .status-completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
         /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
@@ -500,6 +544,42 @@
             margin-bottom: 4px;
         }
         
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: white;
+            animation: fadeInUp 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .notification.success {
+            background: #10b981;
+        }
+        
+        .notification.error {
+            background: #ef4444;
+        }
+        
+        .notification.info {
+            background: #3b82f6;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .form-row {
@@ -518,6 +598,11 @@
             
             .btn-group {
                 flex-direction: column;
+            }
+            
+            .month-selector {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
@@ -566,7 +651,6 @@
                     <option value="Ghana">Ghana</option>
                     <option value="Nigeria">Nigeria</option>
                     <option value="South Africa">South Africa</option>
-                    <option value="Kenya">Kenya</option>
                     <option value="United States">United States</option>
                     <option value="United Kingdom">United Kingdom</option>
                     <option value="Other">Other</option>
@@ -580,7 +664,6 @@
                         <option value="SSN">SSN (Social Security Number)</option>
                         <option value="NIN">NIN (National Identification Number)</option>
                         <option value="TIN">TIN (Taxpayer Identification Number)</option>
-                        <option value="PPN">PPN (Passport Number)</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>
@@ -602,7 +685,7 @@
             </div>
             
             <div class="form-group">
-                <label>Upload Government-issued ID (Optional - can skip)</label>
+                <label>Upload Government-issued ID (Optional)</label>
                 <div class="file-upload" onclick="document.getElementById('idDocument').click()">
                     <i class="fas fa-cloud-upload-alt"></i>
                     <p>Click to upload ID document (optional)</p>
@@ -621,7 +704,7 @@
             </div>
         </div>
 
-        <!-- Step 2: Book Appointment -->
+        <!-- Step 2: Book Appointment - SMART DATES -->
         <div id="step2Content" class="form-card" style="display: none;">
             <h2><i class="fas fa-calendar-check"></i> Book Biometric Appointment</h2>
             <p style="margin-bottom: 20px; opacity: 0.8;">Your tax details have been approved. Please book an appointment to visit our office for biometric data capture. <strong>This cannot be done online.</strong></p>
@@ -630,12 +713,6 @@
             <div style="background: rgba(212, 175, 55, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px; border-left: 4px solid var(--success);">
                 <div><i class="fas fa-check-circle" style="color: var(--success);"></i> <strong>Tax Verification Status:</strong> <span style="color: var(--success);">APPROVED</span></div>
                 <div style="font-size: 0.85rem; opacity: 0.8; margin-top: 5px;">Your tax details have been verified successfully. You can now book your biometric appointment.</div>
-            </div>
-            
-            <!-- Days Remaining Warning -->
-            <div id="daysWarning" style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); border-radius: 12px; padding: 15px; margin-bottom: 20px; display: none;">
-                <div><i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> <strong>Urgent: Only <span id="daysLeftCount">5</span> days until payout!</strong></div>
-                <div style="font-size: 0.85rem; opacity: 0.8; margin-top: 5px;">Please book your appointment immediately to avoid payout delay.</div>
             </div>
             
             <!-- Office Info -->
@@ -649,9 +726,20 @@
             <!-- Current Appointment (if exists) -->
             <div id="currentAppointmentDiv" style="display: none;"></div>
             
+            <!-- Month Selector -->
+            <div class="month-selector">
+                <div class="month-nav" onclick="changeMonth(-1)">
+                    <i class="fas fa-chevron-left"></i> Previous Month
+                </div>
+                <div class="current-month" id="currentMonthDisplay">May 2026</div>
+                <div class="month-nav" onclick="changeMonth(1)">
+                    Next Month <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+            
             <h3 style="margin-bottom: 15px;">Select Available Date</h3>
             <div id="calendarGrid" class="calendar-grid">
-                <!-- Dates will be populated by JavaScript - ONLY FUTURE DATES -->
+                <!-- Dates will be populated dynamically -->
             </div>
             
             <h3 style="margin-bottom: 15px;">Select Time Slot</h3>
@@ -766,25 +854,16 @@
         let selectedTimeSlot = null;
         let uploadedFile = null;
         let currentStep = 1;
+        let currentMonth = new Date();
+        let currentMonthYear = currentMonth.getMonth();
+        let currentYear = currentMonth.getFullYear();
+        let bookedSlots = {};
         
         // Time slots (9 AM - 4 PM)
         const TIME_SLOTS = ['9:00 AM', '10:00 AM', '11:00 AM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM'];
         
         // Max slots per day
-        const MAX_SLOTS_PER_DAY = 10;
-        
-        // Payout date for warning
-        const PAYOUT_DATE = new Date('2026-05-20');
-        const TODAY = new Date();
-
-        // ===========================================
-        // CALCULATE DAYS REMAINING
-        // ===========================================
-        function getDaysRemaining() {
-            const diffTime = PAYOUT_DATE - TODAY;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays > 0 ? diffDays : 0;
-        }
+        const MAX_SLOTS_PER_DAY = 8;
 
         // ===========================================
         // FILE UPLOAD HANDLER
@@ -797,23 +876,203 @@
             }
         });
 
+        // Show notification
         function showNotification(message, type) {
             const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                z-index: 9999;
-                padding: 15px 20px;
-                border-radius: 12px;
-                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};
-                color: white;
-                animation: fadeInUp 0.3s ease;
-                z-index: 10000;
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                <span style="margin-left: 10px;">${message}</span>
             `;
-            notification.textContent = message;
             document.body.appendChild(notification);
-            setTimeout(() => notification.remove(), 4000);
+            
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        // ===========================================
+        // SMART DATE FUNCTIONS - REMOVES PAST DATES
+        // ===========================================
+        function isBusinessDay(date) {
+            const day = date.getDay();
+            return day >= 1 && day <= 5; // Monday-Friday
+        }
+
+        function isDateInPast(date) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return date < today;
+        }
+
+        function getMonthName(month) {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            return monthNames[month];
+        }
+
+        function getDayName(date) {
+            return date.toLocaleDateString('en-US', { weekday: 'short' });
+        }
+
+        async function loadAvailableDates() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1;">Loading available dates...</div>';
+            
+            try {
+                // Get all booked appointments from Firebase
+                const appointmentsSnapshot = await db.collection('users')
+                    .where('verification.appointment.status', '==', 'confirmed')
+                    .get();
+                
+                bookedSlots = {};
+                appointmentsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (data.verification && data.verification.appointment) {
+                        const dateKey = data.verification.appointment.date;
+                        if (!bookedSlots[dateKey]) bookedSlots[dateKey] = [];
+                        bookedSlots[dateKey].push(data.verification.appointment.timeSlot);
+                    }
+                });
+                
+                // Generate dates for current month
+                const firstDayOfMonth = new Date(currentYear, currentMonthYear, 1);
+                const lastDayOfMonth = new Date(currentYear, currentMonthYear + 1, 0);
+                
+                const availableDates = [];
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                // Only show 2-4 days per week (limited availability)
+                let daysAddedThisWeek = 0;
+                let currentWeekStart = null;
+                
+                for (let d = 1; d <= lastDayOfMonth.getDate(); d++) {
+                    const date = new Date(currentYear, currentMonthYear, d);
+                    
+                    // Skip past dates
+                    if (isDateInPast(date)) continue;
+                    
+                    // Skip weekends
+                    if (!isBusinessDay(date)) continue;
+                    
+                    const dateKey = date.toISOString().split('T')[0];
+                    const bookedCount = bookedSlots[dateKey] ? bookedSlots[dateKey].length : 0;
+                    const availableSlots = MAX_SLOTS_PER_DAY - bookedCount;
+                    
+                    // Track week to limit days per week (only 2-4 days per week)
+                    const weekNumber = Math.ceil(d / 7);
+                    if (currentWeekStart !== weekNumber) {
+                        currentWeekStart = weekNumber;
+                        daysAddedThisWeek = 0;
+                    }
+                    
+                    // Only add 2-4 days per week (randomized but controlled)
+                    const maxDaysThisWeek = Math.floor(Math.random() * 3) + 2; // 2-4 days
+                    
+                    if (availableSlots > 0 && daysAddedThisWeek < maxDaysThisWeek) {
+                        availableDates.push({ date, availableSlots, dateKey });
+                        daysAddedThisWeek++;
+                    }
+                }
+                
+                // Render calendar
+                calendarGrid.innerHTML = '';
+                
+                if (availableDates.length === 0) {
+                    calendarGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1;">No available dates this month. Please check next month.</div>';
+                }
+                
+                availableDates.forEach(item => {
+                    const dateDiv = document.createElement('div');
+                    dateDiv.className = 'calendar-date';
+                    dateDiv.setAttribute('data-date', item.dateKey);
+                    dateDiv.setAttribute('data-date-obj', item.date);
+                    dateDiv.setAttribute('data-slots', item.availableSlots);
+                    dateDiv.innerHTML = `
+                        <div class="day-name">${getDayName(item.date)}</div>
+                        <div class="day-number">${item.date.getDate()}</div>
+                        <div class="slots-left">${item.availableSlots} slots left</div>
+                    `;
+                    dateDiv.onclick = () => selectDate(dateDiv, item.dateKey, item.date);
+                    calendarGrid.appendChild(dateDiv);
+                });
+                
+                // Update month display
+                document.getElementById('currentMonthDisplay').textContent = `${getMonthName(currentMonthYear)} ${currentYear}`;
+                
+                // Load time slots
+                loadTimeSlots();
+                
+            } catch (error) {
+                console.error('Error loading dates:', error);
+                calendarGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1;">Error loading dates. Please refresh.</div>';
+            }
+        }
+
+        function changeMonth(direction) {
+            currentMonthYear += direction;
+            if (currentMonthYear < 0) {
+                currentMonthYear = 11;
+                currentYear--;
+            } else if (currentMonthYear > 11) {
+                currentMonthYear = 0;
+                currentYear++;
+            }
+            loadAvailableDates();
+            // Reset selection
+            selectedDate = null;
+            selectedTimeSlot = null;
+            checkConfirmButton();
+        }
+
+        // ===========================================
+        // LOAD TIME SLOTS
+        // ===========================================
+        function loadTimeSlots() {
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            timeSlotsContainer.innerHTML = '';
+            
+            TIME_SLOTS.forEach(slot => {
+                const slotDiv = document.createElement('div');
+                slotDiv.className = 'time-slot';
+                slotDiv.textContent = slot;
+                slotDiv.onclick = () => selectTimeSlot(slotDiv, slot);
+                timeSlotsContainer.appendChild(slotDiv);
+            });
+        }
+
+        // ===========================================
+        // SELECT DATE
+        // ===========================================
+        function selectDate(element, dateKey, dateObj) {
+            // Remove selected class from all dates
+            document.querySelectorAll('.calendar-date').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedDate = { dateKey, dateObj };
+            checkConfirmButton();
+        }
+
+        // ===========================================
+        // SELECT TIME SLOT
+        // ===========================================
+        function selectTimeSlot(element, slot) {
+            document.querySelectorAll('.time-slot').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedTimeSlot = slot;
+            checkConfirmButton();
+        }
+
+        // ===========================================
+        // CHECK CONFIRM BUTTON
+        // ===========================================
+        function checkConfirmButton() {
+            const confirmBtn = document.getElementById('confirmBookingBtn');
+            confirmBtn.disabled = !(selectedDate && selectedTimeSlot);
         }
 
         // ===========================================
@@ -843,7 +1102,7 @@
                         const uploadTask = await storageRef.put(uploadedFile);
                         documentUrl = await uploadTask.ref.getDownloadURL();
                     } catch (uploadError) {
-                        console.warn('File upload failed, continuing:', uploadError);
+                        console.warn('File upload failed:', uploadError);
                     }
                 }
                 
@@ -874,7 +1133,12 @@
             } catch (error) {
                 console.error('Error:', error);
                 loadingOverlay.classList.remove('active');
-                showNotification('Error submitting. Please try again.', 'error');
+                if (confirm('Continue to book appointment?')) {
+                    localStorage.setItem('taxVerificationStatus', 'approved');
+                    goToStep2();
+                } else {
+                    showNotification('Error submitting verification', 'error');
+                }
             }
         }
 
@@ -884,9 +1148,6 @@
             }
         }
 
-        // ===========================================
-        // GO TO STEP 2
-        // ===========================================
         function goToStep2() {
             currentStep = 2;
             document.getElementById('step1Content').style.display = 'none';
@@ -897,13 +1158,10 @@
             document.getElementById('step1').classList.add('completed');
             document.getElementById('step2').classList.add('active');
             
-            // Update days warning
-            const daysLeft = getDaysRemaining();
-            document.getElementById('daysLeftCount').textContent = daysLeft;
-            if (daysLeft <= 7) {
-                document.getElementById('daysWarning').style.display = 'block';
-            }
-            
+            // Reset month to current
+            currentMonth = new Date();
+            currentMonthYear = currentMonth.getMonth();
+            currentYear = currentMonth.getFullYear();
             loadAvailableDates();
             loadCurrentAppointment();
         }
@@ -920,132 +1178,8 @@
         }
 
         // ===========================================
-        // LOAD AVAILABLE DATES - ONLY FUTURE DATES
+        // LOAD CURRENT APPOINTMENT
         // ===========================================
-        async function loadAvailableDates() {
-            const calendarGrid = document.getElementById('calendarGrid');
-            calendarGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1;">Loading available dates...</div>';
-            
-            try {
-                // Get all booked appointments
-                const appointmentsSnapshot = await db.collection('users')
-                    .where('verification.appointment.status', '==', 'confirmed')
-                    .get();
-                
-                const bookedSlots = {};
-                appointmentsSnapshot.forEach(doc => {
-                    const data = doc.data();
-                    if (data.verification && data.verification.appointment) {
-                        const dateKey = data.verification.appointment.date;
-                        if (!bookedSlots[dateKey]) bookedSlots[dateKey] = [];
-                        bookedSlots[dateKey].push(data.verification.appointment.timeSlot);
-                    }
-                });
-                
-                // Generate available dates - ONLY FUTURE DATES (today and beyond)
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
-                
-                const availableDates = [];
-                let datesAdded = 0;
-                
-                // Start from today, go forward 60 days
-                for (let i = 0; i <= 60; i++) {
-                    const date = new Date(today);
-                    date.setDate(today.getDate() + i);
-                    
-                    // Skip past dates (only future dates)
-                    if (date < today && i > 0) continue;
-                    
-                    const dayOfWeek = date.getDay();
-                    if (dayOfWeek === 0 || dayOfWeek === 6) continue;
-                    
-                    const dateKey = date.toISOString().split('T')[0];
-                    const bookedCount = bookedSlots[dateKey] ? bookedSlots[dateKey].length : 0;
-                    const availableSlots = MAX_SLOTS_PER_DAY - bookedCount;
-                    
-                    if (availableSlots > 0) {
-                        availableDates.push({ date, availableSlots, dateKey });
-                        datesAdded++;
-                        if (datesAdded >= 15) break;
-                    }
-                }
-                
-                // Render calendar
-                calendarGrid.innerHTML = '';
-                availableDates.forEach(item => {
-                    const dateDiv = document.createElement('div');
-                    dateDiv.className = 'calendar-date';
-                    dateDiv.setAttribute('data-date', item.dateKey);
-                    dateDiv.setAttribute('data-date-obj', item.date);
-                    dateDiv.setAttribute('data-slots', item.availableSlots);
-                    
-                    const isPast = item.date < today && item.date.toDateString() !== today.toDateString();
-                    if (isPast) {
-                        dateDiv.classList.add('disabled');
-                    }
-                    
-                    dateDiv.innerHTML = `
-                        <div class="day-name">${getDayName(item.date)}</div>
-                        <div class="day-number">${item.date.getDate()}</div>
-                        <div class="month">${getMonthName(item.date)}</div>
-                        <div class="slots-left">${item.availableSlots} slots left</div>
-                    `;
-                    
-                    if (!isPast) {
-                        dateDiv.onclick = () => selectDate(dateDiv, item.dateKey, item.date);
-                    }
-                    calendarGrid.appendChild(dateDiv);
-                });
-                
-                if (availableDates.length === 0) {
-                    calendarGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1;">No available dates. Please check back later.</div>';
-                }
-                
-                loadTimeSlots();
-                
-            } catch (error) {
-                console.error('Error loading dates:', error);
-                calendarGrid.innerHTML = '<div style="text-align: center; grid-column: 1/-1;">Error loading dates. Please refresh.</div>';
-            }
-        }
-
-        function loadTimeSlots() {
-            const timeSlotsContainer = document.getElementById('timeSlots');
-            timeSlotsContainer.innerHTML = '';
-            
-            TIME_SLOTS.forEach(slot => {
-                const slotDiv = document.createElement('div');
-                slotDiv.className = 'time-slot';
-                slotDiv.textContent = slot;
-                slotDiv.onclick = () => selectTimeSlot(slotDiv, slot);
-                timeSlotsContainer.appendChild(slotDiv);
-            });
-        }
-
-        function selectDate(element, dateKey, dateObj) {
-            document.querySelectorAll('.calendar-date').forEach(el => {
-                el.classList.remove('selected');
-            });
-            element.classList.add('selected');
-            selectedDate = { dateKey, dateObj };
-            checkConfirmButton();
-        }
-
-        function selectTimeSlot(element, slot) {
-            document.querySelectorAll('.time-slot').forEach(el => {
-                el.classList.remove('selected');
-            });
-            element.classList.add('selected');
-            selectedTimeSlot = slot;
-            checkConfirmButton();
-        }
-
-        function checkConfirmButton() {
-            const confirmBtn = document.getElementById('confirmBookingBtn');
-            confirmBtn.disabled = !(selectedDate && selectedTimeSlot);
-        }
-
         async function loadCurrentAppointment() {
             try {
                 const userDoc = await db.collection('users').doc(currentUser.uid).get();
@@ -1064,10 +1198,11 @@
                             <div><strong>Date:</strong> ${formatDate(apptDate)}</div>
                             <div><strong>Time:</strong> ${appt.timeSlot}</div>
                             <div><strong>Status:</strong> <span class="status-badge status-booked">Confirmed</span></div>
+                            ${!isPast ? `
                             <div class="btn-group" style="margin-top: 15px;">
-                                ${!isPast ? '<button class="btn btn-outline" onclick="rescheduleFromStep2()">Reschedule</button>' : ''}
-                                ${!isPast ? '<button class="btn btn-danger" onclick="cancelFromStep2()">Cancel</button>' : ''}
-                            </div>
+                                <button class="btn btn-outline" onclick="rescheduleFromStep2()">Reschedule</button>
+                                <button class="btn btn-danger" onclick="cancelFromStep2()">Cancel</button>
+                            </div>` : ''}
                         </div>
                     `;
                     currentAppointmentDiv.style.display = 'block';
@@ -1079,6 +1214,9 @@
             }
         }
 
+        // ===========================================
+        // CONFIRM BOOKING
+        // ===========================================
         async function confirmBooking() {
             if (!selectedDate || !selectedTimeSlot) {
                 showNotification('Please select both date and time', 'error');
@@ -1111,7 +1249,21 @@
                 
             } catch (error) {
                 console.error('Error booking appointment:', error);
-                showNotification('Error booking appointment. Please try again.', 'error');
+                if (confirm('Could not save to database, but proceed with booking locally?')) {
+                    const appointment = {
+                        date: selectedDate.dateKey,
+                        timeSlot: selectedTimeSlot,
+                        status: 'confirmed',
+                        bookedAt: new Date().toISOString()
+                    };
+                    localStorage.setItem('appointmentBooked', 'true');
+                    localStorage.setItem('appointmentData', JSON.stringify(appointment));
+                    
+                    showNotification('Appointment booked locally!', 'success');
+                    goToStep3();
+                } else {
+                    showNotification('Error booking appointment', 'error');
+                }
             }
         }
 
@@ -1183,20 +1335,18 @@
         }
 
         async function cancelAppointment() {
-            if (confirm('Are you sure you want to cancel your appointment? You will need to book a new one to complete verification.')) {
+            if (confirm('Are you sure you want to cancel your appointment?')) {
                 try {
                     await db.collection('users').doc(currentUser.uid).update({
                         'verification.appointment.status': 'cancelled',
                         'verification.appointment.cancelledAt': new Date().toISOString()
                     });
                 } catch (error) {
-                    console.error('Error cancelling appointment:', error);
+                    console.error('Error cancelling:', error);
                 }
-                
                 localStorage.removeItem('appointmentBooked');
                 localStorage.removeItem('appointmentData');
-                
-                showNotification('Appointment cancelled. Please book a new one.', 'info');
+                showNotification('Appointment cancelled.', 'info');
                 goBackToStep2();
                 loadAvailableDates();
             }
@@ -1210,27 +1360,16 @@
                         'verification.appointment.cancelledAt': new Date().toISOString()
                     });
                 } catch (error) {
-                    console.error('Error cancelling appointment:', error);
+                    console.error('Error cancelling:', error);
                 }
-                
                 localStorage.removeItem('appointmentBooked');
                 localStorage.removeItem('appointmentData');
-                
                 showNotification('Appointment cancelled.', 'info');
                 loadAvailableDates();
                 document.getElementById('currentAppointmentDiv').style.display = 'none';
             }
         }
 
-        // Helper functions
-        function getDayName(date) {
-            return date.toLocaleDateString('en-US', { weekday: 'short' });
-        }
-        
-        function getMonthName(date) {
-            return date.toLocaleDateString('en-US', { month: 'short' });
-        }
-        
         function formatDate(date) {
             return date.toLocaleDateString('en-US', { 
                 weekday: 'long', 
@@ -1239,7 +1378,14 @@
                 day: 'numeric' 
             });
         }
-        
+
+        function formatDateWithOrdinal(date) {
+            const day = date.getDate();
+            const suffix = day > 3 && day < 21 ? 'th' : ['st', 'nd', 'rd'][(day % 10) - 1] || 'th';
+            const month = date.toLocaleDateString('en-US', { month: 'long' });
+            return `${day}${suffix} ${month} ${date.getFullYear()}`;
+        }
+
         function goToDashboard() {
             window.location.href = 'dashboard.html';
         }
@@ -1271,7 +1417,6 @@
             }
         }
 
-        // Auth State
         auth.onAuthStateChanged(async (user) => {
             if (!user) {
                 window.location.href = 'login.html';
