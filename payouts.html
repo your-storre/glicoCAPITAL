@@ -142,6 +142,30 @@
             opacity: 0.9;
         }
         
+        /* Extension Banner */
+        .extension-banner {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(0, 180, 216, 0.1));
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid var(--secondary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .extension-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--secondary);
+            color: var(--primary-dark);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
         /* Stats Grid */
         .stats-grid {
             display: grid;
@@ -200,58 +224,6 @@
         
         .trend-up {
             color: var(--success);
-        }
-        
-        /* Extend Info Banner */
-        .extend-banner {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(255, 107, 107, 0.15));
-            backdrop-filter: blur(15px);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 2px solid var(--secondary);
-            display: none;
-        }
-        
-        .extend-banner .banner-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-        
-        .extend-banner .banner-icon {
-            font-size: 1.8rem;
-            color: var(--secondary);
-        }
-        
-        .extend-banner h4 {
-            color: var(--secondary);
-            font-size: 1.2rem;
-        }
-        
-        .extend-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .extend-item {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            padding: 12px;
-        }
-        
-        .extend-label {
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-        
-        .extend-value {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--secondary);
         }
         
         /* Section Headers */
@@ -325,10 +297,9 @@
             color: var(--success);
         }
         
-        .status-extended {
-            background: rgba(212, 175, 55, 0.3);
-            color: var(--secondary);
-            border: 1px solid var(--secondary);
+        .status-upcoming {
+            background: rgba(37, 99, 235, 0.2);
+            color: #2563eb;
         }
         
         .payout-icon {
@@ -496,6 +467,16 @@
         .transaction-icon.payout {
             background: rgba(37, 99, 235, 0.2);
             color: #2563eb;
+        }
+        
+        .transaction-icon.earning {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .transaction-icon.reinvest {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--secondary);
         }
         
         .transaction-details h4 {
@@ -971,9 +952,6 @@
                 bottom: 120px;
                 right: 15px;
             }
-            .extend-details {
-                grid-template-columns: 1fr;
-            }
         }
         
         @media (max-width: 480px) {
@@ -1007,33 +985,19 @@
             <p>Manage your investment payouts and withdrawals</p>
         </div>
 
-        <!-- Extension Info Banner - Shows when extension is active -->
-        <div id="extendInfoBanner" class="extend-banner animate-in">
-            <div class="banner-header">
-                <div class="banner-icon">
-                    <i class="fas fa-calendar-alt"></i>
-                </div>
-                <h4>⚠️ Investment Extension Active</h4>
+        <!-- Extension Banner - Shows only when extension is active and within 3 days after May 21 -->
+        <div id="extensionBanner" class="extension-banner animate-in" style="display: none;">
+            <div class="extension-badge">
+                <i class="fas fa-calendar-alt"></i> EXTENSION ACTIVE
             </div>
-            <div class="banner-content">
-                <p>Your investment has been extended by <strong id="extensionMonths">1 Month</strong>. Daily earnings will change from <strong id="oldRate">$220/day</strong> to <strong id="newRate">$120/day</strong> starting <strong id="rateChangeDate">May 21, 2026</strong>.</p>
-            </div>
-            <div class="extend-details">
-                <div class="extend-item">
-                    <div class="extend-label">New Payout Date</div>
-                    <div class="extend-value" id="newPayoutDate">June 20, 2026</div>
+            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                <div style="font-size: 2rem; color: var(--secondary);">
+                    <i class="fas fa-clock"></i>
                 </div>
-                <div class="extend-item">
-                    <div class="extend-label">Current Rate (Until May 20)</div>
-                    <div class="extend-value" id="currentRateDisplay">$220/day</div>
-                </div>
-                <div class="extend-item">
-                    <div class="extend-label">New Rate (From May 21)</div>
-                    <div class="extend-value" id="newRateDisplay">$120/day</div>
-                </div>
-                <div class="extend-item">
-                    <div class="extend-label">Days Until Rate Change</div>
-                    <div class="extend-value" id="daysUntilRateChange">2 days</div>
+                <div>
+                    <h3 style="font-size: 1.3rem; margin-bottom: 5px;">Investment Extended by 1 Month</h3>
+                    <p>Your investment has been extended to <strong id="newPayoutDate">June 20, 2026</strong></p>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">Daily rate will change from <strong>$220/day</strong> to <strong>$120/day</strong> starting <strong>May 21, 2026</strong></p>
                 </div>
             </div>
         </div>
@@ -1058,7 +1022,7 @@
                 <div class="stat-label">Current Investment</div>
                 <div class="stat-value" id="currentInvestment">$47,720</div>
                 <div class="stat-trend">
-                    <span id="investmentPlanLabel">Promotional Plan</span>
+                    <span>Extended Plan</span>
                 </div>
             </div>
             <div class="stat-card animate-in delay-2" onclick="showDailyRate()">
@@ -1069,7 +1033,7 @@
                 <div class="stat-value" id="dailyRateStat">$220</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
-                    <span id="rateTypeLabel">Promotional rate</span>
+                    <span>Until May 20</span>
                 </div>
             </div>
             <div class="stat-card animate-in delay-2" onclick="showNextPayout()">
@@ -1077,9 +1041,9 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stat-label">Next Payout</div>
-                <div class="stat-value" id="nextPayoutValue">May 20</div>
+                <div class="stat-value" id="nextPayoutStat">June 20</div>
                 <div class="stat-trend">
-                    <span id="nextPayoutYear">2026</span>
+                    <span>2026</span>
                 </div>
             </div>
         </div>
@@ -1129,21 +1093,23 @@
                 </div>
             </div>
 
-            <!-- Active Investment - Updates based on extension status -->
+            <!-- Current Active Investment - Updated with extension info -->
             <div class="payout-card animate-in" id="activeInvestmentCard">
-                <div class="payout-status" id="activeStatus">Active</div>
-                <div class="payout-icon"><i class="fas fa-fire" id="activeIcon"></i></div>
-                <h3 id="activePlanName">3 Months Promotional Plan <span class="promo-tag" id="activePromoTag">PROMO</span></h3>
-                <div class="payout-amount" id="activeAmount">$47,720</div>
-                <div class="payout-details" id="activeDetails">
+                <div class="payout-status status-active" id="activeStatus">Active</div>
+                <div class="payout-icon"><i class="fas fa-fire"></i></div>
+                <h3 id="activePlanName">3 Months Promotional Plan <span class="promo-tag">PROMO</span></h3>
+                <div class="payout-amount" id="activePayoutAmount">$47,720</div>
+                <div class="payout-details">
                     <div class="detail-row"><span class="detail-label">Daily Rate:</span><span class="detail-value" id="activeDailyRate" style="color: var(--secondary);">$220/day</span></div>
+                    <div class="detail-row"><span class="detail-label">Current Rate Period:</span><span class="detail-value" id="ratePeriod">Until May 20, 2026</span></div>
+                    <div class="detail-row" id="newRateRow" style="display: none;"><span class="detail-label">New Rate (from May 21):</span><span class="detail-value" style="color: var(--warning);">$120/day</span></div>
                     <div class="detail-row"><span class="detail-label">Start Date:</span><span class="detail-value">20 Feb 2026</span></div>
-                    <div class="detail-row"><span class="detail-label">Current Earnings:</span><span class="detail-value" id="activeCurrentEarnings" style="color: var(--success);">$12,540</span></div>
-                    <div class="detail-row"><span class="detail-label">Current Balance:</span><span class="detail-value" id="activeCurrentBalance" style="color: var(--success);">$60,260</span></div>
-                    <div class="detail-row"><span class="detail-label">Days Remaining:</span><span class="detail-value" id="activeDaysRemaining">3 days</span></div>
-                    <div class="detail-row"><span class="detail-label">Maturity Date:</span><span class="detail-value" id="activeMaturityDate">20 May 2026</span></div>
-                    <div class="detail-row"><span class="detail-label">Projected Earnings:</span><span class="detail-value" id="activeProjectedEarnings" style="color: var(--success);">$12,980</span></div>
-                    <div class="detail-row"><span class="detail-label">Projected Payout:</span><span class="detail-value" id="activeProjectedPayout" style="color: var(--success);">$60,700</span></div>
+                    <div class="detail-row"><span class="detail-label">Current Balance:</span><span class="detail-value" id="activeCurrentBalance" style="color: var(--success);">$60,920</span></div>
+                    <div class="detail-row"><span class="detail-label">Total Earnings:</span><span class="detail-value" id="activeTotalEarnings" style="color: var(--success);">$13,200</span></div>
+                    <div class="detail-row"><span class="detail-label">Payout Date:</span><span class="detail-value" id="activePayoutDate">20 Jun 2026</span></div>
+                    <div class="detail-row"><span class="detail-label">Days Remaining:</span><span class="detail-value" id="activeDaysRemaining">32 days</span></div>
+                    <div class="detail-row"><span class="detail-label">Projected Earnings:</span><span class="detail-value" style="color: var(--success);" id="activeProjectedEarnings">$16,920</span></div>
+                    <div class="detail-row"><span class="detail-label">Projected Payout:</span><span class="detail-value" style="color: var(--success);" id="activeProjectedPayout">$64,640</span></div>
                 </div>
                 <div class="action-buttons">
                     <button class="btn btn-outline" onclick="viewProjections()"><i class="fas fa-chart-line"></i> Projections</button>
@@ -1231,12 +1197,12 @@
                 <div class="info-item"><span class="info-label">Maturity Date</span><span class="info-value">20 Feb 2026</span></div>
                 <div class="info-item"><span class="info-label">Duration</span><span class="info-value">6 Months</span></div>
                 <div class="info-item"><span class="info-label">Status</span><span class="info-value" style="color: var(--success);">Completed & Reinvested</span></div>
-                <div class="info-item"><span class="info-label">Reinvested Into</span><span class="info-value">3 Months Promotional Plan</span></div>
+                <div class="info-item"><span class="info-label">Reinvested Into</span><span class="info-value">Extended Plan (Standard Rate)</span></div>
             </div>
             <div style="margin-top: 20px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 10px;">
                 <h4 style="margin-bottom: 10px; color: var(--secondary);">Investment Summary</h4>
                 <p style="font-size: 0.9rem;">
-                    This investment matured on February 20, 2026. The full payout of $47,720 was automatically reinvested into the 3 Months Promotional Plan at $220/day.
+                    This investment matured on February 20, 2026. The full payout of $47,720 was automatically reinvested into the Promotional Plan at $220/day, and has been extended to June 20, 2026 at $120/day.
                 </p>
             </div>
         </div>
@@ -1312,58 +1278,67 @@
         const allPayoutsPage = document.getElementById('allPayoutsPage');
         const completedInvestmentPage = document.getElementById('completedInvestmentPage');
         const receiptModal = document.getElementById('receiptModal');
-        const extendInfoBanner = document.getElementById('extendInfoBanner');
-        
-        // Active investment card elements
-        const activeStatus = document.getElementById('activeStatus');
-        const activeIcon = document.getElementById('activeIcon');
-        const activePlanName = document.getElementById('activePlanName');
-        const activePromoTag = document.getElementById('activePromoTag');
-        const activeAmount = document.getElementById('activeAmount');
-        const activeDailyRate = document.getElementById('activeDailyRate');
-        const activeCurrentEarnings = document.getElementById('activeCurrentEarnings');
-        const activeCurrentBalance = document.getElementById('activeCurrentBalance');
-        const activeDaysRemaining = document.getElementById('activeDaysRemaining');
-        const activeMaturityDate = document.getElementById('activeMaturityDate');
-        const activeProjectedEarnings = document.getElementById('activeProjectedEarnings');
-        const activeProjectedPayout = document.getElementById('activeProjectedPayout');
-        
-        // Extension banner elements
-        const extensionMonths = document.getElementById('extensionMonths');
-        const oldRate = document.getElementById('oldRate');
-        const newRate = document.getElementById('newRate');
-        const rateChangeDate = document.getElementById('rateChangeDate');
-        const newPayoutDate = document.getElementById('newPayoutDate');
-        const currentRateDisplay = document.getElementById('currentRateDisplay');
-        const newRateDisplay = document.getElementById('newRateDisplay');
-        const daysUntilRateChange = document.getElementById('daysUntilRateChange');
-        const dailyRateStat = document.getElementById('dailyRateStat');
-        const rateTypeLabel = document.getElementById('rateTypeLabel');
-        const investmentPlanLabel = document.getElementById('investmentPlanLabel');
-        const nextPayoutValue = document.getElementById('nextPayoutValue');
-        
+
         const FELICITY_USER_ID = "user_felicity_12345";
 
-        // Investment State - SYNCED WITH DASHBOARD
-        let isExtended = false;
-        let extensionMonthsValue = 1;
-        let currentDailyRate = 220;
-        let newDailyRate = 120;
-        let currentPayoutDate = new Date('2026-05-20');
-        let originalPayoutDate = new Date('2026-05-20');
-        let rateChangeEffectiveDate = new Date('2026-05-21');
-        
-        // TODAY'S DATE - DYNAMIC
-        const TODAY = new Date();
-        
-        // Constants
-        const INVESTMENT_AMOUNT = 47720;
+        // ===========================================
+        // CONSTANTS - DYNAMIC DATE
+        // ===========================================
         const DAILY_EARNINGS_PROMO = 220;
         const DAILY_EARNINGS_NORMAL = 120;
+        const INVESTMENT_AMOUNT = 47720;
         const FIRST_EARNING_DATE = new Date('2026-02-23');
-        const ORIGINAL_MATURITY_DATE = new Date('2026-05-20');
+        const ORIGINAL_PAYOUT_DATE = new Date('2026-05-20');
+        
+        // TODAY'S DATE - DYNAMIC (May 19, 2026)
+        const TODAY = new Date();
+        
+        // Extension state - loads from Firestore
+        let isExtended = false;
+        let extensionApplied = false;
+        let extendedPayoutDate = new Date('2026-06-20');
+        let newDailyRate = DAILY_EARNINGS_NORMAL;
+        
+        // Current receipt data
+        let currentReceiptPayout = null;
 
-        // Business day calculation
+        // Payout history
+        const payoutHistory = [
+            {
+                id: "PAY-001",
+                type: "starter",
+                amount: 8600,
+                date: "2025-08-15",
+                description: "Starter Plan Investment Payout",
+                investmentAmount: 5000,
+                earnings: 3600,
+                duration: "4 Months",
+                paidTo: "Wells Fargo •••• 0906",
+                transactionId: "TRX-20250815-001",
+                bank: "Wells Fargo",
+                account: "0906"
+            },
+            {
+                id: "PAY-002",
+                type: "premium",
+                amount: 47720,
+                date: "2026-02-20",
+                description: "Premium Plan Investment Payout",
+                investmentAmount: 35000,
+                earnings: 12720,
+                duration: "6 Months",
+                paidTo: "Glico Holdings (Reinvested)",
+                transactionId: "TRX-20260220-001",
+                reinvested: true,
+                reinvestPlan: "Extended Plan",
+                bank: "Glico Holdings",
+                account: "Reinvested"
+            }
+        ];
+
+        // ===========================================
+        // BUSINESS DAY FUNCTIONS
+        // ===========================================
         function isBusinessDay(date) {
             const day = date.getDay();
             return day >= 1 && day <= 5;
@@ -1379,150 +1354,144 @@
             return count;
         }
 
-        function getDaysBetweenDates(date1, date2) {
-            const timeDiff = Math.abs(date2.getTime() - date1.getTime());
-            return Math.ceil(timeDiff / (1000 * 3600 * 24));
-        }
-
         // ===========================================
-        // LOAD INVESTMENT STATE FROM FIRESTORE (SYNC WITH DASHBOARD)
+        // LOAD EXTENSION STATE FROM FIRESTORE (SYNC WITH DASHBOARD)
         // ===========================================
-        async function loadInvestmentState(userId) {
+        async function loadExtensionState(userId) {
             try {
                 const userDoc = await db.collection('users').doc(userId).get();
                 if (userDoc.exists) {
                     const userData = userDoc.data();
                     if (userData.investmentState) {
                         isExtended = userData.investmentState.isExtended || false;
-                        extensionMonthsValue = userData.investmentState.extensionDays || 1;
-                        currentDailyRate = userData.investmentState.dailyRate || 220;
-                        newDailyRate = currentDailyRate === 220 ? 120 : 220;
-                        
-                        if (isExtended && extensionMonthsValue > 0) {
-                            currentPayoutDate = new Date(ORIGINAL_MATURITY_DATE);
-                            currentPayoutDate.setMonth(currentPayoutDate.getMonth() + extensionMonthsValue);
+                        extensionApplied = userData.investmentState.extensionDays > 0;
+                        if (extensionApplied) {
+                            extendedPayoutDate = new Date(userData.investmentState.newPayoutDate || '2026-06-20');
+                            newDailyRate = userData.investmentState.dailyRate || DAILY_EARNINGS_NORMAL;
                         }
                     }
                 }
                 
-                // Update UI based on extension state
+                // Also check localStorage as backup
+                const localExtension = localStorage.getItem('investmentExtended');
+                if (localExtension === 'true' && !extensionApplied) {
+                    extensionApplied = true;
+                    isExtended = true;
+                    extendedPayoutDate = new Date('2026-06-20');
+                    newDailyRate = DAILY_EARNINGS_NORMAL;
+                }
+                
                 updateUIForExtension();
                 
             } catch (error) {
-                console.error('Error loading investment state:', error);
+                console.error('Error loading extension state:', error);
             }
         }
 
         // ===========================================
-        // CALCULATE CURRENT STATS
+        // UPDATE UI FOR EXTENSION
+        // ===========================================
+        function updateUIForExtension() {
+            const stats = calculateCurrentStats();
+            const showExtensionBanner = extensionApplied && TODAY < new Date('2026-05-24');
+            
+            // Show/hide extension banner (hides 3 days after May 21, so May 24)
+            const extensionBanner = document.getElementById('extensionBanner');
+            if (showExtensionBanner) {
+                extensionBanner.style.display = 'block';
+                document.getElementById('newPayoutDate').textContent = formatDateWithOrdinal(extendedPayoutDate);
+            } else {
+                extensionBanner.style.display = 'none';
+            }
+            
+            // Update active investment card
+            if (extensionApplied) {
+                document.getElementById('activePlanName').innerHTML = 'Extended Investment Plan <span class="promo-tag">EXTENDED</span>';
+                document.getElementById('activeStatus').innerHTML = 'Active (Extended)';
+                document.getElementById('activeDailyRate').innerHTML = `$220/day (until May 20)<br><span style="font-size: 0.8rem; color: var(--warning);">then $120/day from May 21</span>`;
+                document.getElementById('activePayoutDate').textContent = formatDateWithOrdinal(extendedPayoutDate);
+                document.getElementById('newRateRow').style.display = 'flex';
+                document.getElementById('ratePeriod').textContent = 'Until May 20, 2026';
+                document.getElementById('dailyRateStat').innerHTML = '$220 <span style="font-size: 0.8rem;">(until May 20)</span>';
+                document.getElementById('nextPayoutStat').innerHTML = 'June 20';
+            } else {
+                document.getElementById('activePlanName').innerHTML = '3 Months Promotional Plan <span class="promo-tag">PROMO</span>';
+                document.getElementById('activeStatus').innerHTML = 'Active';
+                document.getElementById('activeDailyRate').innerHTML = '$220/day';
+                document.getElementById('activePayoutDate').textContent = formatDateWithOrdinal(ORIGINAL_PAYOUT_DATE);
+                document.getElementById('newRateRow').style.display = 'none';
+                document.getElementById('ratePeriod').textContent = 'Until May 20, 2026';
+                document.getElementById('dailyRateStat').innerHTML = '$220';
+                document.getElementById('nextPayoutStat').innerHTML = 'May 20';
+            }
+            
+            // Update stats
+            document.getElementById('activeCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
+            document.getElementById('activeTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            document.getElementById('activeDaysRemaining').textContent = `${stats.daysRemaining} days`;
+            document.getElementById('activeProjectedEarnings').textContent = `$${stats.projectedEarnings.toLocaleString()}`;
+            document.getElementById('activeProjectedPayout').textContent = `$${stats.projectedPayout.toLocaleString()}`;
+        }
+
+        // ===========================================
+        // CALCULATE CURRENT STATS WITH EXTENSION
         // ===========================================
         function calculateCurrentStats() {
+            // Days earned from FIRST_EARNING_DATE to TODAY
             const daysEarned = countBusinessDays(FIRST_EARNING_DATE, TODAY);
-            const totalEarnings = daysEarned * currentDailyRate;
-            const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
             
+            // Determine current daily rate
+            let currentRate = DAILY_EARNINGS_PROMO;
+            let futureRate = DAILY_EARNINGS_NORMAL;
+            
+            // Calculate earnings so far (all at promotional rate since extension starts after May 20)
+            const totalEarningsSoFar = daysEarned * DAILY_EARNINGS_PROMO;
+            const currentBalance = INVESTMENT_AMOUNT + totalEarningsSoFar;
+            
+            // Calculate remaining days and future earnings
+            let payoutDate = extensionApplied ? extendedPayoutDate : ORIGINAL_PAYOUT_DATE;
             const tomorrow = new Date(TODAY);
             tomorrow.setDate(tomorrow.getDate() + 1);
-            const daysRemaining = countBusinessDays(tomorrow, currentPayoutDate);
             
-            const futureEarnings = daysRemaining * currentDailyRate;
-            const totalProjectedEarnings = totalEarnings + futureEarnings;
+            let daysRemaining = 0;
+            let futureEarnings = 0;
+            
+            if (extensionApplied) {
+                // After extension: count remaining days from tomorrow to June 20
+                daysRemaining = countBusinessDays(tomorrow, extendedPayoutDate);
+                futureEarnings = daysRemaining * futureRate;
+            } else {
+                // Original: count remaining days from tomorrow to May 20
+                daysRemaining = countBusinessDays(tomorrow, ORIGINAL_PAYOUT_DATE);
+                futureEarnings = daysRemaining * DAILY_EARNINGS_PROMO;
+            }
+            
+            const totalProjectedEarnings = totalEarningsSoFar + futureEarnings;
+            const projectedPayout = INVESTMENT_AMOUNT + totalProjectedEarnings;
             
             return {
                 daysEarned: daysEarned,
-                totalEarnings: totalEarnings,
+                totalEarnings: totalEarningsSoFar,
                 currentBalance: currentBalance,
                 daysRemaining: daysRemaining,
                 futureEarnings: futureEarnings,
-                totalProjectedEarnings: totalProjectedEarnings,
-                daysToPayout: getDaysBetweenDates(TODAY, currentPayoutDate)
+                projectedEarnings: totalProjectedEarnings,
+                projectedPayout: projectedPayout
             };
         }
 
         // ===========================================
-        // UPDATE UI FOR EXTENSION STATE
+        // FORMATTING FUNCTIONS
         // ===========================================
-        function updateUIForExtension() {
-            const stats = calculateCurrentStats();
-            
-            if (isExtended) {
-                // Show extension banner
-                extendInfoBanner.style.display = 'block';
-                
-                // Update extension banner
-                extensionMonths.textContent = `${extensionMonthsValue} Month${extensionMonthsValue > 1 ? 's' : ''}`;
-                oldRate.textContent = `$${DAILY_EARNINGS_PROMO}/day`;
-                newRate.textContent = `$${DAILY_EARNINGS_NORMAL}/day`;
-                rateChangeDate.textContent = formatDateWithOrdinal(rateChangeEffectiveDate);
-                newPayoutDate.textContent = formatDateWithOrdinal(currentPayoutDate);
-                currentRateDisplay.textContent = `$${currentDailyRate}/day`;
-                newRateDisplay.textContent = `$${newDailyRate}/day`;
-                
-                const daysUntilChange = getDaysBetweenDates(TODAY, rateChangeEffectiveDate);
-                daysUntilRateChange.textContent = daysUntilChange === 1 ? '1 day' : `${daysUntilChange} days`;
-                
-                // Update active card for extended state
-                activeStatus.className = 'payout-status status-extended';
-                activeStatus.innerHTML = '<i class="fas fa-calendar-alt"></i> Extended';
-                activeIcon.className = 'fas fa-calendar-alt';
-                activePlanName.innerHTML = 'Extended Investment Plan <span class="promo-tag">EXTENDED</span>';
-                activePromoTag.style.display = 'none';
-                activeDailyRate.innerHTML = `<span class="detail-label">Current Rate (Until ${formatDateWithOrdinal(rateChangeEffectiveDate)}):</span><span class="detail-value" style="color: var(--secondary);">$${currentDailyRate}/day</span>`;
-                
-                // Add rate change info
-                const rateChangeRow = document.createElement('div');
-                rateChangeRow.className = 'detail-row';
-                rateChangeRow.innerHTML = `<span class="detail-label">New Rate (From ${formatDateWithOrdinal(rateChangeEffectiveDate)}):</span><span class="detail-value" style="color: var(--warning);">$${newDailyRate}/day</span>`;
-                
-                // Check if rate change row already exists
-                if (!document.querySelector('#activeDetails .rate-change-row')) {
-                    const detailsDiv = document.getElementById('activeDetails');
-                    const lastRow = detailsDiv.querySelector('.detail-row:last-child');
-                    rateChangeRow.classList.add('rate-change-row');
-                    detailsDiv.insertBefore(rateChangeRow, lastRow);
-                }
-                
-                // Update stats
-                dailyRateStat.textContent = currentDailyRate;
-                rateTypeLabel.innerHTML = 'Current rate (until extension end)';
-                investmentPlanLabel.innerHTML = 'Extended Investment';
-                nextPayoutValue.textContent = formatMonthYear(currentPayoutDate);
-                
-            } else {
-                // Hide extension banner
-                extendInfoBanner.style.display = 'none';
-                
-                // Reset active card to normal
-                activeStatus.className = 'payout-status status-active';
-                activeStatus.innerHTML = 'Active';
-                activeIcon.className = 'fas fa-fire';
-                activePlanName.innerHTML = '3 Months Promotional Plan <span class="promo-tag">PROMO</span>';
-                activePromoTag.style.display = 'inline-block';
-                activeDailyRate.innerHTML = `<span class="detail-label">Daily Rate:</span><span class="detail-value" style="color: var(--secondary);">$${currentDailyRate}/day</span>`;
-                
-                // Remove rate change row if exists
-                const rateChangeRow = document.querySelector('.rate-change-row');
-                if (rateChangeRow) rateChangeRow.remove();
-                
-                // Update stats
-                dailyRateStat.textContent = currentDailyRate;
-                rateTypeLabel.innerHTML = 'Promotional rate';
-                investmentPlanLabel.innerHTML = 'Promotional Plan';
-                nextPayoutValue.textContent = formatMonthYear(currentPayoutDate);
-            }
-            
-            // Update common values
-            activeAmount.textContent = `$${INVESTMENT_AMOUNT.toLocaleString()}`;
-            activeCurrentEarnings.textContent = `$${stats.totalEarnings.toLocaleString()}`;
-            activeCurrentBalance.textContent = `$${stats.currentBalance.toLocaleString()}`;
-            activeDaysRemaining.textContent = `${stats.daysRemaining} days`;
-            activeMaturityDate.textContent = formatDateWithOrdinal(currentPayoutDate);
-            activeProjectedEarnings.textContent = `$${stats.totalProjectedEarnings.toLocaleString()}`;
-            activeProjectedPayout.textContent = `$${(INVESTMENT_AMOUNT + stats.totalProjectedEarnings).toLocaleString()}`;
-            
-            // Update total payouts stat
-            document.getElementById('totalPayouts').textContent = '$56,320';
-            document.getElementById('currentInvestment').textContent = `$${INVESTMENT_AMOUNT.toLocaleString()}`;
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function formatDateWithOrdinal(date) {
+            const day = date.getDate();
+            const suffix = day > 3 && day < 21 ? 'th' : ['st', 'nd', 'rd'][(day % 10) - 1] || 'th';
+            const month = date.toLocaleDateString('en-US', { month: 'long' });
+            return `${day}${suffix} ${month} ${date.getFullYear()}`;
         }
 
         // ===========================================
@@ -1575,39 +1544,6 @@
             recentPayouts.innerHTML = '';
             allPayoutsList.innerHTML = '';
 
-            const payoutHistory = [
-                {
-                    id: "PAY-001",
-                    type: "starter",
-                    amount: 8600,
-                    date: "2025-08-15",
-                    description: "Starter Plan Investment Payout",
-                    investmentAmount: 5000,
-                    earnings: 3600,
-                    duration: "4 Months",
-                    paidTo: "Wells Fargo •••• 0906",
-                    transactionId: "TRX-20250815-001",
-                    bank: "Wells Fargo",
-                    account: "0906"
-                },
-                {
-                    id: "PAY-002",
-                    type: "premium",
-                    amount: 47720,
-                    date: "2026-02-20",
-                    description: "Premium Plan Investment Payout",
-                    investmentAmount: 35000,
-                    earnings: 12720,
-                    duration: "6 Months",
-                    paidTo: "Glico Holdings (Reinvested)",
-                    transactionId: "TRX-20260220-001",
-                    reinvested: true,
-                    reinvestPlan: "3 Months Promotional",
-                    bank: "Glico Holdings",
-                    account: "Reinvested"
-                }
-            ];
-
             payoutHistory.forEach(payout => {
                 const item = createPayoutItem(payout);
                 recentPayouts.appendChild(item.cloneNode(true));
@@ -1616,6 +1552,7 @@
 
             const totalPayouts = payoutHistory.reduce((sum, p) => sum + p.amount, 0);
             document.getElementById('totalPayouts').textContent = `$${totalPayouts.toLocaleString()}`;
+            document.getElementById('currentInvestment').textContent = `$${INVESTMENT_AMOUNT.toLocaleString()}`;
         }
 
         function createPayoutItem(payout) {
@@ -1638,34 +1575,9 @@
         }
 
         // ===========================================
-        // FORMATTING FUNCTIONS
-        // ===========================================
-        function formatDate(date) {
-            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        }
-
-        function formatDateWithOrdinal(date) {
-            const day = date.getDate();
-            const suffix = day > 3 && day < 21 ? 'th' : ['st', 'nd', 'rd'][(day % 10) - 1] || 'th';
-            const month = date.toLocaleDateString('en-US', { month: 'long' });
-            return `${day}${suffix} ${month} ${date.getFullYear()}`;
-        }
-
-        function formatMonthYear(date) {
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        }
-
-        // ===========================================
         // RECEIPT FUNCTIONS
         // ===========================================
-        let currentReceiptPayout = null;
-
         function downloadReceipt(type) {
-            const payoutHistory = [
-                { type: "starter", amount: 8600, date: "2025-08-15", description: "Starter Plan Investment Payout", investmentAmount: 5000, earnings: 3600, duration: "4 Months", paidTo: "Wells Fargo •••• 0906", transactionId: "TRX-20250815-001" },
-                { type: "premium", amount: 47720, date: "2026-02-20", description: "Premium Plan Investment Payout", investmentAmount: 35000, earnings: 12720, duration: "6 Months", paidTo: "Glico Holdings (Reinvested)", transactionId: "TRX-20260220-001", reinvested: true, reinvestPlan: "3 Months Promotional" }
-            ];
-            
             const payout = payoutHistory.find(p => p.type === type);
             if (!payout) return;
             
@@ -1688,7 +1600,7 @@
                 <div class="receipt-row"><span class="receipt-label">Total Earnings:</span><span class="receipt-value">$${payout.earnings.toLocaleString()}</span></div>
                 <div class="receipt-row"><span class="receipt-label">Duration:</span><span class="receipt-value">${payout.duration}</span></div>
                 <div class="receipt-row"><span class="receipt-label">Paid To:</span><span class="receipt-value">${payout.paidTo}</span></div>
-                ${payout.reinvested ? '<div class="receipt-row"><span class="receipt-label">Reinvested:</span><span class="receipt-value" style="color: #d4af37;">Yes - 3 Months Promotional</span></div>' : ''}
+                ${payout.reinvested ? '<div class="receipt-row"><span class="receipt-label">Reinvested:</span><span class="receipt-value" style="color: #d4af37;">Yes - Extended Plan</span></div>' : ''}
                 <div class="receipt-row receipt-total"><span class="receipt-label">TOTAL PAID:</span><span class="receipt-value">$${payout.amount.toLocaleString()}</span></div>
             `;
             receiptModal.classList.add('active');
@@ -1703,8 +1615,82 @@
             const payout = currentReceiptPayout;
             const payoutDate = new Date(payout.date);
             const fileName = `GlicoCapital_Receipt_${payout.transactionId}_${formatDate(payoutDate).replace(/\s/g, '_')}.html`;
-            alert(`Receipt downloaded: ${fileName}`);
-            closeReceiptModal();
+
+            const receiptHTML = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>GlicoCapital Receipt ${payout.transactionId}</title>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                <style>
+                    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; padding: 20px; }
+                    .receipt-container { max-width: 500px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; }
+                    .watermark { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; pointer-events: none; background: repeating-linear-gradient(45deg, #d4af37 0px, #d4af37 20px, #1a365d 20px, #1a365d 40px); }
+                    .watermark-text { position: absolute; top: 20%; left: 0; right: 0; transform: rotate(-30deg); font-size: 48px; font-weight: 800; color: #1a365d; text-align: center; white-space: nowrap; opacity: 0.1; }
+                    .header { background: linear-gradient(135deg, #1a365d, #0f2040); color: white; padding: 30px 20px; text-align: center; }
+                    .header img { height: 50px; margin-bottom: 15px; filter: brightness(0) invert(1); }
+                    .header h2 { margin: 5px 0; }
+                    .body { padding: 30px; position: relative; z-index: 2; }
+                    .row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #eaeaea; }
+                    .label { color: #666; }
+                    .value { font-weight: 700; color: #1a365d; }
+                    .total { font-size: 1.3rem; color: #d4af37; margin-top: 15px; padding-top: 15px; border-top: 2px solid #1a365d; }
+                    .stamp { position: absolute; bottom: 100px; right: 30px; width: 120px; height: 120px; border: 3px solid #d4af37; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: white; transform: rotate(-5deg); box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 3; }
+                    .stamp i { font-size: 1.8rem; color: #d4af37; }
+                    .stamp .paid { font-weight: 800; color: #1a365d; font-size: 1rem; }
+                    .stamp .date { font-size: 0.7rem; color: #666; }
+                    .footer { background: #f8f9fa; padding: 20px; text-align: center; font-size: 0.9rem; color: #666; }
+                </style>
+            </head>
+            <body>
+                <div class="receipt-container">
+                    <div class="watermark"></div>
+                    <div class="watermark-text">GLICOCAPITAL GLICOCAPITAL</div>
+                    
+                    <div class="header">
+                        <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
+                        <h2>OFFICIAL PAYMENT RECEIPT</h2>
+                        <p>Investment Payout Confirmation</p>
+                    </div>
+                    
+                    <div class="body">
+                        <div class="row"><span class="label">Receipt Number:</span><span class="value">${payout.transactionId}</span></div>
+                        <div class="row"><span class="label">Transaction Date:</span><span class="value">${formatDateWithOrdinal(payoutDate)}</span></div>
+                        <div class="row"><span class="label">Print Date:</span><span class="value">${formatDateWithOrdinal(new Date())}</span></div>
+                        <div class="row"><span class="label">Description:</span><span class="value">${payout.description}</span></div>
+                        <div class="row"><span class="label">Investment Amount:</span><span class="value">$${payout.investmentAmount.toLocaleString()}</span></div>
+                        <div class="row"><span class="label">Total Earnings:</span><span class="value">$${payout.earnings.toLocaleString()}</span></div>
+                        <div class="row"><span class="label">Duration:</span><span class="value">${payout.duration}</span></div>
+                        <div class="row"><span class="label">Paid To:</span><span class="value">${payout.paidTo}</span></div>
+                        ${payout.reinvested ? '<div class="row"><span class="label">Reinvested:</span><span class="value" style="color: #d4af37;">Yes - Extended Plan</span></div>' : ''}
+                        <div class="row total"><span class="label">TOTAL PAID:</span><span class="value">$${payout.amount.toLocaleString()}</span></div>
+                    </div>
+                    
+                    <div class="stamp">
+                        <i class="fas fa-check-circle"></i>
+                        <div class="paid">PAID</div>
+                        <div class="date">${formatDateWithOrdinal(payoutDate)}</div>
+                    </div>
+                    
+                    <div class="footer">
+                        <p>This is an electronically generated receipt. Valid without signature.</p>
+                        <p>For support: support@glicocapital.online</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+            `;
+
+            const blob = new Blob([receiptHTML], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            alert('Receipt downloaded successfully!');
         }
 
         function closeReceiptModal() {
@@ -1718,7 +1704,7 @@
         function showAllPayouts() { allPayoutsPage.classList.add('active'); }
         function viewCompletedInvestment() { completedInvestmentPage.classList.add('active'); }
         function viewProjections() { 
-            alert('View current investment projections on the Dashboard'); 
+            alert('Current investment has been extended to June 20, 2026. Daily rate will be $120/day from May 21.'); 
         }
         function closeDetailPage() { 
             allPayoutsPage.classList.remove('active'); 
@@ -1734,10 +1720,22 @@
         function showPayoutStats() { alert('Total payouts from all investments: $56,320'); }
         function showCurrentInvestment() { 
             const stats = calculateCurrentStats();
-            alert(`Current investment: $${INVESTMENT_AMOUNT.toLocaleString()} in ${isExtended ? 'Extended Plan' : 'Promotional Plan'}\nCurrent balance: $${stats.currentBalance.toLocaleString()}`);
+            alert(`Current investment: $${stats.currentBalance.toLocaleString()} in Extended Plan`); 
         }
-        function showDailyRate() { alert(`Daily rate: $${currentDailyRate}/day ${isExtended ? '(Current rate until extension ends)' : '(Promotional)'}`); }
-        function showNextPayout() { alert(`Next payout: ${formatDateWithOrdinal(currentPayoutDate)}`); }
+        function showDailyRate() { 
+            if (extensionApplied) {
+                alert('Daily rate: $220/day until May 20, then $120/day from May 21');
+            } else {
+                alert('Daily rate: $220/day (Promotional)');
+            }
+        }
+        function showNextPayout() { 
+            if (extensionApplied) {
+                alert('Next payout: June 20, 2026');
+            } else {
+                alert('Next payout: May 20, 2026');
+            }
+        }
 
         // ===========================================
         // PROFILE FUNCTIONS
@@ -1764,15 +1762,15 @@
             } else {
                 logoutBtn.style.display = 'block';
                 loadBankDetailsFromDatabase();
-                await loadInvestmentState(user.uid);
+                await loadExtensionState(user.uid);
                 updatePayoutLists();
                 loadUserProfile(user);
                 
-                console.log(`📊 Payouts page loaded for: ${formatDate(TODAY)}`);
                 const stats = calculateCurrentStats();
-                console.log(`   Extension active: ${isExtended}`);
-                console.log(`   Current rate: $${currentDailyRate}/day`);
-                console.log(`   Payout date: ${formatDateWithOrdinal(currentPayoutDate)}`);
+                console.log(`📊 Payouts page loaded for: ${formatDate(TODAY)}`);
+                console.log(`   Extension active: ${extensionApplied}`);
+                console.log(`   Payout date: ${formatDate(extendedPayoutDate)}`);
+                console.log(`   Current balance: $${stats.currentBalance}`);
             }
         });
 
