@@ -143,13 +143,18 @@
             opacity: 0.9;
         }
         
+        /* Banner Container */
+        .banner-container {
+            margin-bottom: 20px;
+        }
+        
         /* BoG Verification Banner */
         .bog-banner {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(245, 158, 11, 0.1));
             backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border: 2px solid var(--warning);
             position: relative;
             overflow: hidden;
@@ -234,6 +239,30 @@
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
+        }
+        
+        /* Extension Info Banner */
+        .extension-banner {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(0, 180, 216, 0.1));
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border: 2px solid var(--secondary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .extension-banner .banner-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .extension-banner .banner-icon {
+            font-size: 1.5rem;
+            color: var(--secondary);
         }
         
         .btn-warning {
@@ -841,7 +870,8 @@
                 gap: 6px;
             }
             
-            .bog-banner .banner-header {
+            .bog-banner .banner-header,
+            .extension-banner .banner-header {
                 flex-direction: column;
                 text-align: center;
             }
@@ -886,31 +916,48 @@
             <p id="welcomeMessage">Your promotional plan is active with $220/day earnings (business days only)</p>
         </div>
 
-        <!-- BoG Verification Banner -->
-        <div id="bogBanner" class="bog-banner animate-in warning">
-            <div class="banner-header">
-                <div class="banner-icon" id="bannerIcon">
-                    <i class="fas fa-exclamation-triangle"></i>
+        <!-- Banner Container -->
+        <div class="banner-container">
+            <!-- BoG Verification Banner -->
+            <div id="bogBanner" class="bog-banner animate-in warning">
+                <div class="banner-header">
+                    <div class="banner-icon" id="bannerIcon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 id="bannerTitle">⚠️ URGENT: Bank of Ghana Compliance Required</h3>
+                    <span id="verificationStatusBadge" class="status-badge status-not-started">Not Started</span>
                 </div>
-                <h3 id="bannerTitle">⚠️ URGENT: Bank of Ghana Compliance Required</h3>
-                <span id="verificationStatusBadge" class="status-badge status-not-started">Not Started</span>
+                <div class="banner-content" id="bannerContent">
+                    <p>The Bank of Ghana requires biometric verification for amounts over <strong>$40,000</strong> to prevent fraud and money laundering.</p>
+                    <p><strong>⚠️ Your payout is scheduled for <span id="payoutDateWarning">May 20, 2026</span> (<span id="daysLeftWarning">2</span> days away).</strong> Without verification, the Bank of Ghana will hold your payout.</p>
+                    <p id="verificationMessage" style="margin-top: 10px;">Please complete your biometric verification immediately to avoid payout delay.</p>
+                </div>
+                <div class="banner-actions" id="bannerActions">
+                    <button id="bookAppointmentBtn" class="btn btn-danger" onclick="goToVerification()">
+                        <i class="fas fa-calendar-check"></i> Book Appointment Now
+                    </button>
+                    <button id="extendInvestmentBtn" class="btn btn-warning" onclick="showExtendModal()">
+                        <i class="fas fa-calendar-alt"></i> Extend Investment (Buy Time)
+                    </button>
+                    <button id="closeBannerBtn" class="btn btn-close-banner" onclick="closeBanner()">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                </div>
             </div>
-            <div class="banner-content" id="bannerContent">
-                <p>The Bank of Ghana requires biometric verification for amounts over <strong>$40,000</strong> to prevent fraud and money laundering.</p>
-                <p><strong>⚠️ Your payout is scheduled for <span id="payoutDateWarning">May 20, 2026</span> (<span id="daysLeftWarning">2</span> days away).</strong> Without verification, the Bank of Ghana will hold your payout.</p>
-                <p id="verificationMessage" style="margin-top: 10px;">Please complete your biometric verification immediately to avoid payout delay.</p>
-            </div>
-            <div id="appointmentDetailsDiv" class="appointment-details" style="display: none;"></div>
-            <div class="banner-actions" id="bannerActions">
-                <button id="bookAppointmentBtn" class="btn btn-danger" onclick="goToVerification()">
-                    <i class="fas fa-calendar-check"></i> Book Appointment Now
-                </button>
-                <button id="extendInvestmentBtn" class="btn btn-warning" onclick="showExtendModal()">
-                    <i class="fas fa-calendar-alt"></i> Extend Investment (Buy Time)
-                </button>
-                <button id="closeBannerBtn" class="btn btn-close-banner" onclick="closeBanner()">
-                    <i class="fas fa-times"></i> Close
-                </button>
+
+            <!-- Extension Info Banner - Shows when investment is extended -->
+            <div id="extensionInfoBanner" class="extension-banner" style="display: none;">
+                <div class="banner-header">
+                    <div class="banner-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <div>
+                        <strong>🔄 Investment Extended!</strong><br>
+                        Your investment has been extended by <strong id="extensionMonths">1 month</strong>. 
+                        Current promotional plan (<strong>$220/day</strong>) continues until <strong id="originalEndDate">May 20, 2026</strong>.
+                        Extended plan (<strong>$120/day</strong>) will automatically start on <strong id="extendedStartDate">May 21, 2026</strong>.
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -951,10 +998,10 @@
                 <div class="stat-icon">
                     <i class="fas fa-calendar-day"></i>
                 </div>
-                <div class="stat-label">Daily Earnings</div>
+                <div class="stat-label">Current Daily Rate</div>
                 <div class="stat-value" id="dailyRateDisplay">$220</div>
                 <div class="stat-trend">
-                    <span>Business days only</span>
+                    <span>Until May 20, 2026</span>
                 </div>
             </div>
         </div>
@@ -1014,6 +1061,7 @@
                     </div>
                 </div>
                 
+                <!-- Current Promotional Plan -->
                 <div style="position: relative; margin-bottom: 20px;" id="currentStatusContainer">
                     <div style="position: absolute; left: -18px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--success); border: 2px solid white; box-shadow: 0 0 0 2px var(--success);"></div>
                     <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate"></div>
@@ -1027,20 +1075,20 @@
                     </div>
                 </div>
                 
-                <!-- Extended Investment Timeline Item (shows if extended) -->
-                <div id="extendedTimelineItem" style="display: none; position: relative; margin-bottom: 20px;">
+                <!-- Extended Plan Indicator - Shows when extension is active -->
+                <div id="extendedPlanItem" style="position: relative; margin-bottom: 20px; display: none;">
                     <div style="position: absolute; left: -18px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--secondary); border: 2px solid white; box-shadow: 0 0 0 2px var(--secondary);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="extendedStartDate">21st May 2026</div>
+                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="extendedPlanDate"></div>
                     <div style="background: rgba(212, 175, 55, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
                         <h4 style="margin-bottom: 5px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
-                            <i class="fas fa-calendar-alt" style="color: var(--secondary);"></i> Extended Plan (1 Month)
+                            <i class="fas fa-calendar-alt" style="color: var(--secondary);"></i> Extended Plan
                             <span style="background: var(--secondary); color: var(--primary-dark); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">$120/DAY</span>
                         </h4>
-                        <p style="opacity: 0.9; font-size: 0.9rem;" id="extendedPlanText">Investment extended by 1 month at $120/day starting May 21, 2026</p>
-                        <p style="opacity: 0.8; font-size: 0.85rem; margin-top: 5px; color: var(--secondary);" id="extendedPayoutText">New payout date: June 20, 2026</p>
+                        <p id="extendedPlanText">Investment extended by 1 month. New rate starts on <strong id="extendedStartDateText">May 21, 2026</strong> and continues until <strong id="extendedEndDateText">June 20, 2026</strong>.</p>
                     </div>
                 </div>
                 
+                <!-- Next Payout -->
                 <div style="position: relative;" id="payoutTimelineItem">
                     <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
                     <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="payoutDate">20th May 2026</div>
@@ -1060,11 +1108,12 @@
             <p style="margin-bottom: 20px;">Extend your investment by 1 month to buy more time for biometric verification.</p>
             
             <div style="background: rgba(239, 68, 68, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
-                <p><strong>⚠️ Important Changes:</strong></p>
-                <p>• Current promotional rate ($220/day) continues until <strong>May 20, 2026</strong></p>
-                <p>• Extended plan ($120/day) will start <strong>automatically on May 21, 2026</strong></p>
-                <p>• Payout date will extend to <strong>June 20, 2026</strong></p>
-                <p>• Your existing earnings history remains unchanged</p>
+                <p><strong>⚠️ Important - How Extension Works:</strong></p>
+                <p>• Your current promotional plan (<strong>$220/day</strong>) continues <strong>until May 20, 2026</strong></p>
+                <p>• All earnings from Feb 23 - May 20 remain at <strong>$220/day</strong></p>
+                <p>• After May 20, the extended plan (<strong>$120/day</strong>) will automatically start</p>
+                <p>• New payout date: <strong>June 20, 2026</strong></p>
+                <p>• You will have more time to complete verification</p>
             </div>
             
             <div class="extend-options">
@@ -1103,12 +1152,12 @@
             </div>
             
             <div class="info-item">
-                <div class="info-label">Daily Rate</div>
+                <div class="info-label">Current Daily Rate</div>
                 <div class="info-value" style="color: var(--secondary);" id="detailDailyRate">$220/day</div>
             </div>
             
             <div class="info-item">
-                <div class="info-label">Total Earnings</div>
+                <div class="info-label">Total Earnings (Current Plan)</div>
                 <div class="info-value" id="detailTotalEarnings"></div>
             </div>
             
@@ -1127,29 +1176,30 @@
                     <div class="info-value" id="detailDaysEarned"></div>
                 </div>
                 <div class="info-item">
-                    <div class="info-label">Business Days Remaining (Current Plan)</div>
+                    <div class="info-label">Business Days Remaining (Current)</div>
                     <div class="info-value" id="detailDaysRemaining"></div>
                 </div>
                 <div class="info-item">
-                    <div class="info-label">Current Plan Maturity</div>
+                    <div class="info-label">Current Plan End Date</div>
                     <div class="info-value" id="detailMaturityDate">20th May 2026</div>
-                </div>
-                <div class="info-item" id="extendedDetailRow" style="display: none;">
-                    <div class="info-label">Extended Plan Start</div>
-                    <div class="info-value" style="color: var(--secondary);" id="extendedStartDetail">21st May 2026</div>
-                </div>
-                <div class="info-item" id="newPayoutDetailRow" style="display: none;">
-                    <div class="info-label">New Payout Date</div>
-                    <div class="info-value" style="color: var(--secondary);" id="newPayoutDetail">20th June 2026</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Projected Earnings (Current Plan)</div>
                     <div class="info-value" style="color: var(--success);" id="detailProjectedEarnings"></div>
                 </div>
                 <div class="info-item">
-                    <div class="info-label">Projected Payout</div>
+                    <div class="info-label">Projected Payout (Current Plan)</div>
                     <div class="info-value" style="color: var(--success);" id="detailProjectedPayout"></div>
                 </div>
+            </div>
+            
+            <div id="extendedPlanDetails" style="display: none; margin-top: 20px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 12px; border: 1px solid var(--secondary);">
+                <h4 style="margin-bottom: 10px; color: var(--secondary);"><i class="fas fa-calendar-alt"></i> Extended Plan Details</h4>
+                <div class="info-item"><span class="info-label">Extended Daily Rate</span><span class="info-value">$120/day</span></div>
+                <div class="info-item"><span class="info-label">Extended Plan Start</span><span class="info-value" id="extendedStartDetail">May 21, 2026</span></div>
+                <div class="info-item"><span class="info-label">Extended Plan End</span><span class="info-value" id="extendedEndDetail">June 20, 2026</span></div>
+                <div class="info-item"><span class="info-label">Projected Extended Earnings</span><span class="info-value" style="color: var(--success);" id="extendedEarningsDetail">$3,000</span></div>
+                <div class="info-item"><span class="info-label">Total Projected Payout</span><span class="info-value" style="color: var(--success);" id="totalProjectedPayoutDetail">$63,840</span></div>
             </div>
             
             <div style="margin-top: 20px; font-size: 0.9rem; opacity: 0.8; text-align: center;">
@@ -1170,7 +1220,7 @@
             </div>
             
             <div class="info-item">
-                <div class="info-label">Daily Rate</div>
+                <div class="info-label">Current Daily Rate</div>
                 <div class="info-value">$220</div>
             </div>
             
@@ -1186,24 +1236,12 @@
             <div class="payout-info" style="margin-top: 20px;">
                 <h3 style="margin-bottom: 15px;">Future Projection</h3>
                 <div class="info-item">
-                    <div class="info-label">Business Days Remaining (Current Plan)</div>
+                    <div class="info-label">Business Days Remaining</div>
                     <div class="info-value" id="futureDays"></div>
                 </div>
                 <div class="info-item">
-                    <div class="info-label">Remaining Earnings (Current Plan)</div>
+                    <div class="info-label">Future Earnings (Current Plan)</div>
                     <div class="info-value" id="futureEarnings"></div>
-                </div>
-                <div class="info-item" id="extendedFutureRow" style="display: none;">
-                    <div class="info-label">Extended Plan Daily Rate</div>
-                    <div class="info-value" style="color: var(--secondary);">$120/day</div>
-                </div>
-                <div class="info-item" id="extendedDaysRow" style="display: none;">
-                    <div class="info-label">Extended Plan Days</div>
-                    <div class="info-value" id="extendedDays"></div>
-                </div>
-                <div class="info-item" id="extendedEarningsRow" style="display: none;">
-                    <div class="info-label">Extended Plan Earnings</div>
-                    <div class="info-value" id="extendedEarnings"></div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Total Expected (Current Plan)</div>
@@ -1295,45 +1333,33 @@
         const daysLeftWarning = document.getElementById('daysLeftWarning');
         const payoutDateText = document.getElementById('payoutDateText');
         
-        // Extended timeline elements
-        const extendedTimelineItem = document.getElementById('extendedTimelineItem');
-        const extendedStartDate = document.getElementById('extendedStartDate');
-        const extendedPlanText = document.getElementById('extendedPlanText');
-        const extendedPayoutText = document.getElementById('extendedPayoutText');
-        
-        // Extended detail rows
-        const extendedDetailRow = document.getElementById('extendedDetailRow');
-        const newPayoutDetailRow = document.getElementById('newPayoutDetailRow');
-        const extendedStartDetail = document.getElementById('extendedStartDetail');
-        const newPayoutDetail = document.getElementById('newPayoutDetail');
-        const extendedFutureRow = document.getElementById('extendedFutureRow');
-        const extendedDaysRow = document.getElementById('extendedDaysRow');
-        const extendedEarningsRow = document.getElementById('extendedEarningsRow');
-        const extendedDays = document.getElementById('extendedDays');
-        const extendedEarnings = document.getElementById('extendedEarnings');
-        
         // Detail pages
         const currentBalancePage = document.getElementById('currentBalancePage');
         const totalEarningsPage = document.getElementById('totalEarningsPage');
         const allTransactionsPage = document.getElementById('allTransactionsPage');
         const extendModal = document.getElementById('extendModal');
+        const extensionInfoBanner = document.getElementById('extensionInfoBanner');
+        const extendedPlanItem = document.getElementById('extendedPlanItem');
+        const extendedPlanDetails = document.getElementById('extendedPlanDetails');
 
         // Investment State
         let isExtended = false;
-        let extensionDays = 0;
-        let currentDailyRate = 220;
-        let extendedDailyRate = 120;
-        let originalPayoutDate = new Date('2026-05-20');
+        let extensionMonths = 0;
+        let currentDailyRate = 220;  // Current active rate (220 until May 20)
+        let extendedDailyRate = 120;   // Rate after extension
+        let currentPayoutDate = new Date('2026-05-20');
         let extendedPayoutDate = new Date('2026-06-20');
         
         // ===========================================
         // CONSTANTS - FULLY DYNAMIC
         // ===========================================
         const INVESTMENT_AMOUNT = 47720;
+        const PROMO_START_DATE = new Date('2026-02-23');
+        const PROMO_END_DATE = new Date('2026-05-20');
         const FIRST_EARNING_DATE = new Date('2026-02-23');
         
-        // TODAY'S DATE - MAY 19, 2026 (Tuesday)
-        const TODAY = new Date('2026-05-19');
+        // TODAY'S DATE - DYNAMIC (May 19, 2026)
+        const TODAY = new Date();
 
         // US Holidays
         const HOLIDAYS = [
@@ -1367,113 +1393,101 @@
         }
 
         // ===========================================
-        // LOAD INVESTMENT STATE FROM FIRESTORE
-        // ===========================================
-        async function loadInvestmentState(userId) {
-            try {
-                const userDoc = await db.collection('users').doc(userId).get();
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    if (userData.investmentState && userData.investmentState.isExtended) {
-                        isExtended = true;
-                        extensionDays = userData.investmentState.extensionDays || 1;
-                        extendedPayoutDate = new Date(userData.investmentState.newPayoutDate || '2026-06-20');
-                        extendedDailyRate = userData.investmentState.dailyRate || 120;
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading investment state:', error);
-            }
-            updateUIForExtension();
-        }
-
-        // ===========================================
-        // UPDATE UI FOR EXTENSION STATUS
-        // ===========================================
-        function updateUIForExtension() {
-            if (isExtended) {
-                // Show extended timeline item
-                extendedTimelineItem.style.display = 'block';
-                extendedStartDate.textContent = '21st May 2026';
-                extendedPlanText.textContent = `Investment extended by ${extensionDays} month at $${extendedDailyRate}/day starting May 21, 2026`;
-                extendedPayoutText.textContent = `New payout date: ${formatDateWithOrdinal(extendedPayoutDate)}`;
-                
-                // Show extended detail rows
-                extendedDetailRow.style.display = 'flex';
-                newPayoutDetailRow.style.display = 'flex';
-                extendedStartDetail.textContent = '21st May 2026';
-                newPayoutDetail.textContent = formatDateWithOrdinal(extendedPayoutDate);
-                
-                extendedFutureRow.style.display = 'flex';
-                extendedDaysRow.style.display = 'flex';
-                extendedEarningsRow.style.display = 'flex';
-                
-                // Calculate extended plan days from May 21 to June 20
-                const extendedStart = new Date('2026-05-21');
-                const extendedEnd = extendedPayoutDate;
-                const extendedBusinessDays = countBusinessDays(extendedStart, extendedEnd);
-                const extendedProjectedEarnings = extendedBusinessDays * extendedDailyRate;
-                
-                extendedDays.textContent = `${extendedBusinessDays} business days`;
-                extendedEarnings.textContent = `$${extendedProjectedEarnings.toLocaleString()}`;
-                
-                // Hide extend button after extension
-                const extendBtn = document.getElementById('extendInvestmentBtn');
-                if (extendBtn) extendBtn.style.display = 'none';
-            } else {
-                extendedTimelineItem.style.display = 'none';
-                extendedDetailRow.style.display = 'none';
-                newPayoutDetailRow.style.display = 'none';
-                extendedFutureRow.style.display = 'none';
-                extendedDaysRow.style.display = 'none';
-                extendedEarningsRow.style.display = 'none';
-            }
-        }
-
-        // ===========================================
-        // CALCULATE CURRENT STATS - CORRECT FOR MAY 19
+        // CALCULATE CURRENT STATS - PRESERVES ALL HISTORY
         // ===========================================
         function calculateCurrentStats() {
-            // Days earned from FIRST_EARNING_DATE to TODAY (May 19 = 57 days)
-            const daysEarned = countBusinessDays(FIRST_EARNING_DATE, TODAY);
-            const totalEarnings = daysEarned * 220; // Always 220 for current plan
-            const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
+            // Days earned in PROMOTIONAL plan (Feb 23 - May 20)
+            let daysEarnedPromo = 0;
+            if (TODAY <= PROMO_END_DATE) {
+                daysEarnedPromo = countBusinessDays(FIRST_EARNING_DATE, TODAY);
+            } else {
+                daysEarnedPromo = countBusinessDays(FIRST_EARNING_DATE, PROMO_END_DATE);
+            }
             
-            // Days remaining from TOMORROW to ORIGINAL PAYOUT DATE (May 20 = 0 days? Actually today is May 19, tomorrow May 20 is last day)
-            const tomorrow = new Date(TODAY);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const daysRemaining = countBusinessDays(tomorrow, originalPayoutDate);
+            const promoEarnings = daysEarnedPromo * 220;
+            let currentBalance = INVESTMENT_AMOUNT + promoEarnings;
+            let totalEarnings = promoEarnings;
             
+            // If extended and after May 20, add extended earnings
+            let daysEarnedExtended = 0;
+            let extendedEarnings = 0;
+            if (isExtended && TODAY > PROMO_END_DATE) {
+                const extendedStart = new Date(PROMO_END_DATE);
+                extendedStart.setDate(extendedStart.getDate() + 1);
+                daysEarnedExtended = countBusinessDays(extendedStart, TODAY);
+                extendedEarnings = daysEarnedExtended * extendedDailyRate;
+                currentBalance += extendedEarnings;
+                totalEarnings += extendedEarnings;
+            }
+            
+            // Days remaining in current plan (only if not past end date)
+            let daysRemaining = 0;
+            if (TODAY < PROMO_END_DATE) {
+                const tomorrow = new Date(TODAY);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                daysRemaining = countBusinessDays(tomorrow, PROMO_END_DATE);
+            }
+            
+            // Future earnings from current plan
             const futureEarnings = daysRemaining * 220;
             const totalProjectedEarnings = totalEarnings + futureEarnings;
             
-            // Days to payout
-            const daysToPayout = getDaysBetweenDates(TODAY, originalPayoutDate);
+            // For extended plan projection
+            let extendedFutureDays = 0;
+            let extendedFutureEarnings = 0;
+            if (isExtended) {
+                const extendedStart = new Date(PROMO_END_DATE);
+                extendedStart.setDate(extendedStart.getDate() + 1);
+                if (TODAY < extendedPayoutDate) {
+                    const startDate = TODAY > PROMO_END_DATE ? TODAY : PROMO_END_DATE;
+                    const tomorrow = new Date(startDate);
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    extendedFutureDays = countBusinessDays(tomorrow, extendedPayoutDate);
+                    extendedFutureEarnings = extendedFutureDays * extendedDailyRate;
+                }
+            }
+            
+            const totalExtendedProjected = totalEarnings + futureEarnings + extendedFutureEarnings;
             
             return {
                 totalInvestment: INVESTMENT_AMOUNT,
                 currentBalance: currentBalance,
                 totalEarnings: totalEarnings,
-                daysEarned: daysEarned,
+                daysEarnedPromo: daysEarnedPromo,
                 daysRemaining: daysRemaining,
                 futureEarnings: futureEarnings,
                 totalProjectedEarnings: totalProjectedEarnings,
-                daysToPayout: daysToPayout
+                extendedFutureEarnings: extendedFutureEarnings,
+                totalExtendedProjected: totalExtendedProjected,
+                daysToPayout: getDaysBetweenDates(TODAY, isExtended ? extendedPayoutDate : currentPayoutDate),
+                promoEndDate: PROMO_END_DATE,
+                extendedStartDate: new Date(PROMO_END_DATE.getTime() + 86400000),
+                extendedEndDate: extendedPayoutDate
             };
         }
 
         // ===========================================
-        // UPDATE ALL UI
+        // UPDATE UI BASED ON EXTENSION STATUS
         // ===========================================
-        function updateAllUI() {
+        function updateUIForRate() {
             const stats = calculateCurrentStats();
-            const rateText = '$220/day';
-            dailyRateDisplay.textContent = rateText;
-            if (rateTag) rateTag.textContent = '$220/DAY';
-            if (detailDailyRate) detailDailyRate.textContent = rateText;
             
-            // Update main stats
-            totalInvestmentEl.textContent = `$${stats.totalInvestment.toLocaleString()}`;
+            // Update main display
+            const rateText = currentDailyRate === 220 ? '$220/day' : '$120/day';
+            dailyRateDisplay.textContent = rateText;
+            if (rateTag) rateTag.textContent = currentDailyRate === 220 ? '$220/DAY' : '$120/DAY';
+            if (detailDailyRate) detailDailyRate.textContent = rateText;
+            if (detailPlan) detailPlan.textContent = isExtended ? 'Extended Plan (After May 20)' : '3 Months Promotional';
+            
+            // Update dates
+            const displayPayoutDate = isExtended ? extendedPayoutDate : currentPayoutDate;
+            if (detailMaturityDate) detailMaturityDate.textContent = formatDateWithOrdinal(displayPayoutDate);
+            if (payoutDate) payoutDate.textContent = formatDateWithOrdinal(displayPayoutDate);
+            if (payoutDateWarning) payoutDateWarning.textContent = formatDateWithOrdinal(displayPayoutDate);
+            if (daysLeftWarning) daysLeftWarning.textContent = stats.daysToPayout;
+            if (payoutDateText) payoutDateText.textContent = formatDateWithOrdinal(displayPayoutDate);
+            
+            // Update balance and earnings
             currentBalanceEl.textContent = `$${stats.currentBalance.toLocaleString()}`;
             totalEarningsEl.textContent = `$${stats.totalEarnings.toLocaleString()}`;
             
@@ -1481,7 +1495,7 @@
             document.getElementById('detailCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
             document.getElementById('detailTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
-            document.getElementById('detailDaysEarned').textContent = `${stats.daysEarned} days`;
+            document.getElementById('detailDaysEarned').textContent = `${stats.daysEarnedPromo} days`;
             document.getElementById('detailDaysRemaining').textContent = `${stats.daysRemaining} days`;
             document.getElementById('futureDays').textContent = `${stats.daysRemaining} days`;
             document.getElementById('daysRemainingSpan').textContent = stats.daysRemaining;
@@ -1490,23 +1504,37 @@
             document.getElementById('detailProjectedEarnings').textContent = `$${stats.totalProjectedEarnings.toLocaleString()}`;
             document.getElementById('detailProjectedPayout').textContent = `$${(INVESTMENT_AMOUNT + stats.totalProjectedEarnings).toLocaleString()}`;
             
-            // Update banner
             document.getElementById('currentStatusDate').textContent = formatDateWithOrdinal(TODAY);
             document.getElementById('currentStatusText').innerHTML = 
                 `Earned $${stats.totalEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
             
-            daysLeftWarning.textContent = stats.daysToPayout;
-            payoutDateWarning.textContent = formatDateWithOrdinal(originalPayoutDate);
-            payoutDateText.textContent = formatDateWithOrdinal(originalPayoutDate);
-            
-            // Generate and display transactions
-            const allTransactions = generateCompleteHistory();
-            updateTransactionLists(allTransactions);
-            updateEarningsTimeline(allTransactions);
+            // Update extended plan details if extended
+            if (isExtended) {
+                if (extendedPlanDetails) extendedPlanDetails.style.display = 'block';
+                if (extendedPlanItem) extendedPlanItem.style.display = 'block';
+                if (extensionInfoBanner) extensionInfoBanner.style.display = 'block';
+                
+                document.getElementById('extendedStartDetail').textContent = formatDateWithOrdinal(stats.extendedStartDate);
+                document.getElementById('extendedEndDetail').textContent = formatDateWithOrdinal(stats.extendedEndDate);
+                document.getElementById('extendedEarningsDetail').textContent = `$${stats.extendedFutureEarnings.toLocaleString()}`;
+                document.getElementById('totalProjectedPayoutDetail').textContent = `$${(INVESTMENT_AMOUNT + stats.totalExtendedProjected).toLocaleString()}`;
+                document.getElementById('extendedPlanDate').textContent = formatDateWithOrdinal(stats.extendedStartDate);
+                document.getElementById('extendedStartDateText').textContent = formatDateWithOrdinal(stats.extendedStartDate);
+                document.getElementById('extendedEndDateText').textContent = formatDateWithOrdinal(stats.extendedEndDate);
+                
+                // Update the extension info banner
+                const extensionBannerText = document.querySelector('#extensionInfoBanner .banner-header div');
+                if (extensionBannerText) {
+                    extensionBannerText.innerHTML = `<strong>🔄 Investment Extended!</strong><br>
+                        Your investment has been extended by <strong>1 month</strong>. 
+                        Current promotional plan (<strong>$220/day</strong>) continues until <strong>${formatDateWithOrdinal(PROMO_END_DATE)}</strong>.
+                        Extended plan (<strong>$120/day</strong>) will automatically start on <strong>${formatDateWithOrdinal(stats.extendedStartDate)}</strong>.`;
+                }
+            }
         }
 
         // ===========================================
-        // GENERATE TRANSACTION HISTORY - PRESERVES ALL HISTORY
+        // GENERATE TRANSACTION HISTORY - PRESERVES ALL EARNINGS
         // ===========================================
         function generateCompleteHistory() {
             const previousHistory = [
@@ -1519,34 +1547,95 @@
                 { type: "reinvest", amount: 47720, date: new Date('2026-02-20'), description: "Auto-Reinvestment - Promotional Plan", status: "completed" }
             ];
             
-            // Add extension record if extended
             if (isExtended) {
                 previousHistory.push({
                     type: "reinvest",
                     amount: 0,
-                    date: new Date('2026-05-20'),
-                    description: `Investment Extended by ${extensionDays} Month - New rate: $${extendedDailyRate}/day starting May 21, 2026`,
-                    status: "pending"
+                    date: TODAY,
+                    description: `Investment Extended by 1 Month - Extended rate $120/day starts on May 21, 2026`,
+                    status: "completed"
                 });
             }
             
-            // Generate promotional earnings from FIRST_EARNING_DATE to TODAY
+            // Generate promotional earnings (Feb 23 - May 20) - ALL at $220
             const promotionalEarnings = [];
-            const current = new Date(FIRST_EARNING_DATE);
-            while (current <= TODAY) {
-                if (isBusinessDay(current)) {
+            let currentDate = new Date(FIRST_EARNING_DATE);
+            const endDate = new Date(PROMO_END_DATE);
+            
+            while (currentDate <= endDate && currentDate <= TODAY) {
+                if (isBusinessDay(currentDate)) {
                     promotionalEarnings.push({
                         type: "earning",
                         amount: 220,
-                        date: new Date(current),
-                        description: "Daily Earnings - Promotional Plan",
+                        date: new Date(currentDate),
+                        description: "Daily Earnings - Promotional Plan ($220/day)",
                         status: "completed"
                     });
                 }
-                current.setDate(current.getDate() + 1);
+                currentDate.setDate(currentDate.getDate() + 1);
             }
             
-            return [...previousHistory, ...promotionalEarnings].sort((a, b) => b.date - a.date);
+            // Generate extended earnings only if TODAY is after May 20 AND extension is active
+            const extendedEarnings = [];
+            if (isExtended && TODAY > PROMO_END_DATE) {
+                let extendedDate = new Date(PROMO_END_DATE);
+                extendedDate.setDate(extendedDate.getDate() + 1);
+                while (extendedDate <= TODAY) {
+                    if (isBusinessDay(extendedDate)) {
+                        extendedEarnings.push({
+                            type: "earning",
+                            amount: extendedDailyRate,
+                            date: new Date(extendedDate),
+                            description: "Daily Earnings - Extended Plan ($120/day)",
+                            status: "completed"
+                        });
+                    }
+                    extendedDate.setDate(extendedDate.getDate() + 1);
+                }
+            }
+            
+            return [...previousHistory, ...promotionalEarnings, ...extendedEarnings].sort((a, b) => b.date - a.date);
+        }
+
+        // ===========================================
+        // FORMATTING FUNCTIONS
+        // ===========================================
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function formatDateWithOrdinal(date) {
+            const day = date.getDate();
+            const suffix = getOrdinalSuffix(day);
+            const month = date.toLocaleDateString('en-US', { month: 'long' });
+            const year = date.getFullYear();
+            return `${day}${suffix} ${month} ${year}`;
+        }
+
+        function getOrdinalSuffix(day) {
+            if (day > 3 && day < 21) return 'th';
+            switch (day % 10) {
+                case 1: return "st";
+                case 2: return "nd";
+                case 3: return "rd";
+                default: return "th";
+            }
+        }
+
+        // ===========================================
+        // UPDATE DASHBOARD
+        // ===========================================
+        function updateDashboard() {
+            const allTransactions = generateCompleteHistory();
+            
+            updateUIForRate();
+            updateTransactionLists(allTransactions);
+            updateEarningsTimeline(allTransactions);
+            
+            console.log(`📊 Dashboard updated for: ${formatDate(TODAY)}`);
+            const stats = calculateCurrentStats();
+            console.log(`   Days earned: ${stats.daysEarnedPromo}, Balance: $${stats.currentBalance}`);
+            console.log(`   Is Extended: ${isExtended}, Days to payout: ${stats.daysToPayout}`);
         }
 
         // ===========================================
@@ -1612,7 +1701,7 @@
             const timelineElement = document.getElementById('earningsTimeline');
             if (!timelineElement) return;
             
-            const earnings = transactions.filter(t => t.type === 'earning' && t.description.includes('Promotional'));
+            const earnings = transactions.filter(t => t.type === 'earning');
             
             if (earnings.length === 0) {
                 timelineElement.innerHTML = '<div class="month-earnings">No earnings yet. First earning starts Feb 23, 2026.</div>';
@@ -1634,7 +1723,8 @@
                 monthlyEarnings[monthYear].total += earning.amount;
                 monthlyEarnings[monthYear].days.push({
                     date: date,
-                    amount: earning.amount
+                    amount: earning.amount,
+                    description: earning.description
                 });
             });
             
@@ -1652,10 +1742,12 @@
                         <div class="daily-earnings">
                             ${data.days.map(day => {
                                 const isWeekend = day.date.getDay() === 0 || day.date.getDay() === 6;
+                                const rateTag = day.amount === 220 ? '🎯 Promo' : '📌 Extended';
                                 return `
                                     <div class="day-earning ${isWeekend ? 'weekend' : ''}">
                                         <div class="day-date">${day.date.getDate()} ${day.date.toLocaleDateString('en-US', { month: 'short' })}</div>
                                         <div class="day-amount">$${day.amount}</div>
+                                        <div style="font-size: 0.65rem; opacity: 0.7;">${rateTag}</div>
                                     </div>
                                 `;
                             }).join('')}
@@ -1665,31 +1757,6 @@
             });
             
             timelineElement.innerHTML = timelineHTML;
-        }
-
-        // ===========================================
-        // FORMATTING FUNCTIONS
-        // ===========================================
-        function formatDate(date) {
-            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        }
-
-        function formatDateWithOrdinal(date) {
-            const day = date.getDate();
-            const suffix = getOrdinalSuffix(day);
-            const month = date.toLocaleDateString('en-US', { month: 'long' });
-            const year = date.getFullYear();
-            return `${day}${suffix} ${month} ${year}`;
-        }
-
-        function getOrdinalSuffix(day) {
-            if (day > 3 && day < 21) return 'th';
-            switch (day % 10) {
-                case 1: return "st";
-                case 2: return "nd";
-                case 3: return "rd";
-                default: return "th";
-            }
         }
 
         // ===========================================
@@ -1716,6 +1783,10 @@
         }
         
         function showExtendModal() {
+            if (isExtended) {
+                showNotification('You have already extended your investment. Only one extension is allowed.', 'info');
+                return;
+            }
             extendModal.classList.add('active');
         }
         
@@ -1731,7 +1802,10 @@
             
             // Update investment state
             isExtended = true;
-            extensionDays = selectedMonths;
+            extensionMonths = selectedMonths;
+            currentDailyRate = 220;  // Current rate stays 220 until May 20
+            extendedDailyRate = 120;
+            extendedPayoutDate = new Date('2026-06-20');
             
             // Save to Firestore
             try {
@@ -1740,8 +1814,10 @@
                     await db.collection('users').doc(user.uid).update({
                         investmentState: {
                             isExtended: true,
-                            extensionDays: selectedMonths,
-                            dailyRate: extendedDailyRate,
+                            extensionMonths: selectedMonths,
+                            currentDailyRate: 220,
+                            extendedDailyRate: 120,
+                            originalEndDate: PROMO_END_DATE.toISOString(),
                             newPayoutDate: extendedPayoutDate.toISOString(),
                             extendedAt: new Date().toISOString()
                         }
@@ -1752,12 +1828,16 @@
             }
             
             // Update UI
-            updateUIForExtension();
-            updateAllUI();
+            updateUIForRate();
+            updateDashboard();
             
             // Close modal and show success
             closeExtendModal();
-            showNotification(`Investment extended by ${selectedMonths} month! Extended plan ($${extendedDailyRate}/day) will start on May 21, 2026.`, 'success');
+            showNotification(`Investment extension confirmed! Your $220/day promotional plan continues until May 20. Extended plan ($120/day) starts on May 21.`, 'success');
+            
+            // Hide the extend button after extension
+            const extendBtn = document.getElementById('extendInvestmentBtn');
+            if (extendBtn) extendBtn.style.display = 'none';
         }
 
         // ===========================================
@@ -1771,6 +1851,30 @@
                 document.getElementById('bogBanner').style.display = 'block';
                 const stats = calculateCurrentStats();
                 daysLeftWarning.textContent = stats.daysToPayout;
+            }
+        }
+        
+        // ===========================================
+        // LOAD INVESTMENT STATE FROM FIRESTORE
+        // ===========================================
+        async function loadInvestmentState(userId) {
+            try {
+                const userDoc = await db.collection('users').doc(userId).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.investmentState) {
+                        isExtended = userData.investmentState.isExtended || false;
+                        extensionMonths = userData.investmentState.extensionMonths || 0;
+                        
+                        if (isExtended) {
+                            extendedPayoutDate = new Date(userData.investmentState.newPayoutDate || '2026-06-20');
+                            const extendBtn = document.getElementById('extendInvestmentBtn');
+                            if (extendBtn) extendBtn.style.display = 'none';
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading investment state:', error);
             }
         }
 
@@ -1844,15 +1948,16 @@
             } else {
                 logoutBtn.style.display = 'block';
                 await loadInvestmentState(user.uid);
-                updateAllUI();
+                updateUIForRate();
+                updateDashboard();
                 loadUserProfile(user);
                 loadVerificationStatus();
                 
                 console.log(`✅ Dashboard loaded for: ${formatDate(TODAY)}`);
                 const stats = calculateCurrentStats();
-                console.log(`💰 Days earned: ${stats.daysEarned}, Balance: $${stats.currentBalance}`);
-                console.log(`📅 Days remaining: ${stats.daysRemaining}, Payout: ${formatDate(originalPayoutDate)}`);
-                console.log(`🔁 Extended: ${isExtended ? 'Yes' : 'No'}`);
+                console.log(`💰 Days earned: ${stats.daysEarnedPromo}, Balance: $${stats.currentBalance}`);
+                console.log(`📅 Days remaining in current plan: ${stats.daysRemaining}`);
+                console.log(`📌 Is Extended: ${isExtended}`);
             }
         });
 
@@ -1885,7 +1990,13 @@
         // INITIALIZE
         // ===========================================
         document.addEventListener('DOMContentLoaded', () => {
-            updateAllUI();
+            updateUIForRate();
+            updateDashboard();
+            
+            // Auto-refresh every hour
+            setInterval(() => {
+                location.reload();
+            }, 3600000);
         });
     </script>
 </body>
