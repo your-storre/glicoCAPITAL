@@ -1473,6 +1473,9 @@
         // ===========================================
         // UPDATE UI FOR CURRENT STATE
         // ===========================================
+               // ===========================================
+        // UPDATE UI FOR CURRENT STATE - FIXED BANNER DAYS
+        // ===========================================
         function updateUI() {
             const stats = calculateCurrentStats();
             
@@ -1486,6 +1489,8 @@
                 todayEarningBadge.innerHTML = '<i class="fas fa-arrow-up"></i> <span>+$220 today</span>';
             } else if (stats.isInExtendedPeriod && isBusinessDay(TODAY)) {
                 todayEarningBadge.innerHTML = '<i class="fas fa-arrow-up"></i> <span>+$120 today</span>';
+            } else if (isBusinessDay(TODAY)) {
+                todayEarningBadge.innerHTML = '<i class="fas fa-arrow-up"></i> <span>+$220 today</span>';
             } else {
                 todayEarningBadge.innerHTML = '<span>Weekend - No earnings</span>';
             }
@@ -1508,18 +1513,38 @@
             document.getElementById('totalExpected').textContent = `$${stats.totalProjectedEarnings.toLocaleString()}`;
             document.getElementById('detailProjectedPayout').textContent = `$${(INVESTMENT_AMOUNT + stats.totalProjectedEarnings).toLocaleString()}`;
             
-            // Update banner warning
-            if (daysLeftWarning) daysLeftWarning.textContent = stats.daysToPayout;
-            if (payoutDateWarning) payoutDateWarning.textContent = stats.isInPromoPeriod ? 'May 20, 2026' : 'June 20, 2026';
-            if (payoutDateText) payoutDateText.textContent = stats.isInPromoPeriod ? 'May 20, 2026' : 'June 20, 2026';
+            // ===========================================
+            // FIXED: BANNER DAYS CALCULATION
+            // ===========================================
+            // Calculate correct days to payout based on extension status
+            let correctDaysToPayout = stats.daysToPayout;
+            let correctPayoutDate = stats.isInPromoPeriod ? 'May 20, 2026' : 'June 20, 2026';
+            
+            // If extended, use extended payout date for banner
+            if (isExtended) {
+                const today = new Date();
+                const extendedEnd = new Date(EXTENDED_END_DATE);
+                const timeDiff = extendedEnd.getTime() - today.getTime();
+                correctDaysToPayout = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                correctPayoutDate = 'June 20, 2026';
+            }
+            
+            // Update banner warning with correct days
+            if (daysLeftWarning) daysLeftWarning.textContent = correctDaysToPayout;
+            if (payoutDateWarning) payoutDateWarning.textContent = correctPayoutDate;
+            if (payoutDateText) payoutDateText.textContent = correctPayoutDate;
             
             // Update current status text
             const statusText = document.getElementById('currentStatusText');
             if (statusText) {
-                if (stats.isInPromoPeriod) {
+                if (stats.isInPromoPeriod && !isExtended) {
                     statusText.innerHTML = `Earned $${stats.promoEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
+                } else if (stats.isInPromoPeriod && isExtended) {
+                    statusText.innerHTML = `Earned $${stats.promoEarnings.toLocaleString()} so far. Extended plan will start on May 21, 2026 at $120/day. Current balance: $${stats.currentBalance.toLocaleString()}`;
                 } else if (stats.isInExtendedPeriod) {
                     statusText.innerHTML = `Promotional plan completed. Extended plan active: Earned $${stats.extendedEarnings.toLocaleString()} at $120/day. Total: $${stats.totalEarnings.toLocaleString()}`;
+                } else {
+                    statusText.innerHTML = `Earned $${stats.totalEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
                 }
             }
             
@@ -1551,7 +1576,8 @@
                 const extendedPlanText = document.getElementById('extendedPlanText');
                 if (extendedPlanText) {
                     if (TODAY < EXTENDED_START_DATE) {
-                        extendedPlanText.innerHTML = 'Starting May 21, 2026 at $120/day';
+                        const daysUntilStart = getDaysBetweenDates(TODAY, EXTENDED_START_DATE);
+                        extendedPlanText.innerHTML = `Starting in ${daysUntilStart} days on May 21, 2026 at $120/day`;
                     } else if (TODAY >= EXTENDED_START_DATE && TODAY <= EXTENDED_END_DATE) {
                         extendedPlanText.innerHTML = `Active: ${formatDateWithOrdinal(EXTENDED_START_DATE)} - ${formatDateWithOrdinal(EXTENDED_END_DATE)} at $120/day`;
                     } else {
