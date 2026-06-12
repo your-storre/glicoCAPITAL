@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | GlicoCapital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Premium Color Scheme */
+        :root {
+            --primary: #1a365d;
+            --primary-dark: #0f2040;
+            --primary-light: #2d4a80;
+            --secondary: #d4af37;
+            --secondary-dark: #b8941f;
+            --accent: #00b4d8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --promo-gradient: linear-gradient(135deg, #ff6b6b, #ff8e53);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            color: var(--light);
+            min-height: 100vh;
+            padding-bottom: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.03"><polygon fill="white" points="0,1000 1000,0 1000,1000"/></svg>');
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Premium Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            background: rgba(26, 54, 93, 0.8);
+            backdrop-filter: blur(15px);
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo img {
+            height: 38px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .logo h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            overflow: hidden;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Welcome Section */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .welcome-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .welcome-section p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        /* Banner Container */
+        .banner-container {
+            margin-bottom: 20px;
+        }
+        
+        /* BoG Verification Banner */
+        .bog-banner {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(245, 158, 11, 0.1));
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid var(--warning);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bog-banner.warning {
+            border-color: var(--danger);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
+        }
+        
+        .bog-banner.success {
+            border-color: var(--success);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
+        }
+        
+        .bog-banner .banner-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .bog-banner .banner-icon {
+            font-size: 2rem;
+            color: var(--warning);
+        }
+        
+        .bog-banner.warning .banner-icon {
+            color: var(--danger);
+        }
+        
+        .bog-banner.success .banner-icon {
+            color: var(--success);
+        }
+        
+        .bog-banner h3 {
+            font-size: 1.3rem;
+            flex: 1;
+        }
+        
+        .bog-banner .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-not-started {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+        
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+        
+        .status-approved {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .status-booked {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+        
+        .status-completed {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .bog-banner .banner-content {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .bog-banner .banner-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        /* Appointment Info Banner - Replaces warning when booked */
+        .appointment-banner {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(0, 180, 216, 0.1));
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 2px solid var(--success);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .appointment-banner .banner-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .appointment-banner .banner-icon {
+            font-size: 2rem;
+            color: var(--success);
+        }
+        
+        .appointment-banner .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .appointment-details {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .appointment-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .appointment-detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .appointment-label {
+            font-weight: 600;
+            opacity: 0.8;
+        }
+        
+        .appointment-value {
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        /* Extension Info Banner */
+        .extension-banner {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(0, 180, 216, 0.1));
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border: 2px solid var(--secondary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .extension-banner .banner-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .extension-banner .banner-icon {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--secondary);
+            color: var(--primary-dark);
+        }
+        
+        .btn-close-banner {
+            background: transparent;
+            border: 1px solid var(--gray);
+            color: var(--gray-light);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #0c9e6e);
+            color: white;
+        }
+        
+        /* Extend Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+        }
+        
+        .modal-content h3 {
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        .extend-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 25px 0;
+        }
+        
+        .extend-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .extend-option:hover {
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--secondary);
+        }
+        
+        .extend-option.selected {
+            background: rgba(212, 175, 55, 0.2);
+            border-color: var(--secondary);
+        }
+        
+        .extend-days {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .extend-rate {
+            font-size: 0.9rem;
+            color: var(--success);
+            margin-top: 5px;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--glass-border);
+            color: white;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            opacity: 0.8;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 12px 0;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            color: var(--gray-light);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin-top: 8px;
+            font-size: 0.8rem;
+        }
+        
+        .trend-up {
+            color: var(--success);
+        }
+        
+        /* Detail Pages */
+        .detail-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .detail-page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .detail-content {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 500px;
+            margin: 50px auto;
+            border: 1px solid var(--glass-border);
+            position: relative;
+        }
+        
+        .close-detail {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        /* Premium Card Design */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--glass-border);
+            color: var(--dark);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+        }
+        
+        .card.glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            color: white;
+            border: 1px solid var(--glass-border);
+        }
+        
+        /* Transaction List */
+        .transaction-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .transaction-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .transaction-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .transaction-list::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 10px;
+        }
+        
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background 0.3s ease;
+            border-radius: 8px;
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+        
+        .transaction-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        
+        .transaction-icon.income {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .transaction-icon.expense {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+        
+        .transaction-icon.payout {
+            background: rgba(37, 99, 235, 0.2);
+            color: var(--primary);
+        }
+        
+        .transaction-icon.reinvest {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--secondary);
+        }
+        
+        .transaction-details {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .transaction-details h4 {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .transaction-date {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            margin-left: 10px;
+        }
+        
+        .transaction-amount.positive {
+            color: var(--success);
+        }
+        
+        .transaction-amount.negative {
+            color: var(--danger);
+        }
+        
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .section-header h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+        
+        /* Earnings Timeline */
+        .earnings-timeline {
+            margin-top: 20px;
+        }
+        
+        .month-earnings {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .month-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .month-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .month-total {
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .daily-earnings {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .day-earning {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .day-earning.weekend {
+            opacity: 0.5;
+        }
+        
+        .day-date {
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+        
+        .day-amount {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+        
+        /* Payout Info */
+        .payout-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .info-value {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        /* Profile Upload */
+        .profile-upload {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .profile-upload input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        /* Premium Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 54, 93, 0.95);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: space-around;
+            padding: 14px 0;
+            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            border-top: 1px solid var(--glass-border);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--gray-light);
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 6px 10px;
+            border-radius: 10px;
+            min-width: 50px;
+        }
+        
+        .nav-item.active, .nav-item:hover {
+            color: var(--secondary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+        
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            width: 24px;
+            height: 2px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+        
+        .nav-icon {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+        
+        /* Footer Styles */
+        .app-footer {
+            background: rgba(26, 54, 93, 0.9);
+            backdrop-filter: blur(15px);
+            padding: 40px 20px 30px;
+            margin-top: 40px;
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-logo img {
+            height: 35px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .footer-logo h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, white, var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .footer-address {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .footer-copyright {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass-border);
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .footer-email {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+        
+        .footer-email:hover {
+            text-decoration: underline;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-in {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--glass-border);
+            border-top-color: var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            header {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .stat-card {
+                padding: 16px 12px;
+            }
+            
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            
+            .detail-content {
+                margin: 20px auto;
+                padding: 20px;
+            }
+            
+            .daily-earnings {
+                grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+                gap: 6px;
+            }
+            
+            .bog-banner .banner-header,
+            .extension-banner .banner-header,
+            .appointment-banner .banner-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .extend-options {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .detail-content {
+                padding: 15px;
+                margin: 10px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading your dashboard...</div>
+    </div>
+
+    <div id="dashboardContent" style="display: none;">
+        <!-- Premium Header -->
+        <header>
+            <div class="logo">
+                <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
+                <h1>GlicoCapital</h1>
+            </div>
+            <div class="user-menu">
+                <button class="btn btn-outline" id="logoutBtn" style="padding: 8px 16px; font-size: 0.85rem; background: rgba(239, 68, 68, 0.2); color: white; border: 1px solid var(--danger); border-radius: 8px; cursor: pointer;">Logout</button>
+                <div class="user-avatar profile-upload" id="userAvatar">
+                    <span id="avatarInitial">F</span>
+                    <input type="file" id="avatarUpload" accept="image/*">
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="container">
+            <div class="welcome-section animate-in">
+                <h2>Welcome back, Felicity!</h2>
+                <p id="welcomeMessage">Your investment extension is active! <strong>$120/day</strong> from May 21, 2026 until June 20, 2026.</p>
+            </div>
+
+            <!-- Banner Container - Dynamic based on appointment status -->
+            <div class="banner-container" id="bannerContainer">
+                <!-- BoG Verification Banner (shown when no appointment booked) -->
+                <div id="bogBanner" class="bog-banner animate-in warning" style="display: none;">
+                    <div class="banner-header">
+                        <div class="banner-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>⚠️ URGENT: Bank of Ghana Compliance Required</h3>
+                        <span id="verificationStatusBadge" class="status-badge status-not-started">Not Started</span>
+                    </div>
+                    <div class="banner-content">
+                        <p>The Bank of Ghana requires biometric verification for amounts over <strong>$40,000</strong> to prevent fraud and money laundering.</p>
+                        <p><strong>⚠️ Your payout is scheduled for <span id="payoutDateWarning">June 20, 2026</span> (<span id="daysLeftWarning">8</span> days away).</strong> Without verification, the Bank of Ghana will hold your payout.</p>
+                        <p id="verificationMessage">Please complete your biometric verification immediately to avoid payout delay.</p>
+                    </div>
+                    <div class="banner-actions">
+                        <button class="btn btn-danger" onclick="goToVerification()">
+                            <i class="fas fa-calendar-check"></i> Book Appointment Now
+                        </button>
+                        <button class="btn btn-close-banner" onclick="closeBanner()">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Appointment Info Banner (shown when appointment is booked) -->
+                <div id="appointmentBanner" class="appointment-banner animate-in" style="display: none;">
+                    <div class="banner-header">
+                        <div class="banner-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>✅ Biometric Appointment Confirmed</h3>
+                        <span class="status-badge" id="appointmentStatusBadge">Confirmed</span>
+                    </div>
+                    <div class="appointment-details" id="appointmentDetails">
+                        <div class="appointment-detail-row">
+                            <span class="appointment-label"><i class="fas fa-calendar-day"></i> Appointment Date:</span>
+                            <span class="appointment-value" id="appointmentDate">Loading...</span>
+                        </div>
+                        <div class="appointment-detail-row">
+                            <span class="appointment-label"><i class="fas fa-clock"></i> Time Slot:</span>
+                            <span class="appointment-value" id="appointmentTime">Loading...</span>
+                        </div>
+                        <div class="appointment-detail-row">
+                            <span class="appointment-label"><i class="fas fa-map-marker-alt"></i> Location:</span>
+                            <span class="appointment-value" id="appointmentLocation">3A Digya Lane, Airport Residential Area, Accra, Ghana</span>
+                        </div>
+                        <div class="appointment-detail-row">
+                            <span class="appointment-label"><i class="fas fa-hashtag"></i> Reference ID:</span>
+                            <span class="appointment-value" id="appointmentReference">Loading...</span>
+                        </div>
+                    </div>
+                    <div class="banner-content" style="margin-top: 10px;">
+                        <p><i class="fas fa-info-circle"></i> Please bring your original government-issued ID and this confirmation to your appointment.</p>
+                        <p><strong>Status:</strong> Verification pending completion of biometric capture.</p>
+                    </div>
+                    <div class="banner-actions">
+                        <button class="btn btn-outline" onclick="rescheduleAppointment()">
+                            <i class="fas fa-calendar-alt"></i> Reschedule
+                        </button>
+                        <button class="btn btn-danger" onclick="cancelAppointment()">
+                            <i class="fas fa-times"></i> Cancel Appointment
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Extension Info Banner - Shows when extension is active -->
+                <div id="extensionInfoBanner" class="extension-banner" style="display: none;">
+                    <div class="banner-header">
+                        <div class="banner-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div>
+                            <strong>✅ Extension ACTIVE!</strong><br>
+                            Your investment has been successfully extended by <strong>1 month</strong>.
+                            You are now earning <strong>$120/day</strong> (reduced from $220/day).
+                            Final payout date: <strong id="finalPayoutDateDisplay">June 20, 2026</strong>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card animate-in delay-1" id="totalInvestmentCard">
+                    <div class="stat-icon"><i class="fas fa-piggy-bank"></i></div>
+                    <div class="stat-label">Total Investment</div>
+                    <div class="stat-value" id="totalInvestment">$47,720</div>
+                    <div class="stat-trend"><span>Extended Plan</span></div>
+                </div>
+                <div class="stat-card animate-in delay-1" id="currentBalanceCard">
+                    <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="stat-label">Current Balance</div>
+                    <div class="stat-value" id="currentBalance">$62,040</div>
+                    <div class="stat-trend trend-up"><i class="fas fa-arrow-up"></i><span id="todayEarningSpan">+$120 today</span></div>
+                </div>
+                <div class="stat-card animate-in delay-2" id="totalEarningsCard">
+                    <div class="stat-icon"><i class="fas fa-coins"></i></div>
+                    <div class="stat-label">Total Earnings</div>
+                    <div class="stat-value" id="totalEarnings">$14,320</div>
+                    <div class="stat-trend"><span>Since 23 Feb 2026</span></div>
+                </div>
+                <div class="stat-card animate-in delay-2">
+                    <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+                    <div class="stat-label">Current Daily Rate</div>
+                    <div class="stat-value" id="dailyRateDisplay">$120</div>
+                    <div class="stat-trend"><span id="ratePeriodText">Until June 20, 2026</span></div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="card glass animate-in">
+                <div class="section-header">
+                    <h2>Recent Transactions</h2>
+                    <button class="btn btn-outline" onclick="showAllTransactions()" style="padding: 8px 16px; font-size: 0.85rem; background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid var(--glass-border); border-radius: 8px; cursor: pointer;">View All</button>
+                </div>
+                <div class="transaction-list" id="transactionList"></div>
+            </div>
+
+            <!-- Investment Timeline -->
+            <div class="card glass animate-in">
+                <div class="section-header"><h2>Investment Timeline</h2></div>
+                <div class="timeline" style="padding-left: 20px; position: relative;">
+                    <div style="position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--secondary); opacity: 0.5;"></div>
+                    
+                    <div style="position: relative; margin-bottom: 20px;">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
+                        <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">15th May 2025</div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
+                            <h4 style="margin-bottom: 5px; font-weight: 600;">Initial Investment</h4>
+                            <p style="opacity: 0.8; font-size: 0.9rem;">Deposited $5,000 for 4-month Starter Plan</p>
+                        </div>
+                    </div>
+                    
+                    <div style="position: relative; margin-bottom: 20px;">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
+                        <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">15th August 2025</div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
+                            <h4 style="margin-bottom: 5px; font-weight: 600;">Payout Received</h4>
+                            <p style="opacity: 0.8; font-size: 0.9rem;">Received $8,600 payout from completed investment</p>
+                        </div>
+                    </div>
+                    
+                    <div style="position: relative; margin-bottom: 20px;">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
+                        <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">20th September 2025</div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
+                            <h4 style="margin-bottom: 5px; font-weight: 600;">Premium Investment</h4>
+                            <p style="opacity: 0.8; font-size: 0.9rem;">Invested $35,000 in 6-month Premium Plan</p>
+                        </div>
+                    </div>
+                    
+                    <div style="position: relative; margin-bottom: 20px;">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
+                        <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">20th February 2026</div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
+                            <h4 style="margin-bottom: 5px; font-weight: 600;">Premium Plan Matured</h4>
+                            <p style="opacity: 0.8; font-size: 0.9rem;">$47,720 payout reinvested into Promotional Plan</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Current Extended Plan -->
+                    <div style="position: relative; margin-bottom: 20px;" id="currentStatusContainer">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--success); border: 2px solid white; box-shadow: 0 0 0 2px var(--success);"></div>
+                        <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate"></div>
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--success);">
+                            <h4 style="margin-bottom: 5px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-bolt" style="color: var(--success);"></i> <span id="currentPlanName">Extended Plan Active</span>
+                                <span style="background: var(--secondary); color: var(--primary-dark); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;" id="rateTag">$120/DAY</span>
+                            </h4>
+                            <p style="opacity: 0.9; font-size: 0.9rem;" id="currentStatusText"></p>
+                            <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 5px; color: var(--success);" id="remainingDaysText"><i class="fas fa-briefcase"></i> <span id="daysRemainingSpan"></span> business days remaining until payout (<span id="payoutDateText">June 20, 2026</span>)</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Next Payout -->
+                    <div style="position: relative;" id="payoutTimelineItem">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
+                        <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="payoutDate">20th June 2026</div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
+                            <h4 style="margin-bottom: 5px; font-weight: 600;">Final Payout Date</h4>
+                            <p style="opacity: 0.8; font-size: 0.9rem;" id="payoutText">Projected payout from extended plan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extend Investment Modal -->
+        <div id="extendModal" class="modal">
+            <div class="modal-content">
+                <h3><i class="fas fa-calendar-alt"></i> Extend Investment</h3>
+                <p style="margin-bottom: 20px;">Extend your investment by 1 month to buy more time for biometric verification.</p>
+                <div style="background: rgba(239, 68, 68, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                    <p><strong>⚠️ Important - How Extension Works:</strong></p>
+                    <p>• Your current promotional plan (<strong>$220/day</strong>) continues <strong>until May 20, 2026</strong></p>
+                    <p>• All earnings from Feb 23 - May 20 remain at <strong>$220/day</strong></p>
+                    <p>• After May 20, the extended plan (<strong>$120/day</strong>) will automatically start</p>
+                    <p>• New payout date: <strong>June 20, 2026</strong></p>
+                </div>
+                <div class="extend-options">
+                    <div class="extend-option" onclick="selectExtendOption(1)">
+                        <div class="extend-days">1 Month</div>
+                        <div class="extend-rate">$120/day (starts May 21)</div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-danger" onclick="confirmExtend()" id="confirmExtendBtn">Confirm Extension</button>
+                    <button class="btn btn-outline" onclick="closeExtendModal()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Balance Detail Page -->
+        <div class="detail-page" id="currentBalancePage">
+            <div class="detail-content">
+                <button class="close-detail" onclick="closeDetailPage()">×</button>
+                <h2 style="margin-bottom: 20px; color: white;">Current Balance Details</h2>
+                <div class="info-item"><div class="info-label">Current Balance</div><div class="info-value" id="detailCurrentBalance"></div></div>
+                <div class="info-item"><div class="info-label">Investment Plan</div><div class="info-value" id="detailPlan">Extended Plan</div></div>
+                <div class="info-item"><div class="info-label">Initial Investment</div><div class="info-value">$47,720</div></div>
+                <div class="info-item"><div class="info-label">Current Daily Rate</div><div class="info-value" style="color: var(--secondary);" id="detailDailyRate">$120/day</div></div>
+                <div class="info-item"><div class="info-label">Total Earnings</div><div class="info-value" id="detailTotalEarnings"></div></div>
+                <div class="payout-info">
+                    <h3 style="margin-bottom: 15px;">Investment Details</h3>
+                    <div class="info-item"><div class="info-label">Start Date</div><div class="info-value">20th February 2026</div></div>
+                    <div class="info-item"><div class="info-label">First Earning Date</div><div class="info-value" style="color: var(--success);">23rd February 2026</div></div>
+                    <div class="info-item"><div class="info-label">Business Days Earned</div><div class="info-value" id="detailDaysEarned"></div></div>
+                    <div class="info-item"><div class="info-label">Business Days Remaining</div><div class="info-value" id="detailDaysRemaining"></div></div>
+                    <div class="info-item"><div class="info-label">Plan End Date</div><div class="info-value" id="detailMaturityDate">20th June 2026</div></div>
+                    <div class="info-item"><div class="info-label">Projected Earnings</div><div class="info-value" style="color: var(--success);" id="detailProjectedEarnings"></div></div>
+                    <div class="info-item"><div class="info-label">Projected Payout</div><div class="info-value" style="color: var(--success);" id="detailProjectedPayout"></div></div>
+                </div>
+                <div id="extendedPlanDetails" style="display: block; margin-top: 20px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 12px;">
+                    <h4 style="margin-bottom: 10px; color: var(--secondary);"><i class="fas fa-calendar-alt"></i> Extended Plan Details</h4>
+                    <div class="info-item"><span class="info-label">Extended Daily Rate</span><span class="info-value">$120/day</span></div>
+                    <div class="info-item"><span class="info-label">Extended Plan Start</span><span class="info-value" id="extendedStartDetail">May 21, 2026</span></div>
+                    <div class="info-item"><span class="info-label">Extended Plan End</span><span class="info-value" id="extendedEndDetail">June 20, 2026</span></div>
+                    <div class="info-item"><span class="info-label">Projected Extended Earnings</span><span class="info-value" style="color: var(--success);" id="extendedEarningsDetail">$2,520</span></div>
+                    <div class="info-item"><span class="info-label">Total Projected Payout</span><span class="info-value" style="color: var(--success);" id="totalProjectedPayoutDetail">$63,120</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Earnings Detail Page -->
+        <div class="detail-page" id="totalEarningsPage">
+            <div class="detail-content">
+                <button class="close-detail" onclick="closeDetailPage()">×</button>
+                <h2 style="margin-bottom: 20px; color: white;">Earnings Timeline</h2>
+                <div class="info-item"><div class="info-label">Total Earnings</div><div class="info-value" id="detailEarningsTotal"></div></div>
+                <div class="info-item"><div class="info-label">Current Daily Rate</div><div class="info-value">$120</div></div>
+                <div class="info-item"><div class="info-label">First Earning</div><div class="info-value">23rd February 2026</div></div>
+                <div class="earnings-timeline" id="earningsTimeline"></div>
+                <div class="payout-info"><h3 style="margin-bottom: 15px;">Future Projection</h3>
+                    <div class="info-item"><div class="info-label">Business Days Remaining</div><div class="info-value" id="futureDays"></div></div>
+                    <div class="info-item"><div class="info-label">Future Earnings</div><div class="info-value" id="futureEarnings"></div></div>
+                    <div class="info-item"><div class="info-label">Total Expected</div><div class="info-value" style="color: var(--secondary);" id="totalExpected"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Transactions Page -->
+        <div class="detail-page" id="allTransactionsPage">
+            <div class="detail-content">
+                <button class="close-detail" onclick="closeDetailPage()">×</button>
+                <h2 style="margin-bottom: 20px; color: white;">All Transactions</h2>
+                <div class="transaction-list" id="allTransactionList"></div>
+            </div>
+        </div>
+
+        <!-- Premium Bottom Navigation -->
+        <nav class="bottom-nav">
+            <a href="dashboard.html" class="nav-item active"><span class="nav-icon"><i class="fas fa-home"></i></span><span>Home</span></a>
+            <a href="invite.html" class="nav-item"><span class="nav-icon"><i class="fas fa-user-plus"></i></span><span>Invite</span></a>
+            <a href="payouts.html" class="nav-item"><span class="nav-icon"><i class="fas fa-wallet"></i></span><span>Payouts</span></a>
+            <a href="partners.html" class="nav-item"><span class="nav-icon"><i class="fas fa-handshake"></i></span><span>Partners</span></a>
+            <a href="support.html" class="nav-item"><span class="nav-icon"><i class="fas fa-headset"></i></span><span>Support</span></a>
+        </nav>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
+                    <h3>GlicoCapital</h3>
+                </div>
+                <div class="footer-address">
+                    <p>3A Digya Lane, Airport Residential Area, Accra, Ghana</p>
+                    <p>P.O. Box GP 4251, Accra, Ghana</p>
+                    <p>Email: <a href="mailto:support@glicocapital.online" class="footer-email">support@glicocapital.online</a></p>
+                </div>
+                <div class="footer-copyright">
+                    <p>© 2026 Glico Incorporated Operations. All rights reserved.</p>
+                    <p>GlicoCapital is a registered trademark of Glico Inc.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
+            authDomain: "ggic-investment.firebaseapp.com",
+            databaseURL: "https://ggic-investment-default-rtdb.firebaseio.com",
+            projectId: "ggic-investment",
+            storageBucket: "ggic-investment.firebasestorage.app",
+            messagingSenderId: "805530882494",
+            appId: "1:805530882494:web:574b965b3ed0402b0f69ef",
+            measurementId: "G-NR5R3EJM93"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        const rtdb = firebase.database();
+
+        // DOM Elements
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userAvatar = document.getElementById('userAvatar');
+        const avatarInitial = document.getElementById('avatarInitial');
+        const avatarUpload = document.getElementById('avatarUpload');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const dashboardContent = document.getElementById('dashboardContent');
+        
+        // Banner elements
+        const bogBanner = document.getElementById('bogBanner');
+        const appointmentBanner = document.getElementById('appointmentBanner');
+        const extensionInfoBanner = document.getElementById('extensionInfoBanner');
+
+        // ===========================================
+        // CONSTANTS
+        // ===========================================
+        const INVESTMENT_AMOUNT = 47720;
+        const PROMO_END_DATE = new Date('2026-05-20');
+        const EXTENDED_PAYOUT_DATE = new Date('2026-06-20');
+        const FIRST_EARNING_DATE = new Date('2026-02-23');
+        const TODAY = new Date(); // June 12, 2026
+        
+        let isExtended = true;
+        let currentDailyRate = 120;
+        let appointmentData = null;
+
+        // ===========================================
+        // BUSINESS DAY FUNCTIONS
+        // ===========================================
+        function isBusinessDay(date) {
+            const day = date.getDay();
+            return day >= 1 && day <= 5;
+        }
+
+        function countBusinessDays(startDate, endDate) {
+            let count = 0;
+            const current = new Date(startDate);
+            while (current <= endDate) {
+                if (isBusinessDay(current)) count++;
+                current.setDate(current.getDate() + 1);
+            }
+            return count;
+        }
+
+        // ===========================================
+        // CALCULATE STATS FOR JUNE 12, 2026
+        // ===========================================
+        function calculateCurrentStats() {
+            const daysEarnedPromo = countBusinessDays(FIRST_EARNING_DATE, PROMO_END_DATE);
+            const promoEarnings = daysEarnedPromo * 220;
+            
+            let daysEarnedExtended = 0;
+            if (TODAY >= PROMO_END_DATE) {
+                const extendedStart = new Date(PROMO_END_DATE);
+                extendedStart.setDate(extendedStart.getDate() + 1);
+                daysEarnedExtended = countBusinessDays(extendedStart, TODAY);
+            }
+            const extendedEarnings = daysEarnedExtended * 120;
+            
+            const totalEarnings = promoEarnings + extendedEarnings;
+            const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
+            
+            const tomorrow = new Date(TODAY);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const daysRemaining = countBusinessDays(tomorrow, EXTENDED_PAYOUT_DATE);
+            const futureEarnings = daysRemaining * 120;
+            const totalProjectedEarnings = totalEarnings + futureEarnings;
+            const projectedPayout = INVESTMENT_AMOUNT + totalProjectedEarnings;
+            
+            return {
+                totalEarnings: totalEarnings,
+                currentBalance: currentBalance,
+                daysRemaining: daysRemaining,
+                futureEarnings: futureEarnings,
+                projectedEarnings: totalProjectedEarnings,
+                projectedPayout: projectedPayout,
+                daysToPayout: Math.ceil((EXTENDED_PAYOUT_DATE - TODAY) / (1000 * 60 * 60 * 24)),
+                todayEarning: isBusinessDay(TODAY) ? 120 : 0
+            };
+        }
+
+        // ===========================================
+        // LOAD APPOINTMENT FROM FIRESTORE
+        // ===========================================
+        async function loadAppointmentStatus(userId) {
+            try {
+                const userDoc = await db.collection('users').doc(userId).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.verification && userData.verification.appointment) {
+                        const apt = userData.verification.appointment;
+                        if (apt.status === 'confirmed' || apt.status === 'booked') {
+                            appointmentData = apt;
+                            return appointmentData;
+                        }
+                    }
+                }
+                
+                // Also check localStorage as fallback
+                const localAppointment = localStorage.getItem('appointmentData');
+                if (localAppointment) {
+                    appointmentData = JSON.parse(localAppointment);
+                    if (appointmentData.status === 'confirmed') {
+                        return appointmentData;
+                    }
+                }
+                return null;
+            } catch (error) {
+                console.error('Error loading appointment:', error);
+                return null;
+            }
+        }
+
+        // ===========================================
+        // UPDATE BANNER BASED ON APPOINTMENT STATUS
+        // ===========================================
+        function updateBannerBasedOnAppointment() {
+            if (appointmentData && (appointmentData.status === 'confirmed' || appointmentData.status === 'booked')) {
+                // Show appointment banner, hide warning banner
+                if (bogBanner) bogBanner.style.display = 'none';
+                if (appointmentBanner) {
+                    appointmentBanner.style.display = 'block';
+                    
+                    // Format date nicely
+                    let appointmentDateObj = appointmentData.dateObj ? new Date(appointmentData.dateObj) : new Date(appointmentData.date);
+                    const formattedDate = formatDateWithOrdinal(appointmentDateObj);
+                    
+                    document.getElementById('appointmentDate').textContent = formattedDate;
+                    document.getElementById('appointmentTime').textContent = appointmentData.timeSlot || '10:00 AM';
+                    document.getElementById('appointmentLocation').textContent = appointmentData.officeLocation || '3A Digya Lane, Airport Residential Area, Accra, Ghana';
+                    
+                    // Generate reference ID if not present
+                    const refId = appointmentData.referenceId || `BIO-${userId?.slice(-8) || 'FELICITY'}-${appointmentData.date?.replace(/-/g, '') || Date.now()}`;
+                    document.getElementById('appointmentReference').textContent = refId;
+                }
+            } else {
+                // Show warning banner, hide appointment banner
+                if (bogBanner) bogBanner.style.display = 'block';
+                if (appointmentBanner) appointmentBanner.style.display = 'none';
+                
+                // Update days left in warning banner
+                const stats = calculateCurrentStats();
+                const daysLeftSpan = document.getElementById('daysLeftWarning');
+                if (daysLeftSpan) daysLeftSpan.textContent = stats.daysToPayout;
+            }
+        }
+
+        // ===========================================
+        // UPDATE ALL UI
+        // ===========================================
+        function updateUI() {
+            const stats = calculateCurrentStats();
+            
+            // Update stats cards
+            document.getElementById('totalInvestment').textContent = `$${INVESTMENT_AMOUNT.toLocaleString()}`;
+            document.getElementById('currentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
+            document.getElementById('totalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            document.getElementById('dailyRateDisplay').textContent = `$${currentDailyRate}`;
+            
+            const todaySpan = document.getElementById('todayEarningSpan');
+            if (todaySpan && stats.todayEarning > 0) {
+                todaySpan.innerHTML = `+$${stats.todayEarning} today`;
+            }
+            
+            // Update detail pages
+            document.getElementById('detailCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
+            document.getElementById('detailTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            document.getElementById('detailDaysEarned').textContent = `${countBusinessDays(FIRST_EARNING_DATE, TODAY)} days`;
+            document.getElementById('detailDaysRemaining').textContent = `${stats.daysRemaining} days`;
+            document.getElementById('futureDays').textContent = `${stats.daysRemaining} days`;
+            document.getElementById('futureEarnings').textContent = `$${stats.futureEarnings.toLocaleString()}`;
+            document.getElementById('totalExpected').textContent = `$${stats.projectedEarnings.toLocaleString()}`;
+            document.getElementById('detailProjectedEarnings').textContent = `$${stats.projectedEarnings.toLocaleString()}`;
+            document.getElementById('detailProjectedPayout').textContent = `$${stats.projectedPayout.toLocaleString()}`;
+            document.getElementById('daysRemainingSpan').textContent = stats.daysRemaining;
+            
+            // Update timeline
+            document.getElementById('currentStatusDate').textContent = formatDateWithOrdinal(TODAY);
+            document.getElementById('currentStatusText').innerHTML = `Earned $${stats.totalEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
+            
+            // Update payout text
+            const payoutTextEl = document.getElementById('payoutText');
+            if (payoutTextEl) {
+                payoutTextEl.innerHTML = `Projected payout from extended plan: <strong>$${stats.projectedPayout.toLocaleString()}</strong> on ${formatDateWithOrdinal(EXTENDED_PAYOUT_DATE)}`;
+            }
+        }
+
+        // ===========================================
+        // GENERATE TRANSACTION HISTORY
+        // ===========================================
+        function generateTransactionHistory() {
+            const history = [
+                { type: "deposit", amount: 5000, date: new Date('2025-05-15'), description: "Starter Plan Investment Deposit" },
+                { type: "earning", amount: 45, date: new Date('2025-05-16'), description: "Daily Earnings - Starter Plan" },
+                { type: "payout", amount: 8600, date: new Date('2025-08-15'), description: "Starter Plan Payout" },
+                { type: "deposit", amount: 35000, date: new Date('2025-09-20'), description: "Premium Plan Investment Deposit" },
+                { type: "earning", amount: 120, date: new Date('2025-09-23'), description: "Daily Earnings - Premium Plan" },
+                { type: "payout", amount: 47720, date: new Date('2026-02-20'), description: "Premium Plan Payout (Reinvested)" },
+                { type: "reinvest", amount: 47720, date: new Date('2026-02-20'), description: "Auto-Reinvestment - Extended Plan" }
+            ];
+            
+            // Add daily earnings
+            let currentDate = new Date(FIRST_EARNING_DATE);
+            while (currentDate <= TODAY) {
+                if (isBusinessDay(currentDate)) {
+                    const rate = currentDate <= PROMO_END_DATE ? 220 : 120;
+                    history.push({
+                        type: "earning",
+                        amount: rate,
+                        date: new Date(currentDate),
+                        description: rate === 220 ? "Daily Earnings - Promotional Plan ($220/day)" : "Daily Earnings - Extended Plan ($120/day)"
+                    });
+                }
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            return history.sort((a, b) => b.date - a.date);
+        }
+
+        function updateTransactionLists() {
+            const transactions = generateTransactionHistory();
+            const recent = transactions.slice(0, 5);
+            
+            const renderList = (list, parent) => {
+                if (!parent) return;
+                parent.innerHTML = '';
+                list.forEach(t => {
+                    const div = document.createElement('div');
+                    div.className = 'transaction-item';
+                    let icon = t.type === 'earning' ? 'fa-coins' : (t.type === 'payout' ? 'fa-money-check' : (t.type === 'reinvest' ? 'fa-sync-alt' : 'fa-wallet'));
+                    let iconClass = t.type === 'earning' ? 'income' : (t.type === 'payout' ? 'payout' : 'reinvest');
+                    div.innerHTML = `
+                        <div class="transaction-info">
+                            <div class="transaction-icon ${iconClass}"><i class="fas ${icon}"></i></div>
+                            <div class="transaction-details">
+                                <h4>${t.description}</h4>
+                                <div class="transaction-date">${t.date.toLocaleDateString()}</div>
+                            </div>
+                        </div>
+                        <div class="transaction-amount positive">+$${t.amount.toLocaleString()}</div>
+                    `;
+                    parent.appendChild(div);
+                });
+            };
+            
+            renderList(recent, document.getElementById('transactionList'));
+            renderList(transactions, document.getElementById('allTransactionList'));
+        }
+
+        // ===========================================
+        // FORMATTING FUNCTIONS
+        // ===========================================
+        function formatDateWithOrdinal(date) {
+            const day = date.getDate();
+            const suffix = ['th', 'st', 'nd', 'rd'][(day % 10 > 3 ? 0 : day % 10)] || 'th';
+            const month = date.toLocaleDateString('en-US', { month: 'long' });
+            return `${day}${suffix} ${month} ${date.getFullYear()}`;
+        }
+
+        // ===========================================
+        // ACTION FUNCTIONS
+        // ===========================================
+        function goToVerification() {
+            window.location.href = 'verification.html';
+        }
+        
+        function closeBanner() {
+            if (bogBanner) bogBanner.style.display = 'none';
+            localStorage.setItem('bogBannerClosed', 'true');
+        }
+        
+        function rescheduleAppointment() {
+            window.location.href = 'verification.html';
+        }
+        
+        async function cancelAppointment() {
+            if (confirm('Are you sure you want to cancel your appointment? You will need to book a new one.')) {
+                try {
+                    const user = auth.currentUser;
+                    if (user) {
+                        await db.collection('users').doc(user.uid).update({
+                            'verification.appointment.status': 'cancelled'
+                        });
+                    }
+                    localStorage.removeItem('appointmentData');
+                    appointmentData = null;
+                    updateBannerBasedOnAppointment();
+                    showNotification('Appointment cancelled successfully.', 'success');
+                } catch (error) {
+                    console.error('Error cancelling appointment:', error);
+                    showNotification('Error cancelling appointment. Please try again.', 'error');
+                }
+            }
+        }
+        
+        function showAllTransactions() {
+            document.getElementById('allTransactionsPage').classList.add('active');
+        }
+        
+        function closeDetailPage() {
+            document.querySelectorAll('.detail-page').forEach(p => p.classList.remove('active'));
+        }
+        
+        function showExtendModal() {
+            showNotification('Extension is already active on this account.', 'info');
+        }
+        
+        function closeExtendModal() {
+            const modal = document.getElementById('extendModal');
+            if (modal) modal.classList.remove('active');
+        }
+        
+        function selectExtendOption(months) {}
+        async function confirmExtend() { showNotification('Extension already applied.', 'info'); }
+        
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 90px; right: 20px; z-index: 9999;
+                padding: 15px 20px; border-radius: 12px;
+                background: ${type === 'success' ? '#10b981' : '#3b82f6'};
+                color: white; animation: fadeInUp 0.3s ease;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            `;
+            notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${message}`;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        function loadUserProfile(user) {
+            if (user && user.photoURL && avatarInitial && userAvatar) {
+                avatarInitial.style.display = 'none';
+                userAvatar.innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
+            } else if (avatarInitial) {
+                const displayName = user?.displayName || 'Felicity Acheampong';
+                avatarInitial.textContent = displayName.charAt(0).toUpperCase();
+            }
+        }
+
+        // ===========================================
+        // EVENT LISTENERS
+        // ===========================================
+        document.getElementById('currentBalanceCard')?.addEventListener('click', () => {
+            document.getElementById('currentBalancePage').classList.add('active');
+        });
+        
+        document.getElementById('totalEarningsCard')?.addEventListener('click', () => {
+            document.getElementById('totalEarningsPage').classList.add('active');
+        });
+
+        avatarUpload?.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) showNotification('Profile picture upload coming soon', 'info');
+        });
+
+        // ===========================================
+        // AUTH STATE - MAIN INITIALIZATION
+        // ===========================================
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            try {
+                if (loadingOverlay) loadingOverlay.style.display = 'flex';
+                if (dashboardContent) dashboardContent.style.display = 'none';
+                
+                logoutBtn.style.display = 'block';
+                loadUserProfile(user);
+                
+                // Load appointment status FIRST
+                await loadAppointmentStatus(user.uid);
+                
+                // Update UI based on appointment
+                updateBannerBasedOnAppointment();
+                updateUI();
+                updateTransactionLists();
+                
+                // Show extension banner
+                if (extensionInfoBanner) extensionInfoBanner.style.display = 'block';
+                
+                if (loadingOverlay) loadingOverlay.style.display = 'none';
+                if (dashboardContent) dashboardContent.style.display = 'block';
+                
+                const stats = calculateCurrentStats();
+                console.log(`✅ Dashboard loaded for: ${formatDateWithOrdinal(TODAY)}`);
+                console.log(`💰 Balance: $${stats.currentBalance}, Days to payout: ${stats.daysToPayout}`);
+                console.log(`📅 Appointment status: ${appointmentData ? 'Booked' : 'Not booked'}`);
+                
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                if (loadingOverlay) loadingOverlay.style.display = 'none';
+                if (dashboardContent) dashboardContent.style.display = 'block';
+            }
+        });
+
+        logoutBtn?.addEventListener('click', async () => {
+            await auth.signOut();
+            window.location.href = 'login.html';
+        });
+        
+        document.querySelectorAll('.detail-page, .modal').forEach(el => {
+            el.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    if (this.classList.contains('detail-page')) closeDetailPage();
+                    if (this.classList.contains('modal')) closeExtendModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
