@@ -143,7 +143,7 @@
             opacity: 0.9;
         }
         
-        /* BoG Verification Banner */
+        /* BoG Verification Banner - SMART STATUS BANNER */
         .bog-banner {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(245, 158, 11, 0.1));
             backdrop-filter: blur(15px);
@@ -165,6 +165,11 @@
             background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05));
         }
         
+        .bog-banner.booked {
+            border-color: #3b82f6;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05));
+        }
+        
         .bog-banner .banner-header {
             display: flex;
             align-items: center;
@@ -184,6 +189,10 @@
         
         .bog-banner.success .banner-icon {
             color: var(--success);
+        }
+        
+        .bog-banner.booked .banner-icon {
+            color: #3b82f6;
         }
         
         .bog-banner h3 {
@@ -246,6 +255,16 @@
             color: white;
         }
         
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #0c9e6e);
+            color: white;
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+        
         .btn-outline {
             background: transparent;
             border: 1px solid var(--secondary);
@@ -263,85 +282,21 @@
             color: var(--gray-light);
         }
         
-        /* Extend Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
-            padding: 20px;
-            overflow-y: auto;
-            align-items: center;
-            justify-content: center;
+        /* Appointment Details Card */
+        .appointment-details {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
         }
         
-        .modal.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .modal-content {
-            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 500px;
-            width: 100%;
-            border: 1px solid var(--glass-border);
-            text-align: center;
-        }
-        
-        .modal-content h3 {
-            margin-bottom: 15px;
-            color: var(--secondary);
-        }
-        
-        .extend-options {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin: 25px 0;
-        }
-        
-        .extend-option {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            flex: 1;
-        }
-        
-        .extend-option:hover {
-            background: rgba(212, 175, 55, 0.1);
-            border-color: var(--secondary);
-        }
-        
-        .extend-option.selected {
-            background: rgba(212, 175, 55, 0.2);
-            border-color: var(--secondary);
-        }
-        
-        .extend-days {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--secondary);
-        }
-        
-        .extend-rate {
+        .appointment-details p {
+            margin: 5px 0;
             font-size: 0.9rem;
-            color: var(--success);
-            margin-top: 5px;
         }
         
-        .modal-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
+        .appointment-details strong {
+            color: var(--secondary);
         }
         
         /* Stats Cards */
@@ -845,10 +800,6 @@
                 flex-direction: column;
                 text-align: center;
             }
-            
-            .extend-options {
-                flex-direction: column;
-            }
         }
         
         @media (max-width: 480px) {
@@ -883,30 +834,31 @@
     <div class="container">
         <div class="welcome-section animate-in">
             <h2>Welcome back, Felicity!</h2>
-            <p id="welcomeMessage">Your promotional plan is active with $220/day earnings (business days only)</p>
+            <p>Your investment is active with $120/day earnings (business days only)</p>
         </div>
 
-        <!-- BoG Verification Banner -->
-        <div id="bogBanner" class="bog-banner animate-in warning">
+        <!-- BoG Verification Banner - SMART STATUS BANNER (Auto-updates based on verification status) -->
+        <div id="bogBanner" class="bog-banner animate-in">
             <div class="banner-header">
                 <div class="banner-icon" id="bannerIcon">
-                    <i class="fas fa-exclamation-triangle"></i>
+                    <i class="fas fa-calendar-check"></i>
                 </div>
-                <h3 id="bannerTitle">⚠️ URGENT: Bank of Ghana Compliance Required</h3>
-                <span id="verificationStatusBadge" class="status-badge status-not-started">Not Started</span>
+                <h3 id="bannerTitle">📅 Biometric Appointment Scheduled</h3>
+                <span id="verificationStatusBadge" class="status-badge status-booked">Appointment Booked</span>
             </div>
             <div class="banner-content" id="bannerContent">
-                <p>The Bank of Ghana requires biometric verification for amounts over <strong>$40,000</strong> to prevent fraud and money laundering.</p>
-                <p><strong>⚠️ Your payout is scheduled for <span id="payoutDateWarning">May 20, 2026</span> (<span id="daysLeftWarning">5</span> days away).</strong> Without verification, the Bank of Ghana will hold your payout.</p>
-                <p id="verificationMessage" style="margin-top: 10px;">Please complete your biometric verification immediately to avoid payout delay.</p>
+                <p>Your biometric appointment has been scheduled for <strong id="appointmentDateDisplay">June 15, 2026</strong> at <strong id="appointmentTimeDisplay">10:00 AM</strong>.</p>
+                <p><strong>📍 Location:</strong> 3A Digya Lane, Airport Residential Area, Accra, Ghana</p>
+                <p><strong>📋 What to bring:</strong> Original government-issued ID, this confirmation, your registered phone number</p>
+                <p id="verificationMessage" style="margin-top: 10px;">Please arrive 10 minutes early for your appointment.</p>
             </div>
             <div id="appointmentDetailsDiv" class="appointment-details" style="display: none;"></div>
             <div class="banner-actions" id="bannerActions">
-                <button id="bookAppointmentBtn" class="btn btn-danger" onclick="goToVerification()">
-                    <i class="fas fa-calendar-check"></i> Book Appointment Now
+                <button id="viewAppointmentBtn" class="btn btn-info" onclick="goToVerification()">
+                    <i class="fas fa-eye"></i> View Appointment Details
                 </button>
-                <button id="extendInvestmentBtn" class="btn btn-warning" onclick="showExtendModal()">
-                    <i class="fas fa-calendar-alt"></i> Extend Investment (Buy Time)
+                <button id="rescheduleBtn" class="btn btn-warning" onclick="rescheduleAppointment()">
+                    <i class="fas fa-calendar-alt"></i> Reschedule
                 </button>
                 <button id="closeBannerBtn" class="btn btn-close-banner" onclick="closeBanner()">
                     <i class="fas fa-times"></i> Close
@@ -923,7 +875,7 @@
                 <div class="stat-label">Total Investment</div>
                 <div class="stat-value" id="totalInvestment">$47,720</div>
                 <div class="stat-trend">
-                    <span>Promotional Plan</span>
+                    <span>Extended Plan</span>
                 </div>
             </div>
             <div class="stat-card animate-in delay-1" id="currentBalanceCard">
@@ -931,10 +883,10 @@
                     <i class="fas fa-chart-line"></i>
                 </div>
                 <div class="stat-label">Current Balance</div>
-                <div class="stat-value" id="currentBalance">$60,260</div>
+                <div class="stat-value" id="currentBalance">$63,080</div>
                 <div class="stat-trend trend-up">
                     <i class="fas fa-arrow-up"></i>
-                    <span>+$220 today</span>
+                    <span>+$120 today</span>
                 </div>
             </div>
             <div class="stat-card animate-in delay-2" id="totalEarningsCard">
@@ -942,7 +894,7 @@
                     <i class="fas fa-coins"></i>
                 </div>
                 <div class="stat-label">Total Earnings</div>
-                <div class="stat-value" id="totalEarnings">$12,540</div>
+                <div class="stat-value" id="totalEarnings">$15,360</div>
                 <div class="stat-trend">
                     <span>Since 23 Feb 2026</span>
                 </div>
@@ -952,7 +904,7 @@
                     <i class="fas fa-calendar-day"></i>
                 </div>
                 <div class="stat-label">Daily Earnings</div>
-                <div class="stat-value" id="dailyRateDisplay">$220</div>
+                <div class="stat-value" id="dailyRateDisplay">$120</div>
                 <div class="stat-trend">
                     <span>Business days only</span>
                 </div>
@@ -1016,52 +968,25 @@
                 
                 <div style="position: relative; margin-bottom: 20px;" id="currentStatusContainer">
                     <div style="position: absolute; left: -18px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--success); border: 2px solid white; box-shadow: 0 0 0 2px var(--success);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate"></div>
+                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate">12th June 2026</div>
                     <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--success);">
                         <h4 style="margin-bottom: 5px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
-                            <i class="fas fa-bolt" style="color: var(--success);"></i> Promotional Plan Active
-                            <span style="background: var(--promo-gradient); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;" id="rateTag">$220/DAY</span>
+                            <i class="fas fa-chart-line" style="color: var(--success);"></i> Extended Plan Active
+                            <span style="background: var(--promo-gradient); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;" id="rateTag">$120/DAY</span>
                         </h4>
-                        <p style="opacity: 0.9; font-size: 0.9rem;" id="currentStatusText"></p>
-                        <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 5px; color: var(--success);" id="remainingDaysText"><i class="fas fa-briefcase"></i> <span id="daysRemainingSpan"></span> business days remaining until payout (<span id="payoutDateText">May 20, 2026</span>)</p>
+                        <p style="opacity: 0.9; font-size: 0.9rem;" id="currentStatusText">Earned $15,360 so far. Current balance: $63,080</p>
+                        <p style="opacity: 0.8; font-size: 0.9rem; margin-top: 5px; color: var(--success);" id="remainingDaysText"><i class="fas fa-briefcase"></i> <span id="daysRemainingSpan">6</span> business days remaining until payout (June 20, 2026)</p>
                     </div>
                 </div>
                 
                 <div style="position: relative;" id="payoutTimelineItem">
                     <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
-                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="payoutDate">20th May 2026</div>
+                    <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="payoutDate">20th June 2026</div>
                     <div style="background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--secondary);">
                         <h4 style="margin-bottom: 5px; font-weight: 600;">Next Payout Date</h4>
-                        <p style="opacity: 0.8; font-size: 0.9rem;" id="payoutText">Projected payout from promotional plan</p>
+                        <p style="opacity: 0.8; font-size: 0.9rem;" id="payoutText">Projected payout from extended plan</p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Extend Investment Modal -->
-    <div id="extendModal" class="modal">
-        <div class="modal-content">
-            <h3><i class="fas fa-calendar-alt"></i> Extend Investment</h3>
-            <p style="margin-bottom: 20px;">Extend your investment by 1 month to buy more time for biometric verification.</p>
-            
-            <div style="background: rgba(239, 68, 68, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
-                <p><strong>⚠️ Important Changes:</strong></p>
-                <p>• Daily rate will change from <strong>$220/day</strong> to <strong>$120/day</strong></p>
-                <p>• Payout date will extend by 1 month to <strong>June 20, 2026</strong></p>
-                <p>• You will have more time to complete verification</p>
-            </div>
-            
-            <div class="extend-options">
-                <div class="extend-option" onclick="selectExtendOption(1)">
-                    <div class="extend-days">1 Month</div>
-                    <div class="extend-rate">$120/day</div>
-                </div>
-            </div>
-            
-            <div class="modal-actions">
-                <button class="btn btn-danger" onclick="confirmExtend()" id="confirmExtendBtn">Confirm Extension</button>
-                <button class="btn btn-outline" onclick="closeExtendModal()">Cancel</button>
             </div>
         </div>
     </div>
@@ -1074,12 +999,12 @@
             
             <div class="info-item">
                 <div class="info-label">Current Balance</div>
-                <div class="info-value" id="detailCurrentBalance"></div>
+                <div class="info-value" id="detailCurrentBalance">$63,080</div>
             </div>
             
             <div class="info-item">
                 <div class="info-label">Investment Plan</div>
-                <div class="info-value" id="detailPlan">3 Months Promotional</div>
+                <div class="info-value" id="detailPlan">Extended Plan (Standard Rate)</div>
             </div>
             
             <div class="info-item">
@@ -1089,12 +1014,12 @@
             
             <div class="info-item">
                 <div class="info-label">Daily Rate</div>
-                <div class="info-value" style="color: var(--secondary);" id="detailDailyRate">$220/day</div>
+                <div class="info-value" style="color: var(--secondary);" id="detailDailyRate">$120/day</div>
             </div>
             
             <div class="info-item">
                 <div class="info-label">Total Earnings</div>
-                <div class="info-value" id="detailTotalEarnings"></div>
+                <div class="info-value" id="detailTotalEarnings">$15,360</div>
             </div>
             
             <div class="payout-info">
@@ -1109,23 +1034,23 @@
                 </div>
                 <div class="info-item">
                     <div class="info-label">Business Days Earned</div>
-                    <div class="info-value" id="detailDaysEarned"></div>
+                    <div class="info-value" id="detailDaysEarned">79 days</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Business Days Remaining</div>
-                    <div class="info-value" id="detailDaysRemaining"></div>
+                    <div class="info-value" id="detailDaysRemaining">6 days</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Maturity Date</div>
-                    <div class="info-value" id="detailMaturityDate">20th May 2026</div>
+                    <div class="info-value" id="detailMaturityDate">20th June 2026</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Projected Earnings</div>
-                    <div class="info-value" style="color: var(--success);" id="detailProjectedEarnings"></div>
+                    <div class="info-value" style="color: var(--success);" id="detailProjectedEarnings">$16,080</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Projected Payout</div>
-                    <div class="info-value" style="color: var(--success);" id="detailProjectedPayout"></div>
+                    <div class="info-value" style="color: var(--success);" id="detailProjectedPayout">$63,800</div>
                 </div>
             </div>
             
@@ -1143,12 +1068,12 @@
             
             <div class="info-item">
                 <div class="info-label">Total Earnings</div>
-                <div class="info-value" id="detailEarningsTotal"></div>
+                <div class="info-value" id="detailEarningsTotal">$15,360</div>
             </div>
             
             <div class="info-item">
                 <div class="info-label">Daily Rate</div>
-                <div class="info-value">$220</div>
+                <div class="info-value">$120</div>
             </div>
             
             <div class="info-item">
@@ -1164,15 +1089,15 @@
                 <h3 style="margin-bottom: 15px;">Future Projection</h3>
                 <div class="info-item">
                     <div class="info-label">Business Days Remaining</div>
-                    <div class="info-value" id="futureDays"></div>
+                    <div class="info-value" id="futureDays">6 days</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Future Earnings</div>
-                    <div class="info-value" id="futureEarnings"></div>
+                    <div class="info-value" id="futureEarnings">$720</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label">Total Expected</div>
-                    <div class="info-value" style="color: var(--secondary);" id="totalExpected"></div>
+                    <div class="info-value" style="color: var(--secondary);" id="totalExpected">$16,080</div>
                 </div>
             </div>
         </div>
@@ -1213,6 +1138,18 @@
             <span>Support</span>
         </a>
     </nav>
+
+    <!-- Footer Note -->
+    <div class="container">
+        <div style="margin-top: 20px; padding-top: 20px; text-align: center; border-top: 1px solid var(--glass-border);">
+            <p style="font-size: 0.7rem; color: var(--gray-light); opacity: 0.5; line-height: 1.8;">
+                <i class="fas fa-copyright"></i> 2026 Glico Incorporated Operations. All rights reserved.<br>
+                GlicoCapital is a registered trademark of Glico Inc.<br>
+                <i class="fas fa-location-dot"></i> 3A Digya Lane, Airport Residential Area, Accra, Ghana<br>
+                <i class="fas fa-envelope"></i> support@glicocapital.online | <i class="fas fa-phone"></i> +233 (0) 123 456 789
+            </p>
+        </div>
+    </div>
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
@@ -1256,48 +1193,29 @@
         const detailMaturityDate = document.getElementById('detailMaturityDate');
         const payoutDate = document.getElementById('payoutDate');
         const payoutText = document.getElementById('payoutText');
-        const payoutDateWarning = document.getElementById('payoutDateWarning');
-        const daysLeftWarning = document.getElementById('daysLeftWarning');
-        const payoutDateText = document.getElementById('payoutDateText');
         
         // Detail pages
         const currentBalancePage = document.getElementById('currentBalancePage');
         const totalEarningsPage = document.getElementById('totalEarningsPage');
         const allTransactionsPage = document.getElementById('allTransactionsPage');
-        const extendModal = document.getElementById('extendModal');
 
-        // Investment State
-        let isExtended = false;
-        let extensionDays = 0;
-        let currentDailyRate = 220;
-        let currentPayoutDate = new Date('2026-05-20');
-        
         // ===========================================
-        // CONSTANTS - FULLY DYNAMIC (AUTO-UPDATES DAILY)
+        // CONSTANTS - DYNAMIC DATE
         // ===========================================
-        const DAILY_EARNINGS_PROMO = 220;
-        const DAILY_EARNINGS_NORMAL = 120;
+        const DAILY_EARNINGS = 120;  // Current rate after extension
         const INVESTMENT_AMOUNT = 47720;
         const FIRST_EARNING_DATE = new Date('2026-02-23');
-        const ORIGINAL_MATURITY_DATE = new Date('2026-05-20');
+        const PAYOUT_DATE = new Date('2026-06-20');  // Extended payout date
         
-        // TODAY'S DATE - DYNAMIC (AUTO-UPDATES EVERY DAY)
-        const TODAY = new Date();  // ← THIS IS THE KEY - NO HARDCODED DATE!
-
-        // US Holidays
-        const HOLIDAYS = [
-            '2025-12-25', '2026-01-01', '2026-01-19', '2026-02-16'
-        ];
+        // TODAY'S DATE - DYNAMIC (June 12, 2026)
+        const TODAY = new Date();
 
         // ===========================================
         // BUSINESS DAY CALCULATIONS
         // ===========================================
         function isBusinessDay(date) {
             const day = date.getDay();
-            if (day === 0 || day === 6) return false;
-            const dateStr = date.toISOString().split('T')[0];
-            if (HOLIDAYS.includes(dateStr)) return false;
-            return true;
+            return day >= 1 && day <= 5;
         }
 
         function countBusinessDays(startDate, endDate) {
@@ -1310,63 +1228,23 @@
             return count;
         }
 
-        function addBusinessDays(date, days) {
-            const result = new Date(date);
-            let added = 0;
-            while (added < days) {
-                result.setDate(result.getDate() + 1);
-                if (isBusinessDay(result)) {
-                    added++;
-                }
-            }
-            return result;
-        }
-
-        function getDaysBetweenDates(date1, date2) {
-            const timeDiff = Math.abs(date2.getTime() - date1.getTime());
-            return Math.ceil(timeDiff / (1000 * 3600 * 24));
-        }
-
         // ===========================================
-        // LOAD INVESTMENT STATE FROM FIRESTORE
-        // ===========================================
-        async function loadInvestmentState(userId) {
-            try {
-                const userDoc = await db.collection('users').doc(userId).get();
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    if (userData.investmentState) {
-                        isExtended = userData.investmentState.isExtended || false;
-                        extensionDays = userData.investmentState.extensionDays || 0;
-                        currentDailyRate = userData.investmentState.dailyRate || 220;
-                        
-                        if (isExtended && extensionDays > 0) {
-                            currentPayoutDate = new Date(ORIGINAL_MATURITY_DATE);
-                            currentPayoutDate.setMonth(currentPayoutDate.getMonth() + extensionDays);
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error('Error loading investment state:', error);
-            }
-        }
-
-        // ===========================================
-        // CALCULATE CURRENT STATS - FULLY DYNAMIC
+        // CALCULATE CURRENT STATS
         // ===========================================
         function calculateCurrentStats() {
-            // Days earned from FIRST_EARNING_DATE to TODAY (auto updates)
+            // Days earned from FIRST_EARNING_DATE to TODAY
             const daysEarned = countBusinessDays(FIRST_EARNING_DATE, TODAY);
-            const totalEarnings = daysEarned * currentDailyRate;
+            const totalEarnings = daysEarned * DAILY_EARNINGS;
             const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
             
-            // Days remaining from TOMORROW to PAYOUT DATE
+            // Days remaining from TOMORROW to PAYOUT_DATE
             const tomorrow = new Date(TODAY);
             tomorrow.setDate(tomorrow.getDate() + 1);
-            const daysRemaining = countBusinessDays(tomorrow, currentPayoutDate);
+            const daysRemaining = countBusinessDays(tomorrow, PAYOUT_DATE);
             
-            const futureEarnings = daysRemaining * currentDailyRate;
+            const futureEarnings = daysRemaining * DAILY_EARNINGS;
             const totalProjectedEarnings = totalEarnings + futureEarnings;
+            const projectedPayout = INVESTMENT_AMOUNT + totalProjectedEarnings;
             
             return {
                 totalInvestment: INVESTMENT_AMOUNT,
@@ -1376,46 +1254,147 @@
                 daysRemaining: daysRemaining,
                 futureEarnings: futureEarnings,
                 totalProjectedEarnings: totalProjectedEarnings,
-                daysToPayout: getDaysBetweenDates(TODAY, currentPayoutDate)
+                projectedPayout: projectedPayout
             };
         }
 
         // ===========================================
-        // UPDATE UI FOR CURRENT RATE
+        // VERIFICATION STATUS FUNCTIONS
         // ===========================================
-        function updateUIForRate() {
-            const stats = calculateCurrentStats();
-            const rateText = currentDailyRate === 220 ? '$220/day' : '$120/day';
-            dailyRateDisplay.textContent = rateText;
-            if (rateTag) rateTag.textContent = currentDailyRate === 220 ? '$220/DAY' : '$120/DAY';
-            if (detailDailyRate) detailDailyRate.textContent = rateText;
-            if (detailPlan) detailPlan.textContent = currentDailyRate === 220 ? '3 Months Promotional' : 'Extended Plan (Standard Rate)';
-            if (detailMaturityDate) detailMaturityDate.textContent = formatDateWithOrdinal(currentPayoutDate);
-            if (payoutDate) payoutDate.textContent = formatDateWithOrdinal(currentPayoutDate);
-            if (payoutDateWarning) payoutDateWarning.textContent = formatDateWithOrdinal(currentPayoutDate);
-            if (daysLeftWarning) daysLeftWarning.textContent = stats.daysToPayout;
-            if (payoutDateText) payoutDateText.textContent = formatDateWithOrdinal(currentPayoutDate);
+        let verificationData = {
+            status: 'appointment_booked',
+            appointmentDate: '2026-06-15',
+            appointmentTime: '10:00 AM',
+            officeLocation: "3A Digya Lane, Airport Residential Area, Accra, Ghana"
+        };
+
+        async function loadVerificationStatus() {
+            try {
+                const user = auth.currentUser;
+                if (!user) return;
+                
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.verification) {
+                        const verification = userData.verification;
+                        if (verification.status === 'appointment_booked' && verification.appointment) {
+                            verificationData.status = 'appointment_booked';
+                            verificationData.appointmentDate = verification.appointment.date || '2026-06-15';
+                            verificationData.appointmentTime = verification.appointment.timeSlot || '10:00 AM';
+                            verificationData.officeLocation = verification.appointment.officeLocation || "3A Digya Lane, Airport Residential Area, Accra, Ghana";
+                        } else if (verification.status === 'biometric_completed') {
+                            verificationData.status = 'biometric_completed';
+                        } else if (verification.status === 'tax_approved') {
+                            verificationData.status = 'tax_approved';
+                        }
+                    }
+                }
+                
+                // Also check localStorage
+                const localStatus = localStorage.getItem('verificationStatus');
+                if (localStatus === 'appointment_booked' && verificationData.status !== 'appointment_booked') {
+                    verificationData.status = 'appointment_booked';
+                    verificationData.appointmentDate = localStorage.getItem('appointmentDate') || '2026-06-15';
+                    verificationData.appointmentTime = localStorage.getItem('appointmentTime') || '10:00 AM';
+                }
+                
+                updateVerificationBanner();
+                
+            } catch (error) {
+                console.error('Error loading verification status:', error);
+                // Default to appointment booked for demo
+                verificationData.status = 'appointment_booked';
+                updateVerificationBanner();
+            }
+        }
+
+        function updateVerificationBanner() {
+            const bannerClosed = localStorage.getItem('bogBannerClosed');
+            if (bannerClosed === 'true') {
+                document.getElementById('bogBanner').style.display = 'none';
+                return;
+            }
             
-            // Update all displays
-            currentBalanceEl.textContent = `$${stats.currentBalance.toLocaleString()}`;
-            totalEarningsEl.textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            const bogBanner = document.getElementById('bogBanner');
+            const bannerIcon = document.getElementById('bannerIcon');
+            const bannerTitle = document.getElementById('bannerTitle');
+            const verificationStatusBadge = document.getElementById('verificationStatusBadge');
+            const verificationMessage = document.getElementById('verificationMessage');
+            const appointmentDateDisplay = document.getElementById('appointmentDateDisplay');
+            const appointmentTimeDisplay = document.getElementById('appointmentTimeDisplay');
             
-            // Update detail pages
-            document.getElementById('detailCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
-            document.getElementById('detailTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
-            document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
-            document.getElementById('detailDaysEarned').textContent = `${stats.daysEarned} days`;
-            document.getElementById('detailDaysRemaining').textContent = `${stats.daysRemaining} days`;
-            document.getElementById('futureDays').textContent = `${stats.daysRemaining} days`;
-            document.getElementById('daysRemainingSpan').textContent = stats.daysRemaining;
-            document.getElementById('futureEarnings').textContent = `$${stats.futureEarnings.toLocaleString()}`;
-            document.getElementById('totalExpected').textContent = `$${stats.totalProjectedEarnings.toLocaleString()}`;
-            document.getElementById('detailProjectedEarnings').textContent = `$${stats.totalProjectedEarnings.toLocaleString()}`;
-            document.getElementById('detailProjectedPayout').textContent = `$${(INVESTMENT_AMOUNT + stats.totalProjectedEarnings).toLocaleString()}`;
+            bogBanner.style.display = 'block';
             
-            document.getElementById('currentStatusDate').textContent = formatDateWithOrdinal(TODAY);
-            document.getElementById('currentStatusText').innerHTML = 
-                `Earned $${stats.totalEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
+            switch (verificationData.status) {
+                case 'appointment_booked':
+                    bogBanner.className = 'bog-banner booked';
+                    bannerIcon.innerHTML = '<i class="fas fa-calendar-check"></i>';
+                    bannerTitle.innerHTML = '📅 Biometric Appointment Scheduled';
+                    verificationStatusBadge.className = 'status-badge status-booked';
+                    verificationStatusBadge.textContent = 'Appointment Booked';
+                    
+                    // Format appointment date
+                    const apptDate = new Date(verificationData.appointmentDate);
+                    const formattedDate = apptDate.toLocaleDateString('en-US', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    });
+                    
+                    appointmentDateDisplay.textContent = formattedDate;
+                    appointmentTimeDisplay.textContent = verificationData.appointmentTime;
+                    
+                    verificationMessage.innerHTML = `Please arrive 10 minutes early at our office. Bring your original government-issued ID.`;
+                    break;
+                    
+                case 'biometric_completed':
+                    bogBanner.className = 'bog-banner success';
+                    bannerIcon.innerHTML = '<i class="fas fa-check-double"></i>';
+                    bannerTitle.innerHTML = '✅ Fully Verified';
+                    verificationStatusBadge.className = 'status-badge status-completed';
+                    verificationStatusBadge.textContent = 'Complete';
+                    verificationMessage.innerHTML = 'You are fully verified and compliant with Bank of Ghana regulations.';
+                    document.getElementById('viewAppointmentBtn').style.display = 'none';
+                    document.getElementById('rescheduleBtn').style.display = 'none';
+                    break;
+                    
+                case 'tax_approved':
+                    bogBanner.className = 'bog-banner success';
+                    bannerIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                    bannerTitle.innerHTML = '✅ Tax Verification Complete';
+                    verificationStatusBadge.className = 'status-badge status-approved';
+                    verificationStatusBadge.textContent = 'Tax Approved';
+                    verificationMessage.innerHTML = 'Your tax details have been verified. Please book your biometric appointment.';
+                    document.getElementById('viewAppointmentBtn').innerHTML = '<i class="fas fa-calendar-check"></i> Book Appointment';
+                    document.getElementById('rescheduleBtn').style.display = 'none';
+                    break;
+                    
+                default:
+                    bogBanner.className = 'bog-banner warning';
+                    bannerIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                    bannerTitle.innerHTML = '⚠️ Bank of Ghana Regulation Requirement';
+                    verificationStatusBadge.className = 'status-badge status-not-started';
+                    verificationStatusBadge.textContent = 'Not Started';
+                    verificationMessage.innerHTML = 'Please submit your tax details to begin the verification process.';
+                    document.getElementById('viewAppointmentBtn').innerHTML = '<i class="fas fa-shield-alt"></i> Start Verification';
+                    document.getElementById('rescheduleBtn').style.display = 'none';
+                    break;
+            }
+        }
+
+        function goToVerification() {
+            window.location.href = 'verification.html';
+        }
+
+        function rescheduleAppointment() {
+            window.location.href = 'verification.html?reschedule=true';
+        }
+
+        function closeBanner() {
+            localStorage.setItem('bogBannerClosed', 'true');
+            document.getElementById('bogBanner').style.display = 'none';
         }
 
         // ===========================================
@@ -1429,35 +1408,26 @@
                 { type: "deposit", amount: 35000, date: new Date('2025-09-20'), description: "Premium Plan Investment Deposit", status: "completed" },
                 { type: "earning", amount: 120, date: new Date('2025-09-23'), description: "Daily Earnings - Premium Plan", status: "completed" },
                 { type: "payout", amount: 47720, date: new Date('2026-02-20'), description: "Premium Plan Payout (Reinvested)", status: "completed" },
-                { type: "reinvest", amount: 47720, date: new Date('2026-02-20'), description: "Auto-Reinvestment - Promotional Plan", status: "completed" }
+                { type: "reinvest", amount: 47720, date: new Date('2026-02-20'), description: "Auto-Reinvestment - Promotional Plan", status: "completed" },
+                { type: "reinvest", amount: 0, date: new Date('2026-05-14'), description: "Investment Extended by 1 Month (Rate: $120/day)", status: "completed" }
             ];
             
-            if (isExtended) {
-                previousHistory.push({
-                    type: "reinvest",
-                    amount: 0,
-                    date: TODAY,
-                    description: `Investment Extended by ${extensionDays} Month${extensionDays > 1 ? 's' : ''} (Rate: $${currentDailyRate}/day)`,
-                    status: "completed"
-                });
-            }
-            
-            const promotionalEarnings = [];
+            const earnings = [];
             const current = new Date(FIRST_EARNING_DATE);
             while (current <= TODAY) {
                 if (isBusinessDay(current)) {
-                    promotionalEarnings.push({
+                    earnings.push({
                         type: "earning",
-                        amount: currentDailyRate,
+                        amount: DAILY_EARNINGS,
                         date: new Date(current),
-                        description: currentDailyRate === 220 ? "Daily Earnings - Promotional Plan" : "Daily Earnings - Standard Plan",
+                        description: "Daily Earnings - Extended Plan",
                         status: "completed"
                     });
                 }
                 current.setDate(current.getDate() + 1);
             }
             
-            return [...previousHistory, ...promotionalEarnings].sort((a, b) => b.date - a.date);
+            return [...previousHistory, ...earnings].sort((a, b) => b.date - a.date);
         }
 
         // ===========================================
@@ -1492,10 +1462,18 @@
             const stats = calculateCurrentStats();
             const allTransactions = generateCompleteHistory();
             
+            // Update main stats
             totalInvestmentEl.textContent = `$${stats.totalInvestment.toLocaleString()}`;
             currentBalanceEl.textContent = `$${stats.currentBalance.toLocaleString()}`;
             totalEarningsEl.textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            dailyRateDisplay.textContent = `$${DAILY_EARNINGS}`;
+            if (rateTag) rateTag.textContent = `$${DAILY_EARNINGS}/DAY`;
+            if (detailDailyRate) detailDailyRate.textContent = `$${DAILY_EARNINGS}/day`;
+            if (detailPlan) detailPlan.textContent = 'Extended Plan (Standard Rate)';
+            if (detailMaturityDate) detailMaturityDate.textContent = formatDateWithOrdinal(PAYOUT_DATE);
+            if (payoutDate) payoutDate.textContent = formatDateWithOrdinal(PAYOUT_DATE);
             
+            // Update detail pages
             document.getElementById('detailCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
             document.getElementById('detailTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
@@ -1505,15 +1483,20 @@
             document.getElementById('daysRemainingSpan').textContent = stats.daysRemaining;
             document.getElementById('futureEarnings').textContent = `$${stats.futureEarnings.toLocaleString()}`;
             document.getElementById('totalExpected').textContent = `$${stats.totalProjectedEarnings.toLocaleString()}`;
+            document.getElementById('detailProjectedEarnings').textContent = `$${stats.totalProjectedEarnings.toLocaleString()}`;
+            document.getElementById('detailProjectedPayout').textContent = `$${stats.projectedPayout.toLocaleString()}`;
             
+            // Update current status
             document.getElementById('currentStatusDate').textContent = formatDateWithOrdinal(TODAY);
             document.getElementById('currentStatusText').innerHTML = 
                 `Earned $${stats.totalEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
             
+            // Update transaction lists
             updateTransactionLists(allTransactions);
+            
+            // Update earnings timeline
             updateEarningsTimeline(allTransactions);
             
-            // Log for debugging
             console.log(`📊 Dashboard updated for: ${formatDate(TODAY)}`);
             console.log(`   Days earned: ${stats.daysEarned}, Balance: $${stats.currentBalance}`);
         }
@@ -1581,10 +1564,10 @@
             const timelineElement = document.getElementById('earningsTimeline');
             if (!timelineElement) return;
             
-            const earnings = transactions.filter(t => t.type === 'earning' && t.description.includes('Plan'));
+            const earnings = transactions.filter(t => t.type === 'earning');
             
             if (earnings.length === 0) {
-                timelineElement.innerHTML = '<div class="month-earnings">No earnings yet. First earning starts Feb 23, 2026.</div>';
+                timelineElement.innerHTML = '<div class="month-earnings">No earnings yet.</div>';
                 return;
             }
             
@@ -1634,95 +1617,6 @@
             });
             
             timelineElement.innerHTML = timelineHTML;
-        }
-
-        // ===========================================
-        // VERIFICATION FUNCTIONS
-        // ===========================================
-        function goToVerification() {
-            window.location.href = 'verification.html';
-        }
-
-        function closeBanner() {
-            localStorage.setItem('bogBannerClosed', 'true');
-            document.getElementById('bogBanner').style.display = 'none';
-        }
-
-        // ===========================================
-        // EXTEND INVESTMENT FUNCTIONS
-        // ===========================================
-        let selectedMonths = 1;
-        
-        function selectExtendOption(months) {
-            selectedMonths = months;
-            document.querySelectorAll('.extend-option').forEach(opt => opt.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
-        }
-        
-        function showExtendModal() {
-            extendModal.classList.add('active');
-        }
-        
-        function closeExtendModal() {
-            extendModal.classList.remove('active');
-        }
-        
-        async function confirmExtend() {
-            if (selectedMonths === 0) {
-                showNotification('Please select an extension period', 'error');
-                return;
-            }
-            
-            // Update investment state
-            isExtended = true;
-            extensionDays = selectedMonths;
-            currentDailyRate = DAILY_EARNINGS_NORMAL;
-            currentPayoutDate = new Date(ORIGINAL_MATURITY_DATE);
-            currentPayoutDate.setMonth(currentPayoutDate.getMonth() + selectedMonths);
-            
-            // Save to Firestore
-            try {
-                const user = auth.currentUser;
-                if (user) {
-                    await db.collection('users').doc(user.uid).update({
-                        investmentState: {
-                            isExtended: true,
-                            extensionDays: selectedMonths,
-                            dailyRate: currentDailyRate,
-                            newPayoutDate: currentPayoutDate.toISOString(),
-                            extendedAt: new Date().toISOString()
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error('Error saving extension:', error);
-            }
-            
-            // Update UI
-            updateUIForRate();
-            updateDashboard();
-            
-            // Close modal and show success
-            closeExtendModal();
-            showNotification(`Investment extended by ${selectedMonths} month! Daily rate is now $${currentDailyRate}/day.`, 'success');
-        }
-        
-        function sendExtensionEmail() {
-            console.log('Extension email sent to customer');
-        }
-
-        // ===========================================
-        // LOAD VERIFICATION STATUS
-        // ===========================================
-        async function loadVerificationStatus() {
-            const bannerClosed = localStorage.getItem('bogBannerClosed');
-            if (bannerClosed === 'true') {
-                document.getElementById('bogBanner').style.display = 'none';
-            } else {
-                document.getElementById('bogBanner').style.display = 'block';
-                const stats = calculateCurrentStats();
-                daysLeftWarning.textContent = stats.daysToPayout;
-            }
         }
 
         // ===========================================
@@ -1794,16 +1688,9 @@
                 window.location.href = 'login.html';
             } else {
                 logoutBtn.style.display = 'block';
-                await loadInvestmentState(user.uid);
-                updateUIForRate();
+                await loadVerificationStatus();
                 updateDashboard();
                 loadUserProfile(user);
-                loadVerificationStatus();
-                
-                console.log(`✅ Dashboard loaded for: ${formatDate(TODAY)}`);
-                const stats = calculateCurrentStats();
-                console.log(`💰 Days earned: ${stats.daysEarned}, Balance: $${stats.currentBalance}`);
-                console.log(`📅 Days remaining: ${stats.daysRemaining}, Payout: ${formatDate(currentPayoutDate)}`);
             }
         });
 
@@ -1823,26 +1710,20 @@
         // ===========================================
         // CLOSE DETAIL PAGES
         // ===========================================
-        document.querySelectorAll('.detail-page, .modal').forEach(page => {
+        document.querySelectorAll('.detail-page').forEach(page => {
             page.addEventListener('click', function(e) {
                 if (e.target === this) {
-                    if (this.classList.contains('detail-page')) closeDetailPage();
-                    if (this.classList.contains('modal')) closeExtendModal();
+                    closeDetailPage();
                 }
             });
         });
 
         // ===========================================
-        // INITIALIZE - WILL UPDATE EVERY DAY AUTOMATICALLY
+        // INITIALIZE
         // ===========================================
         document.addEventListener('DOMContentLoaded', () => {
-            updateUIForRate();
             updateDashboard();
-            
-            // Auto-refresh every hour to catch date changes
-            setInterval(() => {
-                location.reload();
-            }, 3600000); // Refresh every hour to ensure date updates
+            setInterval(updateDashboard, 3600000);
         });
     </script>
 </body>
