@@ -19,7 +19,6 @@
             min-height: 100vh;
         }
 
-        /* Government Style Header */
         .gov-header {
             background: linear-gradient(135deg, #0a2b3e 0%, #1a4a6f 100%);
             border-bottom: 4px solid #c9a03d;
@@ -46,7 +45,11 @@
 
         .bog-logo {
             height: 70px;
+            width: auto;
             object-fit: contain;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 8px;
         }
 
         .gov-title h1 {
@@ -80,14 +83,12 @@
             color: #c9a03d;
         }
 
-        /* Main Container */
         .main-container {
             max-width: 1000px;
             margin: 30px auto;
             padding: 0 20px;
         }
 
-        /* Verification Card */
         .verification-card {
             background: white;
             border-radius: 12px;
@@ -121,7 +122,6 @@
             padding: 25px;
         }
 
-        /* Applicant Info */
         .applicant-info {
             background: #f8f9fc;
             border-radius: 10px;
@@ -162,7 +162,6 @@
             margin-top: 4px;
         }
 
-        /* Progress Section */
         .progress-section {
             background: #f0f4f8;
             border-radius: 10px;
@@ -211,7 +210,6 @@
             color: #6c757d;
         }
 
-        /* Stages Container - Progressive Reveal */
         .stages-container {
             margin-top: 20px;
         }
@@ -353,11 +351,15 @@
         }
 
         .agency-logo {
-            height: 30px;
+            height: 35px;
+            width: auto;
             object-fit: contain;
+            background: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid #e0e4e8;
         }
 
-        /* Official Stamp */
         .official-stamp {
             text-align: center;
             margin-top: 25px;
@@ -373,7 +375,6 @@
             color: #1a4a6f;
         }
 
-        /* Action Buttons */
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -416,7 +417,6 @@
             color: white;
         }
 
-        /* Footer */
         .gov-footer {
             background: #0a2b3e;
             color: #8ba0ae;
@@ -426,7 +426,6 @@
             margin-top: 40px;
         }
 
-        /* Loading Overlay */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -453,6 +452,20 @@
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        .text-logo {
+            width: auto;
+            height: 35px;
+            background: linear-gradient(135deg, #1a4a6f, #0a2b3e);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #c9a03d;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 4px 12px;
         }
 
         @media (max-width: 768px) {
@@ -483,7 +496,9 @@
         <div class="gov-header">
             <div class="gov-header-container">
                 <div class="gov-logo-section">
-                    <img src="https://www.bog.gov.gh/wp-content/uploads/2020/08/bog-logo-retina.png" alt="Bank of Ghana" class="bog-logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Bank_of_Ghana_logo.svg/200px-Bank_of_Ghana_logo.svg.png'">
+                    <div class="bog-logo" style="background: white; padding: 8px 12px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                        <img id="bogLogo" src="https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png" alt="Bank of Ghana" style="height: 54px; width: auto;" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'text-logo\' style=\'width:auto; height:54px; padding:8px 16px; font-size:1rem;\'>BANK OF GHANA</div>'">
+                    </div>
                     <div class="gov-title">
                         <h1>BANK OF GHANA</h1>
                         <h2>Regulatory Compliance & Verification Portal</h2>
@@ -507,7 +522,7 @@
                         <h4><i class="fas fa-user-check"></i> Applicant Information</h4>
                         <div class="info-grid">
                             <div class="info-item"><span class="info-label">Full Name</span><span class="info-value" id="applicantName">Acheampong Felicity</span></div>
-                            <div class="info-item"><span class="info-label">Date of Birth</span><span class="info-value">15 March 1990</span></div>
+                            <div class="info-item"><span class="info-label">Date of Birth</span><span class="info-value">22 March 1994</span></div>
                             <div class="info-item"><span class="info-label">Nationality</span><span class="info-value">Ghanaian / USA Resident</span></div>
                             <div class="info-item"><span class="info-label">Tax ID (SSN)</span><span class="info-value">•••-••-•••2</span></div>
                             <div class="info-item"><span class="info-label">Verification Type</span><span class="info-value">Enhanced Due Diligence (EDD)</span></div>
@@ -573,29 +588,36 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Verification Stages
+        // Verification Stages with working logo URLs
         const VERIFICATION_STAGES = [
             { id: 1, name: "Biometric Data Capture", agency: "Bank of Ghana", duration: 0,
               description: "Your biometric data (fingerprints and photograph) has been successfully captured. Identity verification confirmed against national database.",
-              agencyLogo: "https://www.bog.gov.gh/wp-content/uploads/2020/08/bog-logo-retina.png" },
+              logoUrl: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png",
+              fallbackText: "BOG" },
             { id: 2, name: "Document Verification", agency: "Bank of Ghana - Compliance Unit", duration: 1,
               description: "Your tax identification documents, proof of address, and source of funds documentation are being verified against official records.",
-              agencyLogo: "https://www.bog.gov.gh/wp-content/uploads/2020/08/bog-logo-retina.png" },
+              logoUrl: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png",
+              fallbackText: "BOG" },
             { id: 3, name: "Financial Intelligence Centre (FIC) Screening", agency: "Financial Intelligence Centre", duration: 2,
               description: "FIC conducting anti-money laundering (AML) and counter-terrorism financing (CTF) checks against global watchlists.",
-              agencyLogo: "https://fic.gov.gh/images/logo.png" },
+              logoUrl: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png",
+              fallbackText: "FIC" },
             { id: 4, name: "Bank of Ghana (BOG) Regulatory Review", agency: "Bank of Ghana", duration: 2,
               description: "Bank of Ghana reviewing investment source compliance with foreign exchange regulations and capital movement laws.",
-              agencyLogo: "https://www.bog.gov.gh/wp-content/uploads/2020/08/bog-logo-retina.png" },
+              logoUrl: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png",
+              fallbackText: "BOG" },
             { id: 5, name: "SEC & GRA Verification", agency: "SEC Ghana & GRA", duration: 2,
               description: "Securities and Exchange Commission verifying investment eligibility. Ghana Revenue Authority confirming tax compliance.",
-              agencyLogo: "https://upload.wikimedia.org/wikipedia/commons/8/89/Ghana_Revenue_Authority_logo_%28new%29.jpg" },
+              logoUrl: "https://upload.wikimedia.org/wikipedia/commons/8/89/Ghana_Revenue_Authority_logo_%28new%29.jpg",
+              fallbackText: "SEC/GRA" },
             { id: 6, name: "International Request Processing", agency: "US Treasury / IRS", duration: 4,
               description: "Request sent to US Treasury/IRS for cross-border verification of tax status and source of funds under FATCA.",
-              agencyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Blue-Eagle%2BIRS.png/500px-Blue-Eagle%2BIRS.png" },
+              logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Blue-Eagle%2BIRS.png/500px-Blue-Eagle%2BIRS.png",
+              fallbackText: "IRS" },
             { id: 7, name: "Final Approval & Clearance", agency: "Bank of Ghana - Governor's Office", duration: 3,
               description: "All regulatory bodies have cleared the verification. Final approval being processed for clearance certificate.",
-              agencyLogo: "https://www.bog.gov.gh/wp-content/uploads/2020/08/bog-logo-retina.png" }
+              logoUrl: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png",
+              fallbackText: "BOG" }
         ];
 
         const STAGE_DURATIONS = [0, 1, 2, 2, 2, 4, 3];
@@ -697,6 +719,8 @@
                 let iconHtml = isCompleted ? '<i class="fas fa-check"></i>' : (isActive ? '<i class="fas fa-spinner fa-pulse"></i>' : '<i class="fas fa-clock"></i>');
                 let statusText = isCompleted ? 'COMPLETED' : (isActive ? 'IN PROGRESS' : 'PENDING');
                 
+                const logoHtml = `<img src="${stage.logoUrl}" alt="${stage.agency}" class="agency-logo" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'text-logo\'>${stage.fallbackText}</div>'">`;
+                
                 stageItem.innerHTML = `
                     <div class="stage-header">
                         <div class="stage-icon ${status}">${iconHtml}</div>
@@ -707,7 +731,7 @@
                     </div>
                     <div class="stage-details">
                         <div class="stage-description">${stage.description}${isActive ? `<div style="margin-top:10px;padding:8px;background:#fff8e8;border-radius:6px;"><i class="fas fa-spinner fa-pulse"></i> Currently processing: ${stage.name}</div>` : ''}${isCompleted ? `<div style="margin-top:10px;color:#28a745;"><i class="fas fa-check-circle"></i> Completed on: ${formatDateWithOrdinal(stageDate)}</div>` : ''}</div>
-                        <div class="agency-logos"><img src="${stage.agencyLogo}" alt="${stage.agency}" class="agency-logo" onerror="this.style.display='none'"></div>
+                        <div class="agency-logos">${logoHtml}</div>
                     </div>
                 `;
                 container.appendChild(stageItem);
