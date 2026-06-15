@@ -19,6 +19,7 @@
             min-height: 100vh;
         }
 
+        /* Government Style Header */
         .gov-header {
             background: linear-gradient(135deg, #0a2b3e 0%, #1a4a6f 100%);
             border-bottom: 4px solid #c9a03d;
@@ -45,11 +46,15 @@
 
         .bog-logo {
             height: 70px;
-            width: auto;
             object-fit: contain;
-            background: white;
-            padding: 8px 12px;
-            border-radius: 8px;
+        }
+
+        .coat-of-arms {
+            height: 60px;
+        }
+
+        .gov-title {
+            text-align: left;
         }
 
         .gov-title h1 {
@@ -83,12 +88,14 @@
             color: #c9a03d;
         }
 
+        /* Main Container */
         .main-container {
             max-width: 1000px;
             margin: 30px auto;
             padding: 0 20px;
         }
 
+        /* Verification Card */
         .verification-card {
             background: white;
             border-radius: 12px;
@@ -122,6 +129,7 @@
             padding: 25px;
         }
 
+        /* Applicant Info */
         .applicant-info {
             background: #f8f9fc;
             border-radius: 10px;
@@ -162,6 +170,7 @@
             margin-top: 4px;
         }
 
+        /* Progress Section */
         .progress-section {
             background: #f0f4f8;
             border-radius: 10px;
@@ -210,6 +219,7 @@
             color: #6c757d;
         }
 
+        /* Stages Container - Progressive Reveal */
         .stages-container {
             margin-top: 20px;
         }
@@ -221,6 +231,15 @@
             margin-bottom: 15px;
             overflow: hidden;
             transition: all 0.3s ease;
+            opacity: 0.3;
+            filter: blur(2px);
+            pointer-events: none;
+        }
+
+        .stage-item.visible {
+            opacity: 1;
+            filter: blur(0);
+            pointer-events: auto;
         }
 
         .stage-item.completed {
@@ -236,7 +255,6 @@
 
         .stage-item.pending {
             border-left: 4px solid #adb5bd;
-            opacity: 0.6;
         }
 
         .stage-header {
@@ -351,15 +369,11 @@
         }
 
         .agency-logo {
-            height: 35px;
-            width: auto;
+            height: 30px;
             object-fit: contain;
-            background: white;
-            padding: 4px 8px;
-            border-radius: 6px;
-            border: 1px solid #e0e4e8;
         }
 
+        /* Official Stamp */
         .official-stamp {
             text-align: center;
             margin-top: 25px;
@@ -375,6 +389,7 @@
             color: #1a4a6f;
         }
 
+        /* Action Buttons */
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -417,6 +432,7 @@
             color: white;
         }
 
+        /* Footer */
         .gov-footer {
             background: #0a2b3e;
             color: #8ba0ae;
@@ -426,6 +442,7 @@
             margin-top: 40px;
         }
 
+        /* Loading Overlay */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -454,20 +471,6 @@
             to { transform: rotate(360deg); }
         }
 
-        .text-logo {
-            width: auto;
-            height: 35px;
-            background: linear-gradient(135deg, #1a4a6f, #0a2b3e);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #c9a03d;
-            font-weight: 700;
-            font-size: 0.8rem;
-            padding: 4px 12px;
-        }
-
         @media (max-width: 768px) {
             .gov-header-container {
                 flex-direction: column;
@@ -487,18 +490,18 @@
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="spinner"></div>
         <div class="loading-text">Connecting to Bank of Ghana Verification Portal...</div>
     </div>
 
     <div id="trackingContent" style="display: none;">
+        <!-- Government Header -->
         <div class="gov-header">
             <div class="gov-header-container">
                 <div class="gov-logo-section">
-                    <div class="bog-logo" style="background: white; padding: 8px 12px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                        <img id="bogLogo" src="https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png" alt="Bank of Ghana" style="height: 54px; width: auto;" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'text-logo\' style=\'width:auto; height:54px; padding:8px 16px; font-size:1rem;\'>BANK OF GHANA</div>'">
-                    </div>
+                    <img src="https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png?_=20221013140532" alt="Bank of Ghana" class="bog-logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Bank_of_Ghana_logo.svg/200px-Bank_of_Ghana_logo.svg.png'">
                     <div class="gov-title">
                         <h1>BANK OF GHANA</h1>
                         <h2>Regulatory Compliance & Verification Portal</h2>
@@ -512,24 +515,45 @@
         </div>
 
         <div class="main-container">
+            <!-- Verification Card -->
             <div class="verification-card">
                 <div class="card-header">
                     <h3><i class="fas fa-shield-alt"></i> Regulatory Verification Status</h3>
                     <p>Anti-Money Laundering (AML) & Counter-Terrorism Financing (CTF) Compliance Check</p>
                 </div>
                 <div class="card-body">
+                    <!-- Applicant Information -->
                     <div class="applicant-info">
                         <h4><i class="fas fa-user-check"></i> Applicant Information</h4>
                         <div class="info-grid">
-                            <div class="info-item"><span class="info-label">Full Name</span><span class="info-value" id="applicantName">Acheampong Felicity</span></div>
-                            <div class="info-item"><span class="info-label">Date of Birth</span><span class="info-value">22 March 1994</span></div>
-                            <div class="info-item"><span class="info-label">Nationality</span><span class="info-value">Ghanaian / USA Resident</span></div>
-                            <div class="info-item"><span class="info-label">Tax ID (SSN)</span><span class="info-value">•••-••-•••2</span></div>
-                            <div class="info-item"><span class="info-label">Verification Type</span><span class="info-value">Enhanced Due Diligence (EDD)</span></div>
-                            <div class="info-item"><span class="info-label">Biometric Capture Date</span><span class="info-value" id="biometricDate">June 15, 2026</span></div>
+                            <div class="info-item">
+                                <span class="info-label">Full Name</span>
+                                <span class="info-value" id="applicantName">Acheampong Felicity</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Date of Birth</span>
+                                <span class="info-value" id="applicantDob">22 March 1994</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Nationality</span>
+                                <span class="info-value">Ghanaian / USA Resident</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Tax ID (SSN)</span>
+                                <span class="info-value">•••-••-•••2</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Verification Type</span>
+                                <span class="info-value">Enhanced Due Diligence (EDD)</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Risk Rating</span>
+                                <span class="info-value" style="color: #c9a03d;">Standard - Under Review</span>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- Progress Section -->
                     <div class="progress-section">
                         <div class="progress-header">
                             <span class="progress-label"><i class="fas fa-chart-line"></i> Verification Progress</span>
@@ -539,18 +563,23 @@
                             <div class="progress-bar-fill" id="progressFill"></div>
                         </div>
                         <div class="estimated-date" id="estimatedDate">
-                            <i class="fas fa-calendar-alt"></i> Estimated completion: Calculating...
+                            <i class="fas fa-calendar-alt"></i> Estimated completion: Pending
                         </div>
                     </div>
 
-                    <div class="stages-container" id="stagesContainer"></div>
+                    <!-- Stages Container - Progressive Reveal -->
+                    <div class="stages-container" id="stagesContainer">
+                        <!-- Stages will be populated dynamically -->
+                    </div>
 
+                    <!-- Official Stamp -->
                     <div class="official-stamp" id="officialStamp" style="display: none;">
                         <i class="fas fa-check-circle" style="color: #28a745; font-size: 2rem; margin-bottom: 10px; display: block;"></i>
                         <div class="stamp-text">THIS VERIFICATION HAS BEEN COMPLETED AND APPROVED</div>
                         <div class="stamp-text" style="font-size: 0.7rem; margin-top: 5px;">Bank of Ghana - Financial Intelligence Directorate</div>
                     </div>
 
+                    <!-- Action Buttons -->
                     <div class="action-buttons">
                         <button class="btn btn-outline" onclick="window.location.href='dashboard.html'">
                             <i class="fas fa-arrow-left"></i> Return to GlicoCapital Dashboard
@@ -563,17 +592,20 @@
             </div>
         </div>
 
+        <!-- Footer -->
         <div class="gov-footer">
             <p>Bank of Ghana - Financial Intelligence Directorate | P.O. Box GP 2674, Accra, Ghana | Tel: +233 (0) 30 266 6000</p>
             <p>This is an official regulatory verification portal. Unauthorized access is prohibited.</p>
         </div>
     </div>
 
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
+        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDQDX4eyp7fbmHqbyjytWZEv-jK7XxynqA",
             authDomain: "ggic-investment.firebaseapp.com",
@@ -588,48 +620,79 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Verification Stages with working logo URLs
+        // ===========================================
+        // VERIFICATION STAGES - With Agency Logos
+        // ===========================================
         const VERIFICATION_STAGES = [
-            { id: 1, name: "Biometric Data Capture", agency: "Bank of Ghana", duration: 0,
-              description: "Your biometric data (fingerprints and photograph) has been successfully captured. Identity verification confirmed against national database.",
-              logoUrl: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png",
-              fallbackText: "BOG" },
-            { id: 2, name: "Document Verification", agency: "Bank of Ghana - Compliance Unit", duration: 1,
-              description: "Your tax identification documents, proof of address, and source of funds documentation are being verified against official records.",
-              logoUrl: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png",
-              fallbackText: "BOG" },
-            { id: 3, name: "Financial Intelligence Centre (FIC) Screening", agency: "Financial Intelligence Centre", duration: 2,
-              description: "FIC conducting anti-money laundering (AML) and counter-terrorism financing (CTF) checks against global watchlists.",
-              logoUrl: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png",
-              fallbackText: "FIC" },
-            { id: 4, name: "Bank of Ghana (BOG) Regulatory Review", agency: "Bank of Ghana", duration: 2,
-              description: "Bank of Ghana reviewing investment source compliance with foreign exchange regulations and capital movement laws.",
-              logoUrl: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png",
-              fallbackText: "BOG" },
-            { id: 5, name: "SEC & GRA Verification", agency: "SEC Ghana & GRA", duration: 2,
-              description: "Securities and Exchange Commission verifying investment eligibility. Ghana Revenue Authority confirming tax compliance.",
-              logoUrl: "https://upload.wikimedia.org/wikipedia/commons/8/89/Ghana_Revenue_Authority_logo_%28new%29.jpg",
-              fallbackText: "SEC/GRA" },
-            { id: 6, name: "International Request Processing", agency: "US Treasury / IRS", duration: 4,
-              description: "Request sent to US Treasury/IRS for cross-border verification of tax status and source of funds under FATCA.",
-              logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Blue-Eagle%2BIRS.png/500px-Blue-Eagle%2BIRS.png",
-              fallbackText: "IRS" },
-            { id: 7, name: "Final Approval & Clearance", agency: "Bank of Ghana - Governor's Office", duration: 3,
-              description: "All regulatory bodies have cleared the verification. Final approval being processed for clearance certificate.",
-              logoUrl: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png",
-              fallbackText: "BOG" }
+            {
+                id: 1,
+                name: "Biometric Data Capture",
+                agency: "Bank of Ghana - Immigration Directorate",
+                agencyLogo: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png?_=20221013140532",
+                description: "Your biometric data (fingerprints and photograph) has been successfully captured. Identity verification confirmed against national database.",
+                internalProcesses: "✓ Biometric verification completed ✓ Identity confirmed ✓ Database cross-reference complete"
+            },
+            {
+                id: 2,
+                name: "Document Verification",
+                agency: "Bank of Ghana - Compliance Unit",
+                agencyLogo: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png?_=20221013140532",
+                description: "Your tax identification documents, proof of address, and source of funds documentation are being verified against official records.",
+                internalProcesses: "Tax ID verification • Proof of address validation • Source of funds documentation review"
+            },
+            {
+                id: 3,
+                name: "Financial Intelligence Centre (FIC) Screening",
+                agency: "Financial Intelligence Centre",
+                agencyLogo: "https://fic.gov.gh/images/logo.png",
+                description: "FIC conducting anti-money laundering (AML) and counter-terrorism financing (CTF) checks against global watchlists and sanctions databases.",
+                internalProcesses: "AML screening • CTF compliance check • PEP verification • Global sanctions list check • UN Security Council resolutions compliance"
+            },
+            {
+                id: 4,
+                name: "Bank of Ghana (BOG) Regulatory Review",
+                agency: "Bank of Ghana - Banking Supervision Department",
+                agencyLogo: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png?_=20221013140532",
+                description: "Bank of Ghana reviewing investment source compliance with foreign exchange regulations, capital movement laws, and anti-money laundering directives.",
+                internalProcesses: "Foreign exchange compliance • Capital movement verification • Investment source validation • AML Directive compliance"
+            },
+            {
+                id: 5,
+                name: "SEC & GRA Verification",
+                agency: "SEC Ghana & Ghana Revenue Authority",
+                agencyLogo: "https://upload.wikimedia.org/wikipedia/commons/8/89/Ghana_Revenue_Authority_logo_%28new%29.jpg",
+                description: "Securities and Exchange Commission verifying investment eligibility. Ghana Revenue Authority confirming tax compliance status and capital gains assessment.",
+                internalProcesses: "SEC investment eligibility • GRA tax clearance verification • Capital gains assessment • Compliance certification"
+            },
+            {
+                id: 6,
+                name: "International Request Processing",
+                agency: "US Treasury / Internal Revenue Service",
+                agencyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Blue-Eagle%2BIRS.png/500px-Blue-Eagle%2BIRS.png",
+                description: "Request sent to US Treasury/IRS for cross-border verification of tax status and source of funds under the FATCA agreement.",
+                internalProcesses: "US IRS tax status verification • Cross-border fund source validation • International AML cooperation • FATCA compliance check • Bilateral agreement processing"
+            },
+            {
+                id: 7,
+                name: "Final Approval & Clearance",
+                agency: "Bank of Ghana - Governor's Office",
+                agencyLogo: "https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png?_=20221013140532",
+                description: "All regulatory bodies have cleared the verification. Final approval is being processed for clearance certificate issuance.",
+                internalProcesses: "Final compliance sign-off • Clearance certificate issuance • Regulatory reporting completion"
+            }
         ];
 
-        const STAGE_DURATIONS = [0, 1, 2, 2, 2, 4, 3];
-        const VERIFICATION_START = new Date(2026, 5, 15);
-        const TOTAL_BUSINESS_DAYS = 14;
+        // Stage durations in business days (total 14 business days)
+        const STAGE_DURATIONS = [0, 1, 2, 2, 2, 4, 3]; // Total: 14 business days
 
+        // Business day calculation
         function isBusinessDay(date) {
             const day = date.getDay();
             if (day === 0 || day === 6) return false;
             const holidays = ['2026-01-01', '2026-01-19', '2026-02-16', '2026-05-25', '2026-07-03', '2026-09-07', '2026-11-26', '2026-12-25'];
             const dateStr = date.toISOString().split('T')[0];
-            return !holidays.includes(dateStr);
+            if (holidays.includes(dateStr)) return false;
+            return true;
         }
 
         function addBusinessDays(startDate, days) {
@@ -659,25 +722,36 @@
             return `${day}${suffix} ${month} ${date.getFullYear()}`;
         }
 
-        function calculateCurrentStage(today) {
+        // Calculate current verification stage based on start date
+        function calculateCurrentStage(startDate, today) {
+            if (!startDate) return { stage: 0, progress: 0, stageIndex: -1 };
+            
+            const start = new Date(startDate);
             let cumulativeDays = 0;
             let currentStageIndex = -1;
             
             for (let i = 0; i < STAGE_DURATIONS.length; i++) {
                 cumulativeDays += STAGE_DURATIONS[i];
-                if (today >= addBusinessDays(VERIFICATION_START, cumulativeDays)) {
+                if (today >= addBusinessDays(start, cumulativeDays)) {
                     currentStageIndex = i;
-                } else break;
+                } else {
+                    break;
+                }
             }
             
-            if (currentStageIndex === -1 && today >= VERIFICATION_START) currentStageIndex = 0;
+            // If no stage completed but verification started, we're at stage 0 (first stage in progress)
+            if (currentStageIndex === -1 && today >= start) {
+                currentStageIndex = 0;
+            }
             
-            let daysElapsed = countBusinessDays(VERIFICATION_START, today);
-            let progressPercent = Math.min(100, Math.floor((daysElapsed / TOTAL_BUSINESS_DAYS) * 100));
-            let isComplete = currentStageIndex >= STAGE_DURATIONS.length - 1 && daysElapsed >= TOTAL_BUSINESS_DAYS;
+            const totalDuration = STAGE_DURATIONS.reduce((a, b) => a + b, 0);
+            let daysElapsed = countBusinessDays(start, today);
+            let progressPercent = Math.min(100, Math.floor((daysElapsed / totalDuration) * 100));
+            const isComplete = currentStageIndex >= STAGE_DURATIONS.length - 1 && daysElapsed >= totalDuration;
+            
             if (isComplete) progressPercent = 100;
             
-            const estimatedCompletionDate = addBusinessDays(VERIFICATION_START, TOTAL_BUSINESS_DAYS);
+            const estimatedCompletionDate = addBusinessDays(start, totalDuration);
             
             return {
                 currentStage: currentStageIndex + 1,
@@ -689,6 +763,7 @@
             };
         }
 
+        // Get status for a stage
         function getStageStatus(stageIndex, currentStageIndex, isComplete) {
             if (isComplete) return 'completed';
             if (stageIndex < currentStageIndex) return 'completed';
@@ -696,64 +771,117 @@
             return 'pending';
         }
 
-        function renderStages(today, stageInfo) {
+        // Render stages progressively (only show up to current stage + 1)
+        function renderStages(verificationData, stageInfo, today) {
             const container = document.getElementById('stagesContainer');
             if (!container) return;
+            
             container.innerHTML = '';
             
+            // Only show stages up to current stage + 1 (reveal progressively)
             const maxVisibleStage = stageInfo.isComplete ? VERIFICATION_STAGES.length : Math.min(stageInfo.currentStageIndex + 2, VERIFICATION_STAGES.length);
             
             for (let i = 0; i < maxVisibleStage; i++) {
                 const stage = VERIFICATION_STAGES[i];
                 const status = getStageStatus(i, stageInfo.currentStageIndex, stageInfo.isComplete);
+                const isVisible = true;
                 const isCompleted = status === 'completed';
                 const isActive = status === 'active';
                 
-                let cumulativeDays = 0;
-                for (let j = 0; j <= i; j++) cumulativeDays += STAGE_DURATIONS[j];
-                const stageDate = addBusinessDays(VERIFICATION_START, cumulativeDays);
+                // Calculate completion date for this stage
+                let stageDate = null;
+                if (verificationData?.startDate && i >= 0) {
+                    let cumulativeDays = 0;
+                    for (let j = 0; j <= i; j++) {
+                        cumulativeDays += STAGE_DURATIONS[j];
+                    }
+                    stageDate = addBusinessDays(new Date(verificationData.startDate), cumulativeDays);
+                }
                 
                 const stageItem = document.createElement('div');
-                stageItem.className = `stage-item ${status}`;
+                stageItem.className = `stage-item ${status} visible`;
                 
-                let iconHtml = isCompleted ? '<i class="fas fa-check"></i>' : (isActive ? '<i class="fas fa-spinner fa-pulse"></i>' : '<i class="fas fa-clock"></i>');
-                let statusText = isCompleted ? 'COMPLETED' : (isActive ? 'IN PROGRESS' : 'PENDING');
+                let iconHtml = '';
+                if (isCompleted) {
+                    iconHtml = '<i class="fas fa-check"></i>';
+                } else if (isActive) {
+                    iconHtml = '<i class="fas fa-spinner fa-pulse"></i>';
+                } else {
+                    iconHtml = '<i class="fas fa-clock"></i>';
+                }
                 
-                const logoHtml = `<img src="${stage.logoUrl}" alt="${stage.agency}" class="agency-logo" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'text-logo\'>${stage.fallbackText}</div>'">`;
+                let statusText = '';
+                if (isCompleted) statusText = 'COMPLETED';
+                else if (isActive) statusText = 'IN PROGRESS';
+                else statusText = 'PENDING';
                 
                 stageItem.innerHTML = `
                     <div class="stage-header">
-                        <div class="stage-icon ${status}">${iconHtml}</div>
+                        <div class="stage-icon ${status}">
+                            ${iconHtml}
+                        </div>
                         <div class="stage-info">
-                            <div class="stage-name">Stage ${stage.id}: ${stage.name}<span class="stage-status ${status}">${statusText}</span></div>
-                            <div class="stage-agency"><i class="fas fa-building"></i> ${stage.agency}</div>
+                            <div class="stage-name">
+                                Stage ${stage.id}: ${stage.name}
+                                <span class="stage-status ${status}">${statusText}</span>
+                            </div>
+                            <div class="stage-agency">
+                                <i class="fas fa-building"></i> ${stage.agency}
+                            </div>
                         </div>
                     </div>
                     <div class="stage-details">
-                        <div class="stage-description">${stage.description}${isActive ? `<div style="margin-top:10px;padding:8px;background:#fff8e8;border-radius:6px;"><i class="fas fa-spinner fa-pulse"></i> Currently processing: ${stage.name}</div>` : ''}${isCompleted ? `<div style="margin-top:10px;color:#28a745;"><i class="fas fa-check-circle"></i> Completed on: ${formatDateWithOrdinal(stageDate)}</div>` : ''}</div>
-                        <div class="agency-logos">${logoHtml}</div>
+                        <div class="stage-description">
+                            ${stage.description}
+                            ${isActive ? `<div style="margin-top: 10px; padding: 8px; background: #fff8e8; border-radius: 6px; font-size: 0.8rem;">
+                                <i class="fas fa-spinner fa-pulse" style="color: #c9a03d;"></i> Currently processing: ${stage.name}
+                            </div>` : ''}
+                            ${isCompleted ? `<div style="margin-top: 10px; font-size: 0.75rem; color: #28a745;">
+                                <i class="fas fa-check-circle"></i> Completed on: ${stageDate ? formatDateWithOrdinal(stageDate) : 'N/A'}
+                            </div>` : ''}
+                        </div>
+                        <div class="internal-processes" style="font-size: 0.75rem; color: #6c757d; margin-top: 8px;">
+                            ${stage.internalProcesses || ''}
+                        </div>
+                        <div class="agency-logos">
+                            <img src="${stage.agencyLogo}" alt="${stage.agency}" class="agency-logo" onerror="this.style.display='none'">
+                            ${stage.id === 3 ? '<img src="https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png?_=20221013140532" alt="BOG" class="agency-logo" onerror="this.style.display=\'none\'">' : ''}
+                            ${stage.id === 5 ? '<img src="https://www.primenewsghana.com/images/2020/sept/07/Ghana-Securities-and-Exchange-Commission-Job-Recruitment.jpg" alt="SEC" class="agency-logo" onerror="this.style.display=\'none\'">' : ''}
+                            ${stage.id === 6 ? '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Blue-Eagle%2BIRS.png/500px-Blue-Eagle%2BIRS.png" alt="IRS" class="agency-logo" onerror="this.style.display=\'none\'">' : ''}
+                        </div>
                     </div>
                 `;
+                
                 container.appendChild(stageItem);
             }
             
+            // Show "Next stage will appear when current completes" message if not complete
             if (!stageInfo.isComplete && maxVisibleStage < VERIFICATION_STAGES.length) {
                 const nextStage = VERIFICATION_STAGES[maxVisibleStage];
-                const nextMsg = document.createElement('div');
-                nextMsg.className = 'stage-item pending';
-                nextMsg.style.background = '#f8f9fc';
-                nextMsg.style.textAlign = 'center';
-                nextMsg.style.padding = '20px';
-                nextMsg.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;gap:10px;"><i class="fas fa-lock"></i><span>Next: ${nextStage.name} will appear when current stage completes</span><i class="fas fa-arrow-right"></i></div>`;
-                container.appendChild(nextMsg);
+                const nextMessage = document.createElement('div');
+                nextMessage.className = 'stage-item pending visible';
+                nextMessage.style.background = '#f8f9fc';
+                nextMessage.style.textAlign = 'center';
+                nextMessage.style.padding = '20px';
+                nextMessage.style.opacity = '0.7';
+                nextMessage.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i class="fas fa-lock" style="color: #adb5bd;"></i>
+                        <span>Next: ${nextStage.name} will appear when current stage completes</span>
+                        <i class="fas fa-arrow-right" style="color: #adb5bd;"></i>
+                    </div>
+                `;
+                container.appendChild(nextMessage);
             }
         }
 
-        function updateUI(today) {
-            const stageInfo = calculateCurrentStage(today);
+        // Update all UI
+        function updateUI(verificationData, today) {
+            const stageInfo = calculateCurrentStage(verificationData?.startDate, today);
+            
+            // Update progress
             document.getElementById('progressPercent').textContent = `${stageInfo.progress}%`;
             document.getElementById('progressFill').style.width = `${stageInfo.progress}%`;
-            document.getElementById('biometricDate').textContent = formatDateWithOrdinal(VERIFICATION_START);
             
             if (stageInfo.isComplete) {
                 document.getElementById('estimatedDate').innerHTML = '<i class="fas fa-check-circle"></i> VERIFICATION COMPLETED - Clearance Certificate Issued';
@@ -763,66 +891,119 @@
                 document.getElementById('officialStamp').style.display = 'none';
             }
             
-            renderStages(today, stageInfo);
-            return stageInfo;
+            // Render stages
+            renderStages(verificationData, stageInfo, today);
         }
 
-        async function loadVerificationData(userId, today) {
+        // Load verification data
+        async function loadVerificationData(userId) {
             try {
                 const userDoc = await db.collection('users').doc(userId).get();
-                if (userDoc.exists && userDoc.data()?.verification?.startDate) {
-                    return userDoc.data().verification;
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    if (userData.verification) {
+                        return userData.verification;
+                    }
                 }
-                const verificationData = { startDate: VERIFICATION_START.toISOString(), status: 'in_progress', currentStage: 1, updatedAt: new Date().toISOString() };
-                await db.collection('users').doc(userId).set({ verification: verificationData }, { merge: true });
-                localStorage.setItem('verificationData', JSON.stringify(verificationData));
-                return verificationData;
+                const localData = localStorage.getItem('verificationData');
+                if (localData) return JSON.parse(localData);
+                
+                // Auto-start verification for Felicity (biometric captured on June 15)
+                const autoStartData = {
+                    status: 'in_progress',
+                    startDate: new Date(2026, 5, 15).toISOString(),
+                    currentStage: 1,
+                    updatedAt: new Date().toISOString()
+                };
+                await db.collection('users').doc(userId).set({ verification: autoStartData }, { merge: true });
+                localStorage.setItem('verificationData', JSON.stringify(autoStartData));
+                return autoStartData;
+                
             } catch (error) {
-                console.error('Error:', error);
-                return { startDate: VERIFICATION_START.toISOString() };
+                console.error('Error loading verification data:', error);
+                return null;
             }
         }
 
         function refreshStatus() {
-            if (currentUser) {
-                const today = new Date();
-                const stageInfo = updateUI(today);
-                showNotification(`Verification status refreshed - Stage ${stageInfo.currentStage} of 7`, 'success');
-            }
+            if (!currentUser) return;
+            loadVerificationData(currentUser.uid).then(data => {
+                verificationData = data;
+                updateUI(verificationData, TODAY);
+                showNotification('Verification status refreshed!', 'success');
+            });
         }
 
         function showNotification(message, type) {
             const notification = document.createElement('div');
-            notification.style.cssText = `position:fixed; top:20px; right:20px; z-index:10000; padding:12px 20px; border-radius:8px; background:${type === 'success' ? '#28a745' : '#17a2b8'}; color:white; animation:fadeIn 0.3s ease; box-shadow:0 4px 12px rgba(0,0,0,0.15);`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 10000;
+                padding: 12px 20px;
+                border-radius: 8px;
+                background: ${type === 'success' ? '#28a745' : '#17a2b8'};
+                color: white;
+                animation: fadeIn 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
             notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${message}`;
             document.body.appendChild(notification);
             setTimeout(() => notification.remove(), 3000);
         }
 
         let currentUser = null;
-        const TODAY = new Date(2026, 5, 15);
+        let verificationData = null;
+        const TODAY = new Date(2026, 5, 15); // June 15, 2026 - biometric capture date
 
+        // Generate reference number
         function generateReferenceNumber() {
             const date = TODAY;
-            return `BOG-VER-${date.getFullYear()}${String(date.getMonth()+1).padStart(2,'0')}${String(date.getDate()).padStart(2,'0')}-${Math.floor(Math.random()*1000).toString().padStart(3,'0')}`;
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return `BOG-VER-${year}${month}${day}-${random}`;
         }
+
         document.getElementById('referenceNumber').textContent = generateReferenceNumber();
 
+        // Auth state
         auth.onAuthStateChanged(async (user) => {
-            if (!user) { window.location.href = 'login.html'; return; }
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
             try {
-                document.getElementById('loadingOverlay').style.display = 'flex';
-                document.getElementById('trackingContent').style.display = 'none';
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                const trackingContent = document.getElementById('trackingContent');
+                
+                if (loadingOverlay) loadingOverlay.style.display = 'flex';
+                if (trackingContent) trackingContent.style.display = 'none';
+                
                 currentUser = user;
-                await loadVerificationData(user.uid, TODAY);
-                updateUI(TODAY);
-                document.getElementById('loadingOverlay').style.display = 'none';
-                document.getElementById('trackingContent').style.display = 'block';
-                console.log('✅ BOG Verification Portal loaded for:', formatDateWithOrdinal(TODAY));
+                verificationData = await loadVerificationData(user.uid);
+                updateUI(verificationData, TODAY);
+                
+                // Set applicant name from user
+                const applicantNameEl = document.getElementById('applicantName');
+                if (applicantNameEl && user.displayName) {
+                    applicantNameEl.textContent = user.displayName;
+                }
+                
+                if (loadingOverlay) loadingOverlay.style.display = 'none';
+                if (trackingContent) trackingContent.style.display = 'block';
+                
+                console.log('✅ BOG Verification Portal loaded for:', TODAY.toLocaleDateString());
+                
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('loadingOverlay').style.display = 'none';
-                document.getElementById('trackingContent').style.display = 'block';
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                const trackingContent = document.getElementById('trackingContent');
+                if (loadingOverlay) loadingOverlay.style.display = 'none';
+                if (trackingContent) trackingContent.style.display = 'block';
             }
         });
     </script>
