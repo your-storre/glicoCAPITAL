@@ -3,368 +3,403 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verification Tracking | GlicoCapital</title>
+    <title>Bank of Ghana - Regulatory Verification Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #1a365d;
-            --primary-dark: #0f2040;
-            --primary-light: #2d4a80;
-            --secondary: #d4af37;
-            --secondary-dark: #b8941f;
-            --accent: #00b4d8;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --light: #f8fafc;
-            --dark: #1e293b;
-            --gray: #64748b;
-            --gray-light: #e2e8f0;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
-            color: var(--light);
+            background: #f0f4f8;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
             min-height: 100vh;
-            padding-bottom: 90px;
-            position: relative;
-            overflow-x: hidden;
         }
-        
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" opacity="0.03"><polygon fill="white" points="0,1000 1000,0 1000,1000"/></svg>');
-            background-size: cover;
-            z-index: -1;
+
+        /* Government Style Header */
+        .gov-header {
+            background: linear-gradient(135deg, #0a2b3e 0%, #1a4a6f 100%);
+            border-bottom: 4px solid #c9a03d;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        
-        .container {
-            max-width: 1000px;
+
+        .gov-header-container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-        }
-        
-        /* Premium Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 18px 20px;
-            background: rgba(26, 54, 93, 0.8);
-            backdrop-filter: blur(15px);
-            border-radius: 0 0 20px 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            margin-bottom: 20px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--glass-border);
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .logo img {
-            height: 38px;
-            filter: brightness(0) invert(1);
-        }
-        
-        .logo h1 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, white, var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--secondary), var(--accent));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            overflow: hidden;
-            font-size: 1rem;
-            text-transform: uppercase;
-        }
-        
-        /* Page Header */
-        .page-header {
-            margin-bottom: 30px;
-        }
-        
-        .page-header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            background: linear-gradient(90deg, white, var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .page-header p {
-            opacity: 0.8;
-        }
-        
-        /* Verification Timeline */
-        .timeline-container {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            backdrop-filter: blur(15px);
-            border-radius: 24px;
-            padding: 30px;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 30px;
-        }
-        
-        .timeline-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--secondary);
-        }
-        
-        .timeline {
-            position: relative;
-            padding-left: 40px;
-        }
-        
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 15px;
-            top: 10px;
-            bottom: 10px;
-            width: 2px;
-            background: linear-gradient(180deg, var(--secondary), var(--accent), var(--success));
-            border-radius: 2px;
-        }
-        
-        .timeline-item {
-            position: relative;
-            margin-bottom: 35px;
-        }
-        
-        .timeline-item:last-child {
-            margin-bottom: 0;
-        }
-        
-        .timeline-dot {
-            position: absolute;
-            left: -31px;
-            top: 0;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-        }
-        
-        .timeline-dot.completed {
-            background: var(--success);
-            border-color: var(--success);
-        }
-        
-        .timeline-dot.active {
-            background: var(--secondary);
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.3);
-            animation: pulse 2s infinite;
-        }
-        
-        .timeline-dot.pending {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: var(--gray);
-        }
-        
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-            70% { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
-        }
-        
-        .timeline-content {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 18px 20px;
-            border-left: 3px solid var(--glass-border);
-        }
-        
-        .timeline-item.completed .timeline-content {
-            border-left-color: var(--success);
-            background: rgba(16, 185, 129, 0.05);
-        }
-        
-        .timeline-item.active .timeline-content {
-            border-left-color: var(--secondary);
-            background: rgba(212, 175, 55, 0.05);
-        }
-        
-        .timeline-stage {
-            font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 5px;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .gov-logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .bog-logo {
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .coat-of-arms {
+            height: 60px;
+        }
+
+        .gov-title {
+            text-align: left;
+        }
+
+        .gov-title h1 {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .gov-title h2 {
+            color: #c9a03d;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .gov-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .gov-badge span {
+            color: white;
+            font-size: 0.8rem;
+        }
+
+        .gov-badge .ref-number {
+            font-family: monospace;
+            font-weight: 700;
+            color: #c9a03d;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Verification Card */
+        .verification-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            background: #1a4a6f;
+            padding: 20px 25px;
+            color: white;
+            border-bottom: 3px solid #c9a03d;
+        }
+
+        .card-header h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
             gap: 10px;
         }
-        
-        .timeline-status {
+
+        .card-header p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 8px;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* Applicant Info */
+        .applicant-info {
+            background: #f8f9fc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #e0e4e8;
+        }
+
+        .applicant-info h4 {
+            color: #1a4a6f;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            border-left: 3px solid #c9a03d;
+            padding-left: 12px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
             font-size: 0.75rem;
-            padding: 4px 10px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #2d3748;
+            margin-top: 4px;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            background: #f0f4f8;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .progress-label {
+            font-weight: 600;
+            color: #1a4a6f;
+        }
+
+        .progress-percent {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #c9a03d;
+        }
+
+        .progress-bar-container {
+            background: #e0e4e8;
+            border-radius: 8px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #c9a03d, #1a4a6f);
+            height: 100%;
+            border-radius: 8px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .estimated-date {
+            margin-top: 12px;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        /* Stages Container - Progressive Reveal */
+        .stages-container {
+            margin-top: 20px;
+        }
+
+        .stage-item {
+            background: white;
+            border: 1px solid #e0e4e8;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0.3;
+            filter: blur(2px);
+            pointer-events: none;
+        }
+
+        .stage-item.visible {
+            opacity: 1;
+            filter: blur(0);
+            pointer-events: auto;
+        }
+
+        .stage-item.completed {
+            border-left: 4px solid #28a745;
+            background: #f8fff8;
+        }
+
+        .stage-item.active {
+            border-left: 4px solid #c9a03d;
+            background: #fffdf5;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .stage-item.pending {
+            border-left: 4px solid #adb5bd;
+        }
+
+        .stage-header {
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            flex-wrap: wrap;
+        }
+
+        .stage-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .stage-icon.completed {
+            background: #28a745;
+            color: white;
+        }
+
+        .stage-icon.active {
+            background: #c9a03d;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .stage-icon.pending {
+            background: #adb5bd;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(201, 160, 61, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(201, 160, 61, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(201, 160, 61, 0); }
+        }
+
+        .stage-info {
+            flex: 1;
+        }
+
+        .stage-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .stage-status {
+            font-size: 0.7rem;
+            padding: 3px 10px;
             border-radius: 20px;
             font-weight: 600;
         }
-        
-        .status-completed {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
+
+        .stage-status.completed {
+            background: #28a74520;
+            color: #28a745;
         }
-        
-        .status-active {
-            background: rgba(212, 175, 55, 0.2);
-            color: var(--secondary);
+
+        .stage-status.active {
+            background: #c9a03d20;
+            color: #c9a03d;
         }
-        
-        .status-pending {
-            background: rgba(100, 116, 139, 0.2);
-            color: var(--gray-light);
+
+        .stage-status.pending {
+            background: #adb5bd20;
+            color: #6c757d;
         }
-        
-        .timeline-description {
-            font-size: 0.85rem;
-            opacity: 0.8;
-            line-height: 1.5;
-            margin-top: 8px;
-        }
-        
-        .timeline-date {
+
+        .stage-agency {
             font-size: 0.7rem;
-            opacity: 0.6;
-            margin-top: 8px;
-            font-family: monospace;
+            color: #6c757d;
+            margin-top: 4px;
         }
-        
-        /* Progress Card */
-        .progress-card {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(0, 180, 216, 0.1));
-            backdrop-filter: blur(15px);
-            border-radius: 24px;
-            padding: 25px;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 30px;
-            text-align: center;
+
+        .stage-details {
+            padding: 0 20px 20px 83px;
+            border-top: 1px solid #e0e4e8;
+            display: none;
         }
-        
-        .progress-percentage {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--secondary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        .stage-item.active .stage-details {
+            display: block;
         }
-        
-        .progress-bar-container {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            height: 12px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-        
-        .progress-bar {
-            background: linear-gradient(90deg, var(--secondary), var(--accent));
-            height: 100%;
-            border-radius: 10px;
-            transition: width 0.5s ease;
-        }
-        
-        .estimated-completion {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-top: 15px;
-        }
-        
-        /* Info Cards */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .info-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 20px;
-            border: 1px solid var(--glass-border);
-        }
-        
-        .info-card h4 {
-            font-size: 1rem;
+
+        .stage-description {
+            font-size: 0.85rem;
+            color: #4a5568;
+            line-height: 1.5;
             margin-bottom: 12px;
-            color: var(--secondary);
+        }
+
+        .agency-logos {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed #e0e4e8;
         }
-        
-        .info-card p {
-            font-size: 0.85rem;
-            opacity: 0.8;
-            line-height: 1.5;
+
+        .agency-logo {
+            height: 30px;
+            object-fit: contain;
         }
-        
+
+        /* Official Stamp */
+        .official-stamp {
+            text-align: center;
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fc;
+            border-radius: 10px;
+            border: 1px dashed #c9a03d;
+        }
+
+        .stamp-text {
+            font-family: 'Merriweather', serif;
+            font-size: 0.8rem;
+            color: #1a4a6f;
+        }
+
         /* Action Buttons */
         .action-buttons {
             display: flex;
             gap: 15px;
-            justify-content: center;
-            margin-top: 20px;
+            justify-content: flex-end;
+            margin-top: 25px;
         }
-        
+
         .btn {
             padding: 12px 24px;
-            border-radius: 12px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -375,67 +410,38 @@
             border: none;
             text-decoration: none;
         }
-        
+
         .btn-primary {
-            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-            color: var(--primary-dark);
+            background: #1a4a6f;
+            color: white;
         }
-        
+
         .btn-primary:hover {
+            background: #0a2b3e;
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3);
         }
-        
+
         .btn-outline {
             background: transparent;
-            border: 1px solid var(--secondary);
-            color: var(--secondary);
+            border: 2px solid #1a4a6f;
+            color: #1a4a6f;
         }
-        
+
         .btn-outline:hover {
-            background: var(--secondary);
-            color: var(--primary-dark);
+            background: #1a4a6f;
+            color: white;
         }
-        
-        /* Bottom Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(26, 54, 93, 0.95);
-            backdrop-filter: blur(15px);
-            display: flex;
-            justify-content: space-around;
-            padding: 14px 0;
-            box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            border-top: 1px solid var(--glass-border);
+
+        /* Footer */
+        .gov-footer {
+            background: #0a2b3e;
+            color: #8ba0ae;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.75rem;
+            margin-top: 40px;
         }
-        
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--gray-light);
-            font-size: 0.7rem;
-            transition: all 0.3s ease;
-            padding: 6px 10px;
-            border-radius: 10px;
-            min-width: 50px;
-        }
-        
-        .nav-item.active, .nav-item:hover {
-            color: var(--secondary);
-            background: rgba(212, 175, 55, 0.1);
-        }
-        
-        .nav-icon {
-            font-size: 1.2rem;
-            margin-bottom: 4px;
-        }
-        
+
         /* Loading Overlay */
         .loading-overlay {
             position: fixed;
@@ -443,74 +449,42 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            background: #f0f4f8;
             z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
         }
-        
+
         .spinner {
             width: 50px;
             height: 50px;
-            border: 3px solid var(--glass-border);
-            border-top-color: var(--secondary);
+            border: 3px solid #e0e4e8;
+            border-top-color: #c9a03d;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-bottom: 20px;
         }
-        
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .animate-in {
-            animation: fadeInUp 0.5s ease forwards;
-        }
-        
-        /* Responsive */
+
         @media (max-width: 768px) {
-            .container {
-                padding: 15px;
+            .gov-header-container {
+                flex-direction: column;
+                text-align: center;
             }
-            
-            .timeline {
-                padding-left: 30px;
+            .stage-header {
+                flex-direction: column;
+                text-align: center;
             }
-            
-            .timeline::before {
-                left: 8px;
+            .stage-details {
+                padding-left: 20px;
             }
-            
-            .timeline-dot {
-                left: -24px;
-                width: 24px;
-                height: 24px;
-            }
-            
-            .timeline-dot i {
-                font-size: 0.7rem;
-            }
-            
             .action-buttons {
                 flex-direction: column;
-            }
-            
-            .info-grid {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -519,102 +493,110 @@
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="spinner"></div>
-        <div class="loading-text">Loading verification status...</div>
+        <div class="loading-text">Connecting to Bank of Ghana Verification Portal...</div>
     </div>
 
     <div id="trackingContent" style="display: none;">
-        <!-- Premium Header -->
-        <header>
-            <div class="logo">
-                <img src="https://glicogroup.net/storage/glico-capital-logo.png" alt="GlicoCapital Logo">
-                <h1>GlicoCapital</h1>
-            </div>
-            <div class="user-menu">
-                <button class="btn btn-outline" id="logoutBtn" style="padding: 8px 16px; font-size: 0.85rem; display: none;">Logout</button>
-                <div class="user-avatar" id="userAvatar">
-                    <span id="avatarInitial">F</span>
+        <!-- Government Header -->
+        <div class="gov-header">
+            <div class="gov-header-container">
+                <div class="gov-logo-section">
+                    <img src="https://www.bog.gov.gh/wp-content/uploads/2020/08/bog-logo-retina.png" alt="Bank of Ghana" class="bog-logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Bank_of_Ghana_logo.svg/200px-Bank_of_Ghana_logo.svg.png'">
+                    <div class="gov-title">
+                        <h1>BANK OF GHANA</h1>
+                        <h2>Regulatory Compliance & Verification Portal</h2>
+                    </div>
                 </div>
-            </div>
-        </header>
-
-        <!-- Main Content -->
-        <div class="container">
-            <div class="page-header animate-in">
-                <h1><i class="fas fa-shield-alt"></i> Verification Tracking</h1>
-                <p>Real-time status of your regulatory compliance verification with Bank of Ghana and partner agencies</p>
-            </div>
-
-            <!-- Progress Card -->
-            <div class="progress-card animate-in">
-                <div class="progress-percentage" id="progressPercentage">0%</div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar" id="progressBarFill" style="width: 0%"></div>
+                <div class="gov-badge">
+                    <span>VERIFICATION REFERENCE</span><br>
+                    <span class="ref-number" id="referenceNumber">BOG-VER-2026-0615</span>
                 </div>
-                <div class="estimated-completion" id="estimatedCompletion">
-                    <i class="fas fa-clock"></i> Estimated completion: Calculating...
-                </div>
-            </div>
-
-            <!-- Info Grid -->
-            <div class="info-grid animate-in">
-                <div class="info-card">
-                    <h4><i class="fas fa-building"></i> Regulatory Bodies</h4>
-                    <p>Bank of Ghana (BOG) • Financial Intelligence Centre (FIC) • Securities & Exchange Commission (SEC) • Ghana Revenue Authority (GRA)</p>
-                </div>
-                <div class="info-card">
-                    <h4><i class="fas fa-globe"></i> International Cooperation</h4>
-                    <p>Requests are sent to US Treasury/IRS for cross-border verification of tax status and source of funds when applicable.</p>
-                </div>
-                <div class="info-card">
-                    <h4><i class="fas fa-clock"></i> Processing Timeline</h4>
-                    <p>Standard verification takes 12-14 business days. International requests may extend processing by 3-5 additional days.</p>
-                </div>
-            </div>
-
-            <!-- Verification Timeline -->
-            <div class="timeline-container animate-in">
-                <div class="timeline-title">
-                    <i class="fas fa-chart-line"></i> Verification Journey
-                </div>
-                <div class="timeline" id="verificationTimeline">
-                    <!-- Timeline items will be populated by JavaScript -->
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="action-buttons animate-in">
-                <button class="btn btn-primary" onclick="window.location.href='dashboard.html'">
-                    <i class="fas fa-home"></i> Back to Dashboard
-                </button>
-                <button class="btn btn-outline" onclick="refreshStatus()">
-                    <i class="fas fa-sync-alt"></i> Refresh Status
-                </button>
             </div>
         </div>
 
-        <!-- Bottom Navigation -->
-        <nav class="bottom-nav">
-            <a href="dashboard.html" class="nav-item">
-                <span class="nav-icon"><i class="fas fa-home"></i></span>
-                <span>Home</span>
-            </a>
-            <a href="invite.html" class="nav-item">
-                <span class="nav-icon"><i class="fas fa-user-plus"></i></span>
-                <span>Invite</span>
-            </a>
-            <a href="payouts.html" class="nav-item">
-                <span class="nav-icon"><i class="fas fa-wallet"></i></span>
-                <span>Payouts</span>
-            </a>
-            <a href="partners.html" class="nav-item">
-                <span class="nav-icon"><i class="fas fa-handshake"></i></span>
-                <span>Partners</span>
-            </a>
-            <a href="support.html" class="nav-item">
-                <span class="nav-icon"><i class="fas fa-headset"></i></span>
-                <span>Support</span>
-            </a>
-        </nav>
+        <div class="main-container">
+            <!-- Verification Card -->
+            <div class="verification-card">
+                <div class="card-header">
+                    <h3><i class="fas fa-shield-alt"></i> Regulatory Verification Status</h3>
+                    <p>Anti-Money Laundering (AML) & Counter-Terrorism Financing (CTF) Compliance Check</p>
+                </div>
+                <div class="card-body">
+                    <!-- Applicant Information -->
+                    <div class="applicant-info">
+                        <h4><i class="fas fa-user-check"></i> Applicant Information</h4>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Full Name</span>
+                                <span class="info-value" id="applicantName">Acheampong Felicity</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Date of Birth</span>
+                                <span class="info-value" id="applicantDob">15 March 1990</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Nationality</span>
+                                <span class="info-value">Ghanaian / USA Resident</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Tax ID (SSN)</span>
+                                <span class="info-value">•••-••-•••2</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Verification Type</span>
+                                <span class="info-value">Enhanced Due Diligence (EDD)</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Risk Rating</span>
+                                <span class="info-value" style="color: #c9a03d;">Standard - Under Review</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Section -->
+                    <div class="progress-section">
+                        <div class="progress-header">
+                            <span class="progress-label"><i class="fas fa-chart-line"></i> Verification Progress</span>
+                            <span class="progress-percent" id="progressPercent">0%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" id="progressFill"></div>
+                        </div>
+                        <div class="estimated-date" id="estimatedDate">
+                            <i class="fas fa-calendar-alt"></i> Estimated completion: Pending
+                        </div>
+                    </div>
+
+                    <!-- Stages Container - Progressive Reveal -->
+                    <div class="stages-container" id="stagesContainer">
+                        <!-- Stages will be populated dynamically -->
+                    </div>
+
+                    <!-- Official Stamp -->
+                    <div class="official-stamp" id="officialStamp" style="display: none;">
+                        <i class="fas fa-check-circle" style="color: #28a745; font-size: 2rem; margin-bottom: 10px; display: block;"></i>
+                        <div class="stamp-text">THIS VERIFICATION HAS BEEN COMPLETED AND APPROVED</div>
+                        <div class="stamp-text" style="font-size: 0.7rem; margin-top: 5px;">Bank of Ghana - Financial Intelligence Directorate</div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn btn-outline" onclick="window.location.href='dashboard.html'">
+                            <i class="fas fa-arrow-left"></i> Return to GlicoCapital Dashboard
+                        </button>
+                        <button class="btn btn-primary" onclick="refreshStatus()">
+                            <i class="fas fa-sync-alt"></i> Refresh Status
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="gov-footer">
+            <p>Bank of Ghana - Financial Intelligence Directorate | P.O. Box GP 2674, Accra, Ghana | Tel: +233 (0) 30 266 6000</p>
+            <p>This is an official regulatory verification portal. Unauthorized access is prohibited.</p>
+        </div>
     </div>
 
     <!-- Firebase SDK -->
@@ -639,59 +621,69 @@
         const db = firebase.firestore();
 
         // ===========================================
-        // VERIFICATION STAGES DEFINITION
+        // VERIFICATION STAGES - With Agency Logos
         // ===========================================
         const VERIFICATION_STAGES = [
-            { 
-                id: 1, 
-                name: "Biometric Data Capture", 
-                duration: 0,
-                description: "Your biometric data (fingerprints and photograph) has been successfully captured at our office. Your documents are being prepared for submission to regulatory bodies.",
-                details: "✓ Biometric data verified ✓ Identity confirmed ✓ Documents scanned and authenticated"
+            {
+                id: 1,
+                name: "Biometric Data Capture",
+                agency: "Bank of Ghana - Immigration Directorate",
+                agencyLogo: "https://www.bog.gov.gh/wp-content/uploads/2020/08/bog-logo-retina.png",
+                description: "Your biometric data (fingerprints and photograph) has been successfully captured. Identity verification confirmed against national database.",
+                internalProcesses: "✓ Biometric verification completed ✓ Identity confirmed ✓ Database cross-reference complete"
             },
-            { 
-                id: 2, 
-                name: "Document Verification", 
-                duration: 1,
-                description: "Our compliance team is verifying your tax identification documents, proof of address, and source of funds documentation.",
-                details: "Tax ID verification • Proof of address validation • Source of funds documentation review"
+            {
+                id: 2,
+                name: "Document Verification",
+                agency: "Bank of Ghana - Compliance Unit",
+                agencyLogo: "https://www.bog.gov.gh/wp-content/uploads/2020/08/bog-logo-retina.png",
+                description: "Your tax identification documents, proof of address, and source of funds documentation are being verified against official records.",
+                internalProcesses: "Tax ID verification • Proof of address validation • Source of funds documentation review"
             },
-            { 
-                id: 3, 
-                name: "Financial Intelligence Centre (FIC) Screening", 
-                duration: 2,
-                description: "The Financial Intelligence Centre is conducting anti-money laundering (AML) and counter-terrorism financing (CTF) checks against global watchlists.",
-                details: "AML screening • CTF compliance check • PEP (Politically Exposed Persons) verification • Global sanctions list check"
+            {
+                id: 3,
+                name: "Financial Intelligence Centre (FIC) Screening",
+                agency: "Financial Intelligence Centre",
+                agencyLogo: "https://fic.gov.gh/images/logo.png",
+                description: "FIC conducting anti-money laundering (AML) and counter-terrorism financing (CTF) checks against global watchlists and sanctions databases.",
+                internalProcesses: "AML screening • CTF compliance check • PEP verification • Global sanctions list check • UN Security Council resolutions compliance"
             },
-            { 
-                id: 4, 
-                name: "Bank of Ghana (BOG) Review", 
-                duration: 2,
-                description: "Bank of Ghana is reviewing your investment source and compliance with foreign exchange regulations and capital movement laws.",
-                details: "Foreign exchange compliance • Capital movement verification • Investment source validation • Regulatory reporting"
+            {
+                id: 4,
+                name: "Bank of Ghana (BOG) Regulatory Review",
+                agency: "Bank of Ghana - Banking Supervision Department",
+                agencyLogo: "https://www.bog.gov.gh/wp-content/uploads/2020/08/bog-logo-retina.png",
+                description: "Bank of Ghana reviewing investment source compliance with foreign exchange regulations, capital movement laws, and anti-money laundering directives.",
+                internalProcesses: "Foreign exchange compliance • Capital movement verification • Investment source validation • AML Directive compliance"
             },
-            { 
-                id: 5, 
-                name: "SEC & GRA Verification", 
-                duration: 2,
-                description: "Securities and Exchange Commission verifying investment eligibility. Ghana Revenue Authority confirming tax compliance status.",
-                details: "SEC investment eligibility • GRA tax clearance verification • Capital gains assessment • Compliance certification"
+            {
+                id: 5,
+                name: "SEC & GRA Verification",
+                agency: "SEC Ghana & Ghana Revenue Authority",
+                agencyLogo: "https://upload.wikimedia.org/wikipedia/commons/8/89/Ghana_Revenue_Authority_logo_%28new%29.jpg",
+                description: "Securities and Exchange Commission verifying investment eligibility. Ghana Revenue Authority confirming tax compliance status and capital gains assessment.",
+                internalProcesses: "SEC investment eligibility • GRA tax clearance verification • Capital gains assessment • Compliance certification"
             },
-            { 
-                id: 6, 
-                name: "International Request Processing", 
-                duration: 3,
-                description: "Request sent to US Treasury/IRS for cross-border verification of tax status and source of funds. This international cooperation may take additional time.",
-                details: "US IRS tax status verification • Cross-border fund source validation • International AML cooperation • Bilateral agreement processing"
+            {
+                id: 6,
+                name: "International Request Processing",
+                agency: "US Treasury / Internal Revenue Service",
+                agencyLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Blue-Eagle%2BIRS.png/500px-Blue-Eagle%2BIRS.png",
+                description: "Request sent to US Treasury/IRS for cross-border verification of tax status and source of funds under the FATCA agreement.",
+                internalProcesses: "US IRS tax status verification • Cross-border fund source validation • International AML cooperation • FATCA compliance check • Bilateral agreement processing"
             },
-            { 
-                id: 7, 
-                name: "Final Approval & Clearance", 
-                duration: 2,
-                description: "All regulatory bodies have cleared the verification. Final approval is being processed for payout release.",
-                details: "Final compliance sign-off • Payout authorization • Clearance certificate issuance"
+            {
+                id: 7,
+                name: "Final Approval & Clearance",
+                agency: "Bank of Ghana - Governor's Office",
+                agencyLogo: "https://www.bog.gov.gh/wp-content/uploads/2020/08/bog-logo-retina.png",
+                description: "All regulatory bodies have cleared the verification. Final approval is being processed for clearance certificate issuance.",
+                internalProcesses: "Final compliance sign-off • Clearance certificate issuance • Regulatory reporting completion"
             }
         ];
+
+        // Stage durations in business days (total 14 business days)
+        const STAGE_DURATIONS = [0, 1, 2, 2, 2, 4, 3]; // Total: 14 business days
 
         // Business day calculation
         function isBusinessDay(date) {
@@ -730,149 +722,180 @@
             return `${day}${suffix} ${month} ${date.getFullYear()}`;
         }
 
-        // Calculate current verification stage
-        function calculateVerificationStage(startDate, today) {
-            if (!startDate) return { stage: 0, progress: 0, stageData: null, estimatedCompletionDate: null };
+        // Calculate current verification stage based on start date
+        function calculateCurrentStage(startDate, today) {
+            if (!startDate) return { stage: 0, progress: 0, stageIndex: -1 };
             
             const start = new Date(startDate);
             let cumulativeDays = 0;
-            let currentStage = 0;
+            let currentStageIndex = -1;
             
-            for (let i = 0; i < VERIFICATION_STAGES.length; i++) {
-                const stage = VERIFICATION_STAGES[i];
-                cumulativeDays += stage.duration;
-                
+            for (let i = 0; i < STAGE_DURATIONS.length; i++) {
+                cumulativeDays += STAGE_DURATIONS[i];
                 if (today >= addBusinessDays(start, cumulativeDays)) {
-                    currentStage = i + 1;
+                    currentStageIndex = i;
                 } else {
                     break;
                 }
             }
             
-            if (currentStage === 0 && today >= start) {
-                currentStage = 1;
+            // If no stage completed but verification started, we're at stage 0 (first stage in progress)
+            if (currentStageIndex === -1 && today >= start) {
+                currentStageIndex = 0;
             }
             
-            const totalDuration = VERIFICATION_STAGES.reduce((sum, s) => sum + s.duration, 0);
+            const totalDuration = STAGE_DURATIONS.reduce((a, b) => a + b, 0);
             let daysElapsed = countBusinessDays(start, today);
             let progressPercent = Math.min(100, Math.floor((daysElapsed / totalDuration) * 100));
+            const isComplete = currentStageIndex >= STAGE_DURATIONS.length - 1 && daysElapsed >= totalDuration;
             
-            if (currentStage >= VERIFICATION_STAGES.length) {
-                currentStage = VERIFICATION_STAGES.length;
-                progressPercent = 100;
-            }
+            if (isComplete) progressPercent = 100;
             
-            // Calculate estimated completion date
             const estimatedCompletionDate = addBusinessDays(start, totalDuration);
             
             return {
-                stage: currentStage,
+                currentStage: currentStageIndex + 1,
+                currentStageIndex: currentStageIndex,
                 progress: progressPercent,
-                stageData: VERIFICATION_STAGES[currentStage - 1] || null,
-                isComplete: currentStage >= VERIFICATION_STAGES.length,
+                isComplete: isComplete,
                 estimatedCompletionDate: estimatedCompletionDate,
                 daysRemaining: Math.max(0, countBusinessDays(today, estimatedCompletionDate))
             };
         }
 
-        // Get status class for timeline
-        function getStatusClass(stageId, currentStage) {
-            if (stageId < currentStage) return 'completed';
-            if (stageId === currentStage) return 'active';
+        // Get status for a stage
+        function getStageStatus(stageIndex, currentStageIndex, isComplete) {
+            if (isComplete) return 'completed';
+            if (stageIndex < currentStageIndex) return 'completed';
+            if (stageIndex === currentStageIndex) return 'active';
             return 'pending';
         }
 
-        function getStatusText(status) {
-            if (status === 'completed') return 'Completed';
-            if (status === 'active') return 'In Progress';
-            return 'Pending';
-        }
-
-        // Render timeline
-        function renderTimeline(currentStage, startDate) {
-            const timeline = document.getElementById('verificationTimeline');
-            if (!timeline) return;
+        // Render stages progressively (only show up to current stage + 1)
+        function renderStages(verificationData, stageInfo, today) {
+            const container = document.getElementById('stagesContainer');
+            if (!container) return;
             
-            timeline.innerHTML = '';
+            container.innerHTML = '';
             
-            VERIFICATION_STAGES.forEach((stage, index) => {
-                const status = getStatusClass(stage.id, currentStage);
+            // Only show stages up to current stage + 1 (reveal progressively)
+            const maxVisibleStage = stageInfo.isComplete ? VERIFICATION_STAGES.length : Math.min(stageInfo.currentStageIndex + 2, VERIFICATION_STAGES.length);
+            
+            for (let i = 0; i < maxVisibleStage; i++) {
+                const stage = VERIFICATION_STAGES[i];
+                const status = getStageStatus(i, stageInfo.currentStageIndex, stageInfo.isComplete);
+                const isVisible = true;
                 const isCompleted = status === 'completed';
                 const isActive = status === 'active';
                 
-                // Calculate estimated date for this stage
+                // Calculate completion date for this stage
                 let stageDate = null;
-                if (startDate && stage.duration > 0) {
+                if (verificationData?.startDate && i >= 0) {
                     let cumulativeDays = 0;
-                    for (let i = 0; i <= index; i++) {
-                        cumulativeDays += VERIFICATION_STAGES[i].duration;
+                    for (let j = 0; j <= i; j++) {
+                        cumulativeDays += STAGE_DURATIONS[j];
                     }
-                    stageDate = addBusinessDays(new Date(startDate), cumulativeDays);
+                    stageDate = addBusinessDays(new Date(verificationData.startDate), cumulativeDays);
                 }
                 
-                const timelineItem = document.createElement('div');
-                timelineItem.className = `timeline-item ${isCompleted ? 'completed' : (isActive ? 'active' : '')}`;
+                const stageItem = document.createElement('div');
+                stageItem.className = `stage-item ${status} visible`;
                 
-                let dotIcon = '';
-                if (isCompleted) dotIcon = '<i class="fas fa-check" style="font-size: 0.8rem;"></i>';
-                else if (isActive) dotIcon = '<i class="fas fa-spinner fa-pulse"></i>';
-                else dotIcon = '<i class="fas fa-clock"></i>';
+                let iconHtml = '';
+                if (isCompleted) {
+                    iconHtml = '<i class="fas fa-check"></i>';
+                } else if (isActive) {
+                    iconHtml = '<i class="fas fa-spinner fa-pulse"></i>';
+                } else {
+                    iconHtml = '<i class="fas fa-clock"></i>';
+                }
                 
-                timelineItem.innerHTML = `
-                    <div class="timeline-dot ${status}">
-                        ${dotIcon}
+                let statusText = '';
+                if (isCompleted) statusText = 'COMPLETED';
+                else if (isActive) statusText = 'IN PROGRESS';
+                else statusText = 'PENDING';
+                
+                stageItem.innerHTML = `
+                    <div class="stage-header">
+                        <div class="stage-icon ${status}">
+                            ${iconHtml}
+                        </div>
+                        <div class="stage-info">
+                            <div class="stage-name">
+                                Stage ${stage.id}: ${stage.name}
+                                <span class="stage-status ${status}">${statusText}</span>
+                            </div>
+                            <div class="stage-agency">
+                                <i class="fas fa-building"></i> ${stage.agency}
+                            </div>
+                        </div>
                     </div>
-                    <div class="timeline-content">
-                        <div class="timeline-stage">
-                            <span><strong>Stage ${stage.id}:</strong> ${stage.name}</span>
-                            <span class="timeline-status status-${status}">${getStatusText(status)}</span>
-                        </div>
-                        <div class="timeline-description">
+                    <div class="stage-details">
+                        <div class="stage-description">
                             ${stage.description}
-                            ${isActive ? `<div style="margin-top: 8px; padding: 8px; background: rgba(212, 175, 55, 0.1); border-radius: 8px; font-size: 0.8rem;">
-                                <i class="fas fa-spinner fa-pulse"></i> Currently processing: ${stage.name}
+                            ${isActive ? `<div style="margin-top: 10px; padding: 8px; background: #fff8e8; border-radius: 6px; font-size: 0.8rem;">
+                                <i class="fas fa-spinner fa-pulse" style="color: #c9a03d;"></i> Currently processing: ${stage.name}
                             </div>` : ''}
-                            ${isCompleted ? `<div style="margin-top: 8px; font-size: 0.75rem; color: var(--success);">
-                                <i class="fas fa-check-circle"></i> Completed
+                            ${isCompleted ? `<div style="margin-top: 10px; font-size: 0.75rem; color: #28a745;">
+                                <i class="fas fa-check-circle"></i> Completed on: ${stageDate ? formatDateWithOrdinal(stageDate) : 'N/A'}
                             </div>` : ''}
                         </div>
-                        ${stageDate ? `<div class="timeline-date">
-                            <i class="fas fa-calendar-alt"></i> Estimated: ${formatDateWithOrdinal(stageDate)}
-                        </div>` : ''}
+                        <div class="internal-processes" style="font-size: 0.75rem; color: #6c757d; margin-top: 8px;">
+                            ${stage.internalProcesses || ''}
+                        </div>
+                        <div class="agency-logos">
+                            <img src="${stage.agencyLogo}" alt="${stage.agency}" class="agency-logo" onerror="this.style.display='none'">
+                            ${stage.id === 3 ? '<img src="https://www.bog.gov.gh/wp-content/uploads/2020/08/bog-logo-retina.png" alt="BOG" class="agency-logo" onerror="this.style.display=\'none\'">' : ''}
+                            ${stage.id === 5 ? '<img src="https://www.primenewsghana.com/images/2020/sept/07/Ghana-Securities-and-Exchange-Commission-Job-Recruitment.jpg" alt="SEC" class="agency-logo" onerror="this.style.display=\'none\'">' : ''}
+                            ${stage.id === 6 ? '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Blue-Eagle%2BIRS.png/500px-Blue-Eagle%2BIRS.png" alt="IRS" class="agency-logo" onerror="this.style.display=\'none\'">' : ''}
+                        </div>
                     </div>
                 `;
                 
-                timeline.appendChild(timelineItem);
-            });
-        }
-
-        // Update all UI elements
-        function updateUI(verificationData, today) {
-            if (!verificationData || !verificationData.startDate) {
-                document.getElementById('progressPercentage').textContent = 'Not Started';
-                document.getElementById('progressBarFill').style.width = '0%';
-                document.getElementById('estimatedCompletion').innerHTML = '<i class="fas fa-info-circle"></i> Verification not yet started. Complete biometric capture to begin.';
-                renderTimeline(0, null);
-                return;
+                container.appendChild(stageItem);
             }
             
-            const stageInfo = calculateVerificationStage(verificationData.startDate, today);
+            // Show "Next stage will appear when current completes" message if not complete
+            if (!stageInfo.isComplete && maxVisibleStage < VERIFICATION_STAGES.length) {
+                const nextStage = VERIFICATION_STAGES[maxVisibleStage];
+                const nextMessage = document.createElement('div');
+                nextMessage.className = 'stage-item pending visible';
+                nextMessage.style.background = '#f8f9fc';
+                nextMessage.style.textAlign = 'center';
+                nextMessage.style.padding = '20px';
+                nextMessage.style.opacity = '0.7';
+                nextMessage.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i class="fas fa-lock" style="color: #adb5bd;"></i>
+                        <span>Next: ${nextStage.name} will appear when current stage completes</span>
+                        <i class="fas fa-arrow-right" style="color: #adb5bd;"></i>
+                    </div>
+                `;
+                container.appendChild(nextMessage);
+            }
+        }
+
+        // Update all UI
+        function updateUI(verificationData, today) {
+            const stageInfo = calculateCurrentStage(verificationData?.startDate, today);
             
-            // Update progress card
-            document.getElementById('progressPercentage').textContent = `${stageInfo.progress}%`;
-            document.getElementById('progressBarFill').style.width = `${stageInfo.progress}%`;
+            // Update progress
+            document.getElementById('progressPercent').textContent = `${stageInfo.progress}%`;
+            document.getElementById('progressFill').style.width = `${stageInfo.progress}%`;
             
             if (stageInfo.isComplete) {
-                document.getElementById('estimatedCompletion').innerHTML = '<i class="fas fa-check-circle"></i> Verification Complete! Your account is fully verified.';
+                document.getElementById('estimatedDate').innerHTML = '<i class="fas fa-check-circle"></i> VERIFICATION COMPLETED - Clearance Certificate Issued';
+                document.getElementById('officialStamp').style.display = 'block';
             } else {
-                document.getElementById('estimatedCompletion').innerHTML = `<i class="fas fa-clock"></i> Estimated completion: ${formatDateWithOrdinal(stageInfo.estimatedCompletionDate)} (${stageInfo.daysRemaining} business days remaining)`;
+                document.getElementById('estimatedDate').innerHTML = `<i class="fas fa-calendar-alt"></i> Estimated completion: ${formatDateWithOrdinal(stageInfo.estimatedCompletionDate)} (${stageInfo.daysRemaining} business days remaining)`;
+                document.getElementById('officialStamp').style.display = 'none';
             }
             
-            // Render timeline
-            renderTimeline(stageInfo.stage, verificationData.startDate);
+            // Render stages
+            renderStages(verificationData, stageInfo, today);
         }
 
-        // Load verification data from Firestore
+        // Load verification data
         async function loadVerificationData(userId) {
             try {
                 const userDoc = await db.collection('users').doc(userId).get();
@@ -882,116 +905,48 @@
                         return userData.verification;
                     }
                 }
-                
-                // Check localStorage as fallback
                 const localData = localStorage.getItem('verificationData');
-                if (localData) {
-                    return JSON.parse(localData);
-                }
-                return null;
+                if (localData) return JSON.parse(localData);
+                
+                // Auto-start verification for Felicity (biometric captured on June 15)
+                const autoStartData = {
+                    status: 'in_progress',
+                    startDate: new Date(2026, 5, 15).toISOString(),
+                    currentStage: 1,
+                    updatedAt: new Date().toISOString()
+                };
+                await db.collection('users').doc(userId).set({ verification: autoStartData }, { merge: true });
+                localStorage.setItem('verificationData', JSON.stringify(autoStartData));
+                return autoStartData;
+                
             } catch (error) {
                 console.error('Error loading verification data:', error);
                 return null;
             }
         }
 
-        // Save verification data to Firestore and localStorage
-        async function saveVerificationData(userId, data) {
-            try {
-                await db.collection('users').doc(userId).set({
-                    verification: data
-                }, { merge: true });
-                localStorage.setItem('verificationData', JSON.stringify(data));
-                return true;
-            } catch (error) {
-                console.error('Error saving verification data:', error);
-                localStorage.setItem('verificationData', JSON.stringify(data));
-                return false;
-            }
-        }
-
-        // Initialize or auto-start verification if appointment was today
-        async function initializeVerification(userId, appointmentData, today) {
-            let verificationData = await loadVerificationData(userId);
-            
-            if (!verificationData && appointmentData && appointmentData.status === 'confirmed') {
-                const appointmentDate = appointmentData.dateObj ? new Date(appointmentData.dateObj) : new Date(appointmentData.date);
-                const todayMidnight = new Date(today);
-                todayMidnight.setHours(0, 0, 0, 0);
-                
-                if (appointmentDate <= today) {
-                    // Auto-start verification at midnight on appointment day
-                    verificationData = {
-                        status: 'in_progress',
-                        startDate: appointmentDate.toISOString(),
-                        currentStage: 1,
-                        updatedAt: new Date().toISOString()
-                    };
-                    await saveVerificationData(userId, verificationData);
-                }
-            }
-            
-            return verificationData;
-        }
-
-        // Load user profile
-        function loadUserProfile(user) {
-            const avatarInitial = document.getElementById('avatarInitial');
-            const userAvatar = document.getElementById('userAvatar');
-            
-            if (user.photoURL && avatarInitial && userAvatar) {
-                avatarInitial.style.display = 'none';
-                userAvatar.innerHTML = `<img src="${user.photoURL}" alt="Profile">`;
-            } else if (avatarInitial) {
-                const displayName = user?.displayName || 'Felicity Acheampong';
-                avatarInitial.textContent = displayName.charAt(0).toUpperCase();
-            }
-        }
-
-        // Load appointment data
-        async function loadAppointmentData(userId) {
-            try {
-                const userDoc = await db.collection('users').doc(userId).get();
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    if (userData.verification && userData.verification.appointment) {
-                        return userData.verification.appointment;
-                    }
-                }
-                const localAppointment = localStorage.getItem('appointmentData');
-                if (localAppointment) {
-                    return JSON.parse(localAppointment);
-                }
-                return null;
-            } catch (error) {
-                console.error('Error loading appointment:', error);
-                return null;
-            }
-        }
-
-        // Refresh status
-        async function refreshStatus() {
+        function refreshStatus() {
             if (!currentUser) return;
-            
-            const appointmentData = await loadAppointmentData(currentUser.uid);
-            const verificationData = await initializeVerification(currentUser.uid, appointmentData, TODAY);
-            updateUI(verificationData, TODAY);
-            showNotification('Verification status refreshed!', 'success');
+            loadVerificationData(currentUser.uid).then(data => {
+                verificationData = data;
+                updateUI(verificationData, TODAY);
+                showNotification('Verification status refreshed!', 'success');
+            });
         }
 
         function showNotification(message, type) {
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
-                top: 90px;
+                top: 20px;
                 right: 20px;
-                z-index: 9999;
-                padding: 15px 20px;
-                border-radius: 12px;
-                background: ${type === 'success' ? '#10b981' : '#3b82f6'};
+                z-index: 10000;
+                padding: 12px 20px;
+                border-radius: 8px;
+                background: ${type === 'success' ? '#28a745' : '#17a2b8'};
                 color: white;
-                animation: fadeInUp 0.3s ease;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                animation: fadeIn 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             `;
             notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${message}`;
             document.body.appendChild(notification);
@@ -999,7 +954,20 @@
         }
 
         let currentUser = null;
-        const TODAY = new Date(2026, 5, 15); // June 15, 2026
+        let verificationData = null;
+        const TODAY = new Date(2026, 5, 15); // June 15, 2026 - biometric capture date
+
+        // Generate reference number
+        function generateReferenceNumber() {
+            const date = TODAY;
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            return `BOG-VER-${year}${month}${day}-${random}`;
+        }
+
+        document.getElementById('referenceNumber').textContent = generateReferenceNumber();
 
         // Auth state
         auth.onAuthStateChanged(async (user) => {
@@ -1011,39 +979,32 @@
             try {
                 const loadingOverlay = document.getElementById('loadingOverlay');
                 const trackingContent = document.getElementById('trackingContent');
-                const logoutBtn = document.getElementById('logoutBtn');
                 
                 if (loadingOverlay) loadingOverlay.style.display = 'flex';
                 if (trackingContent) trackingContent.style.display = 'none';
                 
                 currentUser = user;
-                if (logoutBtn) logoutBtn.style.display = 'block';
-                
-                loadUserProfile(user);
-                
-                const appointmentData = await loadAppointmentData(user.uid);
-                const verificationData = await initializeVerification(user.uid, appointmentData, TODAY);
-                
+                verificationData = await loadVerificationData(user.uid);
                 updateUI(verificationData, TODAY);
+                
+                // Set applicant name from user
+                const applicantNameEl = document.getElementById('applicantName');
+                if (applicantNameEl && user.displayName) {
+                    applicantNameEl.textContent = user.displayName;
+                }
                 
                 if (loadingOverlay) loadingOverlay.style.display = 'none';
                 if (trackingContent) trackingContent.style.display = 'block';
                 
-                console.log('✅ Verification tracking page loaded for:', formatDateWithOrdinal(TODAY));
+                console.log('✅ BOG Verification Portal loaded for:', TODAY.toLocaleDateString());
                 
             } catch (error) {
-                console.error('Error loading tracking page:', error);
+                console.error('Error:', error);
                 const loadingOverlay = document.getElementById('loadingOverlay');
                 const trackingContent = document.getElementById('trackingContent');
                 if (loadingOverlay) loadingOverlay.style.display = 'none';
                 if (trackingContent) trackingContent.style.display = 'block';
             }
-        });
-
-        // Logout
-        document.getElementById('logoutBtn')?.addEventListener('click', async () => {
-            await auth.signOut();
-            window.location.href = 'login.html';
         });
     </script>
 </body>
