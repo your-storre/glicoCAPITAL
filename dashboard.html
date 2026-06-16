@@ -182,20 +182,9 @@
             font-weight: 600;
         }
         
-        .stage-progress {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .stage-pending {
-            background: var(--warning);
-            color: white;
-        }
-        
-        .stage-completed {
-            background: var(--success);
-            color: white;
-        }
+        .stage-progress { background: var(--accent); color: white; }
+        .stage-pending { background: var(--warning); color: white; }
+        .stage-completed { background: var(--success); color: white; }
         
         .progress-bar-container {
             background: rgba(255, 255, 255, 0.2);
@@ -225,18 +214,10 @@
             text-align: center;
             font-size: 0.7rem;
             opacity: 0.7;
-            position: relative;
         }
         
-        .step-indicator.active {
-            opacity: 1;
-            color: var(--secondary);
-        }
-        
-        .step-indicator.completed {
-            opacity: 1;
-            color: var(--success);
-        }
+        .step-indicator.active { opacity: 1; color: var(--secondary); }
+        .step-indicator.completed { opacity: 1; color: var(--success); }
         
         .step-dot {
             width: 8px;
@@ -265,6 +246,41 @@
             color: var(--primary-dark);
         }
         
+        /* Payout Status Card */
+        .payout-status-card {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(212, 175, 55, 0.1));
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+        }
+        
+        .payout-status-card:hover {
+            transform: translateY(-3px);
+            background: rgba(16, 185, 129, 0.2);
+        }
+        
+        .payout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .payout-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
         /* Stats Cards */
         .stats-grid {
             display: grid;
@@ -291,12 +307,7 @@
             background: rgba(255, 255, 255, 0.15);
         }
         
-        .stat-icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
-            opacity: 0.8;
-        }
-        
+        .stat-icon { font-size: 2rem; margin-bottom: 12px; opacity: 0.8; }
         .stat-value {
             font-size: 1.8rem;
             font-weight: 700;
@@ -305,25 +316,9 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
-        .stat-label {
-            color: var(--gray-light);
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        
-        .stat-trend {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            margin-top: 8px;
-            font-size: 0.8rem;
-        }
-        
-        .trend-up {
-            color: var(--success);
-        }
+        .stat-label { color: var(--gray-light); font-size: 0.85rem; font-weight: 500; }
+        .stat-trend { display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 8px; font-size: 0.8rem; }
+        .trend-up { color: var(--success); }
         
         /* Detail Pages */
         .detail-page {
@@ -338,11 +333,7 @@
             padding: 20px;
             overflow-y: auto;
         }
-        
-        .detail-page.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
+        .detail-page.active { display: block; animation: fadeIn 0.3s ease; }
         
         .detail-content {
             background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
@@ -395,17 +386,8 @@
             background: linear-gradient(90deg, var(--secondary), var(--accent));
         }
         
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-        }
-        
-        .card.glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            color: white;
-            border: 1px solid var(--glass-border);
-        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25); }
+        .card.glass { background: var(--glass-bg); backdrop-filter: blur(15px); color: white; border: 1px solid var(--glass-border); }
         
         .transaction-list {
             max-height: 400px;
@@ -413,19 +395,9 @@
             padding-right: 10px;
         }
         
-        .transaction-list::-webkit-scrollbar {
-            width: 4px;
-        }
-        
-        .transaction-list::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-        
-        .transaction-list::-webkit-scrollbar-thumb {
-            background: var(--secondary);
-            border-radius: 10px;
-        }
+        .transaction-list::-webkit-scrollbar { width: 4px; }
+        .transaction-list::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .transaction-list::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
         
         .transaction-item {
             display: flex;
@@ -439,22 +411,10 @@
             padding-right: 12px;
         }
         
-        .transaction-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
+        .transaction-item:hover { background: rgba(255, 255, 255, 0.05); }
+        .transaction-item:last-child { border-bottom: none; }
         
-        .transaction-item:last-child {
-            border-bottom: none;
-        }
-        
-        .transaction-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex: 1;
-            min-width: 0;
-        }
-        
+        .transaction-info { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
         .transaction-icon {
             width: 40px;
             height: 40px;
@@ -465,51 +425,17 @@
             font-size: 1.1rem;
             flex-shrink: 0;
         }
+        .transaction-icon.income { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .transaction-icon.payout { background: rgba(37, 99, 235, 0.2); color: var(--primary); }
+        .transaction-icon.reinvest { background: rgba(212, 175, 55, 0.2); color: var(--secondary); }
+        .transaction-icon.withdrawal { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
         
-        .transaction-icon.income {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-        }
-        
-        .transaction-icon.payout {
-            background: rgba(37, 99, 235, 0.2);
-            color: var(--primary);
-        }
-        
-        .transaction-icon.reinvest {
-            background: rgba(212, 175, 55, 0.2);
-            color: var(--secondary);
-        }
-        
-        .transaction-details {
-            flex: 1;
-            min-width: 0;
-        }
-        
-        .transaction-details h4 {
-            font-weight: 600;
-            margin-bottom: 4px;
-            font-size: 0.95rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .transaction-date {
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-        
-        .transaction-amount {
-            font-weight: 700;
-            font-size: 1rem;
-            flex-shrink: 0;
-            margin-left: 10px;
-        }
-        
-        .transaction-amount.positive {
-            color: var(--success);
-        }
+        .transaction-details { flex: 1; min-width: 0; }
+        .transaction-details h4 { font-weight: 600; margin-bottom: 4px; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .transaction-date { font-size: 0.8rem; opacity: 0.7; }
+        .transaction-amount { font-weight: 700; font-size: 1rem; flex-shrink: 0; margin-left: 10px; }
+        .transaction-amount.positive { color: var(--success); }
+        .transaction-amount.negative { color: var(--danger); }
         
         .section-header {
             display: flex;
@@ -536,10 +462,7 @@
             border-radius: 3px;
         }
         
-        .earnings-timeline {
-            margin-top: 20px;
-        }
-        
+        .earnings-timeline { margin-top: 20px; }
         .month-earnings {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
@@ -547,31 +470,10 @@
             margin-bottom: 15px;
             border: 1px solid var(--glass-border);
         }
-        
-        .month-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .month-name {
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-        
-        .month-total {
-            font-weight: 700;
-            color: var(--secondary);
-        }
-        
-        .daily-earnings {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-            gap: 8px;
-            margin-top: 10px;
-        }
-        
+        .month-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .month-name { font-weight: 600; font-size: 1.1rem; }
+        .month-total { font-weight: 700; color: var(--secondary); }
+        .daily-earnings { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 8px; margin-top: 10px; }
         .day-earning {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 8px;
@@ -579,17 +481,9 @@
             text-align: center;
             border: 1px solid var(--glass-border);
         }
-        
-        .day-date {
-            font-size: 0.7rem;
-            opacity: 0.7;
-        }
-        
-        .day-amount {
-            font-weight: 600;
-            font-size: 0.85rem;
-            margin-top: 4px;
-        }
+        .day-earning.weekend { opacity: 0.5; }
+        .day-date { font-size: 0.7rem; opacity: 0.7; }
+        .day-amount { font-weight: 600; font-size: 0.85rem; margin-top: 4px; }
         
         .payout-info {
             background: rgba(255, 255, 255, 0.05);
@@ -597,42 +491,18 @@
             padding: 20px;
             margin-top: 20px;
         }
-        
         .info-item {
             display: flex;
             justify-content: space-between;
             padding: 10px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
+        .info-item:last-child { border-bottom: none; }
+        .info-label { font-size: 0.9rem; opacity: 0.8; }
+        .info-value { font-weight: 600; font-size: 1rem; }
         
-        .info-item:last-child {
-            border-bottom: none;
-        }
-        
-        .info-label {
-            font-size: 0.9rem;
-            opacity: 0.8;
-        }
-        
-        .info-value {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-        
-        .profile-upload {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .profile-upload input {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
+        .profile-upload { position: relative; display: inline-block; }
+        .profile-upload input { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
         
         .bottom-nav {
             position: fixed;
@@ -667,10 +537,7 @@
             background: rgba(212, 175, 55, 0.1);
         }
         
-        .nav-icon {
-            font-size: 1.2rem;
-            margin-bottom: 4px;
-        }
+        .nav-icon { font-size: 1.2rem; margin-bottom: 4px; }
         
         .app-footer {
             background: rgba(26, 54, 93, 0.9);
@@ -681,24 +548,9 @@
             text-align: center;
         }
         
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        
-        .footer-logo img {
-            height: 35px;
-            filter: brightness(0) invert(1);
-        }
-        
+        .footer-content { max-width: 1200px; margin: 0 auto; }
+        .footer-logo { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 20px; }
+        .footer-logo img { height: 35px; filter: brightness(0) invert(1); }
         .footer-logo h3 {
             font-size: 1.3rem;
             font-weight: 700;
@@ -706,40 +558,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .footer-address { margin-bottom: 15px; line-height: 1.6; opacity: 0.8; font-size: 0.9rem; }
+        .footer-copyright { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--glass-border); font-size: 0.8rem; opacity: 0.7; }
+        .footer-email { color: var(--secondary); text-decoration: none; }
         
-        .footer-address {
-            margin-bottom: 15px;
-            line-height: 1.6;
-            opacity: 0.8;
-            font-size: 0.9rem;
-        }
-        
-        .footer-copyright {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--glass-border);
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-        
-        .footer-email {
-            color: var(--secondary);
-            text-decoration: none;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-in {
-            animation: fadeInUp 0.5s ease forwards;
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeInUp 0.5s ease forwards; }
         
         .loading-overlay {
             position: fixed;
@@ -754,7 +579,6 @@
             justify-content: center;
             flex-direction: column;
         }
-        
         .spinner {
             width: 50px;
             height: 50px;
@@ -764,10 +588,7 @@
             animation: spin 1s linear infinite;
             margin-bottom: 20px;
         }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
         .btn-outline {
             background: transparent;
@@ -779,10 +600,54 @@
             font-weight: 600;
             transition: all 0.3s ease;
         }
-        
-        .btn-outline:hover {
-            background: var(--secondary);
+        .btn-outline:hover { background: var(--secondary); color: var(--primary-dark); }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
             color: var(--primary-dark);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(212, 175, 55, 0.3); }
+        
+        /* Reinvest Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active { display: flex; animation: fadeIn 0.3s ease; }
+        .modal-content {
+            background: linear-gradient(135deg, #1a365d 0%, #0f2040 50%, #2d4a80 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid var(--glass-border);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-content h3 { margin-bottom: 15px; color: var(--secondary); }
+        .modal-actions { display: flex; gap: 15px; margin-top: 25px; }
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            float: right;
         }
         
         @media (max-width: 768px) {
@@ -791,11 +656,9 @@
             .verification-steps { flex-direction: column; gap: 8px; }
             .step-indicator { text-align: left; display: flex; align-items: center; gap: 10px; }
             .step-dot { margin: 0; }
+            .modal-actions { flex-direction: column; }
         }
-        
-        @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -822,24 +685,21 @@
         <div class="container">
             <div class="welcome-section animate-in">
                 <h2>Welcome back, Felicity!</h2>
-                <p>Your investment is active at <strong>$120/day</strong> until June 20, 2026.</p>
+                <p id="welcomeMessage">Your investment is active at <strong>$120/day</strong> until June 20, 2026.</p>
             </div>
 
             <!-- Verification Status Card -->
             <div id="verificationStatusCard" class="verification-status-card animate-in" onclick="goToVerificationTracking()">
                 <div class="verification-header">
-                    <div class="verification-title">
-                        <i class="fas fa-shield-alt"></i>
-                        Bank of Ghana Regulatory Verification
-                    </div>
-                    <span id="verificationStageBadge" class="verification-stage stage-progress">Stage 1 of 7</span>
+                    <div class="verification-title"><i class="fas fa-shield-alt"></i> Bank of Ghana Regulatory Verification</div>
+                    <span id="verificationStageBadge" class="verification-stage stage-progress">Stage 2 of 7</span>
                 </div>
                 <div class="progress-bar-container">
-                    <div id="verificationProgressBar" class="progress-bar" style="width: 7%"></div>
+                    <div id="verificationProgressBar" class="progress-bar" style="width: 14%"></div>
                 </div>
                 <div id="verificationSteps" class="verification-steps">
-                    <div class="step-indicator active" data-step="1"><div class="step-dot"></div><span>Biometric Capture</span></div>
-                    <div class="step-indicator" data-step="2"><div class="step-dot"></div><span>Document Verification</span></div>
+                    <div class="step-indicator completed" data-step="1"><div class="step-dot"></div><span>Biometric Capture</span></div>
+                    <div class="step-indicator active" data-step="2"><div class="step-dot"></div><span>Document Verification</span></div>
                     <div class="step-indicator" data-step="3"><div class="step-dot"></div><span>FIC Screening</span></div>
                     <div class="step-indicator" data-step="4"><div class="step-dot"></div><span>BOG Review</span></div>
                     <div class="step-indicator" data-step="5"><div class="step-dot"></div><span>SEC & GRA</span></div>
@@ -847,9 +707,35 @@
                     <div class="step-indicator" data-step="7"><div class="step-dot"></div><span>Final Approval</span></div>
                 </div>
                 <div id="currentStageInfo" style="margin-top: 12px; font-size: 0.8rem; opacity: 0.8;">
-                    <i class="fas fa-info-circle"></i> <span id="currentStageDescription">Biometric data captured. Verification in progress.</span>
+                    <i class="fas fa-info-circle"></i> <span id="currentStageDescription">Document Verification in progress. Your tax documents and identification are being verified by our compliance team.</span>
                 </div>
                 <div class="track-button"><i class="fas fa-external-link-alt"></i> Track Full Verification Status</div>
+            </div>
+
+            <!-- Payout Status Card (Shows from June 20 onward) -->
+            <div id="payoutStatusCard" class="payout-status-card animate-in">
+                <div class="payout-header">
+                    <div class="payout-title"><i class="fas fa-money-check-alt"></i> Investment Payout Processing</div>
+                    <span id="payoutStageBadge" class="verification-stage stage-progress">Stage 1 of 7</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="payoutProgressBar" class="progress-bar" style="width: 0%"></div>
+                </div>
+                <div id="payoutSteps" class="verification-steps">
+                    <div class="step-indicator active" data-pstep="1"><div class="step-dot"></div><span>Glico Holdings Release</span></div>
+                    <div class="step-indicator" data-pstep="2"><div class="step-dot"></div><span>BOG Verification</span></div>
+                    <div class="step-indicator" data-pstep="3"><div class="step-dot"></div><span>UK Banking Processing</span></div>
+                    <div class="step-indicator" data-pstep="4"><div class="step-dot"></div><span>Tax Clearance</span></div>
+                    <div class="step-indicator" data-pstep="5"><div class="step-dot"></div><span>Metro Bank Processing</span></div>
+                    <div class="step-indicator" data-pstep="6"><div class="step-dot"></div><span>Final Review</span></div>
+                    <div class="step-indicator" data-pstep="7"><div class="step-dot"></div><span>Payout Complete</span></div>
+                </div>
+                <div id="currentPayoutInfo" style="margin-top: 12px; font-size: 0.8rem; opacity: 0.8;">
+                    <i class="fas fa-info-circle"></i> <span id="currentPayoutDescription">Payment released by Glico Holdings. Awaiting Bank of Ghana verification approval.</span>
+                </div>
+                <div class="track-button" onclick="showReinvestModal()">
+                    <i class="fas fa-hand-holding-usd"></i> Manage Payout & Reinvestment Options
+                </div>
             </div>
 
             <!-- Stats Cards -->
@@ -863,13 +749,13 @@
                 <div class="stat-card animate-in delay-1" id="currentBalanceCard">
                     <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
                     <div class="stat-label">Current Balance</div>
-                    <div class="stat-value" id="currentBalance">$62,160</div>
+                    <div class="stat-value" id="currentBalance">$62,280</div>
                     <div class="stat-trend trend-up"><i class="fas fa-arrow-up"></i><span id="todayEarningSpan">+$120 today</span></div>
                 </div>
                 <div class="stat-card animate-in delay-2" id="totalEarningsCard">
                     <div class="stat-icon"><i class="fas fa-coins"></i></div>
                     <div class="stat-label">Total Earnings</div>
-                    <div class="stat-value" id="totalEarnings">$14,440</div>
+                    <div class="stat-value" id="totalEarnings">$14,560</div>
                     <div class="stat-trend"><span>Since 23 Feb 2026</span></div>
                 </div>
                 <div class="stat-card animate-in delay-2">
@@ -1002,6 +888,44 @@
             </div>
         </div>
 
+        <!-- Reinvest Modal -->
+        <div class="modal" id="reinvestModal">
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeReinvestModal()">×</button>
+                <h3><i class="fas fa-hand-holding-usd"></i> Manage Payout & Reinvestment</h3>
+                <p style="margin-bottom: 20px;">Your investment of $47,720 has matured. Choose how you want to proceed:</p>
+                
+                <div style="background: rgba(212, 175, 55, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                    <p><strong>💰 Current Balance:</strong> <span id="modalCurrentBalance">$62,280</span></p>
+                    <p><strong>📅 Payout Date:</strong> June 20, 2026</p>
+                    <p><strong>💵 Available Options:</strong> Full payout, Partial withdrawal + reinvest, Full reinvestment</p>
+                </div>
+                
+                <div class="extend-options" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+                    <div class="extend-option" onclick="selectReinvestOption('full')" style="background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.3s ease;">
+                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--secondary);">📤 Full Payout</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">Receive full amount to your bank account: <strong>$62,280</strong></div>
+                    </div>
+                    <div class="extend-option" onclick="selectReinvestOption('partial')" style="background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.3s ease;">
+                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--secondary);">🔄 Partial Reinvestment</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">Withdraw some amount to bank, reinvest the rest at <strong>$120/day</strong></div>
+                        <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap;">
+                            <label style="font-size: 0.8rem;">Amount to Withdraw: <input type="number" id="withdrawAmount" style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 8px; padding: 5px 10px; color: white; width: 120px;" value="10000" min="1000" max="62280"></label>
+                        </div>
+                    </div>
+                    <div class="extend-option" onclick="selectReinvestOption('fullReinvest')" style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--secondary); border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.3s ease;">
+                        <div style="font-size: 1.2rem; font-weight: 700; color: var(--secondary);">🚀 Full Reinvestment (PROMO)</div>
+                        <div style="font-size: 0.9rem; opacity: 0.8;">Reinvest full amount at <strong style="color: var(--success);">$220/day</strong> (Promotional Rate!)</div>
+                        <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 5px;">Earn $220 per business day for 6 months</div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button class="btn-primary" onclick="confirmReinvest()" style="width: 100%;">Confirm Selection</button>
+                </div>
+            </div>
+        </div>
+
         <nav class="bottom-nav">
             <a href="dashboard.html" class="nav-item active"><span class="nav-icon"><i class="fas fa-home"></i></span><span>Home</span></a>
             <a href="invite.html" class="nav-item"><span class="nav-icon"><i class="fas fa-user-plus"></i></span><span>Invite</span></a>
@@ -1048,17 +972,51 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Constants
+        // ===========================================
+        // CONSTANTS FOR JUNE 16, 2026
+        // ===========================================
         const INVESTMENT_AMOUNT = 47720;
         const PROMO_START = new Date(2026, 1, 23);
         const PROMO_END = new Date(2026, 4, 20);
         const EXTENDED_END = new Date(2026, 5, 20);
-        const TODAY = new Date(2026, 5, 15);
+        const TODAY = new Date(2026, 5, 16);
         const VERIFICATION_START = new Date(2026, 5, 15);
 
+        // ===========================================
+        // VERIFICATION STAGE DURATIONS (14 days total)
+        // ===========================================
+        const STAGE_DURATIONS = [0, 1, 2, 2, 2, 4, 3];
+        const VERIFICATION_STAGES_NAMES = [
+            'Biometric Capture',
+            'Document Verification',
+            'FIC Screening',
+            'BOG Review',
+            'SEC & GRA',
+            'International Request',
+            'Final Approval'
+        ];
+
+        // ===========================================
+        // PAYOUT STAGE DURATIONS (7 days total)
+        // ===========================================
+        const PAYOUT_STAGES = [
+            { id: 1, name: 'Glico Holdings Release', duration: 1 },
+            { id: 2, name: 'Bank of Ghana Verification', duration: 1 },
+            { id: 3, name: 'UK Banking Processing', duration: 1 },
+            { id: 4, name: 'Tax Clearance', duration: 1 },
+            { id: 5, name: 'Metro Bank Processing', duration: 1 },
+            { id: 6, name: 'Final Review', duration: 1 },
+            { id: 7, name: 'Payout Complete', duration: 1 }
+        ];
+        const PAYOUT_START_DATE = new Date(2026, 6, 6); // July 6, 2026 (after BOG verification completes)
+
+        // ===========================================
+        // BUSINESS DAY FUNCTIONS
+        // ===========================================
         function isBusinessDay(date) {
             const day = date.getDay();
-            return day >= 1 && day <= 5;
+            if (day === 0 || day === 6) return false;
+            return true;
         }
 
         function countBusinessDays(startDate, endDate) {
@@ -1071,6 +1029,16 @@
             return count;
         }
 
+        function addBusinessDays(startDate, days) {
+            const result = new Date(startDate);
+            let added = 0;
+            while (added < days) {
+                result.setDate(result.getDate() + 1);
+                if (isBusinessDay(result)) added++;
+            }
+            return result;
+        }
+
         function formatDateWithOrdinal(date) {
             const day = date.getDate();
             const suffix = ['th', 'st', 'nd', 'rd'][(day % 10 > 3 ? 0 : day % 10)] || 'th';
@@ -1078,35 +1046,106 @@
             return `${day}${suffix} ${month} ${date.getFullYear()}`;
         }
 
+        // ===========================================
+        // CALCULATE VERIFICATION STAGE
+        // ===========================================
+        function calculateVerificationStage() {
+            let cumulativeDays = 0;
+            let currentStageIndex = -1;
+            
+            for (let i = 0; i < STAGE_DURATIONS.length; i++) {
+                cumulativeDays += STAGE_DURATIONS[i];
+                if (TODAY >= addBusinessDays(VERIFICATION_START, cumulativeDays)) {
+                    currentStageIndex = i;
+                } else break;
+            }
+            
+            if (currentStageIndex === -1 && TODAY >= VERIFICATION_START) currentStageIndex = 0;
+            
+            const totalDays = STAGE_DURATIONS.reduce((a, b) => a + b, 0);
+            let daysElapsed = countBusinessDays(VERIFICATION_START, TODAY);
+            let progressPercent = Math.min(100, Math.floor((daysElapsed / totalDays) * 100));
+            let isComplete = currentStageIndex >= STAGE_DURATIONS.length - 1 && daysElapsed >= totalDays;
+            if (isComplete) progressPercent = 100;
+            
+            return {
+                currentStage: currentStageIndex + 1,
+                currentStageIndex: currentStageIndex,
+                progress: progressPercent,
+                isComplete: isComplete
+            };
+        }
+
+        // ===========================================
+        // CALCULATE PAYOUT STAGE (starts July 6)
+        // ===========================================
+        function calculatePayoutStage() {
+            // Payout only starts after verification is complete (July 6)
+            if (TODAY < PAYOUT_START_DATE) {
+                return { currentStage: 0, currentStageIndex: -1, progress: 0, isComplete: false };
+            }
+            
+            let cumulativeDays = 0;
+            let currentStageIndex = -1;
+            
+            for (let i = 0; i < PAYOUT_STAGES.length; i++) {
+                cumulativeDays += PAYOUT_STAGES[i].duration;
+                if (TODAY >= addBusinessDays(PAYOUT_START_DATE, cumulativeDays)) {
+                    currentStageIndex = i;
+                } else break;
+            }
+            
+            if (currentStageIndex === -1 && TODAY >= PAYOUT_START_DATE) currentStageIndex = 0;
+            
+            const totalDays = PAYOUT_STAGES.reduce((a, b) => a + b.duration, 0);
+            let daysElapsed = countBusinessDays(PAYOUT_START_DATE, TODAY);
+            let progressPercent = Math.min(100, Math.floor((daysElapsed / totalDays) * 100));
+            let isComplete = currentStageIndex >= PAYOUT_STAGES.length - 1 && daysElapsed >= totalDays;
+            if (isComplete) progressPercent = 100;
+            
+            return {
+                currentStage: currentStageIndex + 1,
+                currentStageIndex: currentStageIndex,
+                progress: progressPercent,
+                isComplete: isComplete
+            };
+        }
+
+        // ===========================================
+        // CALCULATE INVESTMENT STATS
+        // ===========================================
         function calculateCurrentStats() {
             const promoDays = countBusinessDays(PROMO_START, PROMO_END);
             const promoEarnings = promoDays * 220;
+            
             const extendedStart = new Date(PROMO_END);
             extendedStart.setDate(extendedStart.getDate() + 1);
             const extendedDays = countBusinessDays(extendedStart, TODAY);
             const extendedEarnings = extendedDays * 120;
+            
             const totalEarnings = promoEarnings + extendedEarnings;
             const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
+            
             const tomorrow = new Date(TODAY);
             tomorrow.setDate(tomorrow.getDate() + 1);
             const remainingDays = countBusinessDays(tomorrow, EXTENDED_END);
             const futureEarnings = remainingDays * 120;
+            
             const todayEarning = isBusinessDay(TODAY) ? 120 : 0;
+            
             return {
-                totalEarnings, currentBalance, remainingDays, futureEarnings,
-                todayEarning, projectedPayout: INVESTMENT_AMOUNT + totalEarnings + futureEarnings
+                totalEarnings: totalEarnings,
+                currentBalance: currentBalance,
+                remainingDays: remainingDays,
+                futureEarnings: futureEarnings,
+                todayEarning: todayEarning,
+                projectedPayout: INVESTMENT_AMOUNT + totalEarnings + futureEarnings
             };
         }
 
-        function calculateVerificationStage() {
-            const totalDays = 14;
-            let daysElapsed = countBusinessDays(VERIFICATION_START, TODAY);
-            let progressPercent = Math.min(100, Math.floor((daysElapsed / totalDays) * 100));
-            let currentStage = Math.min(7, Math.ceil((daysElapsed / totalDays) * 7) || 1);
-            if (daysElapsed === 0) currentStage = 1;
-            return { currentStage, progress: progressPercent };
-        }
-
+        // ===========================================
+        // GENERATE COMPLETE TRANSACTION HISTORY
+        // ===========================================
         function generateCompleteHistory() {
             const history = [
                 { type: "deposit", amount: 5000, date: new Date(2025, 4, 15), description: "Starter Plan Investment Deposit" },
@@ -1117,12 +1156,15 @@
                 { type: "payout", amount: 47720, date: new Date(2026, 1, 20), description: "Premium Plan Payout (Reinvested)" },
                 { type: "reinvest", amount: 47720, date: new Date(2026, 1, 20), description: "Auto-Reinvestment - Extended Plan" }
             ];
+            
             let currentDate = new Date(PROMO_START);
             while (currentDate <= TODAY) {
                 if (isBusinessDay(currentDate)) {
                     const rate = currentDate <= PROMO_END ? 220 : 120;
                     history.push({
-                        type: "earning", amount: rate, date: new Date(currentDate),
+                        type: "earning",
+                        amount: rate,
+                        date: new Date(currentDate),
                         description: rate === 220 ? "Daily Earnings - Promotional Plan ($220/day)" : "Daily Earnings - Extended Plan ($120/day)"
                     });
                 }
@@ -1131,16 +1173,22 @@
             return history.sort((a, b) => b.date - a.date);
         }
 
+        // ===========================================
+        // UPDATE UI
+        // ===========================================
         function updateUI() {
             const stats = calculateCurrentStats();
             const verification = calculateVerificationStage();
+            const payout = calculatePayoutStage();
             
+            // Update stats
             document.getElementById('totalInvestment').textContent = `$${INVESTMENT_AMOUNT.toLocaleString()}`;
             document.getElementById('currentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
             document.getElementById('totalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             document.getElementById('dailyRateDisplay').textContent = '$120';
             document.getElementById('todayEarningSpan').innerHTML = `+$${stats.todayEarning} today`;
             
+            // Update detail pages
             document.getElementById('detailCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
             document.getElementById('detailTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
@@ -1151,14 +1199,26 @@
             document.getElementById('totalExpected').textContent = `$${stats.totalEarnings + stats.futureEarnings}`;
             document.getElementById('detailProjectedPayout').textContent = `$${stats.projectedPayout.toLocaleString()}`;
             document.getElementById('daysRemainingSpan').textContent = stats.remainingDays;
+            
             document.getElementById('currentStatusDate').textContent = formatDateWithOrdinal(TODAY);
             document.getElementById('currentStatusText').innerHTML = `Earned $${stats.totalEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
             document.getElementById('payoutText').innerHTML = `Projected payout: <strong>$${stats.projectedPayout.toLocaleString()}</strong> on June 20, 2026`;
             
-            const stageNames = ['Biometric Capture', 'Document Verification', 'FIC Screening', 'BOG Review', 'SEC & GRA', 'International Request', 'Final Approval'];
+            // Update Verification UI
+            const stageName = VERIFICATION_STAGES_NAMES[verification.currentStageIndex] || 'Not Started';
             document.getElementById('verificationStageBadge').textContent = `Stage ${verification.currentStage} of 7`;
             document.getElementById('verificationProgressBar').style.width = `${verification.progress}%`;
-            document.getElementById('currentStageDescription').innerHTML = `${stageNames[verification.currentStage - 1]} in progress. Verification started June 15, 2026.`;
+            
+            const descriptions = [
+                'Biometric data captured. Verification in progress.',
+                'Document Verification in progress. Your tax documents and identification are being verified by our compliance team.',
+                'FIC conducting anti-money laundering and counter-terrorism financing checks against global watchlists.',
+                'Bank of Ghana reviewing investment source compliance with foreign exchange regulations.',
+                'SEC verifying investment eligibility. GRA confirming tax compliance status.',
+                'Request sent to US Treasury/IRS for cross-border verification of tax status and source of funds.',
+                'Final approval being processed for clearance certificate issuance.'
+            ];
+            document.getElementById('currentStageDescription').innerHTML = descriptions[verification.currentStageIndex] || 'Verification not started.';
             
             for (let i = 1; i <= 7; i++) {
                 const stepEl = document.querySelector(`.step-indicator[data-step="${i}"]`);
@@ -1174,8 +1234,42 @@
                     }
                 }
             }
+            
+            // Update Payout UI (only show after June 20)
+            const payoutCard = document.getElementById('payoutStatusCard');
+            if (TODAY >= EXTENDED_END) {
+                payoutCard.style.display = 'block';
+                if (payout.currentStage > 0) {
+                    document.getElementById('payoutStageBadge').textContent = `Stage ${payout.currentStage} of 7`;
+                    document.getElementById('payoutProgressBar').style.width = `${payout.progress}%`;
+                    document.getElementById('currentPayoutDescription').innerHTML = PAYOUT_STAGES[payout.currentStageIndex]?.name + ' in progress.';
+                    
+                    for (let i = 1; i <= 7; i++) {
+                        const stepEl = document.querySelector(`.step-indicator[data-pstep="${i}"]`);
+                        if (stepEl) {
+                            if (i < payout.currentStage) {
+                                stepEl.classList.add('completed');
+                                stepEl.classList.remove('active');
+                            } else if (i === payout.currentStage) {
+                                stepEl.classList.add('active');
+                                stepEl.classList.remove('completed');
+                            } else {
+                                stepEl.classList.remove('active', 'completed');
+                            }
+                        }
+                    }
+                }
+            } else {
+                payoutCard.style.display = 'none';
+            }
+            
+            // Update modal balance
+            document.getElementById('modalCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
         }
 
+        // ===========================================
+        // UPDATE TRANSACTION LISTS
+        // ===========================================
         function updateTransactionLists() {
             const transactions = generateCompleteHistory();
             const recent = transactions.slice(0, 5);
@@ -1188,6 +1282,7 @@
                     div.className = 'transaction-item';
                     let icon = t.type === 'earning' ? 'fa-coins' : (t.type === 'payout' ? 'fa-money-check' : (t.type === 'reinvest' ? 'fa-sync-alt' : 'fa-wallet'));
                     let iconClass = t.type === 'earning' ? 'income' : (t.type === 'payout' ? 'payout' : 'reinvest');
+                    if (t.type === 'withdrawal') { icon = 'fa-hand-holding-usd'; iconClass = 'withdrawal'; }
                     div.innerHTML = `
                         <div class="transaction-info">
                             <div class="transaction-icon ${iconClass}"><i class="fas ${icon}"></i></div>
@@ -1205,6 +1300,7 @@
             renderList(recent, document.getElementById('transactionList'));
             renderList(transactions, document.getElementById('allTransactionList'));
             
+            // Earnings timeline
             const earnings = transactions.filter(t => t.type === 'earning');
             const monthlyMap = new Map();
             earnings.forEach(e => {
@@ -1230,25 +1326,99 @@
             }
         }
 
+        // ===========================================
+        // SAVE VERIFICATION START TO FIRESTORE
+        // ===========================================
         async function saveVerificationStart(userId) {
             try {
                 const userDoc = await db.collection('users').doc(userId).get();
                 if (!userDoc.exists || !userDoc.data()?.verification?.startDate) {
                     await db.collection('users').doc(userId).set({
-                        verification: { startDate: VERIFICATION_START.toISOString(), status: 'in_progress', currentStage: 1, updatedAt: new Date().toISOString() }
+                        verification: { startDate: VERIFICATION_START.toISOString(), status: 'in_progress', currentStage: 2, updatedAt: new Date().toISOString() }
                     }, { merge: true });
-                    localStorage.setItem('verificationData', JSON.stringify({ startDate: VERIFICATION_START.toISOString() }));
                 }
             } catch (error) { console.error('Error saving verification:', error); }
         }
 
+        // ===========================================
+        // NAVIGATION FUNCTIONS
+        // ===========================================
         function goToVerificationTracking() { window.location.href = 'verification-tracking.html'; }
         function showAllTransactions() { document.getElementById('allTransactionsPage').classList.add('active'); }
         function closeDetailPage() { document.querySelectorAll('.detail-page').forEach(p => p.classList.remove('active')); }
 
+        // ===========================================
+        // REINVEST MODAL FUNCTIONS
+        // ===========================================
+        let selectedReinvestOption = 'full';
+
+        function showReinvestModal() {
+            document.getElementById('reinvestModal').classList.add('active');
+        }
+
+        function closeReinvestModal() {
+            document.getElementById('reinvestModal').classList.remove('active');
+        }
+
+        function selectReinvestOption(option) {
+            selectedReinvestOption = option;
+            document.querySelectorAll('.extend-option').forEach(el => {
+                el.style.borderColor = 'var(--glass-border)';
+                el.style.background = 'rgba(255,255,255,0.05)';
+            });
+            const els = document.querySelectorAll('.extend-option');
+            const index = option === 'full' ? 0 : option === 'partial' ? 1 : 2;
+            if (els[index]) {
+                els[index].style.borderColor = 'var(--secondary)';
+                els[index].style.background = 'rgba(212, 175, 55, 0.1)';
+            }
+        }
+
+        function confirmReinvest() {
+            const stats = calculateCurrentStats();
+            let message = '';
+            let action = '';
+            
+            if (selectedReinvestOption === 'full') {
+                message = `You have chosen Full Payout. $${stats.currentBalance.toLocaleString()} will be sent to your bank account within 7 business days.`;
+                action = 'Full payout processed';
+            } else if (selectedReinvestOption === 'partial') {
+                const withdrawAmount = parseInt(document.getElementById('withdrawAmount').value) || 10000;
+                const reinvestAmount = stats.currentBalance - withdrawAmount;
+                message = `You have chosen Partial Reinvestment. Withdraw $${withdrawAmount.toLocaleString()} to bank, reinvest $${reinvestAmount.toLocaleString()} at $120/day.`;
+                action = `Withdrew $${withdrawAmount.toLocaleString()}, reinvested $${reinvestAmount.toLocaleString()}`;
+            } else {
+                message = `You have chosen Full Reinvestment (PROMO). $${stats.currentBalance.toLocaleString()} reinvested at $220/day for 6 months!`;
+                action = 'Full reinvestment at promotional rate $220/day';
+            }
+            
+            if (confirm(message + '\n\nConfirm this selection?')) {
+                // Add to transaction history
+                const history = generateCompleteHistory();
+                history.push({
+                    type: selectedReinvestOption === 'full' ? 'payout' : 'reinvest',
+                    amount: stats.currentBalance,
+                    date: new Date(TODAY),
+                    description: action
+                });
+                showNotification('Selection confirmed! Your request is being processed.', 'success');
+                closeReinvestModal();
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `position:fixed; top:90px; right:20px; z-index:9999; padding:15px 20px; border-radius:12px; background:${type === 'success' ? '#10b981' : '#3b82f6'}; color:white; animation:fadeInUp 0.3s ease; box-shadow:0 5px 15px rgba(0,0,0,0.2);`;
+            notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${message}`;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Event listeners
         document.getElementById('currentBalanceCard')?.addEventListener('click', () => document.getElementById('currentBalancePage').classList.add('active'));
         document.getElementById('totalEarningsCard')?.addEventListener('click', () => document.getElementById('totalEarningsPage').classList.add('active'));
 
+        // Auth
         auth.onAuthStateChanged(async (user) => {
             if (!user) { window.location.href = 'login.html'; return; }
             try {
@@ -1269,7 +1439,10 @@
         });
 
         document.getElementById('logoutBtn')?.addEventListener('click', async () => { await auth.signOut(); window.location.href = 'login.html'; });
-        document.getElementById('avatarUpload')?.addEventListener('change', (e) => { if (e.target.files[0]) alert('Profile picture upload coming soon'); });
+        document.getElementById('avatarUpload')?.addEventListener('change', (e) => { if (e.target.files[0]) showNotification('Profile picture upload coming soon', 'info'); });
+        document.querySelectorAll('.detail-page').forEach(el => {
+            el.addEventListener('click', function(e) { if (e.target === this) closeDetailPage(); });
+        });
     </script>
 </body>
 </html>
