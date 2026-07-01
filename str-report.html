@@ -56,11 +56,10 @@
         /* 2. Top-right watermark */
         .document-container .watermark-tr {
             position: absolute;
-            top: 10%;
+            top: 8%;
             right: 5%;
-            transform: scale(1.2);
-            width: 180px;
-            height: 180px;
+            width: 150px;
+            height: 150px;
             background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
             background-size: contain;
             opacity: 0.07;
@@ -71,11 +70,10 @@
         /* 3. Bottom-left watermark */
         .document-container .watermark-bl {
             position: absolute;
-            bottom: 10%;
+            bottom: 8%;
             left: 5%;
-            transform: scale(1.2);
-            width: 180px;
-            height: 180px;
+            width: 150px;
+            height: 150px;
             background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
             background-size: contain;
             opacity: 0.07;
@@ -83,14 +81,13 @@
             z-index: 0;
         }
 
-        /* 4. Top-left watermark (smaller) */
+        /* 4. Top-left watermark */
         .document-container .watermark-tl {
             position: absolute;
             top: 5%;
-            left: 5%;
-            transform: scale(0.8);
-            width: 120px;
-            height: 120px;
+            left: 3%;
+            width: 100px;
+            height: 100px;
             background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
             background-size: contain;
             opacity: 0.08;
@@ -98,14 +95,13 @@
             z-index: 0;
         }
 
-        /* 5. Bottom-right watermark (smaller) */
+        /* 5. Bottom-right watermark */
         .document-container .watermark-br {
             position: absolute;
             bottom: 5%;
-            right: 5%;
-            transform: scale(0.8);
-            width: 120px;
-            height: 120px;
+            right: 3%;
+            width: 100px;
+            height: 100px;
             background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
             background-size: contain;
             opacity: 0.08;
@@ -118,9 +114,8 @@
             position: absolute;
             top: 45%;
             right: 2%;
-            transform: scale(0.9);
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
             background-size: contain;
             opacity: 0.09;
@@ -133,9 +128,8 @@
             position: absolute;
             top: 45%;
             left: 2%;
-            transform: scale(0.9);
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
             background-size: contain;
             opacity: 0.09;
@@ -584,11 +578,65 @@
             .watermark-confidential, .watermark-text-pattern {
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
+                display: block !important;
             }
         }
 
-        @media (max-width: 600px) {
+        /* ============================================
+           MOBILE VIEW - SHOW ALL WATERMARKS
+           ============================================ */
+        @media (max-width: 768px) {
             .document-container { padding: 18px 14px; }
+            
+            /* Keep all watermarks visible, just scale them down */
+            .document-container .watermark-center {
+                transform: translate(-50%, -50%) scale(1.8);
+                width: 200px;
+                height: 200px;
+            }
+            
+            .document-container .watermark-tr {
+                top: 5%;
+                right: 3%;
+                width: 80px;
+                height: 80px;
+            }
+            
+            .document-container .watermark-bl {
+                bottom: 5%;
+                left: 3%;
+                width: 80px;
+                height: 80px;
+            }
+            
+            .document-container .watermark-tl {
+                top: 3%;
+                left: 2%;
+                width: 60px;
+                height: 60px;
+            }
+            
+            .document-container .watermark-br {
+                bottom: 3%;
+                right: 2%;
+                width: 60px;
+                height: 60px;
+            }
+            
+            .document-container .watermark-mr {
+                top: 40%;
+                right: 1%;
+                width: 50px;
+                height: 50px;
+            }
+            
+            .document-container .watermark-ml {
+                top: 40%;
+                left: 1%;
+                width: 50px;
+                height: 50px;
+            }
+            
             .doc-header { flex-direction: column; text-align: center; }
             .header-left { justify-content: center; }
             .header-right { text-align: center; }
@@ -596,15 +644,36 @@
             .signature-grid { grid-template-columns: 1fr 1fr; }
             .back-btn { bottom: 80px; left: 20px; right: 20px; justify-content: center; }
             .print-btn { bottom: 140px; right: 20px; left: 20px; justify-content: center; }
-            /* Hide some watermarks on mobile for readability */
-            .watermark-tr, .watermark-bl, .watermark-tl, .watermark-br,
-            .watermark-mr, .watermark-ml { display: none; }
         }
 
-        @media (max-width: 400px) {
+        @media (max-width: 480px) {
             .info-grid { grid-template-columns: 1fr; }
             .signature-grid { grid-template-columns: 1fr; }
             .header-left { flex-direction: column; align-items: center; }
+            
+            /* Scale watermarks even smaller for very small screens */
+            .document-container .watermark-center {
+                transform: translate(-50%, -50%) scale(1.4);
+                width: 150px;
+                height: 150px;
+            }
+            
+            .document-container .watermark-tr,
+            .document-container .watermark-bl {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .document-container .watermark-tl,
+            .document-container .watermark-br {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .document-container .watermark-mr,
+            .document-container .watermark-ml {
+                display: none; /* Hide tiny ones on very small screens for readability */
+            }
         }
     </style>
 </head>
@@ -1008,7 +1077,7 @@
         console.log('📍 Status: Suspicious Transaction Report Filed');
         console.log('📍 Amount on Hold: $65,540.00');
         console.log('📍 Documentation Deadline: 30 July, 2026 (In-Person Submission Required)');
-        console.log('🖨️ BOG Seal watermark applied to multiple positions throughout document.');
+        console.log('🖨️ BOG Seal watermarks visible on all devices and print.');
     };
 </script>
 
