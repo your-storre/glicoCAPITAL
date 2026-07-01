@@ -31,152 +31,23 @@
             padding: 30px 25px;
             position: relative;
             overflow: hidden;
-            min-height: 1100px;
         }
 
-        /* ============================================
-           WATERMARK: BOG SEAL - MULTIPLE PLACEMENTS
-           ============================================ */
-
-        /* 1. Center watermark (large, subtle) */
-        .document-container .watermark-center {
+        .document-container::before {
+            content: 'CONFIDENTIAL';
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(2.5);
-            width: 300px;
-            height: 300px;
-            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
-            background-size: contain;
-            opacity: 0.09;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* 2. Top-right watermark */
-        .document-container .watermark-tr {
-            position: absolute;
-            top: 8%;
-            right: 5%;
-            width: 150px;
-            height: 150px;
-            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
-            background-size: contain;
-            opacity: 0.07;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* 3. Bottom-left watermark */
-        .document-container .watermark-bl {
-            position: absolute;
-            bottom: 8%;
-            left: 5%;
-            width: 150px;
-            height: 150px;
-            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
-            background-size: contain;
-            opacity: 0.07;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* 4. Top-left watermark */
-        .document-container .watermark-tl {
-            position: absolute;
-            top: 5%;
-            left: 3%;
-            width: 100px;
-            height: 100px;
-            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
-            background-size: contain;
-            opacity: 0.08;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* 5. Bottom-right watermark */
-        .document-container .watermark-br {
-            position: absolute;
-            bottom: 5%;
-            right: 3%;
-            width: 100px;
-            height: 100px;
-            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
-            background-size: contain;
-            opacity: 0.08;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* 6. Middle-right watermark */
-        .document-container .watermark-mr {
-            position: absolute;
-            top: 45%;
-            right: 2%;
-            width: 80px;
-            height: 80px;
-            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
-            background-size: contain;
-            opacity: 0.09;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* 7. Middle-left watermark */
-        .document-container .watermark-ml {
-            position: absolute;
-            top: 45%;
-            left: 2%;
-            width: 80px;
-            height: 80px;
-            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10') no-repeat center;
-            background-size: contain;
-            opacity: 0.09;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* ============================================
-           WATERMARK: CONFIDENTIAL text overlay
-           ============================================ */
-        .document-container .watermark-confidential {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-40deg);
+            transform: translate(-50%, -50%) rotate(-45deg);
             font-size: clamp(40px, 10vw, 80px);
-            font-weight: 900;
+            font-weight: 800;
             color: rgba(26, 74, 111, 0.04);
-            letter-spacing: 15px;
+            letter-spacing: 10px;
             pointer-events: none;
             z-index: 0;
             white-space: nowrap;
         }
 
-        /* ============================================
-           WATERMARK: BOG Text Pattern
-           ============================================ */
-        .document-container .watermark-text-pattern {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            z-index: 0;
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(26, 74, 111, 0.015) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(26, 74, 111, 0.015) 0%, transparent 50%);
-        }
-
-        /* Ensure content stays above watermarks */
-        .doc-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Header */
         .doc-header {
             display: flex;
             justify-content: space-between;
@@ -186,8 +57,6 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
             gap: 15px;
-            position: relative;
-            z-index: 1;
         }
 
         .header-left {
@@ -250,11 +119,13 @@
             margin-top: 6px;
         }
 
-        /* Rest of the styles */
-        .section {
-            margin-bottom: 20px;
+        .doc-content {
             position: relative;
             z-index: 1;
+        }
+
+        .section {
+            margin-bottom: 20px;
         }
 
         .section-title {
@@ -434,8 +305,6 @@
             margin-top: 30px;
             border-top: 2px solid #e0e4e8;
             padding-top: 25px;
-            position: relative;
-            z-index: 1;
         }
 
         .signature-grid {
@@ -503,8 +372,6 @@
             font-size: clamp(0.6rem, 1.6vw, 0.7rem);
             color: #6c757d;
             text-align: center;
-            position: relative;
-            z-index: 1;
         }
 
         .print-btn {
@@ -572,71 +439,10 @@
             .in-person-notice { background: #fff3cd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .report-box { break-inside: avoid; }
             .signature-grid { break-inside: avoid; }
-            /* Keep watermarks visible in print */
-            .watermark-center, .watermark-tr, .watermark-bl, 
-            .watermark-tl, .watermark-br, .watermark-mr, .watermark-ml,
-            .watermark-confidential, .watermark-text-pattern {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                display: block !important;
-            }
         }
 
-        /* ============================================
-           MOBILE VIEW - SHOW ALL WATERMARKS
-           ============================================ */
-        @media (max-width: 768px) {
+        @media (max-width: 600px) {
             .document-container { padding: 18px 14px; }
-            
-            /* Keep all watermarks visible, just scale them down */
-            .document-container .watermark-center {
-                transform: translate(-50%, -50%) scale(1.8);
-                width: 200px;
-                height: 200px;
-            }
-            
-            .document-container .watermark-tr {
-                top: 5%;
-                right: 3%;
-                width: 80px;
-                height: 80px;
-            }
-            
-            .document-container .watermark-bl {
-                bottom: 5%;
-                left: 3%;
-                width: 80px;
-                height: 80px;
-            }
-            
-            .document-container .watermark-tl {
-                top: 3%;
-                left: 2%;
-                width: 60px;
-                height: 60px;
-            }
-            
-            .document-container .watermark-br {
-                bottom: 3%;
-                right: 2%;
-                width: 60px;
-                height: 60px;
-            }
-            
-            .document-container .watermark-mr {
-                top: 40%;
-                right: 1%;
-                width: 50px;
-                height: 50px;
-            }
-            
-            .document-container .watermark-ml {
-                top: 40%;
-                left: 1%;
-                width: 50px;
-                height: 50px;
-            }
-            
             .doc-header { flex-direction: column; text-align: center; }
             .header-left { justify-content: center; }
             .header-right { text-align: center; }
@@ -646,58 +452,16 @@
             .print-btn { bottom: 140px; right: 20px; left: 20px; justify-content: center; }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 400px) {
             .info-grid { grid-template-columns: 1fr; }
             .signature-grid { grid-template-columns: 1fr; }
             .header-left { flex-direction: column; align-items: center; }
-            
-            /* Scale watermarks even smaller for very small screens */
-            .document-container .watermark-center {
-                transform: translate(-50%, -50%) scale(1.4);
-                width: 150px;
-                height: 150px;
-            }
-            
-            .document-container .watermark-tr,
-            .document-container .watermark-bl {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .document-container .watermark-tl,
-            .document-container .watermark-br {
-                width: 45px;
-                height: 45px;
-            }
-            
-            .document-container .watermark-mr,
-            .document-container .watermark-ml {
-                display: none; /* Hide tiny ones on very small screens for readability */
-            }
         }
     </style>
 </head>
 <body>
 
 <div class="document-container" id="documentContent">
-    
-    <!-- ============================================ -->
-    <!-- WATERMARK: BOG SEAL - MULTIPLE PLACEMENTS    -->
-    <!-- ============================================ -->
-    <div class="watermark-center"></div>
-    <div class="watermark-tr"></div>
-    <div class="watermark-bl"></div>
-    <div class="watermark-tl"></div>
-    <div class="watermark-br"></div>
-    <div class="watermark-mr"></div>
-    <div class="watermark-ml"></div>
-    <div class="watermark-confidential">CONFIDENTIAL</div>
-    <div class="watermark-text-pattern"></div>
-
-    <!-- ============================================ -->
-    <!-- DOCUMENT CONTENT                            -->
-    <!-- ============================================ -->
-    
     <!-- Header -->
     <div class="doc-header">
         <div class="header-left">
@@ -716,7 +480,7 @@
     </div>
 
     <!-- Document Title -->
-    <div style="text-align: center; margin-bottom: 25px; position: relative; z-index: 1;">
+    <div style="text-align: center; margin-bottom: 25px;">
         <h2 style="font-size: clamp(1.2rem, 4vw, 1.6rem); color: #1a4a6f; font-weight: 700; font-family: 'Merriweather', serif;">
             SUSPICIOUS TRANSACTION REPORT (STR)
         </h2>
@@ -883,7 +647,7 @@
                 </div>
             </div>
 
-            <!-- 3.5 Marital Status Verification -->
+            <!-- 3.5 Marital Status Verification - UPDATED -->
             <div class="report-box">
                 <h4>3.5 International Marital Status Verification</h4>
                 <p><strong>Request Date:</strong> 25 June, 2026 &nbsp;|&nbsp; <strong>Response Date:</strong> 1 July, 2026</p>
@@ -1045,13 +809,13 @@
             <p>Bank of Ghana - Financial Intelligence Directorate | P.O. Box GP 2674, Accra, Ghana</p>
             <p>Tel: +233 (0) 30 266 6000 | Email: fic@bog.gov.gh</p>
             <p style="margin-top: 6px;">This document is classified as CONFIDENTIAL and is subject to the Official Secrets Act.</p>
-            <p style="margin-top: 4px;">Generated: 3 July, 2026 | Version: 5.1</p>
+            <p style="margin-top: 4px;">Generated: 3 July, 2026 | Version: 5.0</p>
         </div>
 
     </div>
 </div>
 
-<!-- Back Button -->
+<!-- Back Button - FIXED -->
 <button class="back-btn" onclick="goBackToVerification()">
     <i class="fas fa-arrow-left"></i> Return to Verification Page
 </button>
@@ -1062,10 +826,13 @@
 </button>
 
 <script>
+    // Fixed Back Button Function
     function goBackToVerification() {
+        // Try to close the current tab/window
         if (window.history.length > 1) {
             window.history.back();
         } else {
+            // If no history, redirect to verification page
             window.location.href = 'verification-tracking.html';
         }
     }
@@ -1077,7 +844,6 @@
         console.log('📍 Status: Suspicious Transaction Report Filed');
         console.log('📍 Amount on Hold: $65,540.00');
         console.log('📍 Documentation Deadline: 30 July, 2026 (In-Person Submission Required)');
-        console.log('🖨️ BOG Seal watermarks visible on all devices and print.');
     };
 </script>
 
