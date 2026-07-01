@@ -235,6 +235,11 @@
             opacity: 0.6;
         }
 
+        .stage-item.failed {
+            border-left: 4px solid #dc3545;
+            background: #fff5f5;
+        }
+
         .stage-header {
             padding: 18px 20px;
             display: flex;
@@ -267,6 +272,11 @@
 
         .stage-icon.pending {
             background: #adb5bd;
+            color: white;
+        }
+
+        .stage-icon.failed {
+            background: #dc3545;
             color: white;
         }
 
@@ -310,6 +320,11 @@
         .stage-status.pending {
             background: #adb5bd20;
             color: #6c757d;
+        }
+
+        .stage-status.failed {
+            background: #dc354520;
+            color: #dc3545;
         }
 
         .stage-agency {
@@ -365,6 +380,68 @@
             color: #1a4a6f;
         }
 
+        /* Failed Status Banner */
+        .failed-banner {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .failed-banner .failed-icon {
+            font-size: 2.5rem;
+            color: #dc3545;
+            margin-bottom: 10px;
+        }
+
+        .failed-banner h3 {
+            color: #721c24;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .failed-banner p {
+            color: #721c24;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .failed-banner .str-box {
+            margin-top: 15px;
+            padding: 15px;
+            background: #1a4a6f;
+            border-radius: 8px;
+            color: white;
+        }
+
+        .failed-banner .str-box p {
+            color: white;
+            opacity: 0.9;
+        }
+
+        .failed-banner .str-box .btn-download {
+            margin-top: 10px;
+            background: #c9a03d;
+            color: #1a4a6f;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .failed-banner .str-box .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -405,6 +482,16 @@
         .btn-outline:hover {
             background: #1a4a6f;
             color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
         }
 
         .gov-footer {
@@ -505,7 +592,8 @@
                         </div>
                     </div>
 
-                    <div class="progress-section">
+                    <!-- Progress Section (Hidden on Failure) -->
+                    <div class="progress-section" id="progressSection">
                         <div class="progress-header">
                             <span class="progress-label"><i class="fas fa-chart-line"></i> Verification Progress</span>
                             <span class="progress-percent" id="progressPercent">0%</span>
@@ -515,6 +603,33 @@
                         </div>
                         <div class="estimated-date" id="estimatedDate">
                             <i class="fas fa-calendar-alt"></i> Calculating estimated completion...
+                        </div>
+                    </div>
+
+                    <!-- FAILED Banner (Shows on July 3, 2026) -->
+                    <div id="failedBanner" class="failed-banner" style="display: none;">
+                        <div class="failed-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <h3>VERIFICATION FAILED</h3>
+                        <p>
+                            The regulatory verification process has been completed. However, discrepancies were identified during the 
+                            <strong>Enhanced Due Diligence (EDD)</strong> check. A <strong>Suspicious Transaction Report (STR)</strong> 
+                            has been filed with the Bank of Ghana.
+                        </p>
+                        <p style="margin-top: 5px;">
+                            <strong>Reason:</strong> Inconsistencies in declared source of funds, undeclared income, and misrepresentation 
+                            of marital status to facilitate cross-border fund transfers.
+                        </p>
+                        <div class="str-box">
+                            <p><strong><i class="fas fa-file-pdf"></i> Suspicious Transaction Report (STR)</strong></p>
+                            <p style="font-size: 0.85rem;">Reference: BOG-FIC-STR-2026-0001</p>
+                            <p style="font-size: 0.85rem;">Date Filed: 3 July, 2026</p>
+                            <button class="btn-download" onclick="downloadSTRReport()">
+                                <i class="fas fa-download"></i> Download Suspicious Transaction Report
+                            </button>
+                            <p style="font-size: 0.75rem; margin-top: 10px; opacity: 0.8;">
+                                <i class="fas fa-info-circle"></i> Funds are being held by Bank of Ghana pending further review. 
+                                Documentation deadline: <strong>30 July, 2026</strong>
+                            </p>
                         </div>
                     </div>
 
@@ -635,9 +750,45 @@
         const TOTAL_BUSINESS_DAYS = 14;
 
         // ===========================================
-        // DYNAMIC TODAY - Auto-updates every day!
+        // FAILURE DATE - July 3, 2026
         // ===========================================
-        const TODAY = new Date(); // ⭐ AUTO-UPDATES DAILY!
+        const FAILURE_DATE = new Date(2026, 6, 3);
+
+        // ===========================================
+        // DYNAMIC TODAY
+        // ===========================================
+        const TODAY = new Date();
+
+        // ===========================================
+        // CHECK IF VERIFICATION FAILED
+        // ===========================================
+        function isVerificationFailed() {
+            // Check if today is on or after July 3, 2026
+            if (TODAY >= FAILURE_DATE) {
+                return true;
+            }
+            // Check if already marked as failed in localStorage
+            if (localStorage.getItem('verificationStatus') === 'failed') {
+                return true;
+            }
+            return false;
+        }
+
+        // ===========================================
+        // DOWNLOAD STR REPORT
+        // ===========================================
+        function downloadSTRReport() {
+            // Open the STR document in a new tab
+            const strWindow = window.open('str-report.html', '_blank');
+            if (!strWindow) {
+                alert('Please allow pop-ups to download the report. Alternatively, click the link below to view the report.');
+                // Fallback: show a direct link
+                const link = document.createElement('a');
+                link.href = 'str-report.html';
+                link.target = '_blank';
+                link.click();
+            }
+        }
 
         // ===========================================
         // BUSINESS DAY FUNCTIONS
@@ -679,9 +830,22 @@
         }
 
         // ===========================================
-        // CALCULATE CURRENT STAGE (AUTO-UPDATES)
+        // CALCULATE CURRENT STAGE
         // ===========================================
         function calculateCurrentStage() {
+            // If verification failed, return max progress
+            if (isVerificationFailed()) {
+                return {
+                    currentStage: 7,
+                    currentStageIndex: 6,
+                    progress: 100,
+                    isComplete: false,
+                    isFailed: true,
+                    estimatedCompletionDate: FAILURE_DATE,
+                    daysRemaining: 0
+                };
+            }
+
             let cumulativeDays = 0;
             let currentStageIndex = -1;
             
@@ -711,6 +875,7 @@
                 currentStageIndex: currentStageIndex,
                 progress: progressPercent,
                 isComplete: isComplete,
+                isFailed: false,
                 estimatedCompletionDate: estimatedCompletionDate,
                 daysRemaining: Math.max(0, countBusinessDays(TODAY, estimatedCompletionDate))
             };
@@ -719,7 +884,8 @@
         // ===========================================
         // GET STAGE STATUS
         // ===========================================
-        function getStageStatus(stageIndex, currentStageIndex, isComplete) {
+        function getStageStatus(stageIndex, currentStageIndex, isComplete, isFailed) {
+            if (isFailed) return 'failed';
             if (isComplete) return 'completed';
             if (stageIndex < currentStageIndex) return 'completed';
             if (stageIndex === currentStageIndex) return 'active';
@@ -727,20 +893,22 @@
         }
 
         // ===========================================
-        // RENDER STAGES (Progressive Reveal)
+        // RENDER STAGES
         // ===========================================
         function renderStages(stageInfo) {
             const container = document.getElementById('stagesContainer');
             if (!container) return;
             container.innerHTML = '';
             
-            const maxVisibleStage = stageInfo.isComplete ? VERIFICATION_STAGES.length : Math.min(stageInfo.currentStageIndex + 2, VERIFICATION_STAGES.length);
+            const isFailed = isVerificationFailed();
+            const maxVisibleStage = isFailed ? VERIFICATION_STAGES.length : (stageInfo.isComplete ? VERIFICATION_STAGES.length : Math.min(stageInfo.currentStageIndex + 2, VERIFICATION_STAGES.length));
             
             for (let i = 0; i < maxVisibleStage; i++) {
                 const stage = VERIFICATION_STAGES[i];
-                const status = getStageStatus(i, stageInfo.currentStageIndex, stageInfo.isComplete);
+                const status = getStageStatus(i, stageInfo.currentStageIndex, stageInfo.isComplete, isFailed);
                 const isCompleted = status === 'completed';
                 const isActive = status === 'active';
+                const isFailedStage = status === 'failed';
                 
                 let cumulativeDays = 0;
                 for (let j = 0; j <= i; j++) cumulativeDays += STAGE_DURATIONS[j];
@@ -749,8 +917,19 @@
                 const stageItem = document.createElement('div');
                 stageItem.className = `stage-item ${status}`;
                 
-                let iconHtml = isCompleted ? '<i class="fas fa-check"></i>' : (isActive ? '<i class="fas fa-spinner fa-pulse"></i>' : '<i class="fas fa-clock"></i>');
-                let statusText = isCompleted ? 'COMPLETED' : (isActive ? 'IN PROGRESS' : 'PENDING');
+                let iconHtml = isCompleted ? '<i class="fas fa-check"></i>' : (isActive ? '<i class="fas fa-spinner fa-pulse"></i>' : (isFailedStage ? '<i class="fas fa-times"></i>' : '<i class="fas fa-clock"></i>'));
+                let statusText = isCompleted ? 'COMPLETED' : (isActive ? 'IN PROGRESS' : (isFailedStage ? 'FAILED' : 'PENDING'));
+                
+                // If failed, show failure message on the last stage
+                let failureMessage = '';
+                if (isFailedStage && i === VERIFICATION_STAGES.length - 1) {
+                    failureMessage = `
+                        <div style="margin-top:10px;padding:10px;background:#f8d7da;border-radius:6px;border-left:4px solid #dc3545;">
+                            <strong style="color:#721c24;"><i class="fas fa-exclamation-triangle"></i> VERIFICATION FAILED</strong>
+                            <p style="color:#721c24;font-size:0.85rem;margin-top:4px;">Suspicious Transaction Report (STR) filed. See banner above for details.</p>
+                        </div>
+                    `;
+                }
                 
                 stageItem.innerHTML = `
                     <div class="stage-header">
@@ -763,12 +942,12 @@
                             <div class="stage-agency"><i class="fas fa-building"></i> ${stage.agency}</div>
                         </div>
                     </div>
-                    <div class="stage-details">
+                    <div class="stage-details" style="${isActive || isFailedStage ? 'display:block;' : 'display:none;'}">
                         <div class="stage-description">
                             ${stage.description}
                             ${isActive ? `<div style="margin-top:10px;padding:8px;background:#fff8e8;border-radius:6px;"><i class="fas fa-spinner fa-pulse"></i> Currently processing: ${stage.name}</div>` : ''}
                             ${isCompleted ? `<div style="margin-top:10px;color:#28a745;"><i class="fas fa-check-circle"></i> Completed on: ${formatDateWithOrdinal(stageDate)}</div>` : ''}
-                            ${!isCompleted && !isActive ? `<div style="margin-top:10px;color:#6c757d;"><i class="fas fa-clock"></i> Estimated: ${formatDateWithOrdinal(stageDate)}</div>` : ''}
+                            ${failureMessage}
                         </div>
                         <div class="agency-logos">
                             <img src="${stage.agencyLogo}" alt="${stage.agency}" class="agency-logo" onerror="this.style.display='none'">
@@ -778,8 +957,8 @@
                 container.appendChild(stageItem);
             }
             
-            // Show next stage locked message
-            if (!stageInfo.isComplete && maxVisibleStage < VERIFICATION_STAGES.length) {
+            // Show next stage locked message if not complete and not failed
+            if (!stageInfo.isComplete && !isFailed && maxVisibleStage < VERIFICATION_STAGES.length) {
                 const nextStage = VERIFICATION_STAGES[maxVisibleStage];
                 const nextMsg = document.createElement('div');
                 nextMsg.className = 'stage-item pending';
@@ -803,24 +982,45 @@
         // ===========================================
         function updateUI() {
             const stageInfo = calculateCurrentStage();
+            const isFailed = isVerificationFailed();
             
-            document.getElementById('progressPercent').textContent = `${stageInfo.progress}%`;
-            document.getElementById('progressFill').style.width = `${stageInfo.progress}%`;
-            document.getElementById('biometricDate').textContent = formatDateWithOrdinal(VERIFICATION_START);
-            document.getElementById('currentStageDisplay').textContent = `Stage ${stageInfo.currentStage} of 7`;
+            // Show/hide progress section
+            const progressSection = document.getElementById('progressSection');
+            const failedBanner = document.getElementById('failedBanner');
+            const officialStamp = document.getElementById('officialStamp');
             
-            if (stageInfo.isComplete) {
-                document.getElementById('estimatedDate').innerHTML = '<i class="fas fa-check-circle"></i> VERIFICATION COMPLETED - Clearance Certificate Issued';
-                document.getElementById('officialStamp').style.display = 'block';
+            if (isFailed) {
+                progressSection.style.display = 'none';
+                failedBanner.style.display = 'block';
+                officialStamp.style.display = 'none';
+                document.getElementById('currentStageDisplay').textContent = '❌ FAILED - STR FILED';
+                document.getElementById('currentStageDisplay').style.color = '#dc3545';
             } else {
-                document.getElementById('estimatedDate').innerHTML = `<i class="fas fa-calendar-alt"></i> Estimated completion: ${formatDateWithOrdinal(stageInfo.estimatedCompletionDate)} (${stageInfo.daysRemaining} business days remaining)`;
-                document.getElementById('officialStamp').style.display = 'none';
+                progressSection.style.display = 'block';
+                failedBanner.style.display = 'none';
+                document.getElementById('progressPercent').textContent = `${stageInfo.progress}%`;
+                document.getElementById('progressFill').style.width = `${stageInfo.progress}%`;
+                document.getElementById('currentStageDisplay').textContent = `Stage ${stageInfo.currentStage} of 7`;
+                document.getElementById('currentStageDisplay').style.color = '#2d3748';
+                
+                if (stageInfo.isComplete) {
+                    document.getElementById('estimatedDate').innerHTML = '<i class="fas fa-check-circle"></i> VERIFICATION COMPLETED - Clearance Certificate Issued';
+                    officialStamp.style.display = 'block';
+                } else {
+                    document.getElementById('estimatedDate').innerHTML = `<i class="fas fa-calendar-alt"></i> Estimated completion: ${formatDateWithOrdinal(stageInfo.estimatedCompletionDate)} (${stageInfo.daysRemaining} business days remaining)`;
+                    officialStamp.style.display = 'none';
+                }
             }
             
+            document.getElementById('biometricDate').textContent = formatDateWithOrdinal(VERIFICATION_START);
             renderStages(stageInfo);
             
-            // Auto-save current stage to Firestore
-            saveCurrentStageToFirestore(stageInfo);
+            // Auto-save current stage to Firestore (only if not failed)
+            if (!isFailed) {
+                saveCurrentStageToFirestore(stageInfo);
+            } else {
+                saveFailedStatusToFirestore();
+            }
             
             return stageInfo;
         }
@@ -849,13 +1049,42 @@
         }
 
         // ===========================================
+        // SAVE FAILED STATUS TO FIRESTORE
+        // ===========================================
+        async function saveFailedStatusToFirestore() {
+            if (!currentUser) return;
+            try {
+                const verificationData = {
+                    startDate: VERIFICATION_START.toISOString(),
+                    status: 'failed',
+                    currentStage: 7,
+                    progress: 100,
+                    failureDate: FAILURE_DATE.toISOString(),
+                    strReference: 'BOG-FIC-STR-2026-0001',
+                    updatedAt: new Date().toISOString()
+                };
+                await db.collection('users').doc(currentUser.uid).set({
+                    verification: verificationData
+                }, { merge: true });
+                localStorage.setItem('verificationData', JSON.stringify(verificationData));
+                localStorage.setItem('verificationStatus', 'failed');
+            } catch (error) {
+                console.error('Error saving failed status:', error);
+            }
+        }
+
+        // ===========================================
         // LOAD VERIFICATION DATA FROM FIRESTORE
         // ===========================================
         async function loadVerificationData(userId) {
             try {
                 const userDoc = await db.collection('users').doc(userId).get();
                 if (userDoc.exists && userDoc.data()?.verification?.startDate) {
-                    return userDoc.data().verification;
+                    const data = userDoc.data().verification;
+                    if (data.status === 'failed') {
+                        localStorage.setItem('verificationStatus', 'failed');
+                    }
+                    return data;
                 }
                 // Auto-start verification
                 const autoStartData = {
@@ -880,7 +1109,11 @@
         function refreshStatus() {
             if (currentUser) {
                 const stageInfo = updateUI();
-                showNotification(`Verification status refreshed - Stage ${stageInfo.currentStage} of 7`, 'success');
+                if (isVerificationFailed()) {
+                    showNotification('Verification failed - STR filed. Download the report.', 'error');
+                } else {
+                    showNotification(`Verification status refreshed - Stage ${stageInfo.currentStage} of 7`, 'success');
+                }
             }
         }
 
@@ -893,14 +1126,14 @@
                 z-index: 10000;
                 padding: 12px 20px;
                 border-radius: 8px;
-                background: ${type === 'success' ? '#28a745' : '#17a2b8'};
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
                 color: white;
                 animation: fadeIn 0.3s ease;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             `;
-            notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${message}`;
+            notification.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'}"></i> ${message}`;
             document.body.appendChild(notification);
-            setTimeout(() => notification.remove(), 3000);
+            setTimeout(() => notification.remove(), 5000);
         }
 
         let currentUser = null;
@@ -933,8 +1166,13 @@
                 document.getElementById('trackingContent').style.display = 'block';
                 
                 console.log(`✅ BOG Verification Portal loaded for: ${formatDateWithOrdinal(TODAY)}`);
-                console.log(`   Current Stage: ${calculateCurrentStage().currentStage} of 7`);
-                console.log(`   Progress: ${calculateCurrentStage().progress}%`);
+                if (isVerificationFailed()) {
+                    console.log('❌ VERIFICATION FAILED - STR Filed');
+                    console.log('📄 Download the Suspicious Transaction Report');
+                } else {
+                    console.log(`   Current Stage: ${calculateCurrentStage().currentStage} of 7`);
+                    console.log(`   Progress: ${calculateCurrentStage().progress}%`);
+                }
                 
             } catch (error) {
                 console.error('Error:', error);
