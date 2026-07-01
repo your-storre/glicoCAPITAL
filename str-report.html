@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Bank of Ghana - Suspicious Transaction Report (STR)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #e8ecf1;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            padding: 20px 12px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .document-container {
+            max-width: 1100px;
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+            padding: 30px 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .document-container::before {
+            content: 'CONFIDENTIAL';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: clamp(40px, 10vw, 80px);
+            font-weight: 800;
+            color: rgba(26, 74, 111, 0.04);
+            letter-spacing: 10px;
+            pointer-events: none;
+            z-index: 0;
+            white-space: nowrap;
+        }
+
+        .doc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #1a4a6f;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .bog-logo {
+            height: clamp(45px, 8vw, 70px);
+            object-fit: contain;
+        }
+
+        .fic-logo {
+            height: clamp(35px, 6vw, 60px);
+            object-fit: contain;
+        }
+
+        .header-title h1 {
+            font-size: clamp(0.8rem, 2.5vw, 1.1rem);
+            font-weight: 700;
+            color: #1a4a6f;
+            letter-spacing: 0.5px;
+        }
+
+        .header-title h2 {
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            font-weight: 500;
+            color: #c9a03d;
+        }
+
+        .header-right {
+            text-align: right;
+        }
+
+        .header-right .ref {
+            font-family: 'Merriweather', serif;
+            font-size: 0.7rem;
+            color: #6c757d;
+            letter-spacing: 0.5px;
+        }
+
+        .header-right .ref-number {
+            font-family: 'Merriweather', serif;
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            font-weight: 700;
+            color: #1a4a6f;
+        }
+
+        .header-right .classification {
+            background: #dc3545;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-top: 6px;
+        }
+
+        .doc-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            font-weight: 700;
+            color: #1a4a6f;
+            border-bottom: 2px solid #e0e4e8;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .section-title .badge {
+            background: #1a4a6f;
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px 20px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.65rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: #2d3748;
+            margin-top: 2px;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            word-break: break-word;
+        }
+
+        .info-value .highlight {
+            background: #fff3cd;
+            padding: 0 4px;
+            border-radius: 2px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(0.75rem, 2vw, 0.85rem);
+            margin-top: 8px;
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .data-table th {
+            background: #f0f4f8;
+            color: #1a4a6f;
+            font-weight: 600;
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 2px solid #d0d4d8;
+        }
+
+        .data-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e0e4e8;
+            vertical-align: top;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .red-flag {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .report-box {
+            margin-bottom: 16px;
+            padding: 12px 15px;
+            background: #f8f9fc;
+            border-radius: 6px;
+            border-left: 3px solid #1a4a6f;
+        }
+
+        .report-box h4 {
+            color: #1a4a6f;
+            margin-bottom: 6px;
+            font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .report-box h4 .logo-icon {
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .report-box p {
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            color: #2d3748;
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+
+        .report-box .red-flag-box {
+            margin-top: 6px;
+            padding: 6px 10px;
+            background: #fff3cd;
+            border-radius: 4px;
+            font-size: clamp(0.75rem, 1.8vw, 0.85rem);
+        }
+
+        .report-box .action-required {
+            margin-top: 6px;
+            font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+            color: #6c757d;
+        }
+
+        .hold-notice {
+            background: #1a4a6f;
+            color: white;
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .hold-notice p {
+            font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+            line-height: 1.5;
+        }
+
+        .hold-notice .amount {
+            font-weight: 700;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            color: #c9a03d;
+        }
+
+        .signature-section {
+            margin-top: 30px;
+            border-top: 2px solid #e0e4e8;
+            padding-top: 25px;
+        }
+
+        .signature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .signature-block {
+            text-align: center;
+        }
+
+        .signature-block .sig-image {
+            max-width: 130px;
+            height: 40px;
+            object-fit: contain;
+            margin: 8px auto;
+            display: block;
+        }
+
+        .signature-block .sig-name {
+            font-weight: 600;
+            color: #1a4a6f;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+        }
+
+        .signature-block .sig-title {
+            font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+            color: #6c757d;
+        }
+
+        .signature-block .sig-date {
+            font-size: clamp(0.65rem, 1.6vw, 0.7rem);
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        .official-stamp {
+            display: inline-block;
+            border: 3px solid #c9a03d;
+            border-radius: 8px;
+            padding: 8px 15px;
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .official-stamp .stamp-text {
+            font-family: 'Merriweather', serif;
+            font-size: clamp(0.6rem, 1.6vw, 0.7rem);
+            color: #1a4a6f;
+            font-weight: 700;
+        }
+
+        .official-stamp .stamp-image {
+            height: 50px;
+            object-fit: contain;
+            display: block;
+            margin: 4px auto;
+        }
+
+        .doc-footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e4e8;
+            font-size: clamp(0.6rem, 1.6vw, 0.7rem);
+            color: #6c757d;
+            text-align: center;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1a4a6f;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .print-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .back-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background: #5a6268;
+        }
+
+        @media print {
+            body { background: white; padding: 0; margin: 0; }
+            .document-container { box-shadow: none; padding: 20px 15px; border-radius: 0; max-width: 100%; }
+            .print-btn { display: none !important; }
+            .back-btn { display: none !important; }
+            .data-table { display: table; white-space: normal; overflow-x: visible; -webkit-overflow-scrolling: auto; }
+            .data-table th { background: #f0f4f8 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .red-flag, .red-flag-box { background: #f8d7da !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .classification { background: #dc3545 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .highlight { background: #fff3cd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .hold-notice { background: #1a4a6f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .report-box { break-inside: avoid; }
+            .signature-grid { break-inside: avoid; }
+        }
+
+        @media (max-width: 600px) {
+            .document-container { padding: 18px 14px; }
+            .doc-header { flex-direction: column; text-align: center; }
+            .header-left { justify-content: center; }
+            .header-right { text-align: center; }
+            .info-grid { grid-template-columns: 1fr 1fr; gap: 6px 12px; }
+            .signature-grid { grid-template-columns: 1fr 1fr; }
+            .back-btn { bottom: 80px; left: 20px; right: 20px; justify-content: center; }
+            .print-btn { bottom: 140px; right: 20px; left: 20px; justify-content: center; }
+        }
+
+        @media (max-width: 400px) {
+            .info-grid { grid-template-columns: 1fr; }
+            .signature-grid { grid-template-columns: 1fr; }
+            .header-left { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="document-container" id="documentContent">
+    <!-- Header -->
+    <div class="doc-header">
+        <div class="header-left">
+            <img src="https://upload.wikimedia.org/wikipedia/en/5/55/BANK_OF_GHANA_LOGO.png?_=20221013140532" alt="Bank of Ghana" class="bog-logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Bank_of_Ghana_logo.svg/200px-Bank_of_Ghana_logo.svg.png'">
+            <div class="header-title">
+                <h1>BANK OF GHANA</h1>
+                <h2>Financial Intelligence Directorate</h2>
+            </div>
+            <img src="https://fic.gov.gh/images/logo.png" alt="FIC" class="fic-logo" onerror="this.style.display='none'">
+        </div>
+        <div class="header-right">
+            <div class="ref">REFERENCE NUMBER</div>
+            <div class="ref-number">BOG-FIC-STR-2026-0001</div>
+            <div class="classification">CONFIDENTIAL / ENHANCED DUE DILIGENCE</div>
+        </div>
+    </div>
+
+    <!-- Document Title -->
+    <div style="text-align: center; margin-bottom: 25px;">
+        <h2 style="font-size: clamp(1.2rem, 4vw, 1.6rem); color: #1a4a6f; font-weight: 700; font-family: 'Merriweather', serif;">
+            SUSPICIOUS TRANSACTION REPORT (STR)
+        </h2>
+        <p style="font-size: clamp(0.8rem, 2vw, 0.9rem); color: #6c757d;">Anti-Money Laundering & Counter-Terrorism Financing Compliance Check</p>
+        <p style="font-size: clamp(0.75rem, 1.8vw, 0.85rem); color: #1a4a6f; margin-top: 4px;">Date of Report: 3<sup>rd</sup> July, 2026</p>
+    </div>
+
+    <div class="doc-content">
+
+        <!-- SECTION 1: Subject Information -->
+        <div class="section">
+            <div class="section-title">
+                <span>1. SUBJECT INFORMATION</span>
+                <span class="badge">Enhanced Due Diligence</span>
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Full Name</span>
+                    <span class="info-value">Acheampong Felicity</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Date of Birth</span>
+                    <span class="info-value">22 March 1994</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Nationality</span>
+                    <span class="info-value">Ghanaian / USA Resident</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Tax ID / SSN</span>
+                    <span class="info-value">XXX-XX-XXX2</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Residential Address</span>
+                    <span class="info-value">575 Elm Ave, Saddle Brook, NJ 07663, USA</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Investment Reference</span>
+                    <span class="info-value">INV-2026-0001</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: Investment Details -->
+        <div class="section">
+            <div class="section-title">
+                <span>2. INVESTMENT DETAILS & DECLARED SOURCE OF FUNDS</span>
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Investment Amount</span>
+                    <span class="info-value">$47,720.00</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Declared Source of Funds</span>
+                    <span class="info-value"><span class="highlight">Payment from a served contract for the sale of timber to a foreign company.</span></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Payout Account</span>
+                    <span class="info-value">Metro Bank - Account •••••••••••••• ••••8478</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Declared Spouse / Beneficiary</span>
+                    <span class="info-value"><span class="highlight">Maurice Campbell</span> (UK Resident)</span>
+                </div>
+            </div>
+            <div style="margin-top: 8px; padding: 8px 12px; background: #f8f9fc; border-radius: 6px; border-left: 3px solid #c9a03d;">
+                <p style="font-size: clamp(0.7rem, 1.8vw, 0.8rem); color: #6c757d;"><strong>Note:</strong> The subject declared the source of funding for this investment as payment from a timber sale contract. The subject failed to provide any supporting documentation including contract documents, export licenses, or receipts.</p>
+            </div>
+        </div>
+
+        <!-- SECTION 3: Agency Reports -->
+        <div class="section">
+            <div class="section-title">
+                <span>3. DETAILED AGENCY REPORTS & FINDINGS</span>
+                <span class="badge">Multi-Agency Investigation</span>
+            </div>
+
+            <!-- 3.1 Forestry Commission -->
+            <div class="report-box">
+                <h4>
+                    <img src="https://www.feedsfloor.com/sites/default/files/fc_logo.png" alt="Forestry Commission" class="logo-icon" onerror="this.style.display='none'">
+                    3.1 Ghana Forestry Commission Investigation
+                </h4>
+                <p><strong>Request Date:</strong> 22 June, 2026 &nbsp;|&nbsp; <strong>Response Date:</strong> 26 June, 2026</p>
+                <p style="margin-top: 6px;"><strong>Findings:</strong> Export records confirm the sale of logs occurred during the period in question. However, this transaction was <strong>not processed through the official timber export framework</strong>. The necessary export licenses, harvesting permits, and associated duties and taxes were not declared to the Commission.</p>
+                <div class="red-flag-box">
+                    <span class="red-flag">⚠️ RED FLAG</span> Export conducted outside official framework - potential evasion of duties and taxes.
+                </div>
+                <div class="action-required"><strong>Action Required:</strong> The Commission has requested the subject to provide all relevant export documentation for review within 14 days.</div>
+            </div>
+
+            <!-- 3.2 Ghana Revenue Authority -->
+            <div class="report-box">
+                <h4>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Ghana_Revenue_Authority_logo_%28new%29.jpg" alt="GRA" class="logo-icon" onerror="this.style.display='none'">
+                    3.2 Ghana Revenue Authority (GRA) Investigation
+                </h4>
+                <p><strong>Request Date:</strong> 20 June, 2026 &nbsp;|&nbsp; <strong>Response Date:</strong> 25 June, 2026</p>
+                <p style="margin-top: 6px;"><strong>Findings:</strong> An investigation into the tax records of the subject and MIM TIMBER CO. LTD confirms <strong>no declaration was made for the transaction in question</strong>. No VAT or income tax was remitted from this sale. The business entity MIM TIMBER CO. LTD is <strong>registered and operational</strong>.</p>
+                <div class="red-flag-box">
+                    <span class="red-flag">⚠️ RED FLAG</span> Non-declaration of income - potential tax evasion under Section 56 of the Income Tax Act, 2015 (Act 896).
+                </div>
+                <div class="action-required"><strong>Action Required:</strong> The subject and MIM TIMBER CO. LTD must file the necessary tax returns and provide supporting documentation.</div>
+            </div>
+
+            <!-- 3.3 Financial Intelligence Centre - Funds Tracing -->
+            <div class="report-box">
+                <h4>3.3 Financial Intelligence Centre (FIC) - Funds Tracing Analysis</h4>
+                <p><strong>Investigation Period:</strong> 18 June - 28 June, 2026</p>
+                <p style="margin-top: 6px;"><strong>Transaction Analysis:</strong></p>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Transaction</th>
+                            <th>Amount</th>
+                            <th>Account</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>19/03/2025</td>
+                            <td>Deposit</td>
+                            <td>$48,000.00</td>
+                            <td>Sustainable Woodworks Ltd → MIM TIMBER CO. LTD</td>
+                        </tr>
+                        <tr>
+                            <td>23/03/2025</td>
+                            <td>Transfer</td>
+                            <td>$47,850.00</td>
+                            <td>MIM TIMBER CO. LTD → Absa Bank Account</td>
+                        </tr>
+                        <tr>
+                            <td>24/03/2025</td>
+                            <td>SWIFT Transfer</td>
+                            <td>$37,000.00</td>
+                            <td>Absa Bank → Wells Fargo (USA)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="red-flag-box">
+                    <span class="red-flag">⚠️ RED FLAG</span> Funds layered through multiple accounts within 72 hours - indicative of money laundering (layering phase).
+                </div>
+                <div class="action-required"><strong>Action Required:</strong> The subject must provide a full explanation of the fund trail and supporting documentation for each transaction.</div>
+            </div>
+
+            <!-- 3.4 US Treasury / IRS -->
+            <div class="report-box">
+                <h4>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Blue-Eagle%2BIRS.png/500px-Blue-Eagle%2BIRS.png" alt="IRS" class="logo-icon" onerror="this.style.display='none'">
+                    3.4 US Treasury / Internal Revenue Service (IRS) Confirmation
+                </h4>
+                <p><strong>Request Date:</strong> 25 June, 2026 &nbsp;|&nbsp; <strong>Response Date:</strong> 1 July, 2026</p>
+                <p style="margin-top: 6px;"><strong>Confirmation:</strong> The US Treasury/IRS has confirmed that a deposit of <strong>$37,000.00</strong> was received into a Wells Fargo account under the subject's name. The source of this deposit was <strong>declared and cleared</strong> as "Proceeds from the sale of a property in Ghana" in compliance with U.S. tax regulations and the Foreign Account Tax Compliance Act (FATCA).</p>
+                <p style="margin-top: 6px; font-size: clamp(0.75rem, 1.8vw, 0.8rem); color: #6c757d;">The IRS has provided the following documentation for review:</p>
+                <ul style="font-size: clamp(0.75rem, 1.8vw, 0.8rem); color: #6c757d; margin-left: 20px; padding-left: 0;">
+                    <li>Form 1040 - U.S. Individual Income Tax Return (2025)</li>
+                    <li>W-8BEN-E - Certificate of Status of Beneficial Owner</li>
+                    <li>Foreign Tax Credit claim documentation</li>
+                </ul>
+                <div class="red-flag-box">
+                    <span class="red-flag">⚠️ RED FLAG</span> Conflict in declared source of funds between Ghanaian authorities (timber sale) and U.S. authorities (property sale).
+                </div>
+            </div>
+
+            <!-- 3.5 Marital Status Verification -->
+            <div class="report-box">
+                <h4>3.5 International Marital Status Verification</h4>
+                <p><strong>Request Date:</strong> 25 June, 2026 &nbsp;|&nbsp; <strong>Response Date:</strong> 1 July, 2026</p>
+                <p style="margin-top: 6px;"><strong>Verification Result:</strong> Investigation by U.S. authorities confirms the subject <strong>is not married</strong> to Maurice Campbell. No marriage certificate, joint tax returns, or any other evidence of a marital relationship exists. The subject declared Maurice Campbell as her spouse to facilitate the transfer of the investment payout to the United Kingdom, where the intended beneficiary resides.</p>
+                <div class="red-flag-box">
+                    <span class="red-flag">⚠️ RED FLAG</span> Misrepresentation of marital status to facilitate a cross-border transfer - potential fraud and violation of foreign exchange regulations.
+                </div>
+            </div>
+
+            <!-- 3.6 Sustainable Woodworks Ltd Verification -->
+            <div class="report-box">
+                <h4>3.6 Sustainable Woodworks Ltd - Beneficial Owner Verification</h4>
+                <p><strong>Investigation:</strong> Review of the source of funds from Sustainable Woodworks Ltd.</p>
+                <p style="margin-top: 6px;"><strong>Findings:</strong> Sustainable Woodworks Ltd is a registered timber processing company with an established corporate account. The payment of <strong>$48,000.00</strong> was made to MIM TIMBER CO. LTD. However, the <strong>beneficial ownership of MIM TIMBER CO. LTD</strong> has not been adequately disclosed, and the connection to the subject requires further investigation.</p>
+                <div class="red-flag-box">
+                    <span class="red-flag">⚠️ RED FLAG</span> Unexplained beneficial ownership structure - possible nominee or shell company involvement.
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: Summary of Inconsistencies -->
+        <div class="section">
+            <div class="section-title">
+                <span>4. SUMMARY OF INCONSISTENCIES & RED FLAGS</span>
+                <span class="badge">AML/CTF Compliance</span>
+            </div>
+            <div style="background: #f8d7da; padding: 12px; border-radius: 6px; border-left: 4px solid #dc3545;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Issue</th>
+                            <th>Agency Source</th>
+                            <th>Severity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Export conducted outside official framework</td>
+                            <td>Forestry Commission</td>
+                            <td><span class="red-flag">HIGH</span></td>
+                        </tr>
+                        <tr>
+                            <td>Non-declaration of income / Tax evasion</td>
+                            <td>Ghana Revenue Authority</td>
+                            <td><span class="red-flag">HIGH</span></td>
+                        </tr>
+                        <tr>
+                            <td>Funds layered through multiple accounts</td>
+                            <td>FIC - Funds Tracing</td>
+                            <td><span class="red-flag">HIGH</span></td>
+                        </tr>
+                        <tr>
+                            <td>Conflict in declared source of funds</td>
+                            <td>IRS vs. Ghana Authorities</td>
+                            <td><span class="red-flag">HIGH</span></td>
+                        </tr>
+                        <tr>
+                            <td>Misrepresentation of marital status</td>
+                            <td>US Authorities</td>
+                            <td><span class="red-flag">HIGH</span></td>
+                        </tr>
+                        <tr>
+                            <td>Unexplained beneficial ownership structure</td>
+                            <td>FIC / Corporate Records</td>
+                            <td><span class="red-flag">MEDIUM</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECTION 5: Final Determination & Request -->
+        <div class="section">
+            <div class="section-title">
+                <span>5. FINAL DETERMINATION & REQUEST</span>
+                <span class="badge">Payout Hold</span>
+            </div>
+            <div class="hold-notice">
+                <p style="font-size: clamp(0.9rem, 2.5vw, 1rem); font-weight: 600;">PAYOUT HELD UNDER BANK OF GHANA CUSTODY</p>
+                <p style="font-size: clamp(0.85rem, 2.2vw, 0.95rem); opacity: 0.9; margin-top: 4px;">
+                    The <strong>Glico Capital investment payout</strong> (intended for transfer to Metro Bank account & onward transfer to the UK beneficiary) has been placed under a hold order by the Bank of Ghana.
+                </p>
+                <p style="font-size: clamp(1rem, 3vw, 1.2rem); margin-top: 6px;">
+                    Total Amount on Hold: <span class="amount">$65,420.00</span>
+                </p>
+                <p style="font-size: clamp(0.75rem, 2vw, 0.85rem); opacity: 0.8; margin-top: 4px;">
+                    <em>(This amount includes the full investment payout as verification continued to accrue earnings up to 3rd July, 2026. Further interest is suspended until resolution.)</em>
+                </p>
+            </div>
+            <div style="padding: 12px; background: #f8f9fc; border-radius: 6px; border-left: 3px solid #c9a03d;">
+                <p style="font-size: clamp(0.85rem, 2.2vw, 0.95rem); color: #2d3748;"><strong>ACTION REQUIRED BY THE SUBJECT:</strong></p>
+                <p style="font-size: clamp(0.8rem, 2vw, 0.9rem); color: #6c757d; margin-top: 6px;">
+                    The subject must provide the following supporting documents to the Bank of Ghana - Financial Intelligence Directorate <strong>before the close of business on 30th July, 2026</strong>:
+                </p>
+                <ul style="font-size: clamp(0.8rem, 2vw, 0.9rem); color: #6c757d; margin-left: 20px; margin-top: 8px; list-style-type: none; padding: 0;">
+                    <li style="padding: 4px 0;">📄 1. Complete timber export documentation (contracts, licenses, permits)</li>
+                    <li style="padding: 4px 0;">📄 2. Tax compliance certificate from GRA for the transaction</li>
+                    <li style="padding: 4px 0;">📄 3. Full explanation of the fund trail with supporting bank statements</li>
+                    <li style="padding: 4px 0;">📄 4. Proof of property sale (to reconcile IRS declaration)</li>
+                    <li style="padding: 4px 0;">📄 5. Verified beneficial ownership documentation for MIM TIMBER CO. LTD</li>
+                    <li style="padding: 4px 0;">📄 6. <strong>Evidence of the relationship with Maurice Campbell</strong></li>
+                    <li style="padding: 4px 0;">📄 7. <strong>UK bank account verification and purpose of transfer</strong></li>
+                    <li style="padding: 4px 0;">📄 8. Any additional documents requested by the investigating agencies</li>
+                </ul>
+                <p style="font-size: clamp(0.8rem, 2vw, 0.85rem); color: #dc3545; margin-top: 10px;">
+                    <strong>Warning:</strong> Failure to provide the requested documentation will result in the filing of a formal Suspicious Transaction Report (STR) with the Attorney General's Department for further legal action.
+                </p>
+            </div>
+        </div>
+
+        <!-- Signatures -->
+        <div class="signature-section">
+            <div class="section-title">
+                <span>SIGNATURES & AUTHORIZATION</span>
+                <span class="badge">Official</span>
+            </div>
+            <div class="signature-grid">
+                <div class="signature-block">
+                    <img src="https://static.vecteezy.com/system/resources/thumbnails/025/866/351/small_2x/fake-autograph-samples-hand-drawn-signatures-examples-of-documents-certificates-and-contracts-with-inked-and-handwritten-lettering-vector.jpg" alt="Signature" class="sig-image">
+                    <div class="sig-name">Dr. Ernest Addison</div>
+                    <div class="sig-title">Governor, Bank of Ghana</div>
+                    <div class="sig-date">3 July, 2026</div>
+                </div>
+                <div class="signature-block">
+                    <img src="https://t3.ftcdn.net/jpg/05/60/57/98/240_F_560579860_G1tkXjFWTTQBVmrQoB20L3u0MpmfBkJt.jpg" alt="Signature" class="sig-image">
+                    <div class="sig-name">Kwaku Dua</div>
+                    <div class="sig-title">Director, Financial Intelligence Centre</div>
+                    <div class="sig-date">3 July, 2026</div>
+                </div>
+                <div class="signature-block">
+                    <img src="https://t4.ftcdn.net/jpg/06/37/84/85/240_F_637848518_hhYdTeUkU5RO0YCc49xiTtspLBZrgBXv.jpg" alt="Signature" class="sig-image">
+                    <div class="sig-name">Samuel Asare</div>
+                    <div class="sig-title">Lead Investigator, FIC - AML Division</div>
+                    <div class="sig-date">3 July, 2026</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 15px;">
+                <div class="official-stamp">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdksRFpvMwiTpASaeg_asbmYc8Z_PD5Rp9gk6lrqpkdtankBkLkHJRG8A&s=10" alt="BOG Seal" class="stamp-image">
+                    <div class="stamp-text">BANK OF GHANA - OFFICIAL SEAL</div>
+                    <div class="stamp-text" style="font-size: clamp(0.55rem, 1.4vw, 0.6rem);">Financial Intelligence Directorate</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="doc-footer">
+            <p>Bank of Ghana - Financial Intelligence Directorate | P.O. Box GP 2674, Accra, Ghana</p>
+            <p>Tel: +233 (0) 30 266 6000 | Email: fic@bog.gov.gh</p>
+            <p style="margin-top: 6px;">This document is classified as CONFIDENTIAL and is subject to the Official Secrets Act.</p>
+            <p style="margin-top: 4px;">Generated: 3 July, 2026 | Version: 4.0</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- Back Button -->
+<button class="back-btn" onclick="window.close()">
+    <i class="fas fa-arrow-left"></i> Return to Verification Page
+</button>
+
+<!-- Print Button -->
+<button class="print-btn" onclick="window.print()">
+    <i class="fas fa-print"></i> Print / PDF
+</button>
+
+<script>
+    window.onload = function() {
+        console.log('📄 STR Document loaded successfully.');
+        console.log('📍 Reference: BOG-FIC-STR-2026-0001');
+        console.log('📍 Subject: Acheampong Felicity');
+        console.log('📍 Status: Suspicious Transaction Report Filed');
+        console.log('📍 Amount on Hold: $65,420.00');
+        console.log('📍 Documentation Deadline: 30 July, 2026');
+    };
+
+    // Close window if opened from verification page
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            window.close();
+        }
+    });
+</script>
+
+</body>
+</html>
