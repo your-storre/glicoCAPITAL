@@ -284,6 +284,23 @@
             color: #c9a03d;
         }
 
+        .in-person-notice {
+            background: #fff3cd;
+            border: 1px solid #c9a03d;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin-top: 10px;
+        }
+
+        .in-person-notice p {
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            color: #856404;
+        }
+
+        .in-person-notice strong {
+            color: #1a4a6f;
+        }
+
         .signature-section {
             margin-top: 30px;
             border-top: 2px solid #e0e4e8;
@@ -419,6 +436,7 @@
             .classification { background: #dc3545 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .highlight { background: #fff3cd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .hold-notice { background: #1a4a6f !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .in-person-notice { background: #fff3cd !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .report-box { break-inside: avoid; }
             .signature-grid { break-inside: avoid; }
         }
@@ -629,13 +647,13 @@
                 </div>
             </div>
 
-            <!-- 3.5 Marital Status Verification -->
+            <!-- 3.5 Marital Status Verification - UPDATED -->
             <div class="report-box">
                 <h4>3.5 International Marital Status Verification</h4>
                 <p><strong>Request Date:</strong> 25 June, 2026 &nbsp;|&nbsp; <strong>Response Date:</strong> 1 July, 2026</p>
-                <p style="margin-top: 6px;"><strong>Verification Result:</strong> Investigation by U.S. authorities confirms the subject <strong>is not married</strong> to Maurice Campbell. No marriage certificate, joint tax returns, or any other evidence of a marital relationship exists. The subject declared Maurice Campbell as her spouse to facilitate the transfer of the investment payout to the United Kingdom, where the intended beneficiary resides.</p>
+                <p style="margin-top: 6px;"><strong>Findings:</strong> Investigation by U.S. authorities confirms <strong>no record of marriage exists</strong> between the subject, Acheampong Felicity, and the designated spouse/beneficiary, Maurice Campbell. A comprehensive search of marriage registries, joint tax returns, and official records in both the United States and the United Kingdom has yielded <strong>no evidence of a marital relationship</strong> between the two individuals.</p>
                 <div class="red-flag-box">
-                    <span class="red-flag">⚠️ RED FLAG</span> Misrepresentation of marital status to facilitate a cross-border transfer - potential fraud and violation of foreign exchange regulations.
+                    <span class="red-flag">⚠️ RED FLAG</span> No record of marriage between the subject and the designated spouse/beneficiary. The subject declared a marital relationship that does not exist in official records.
                 </div>
             </div>
 
@@ -687,8 +705,8 @@
                             <td><span class="red-flag">HIGH</span></td>
                         </tr>
                         <tr>
-                            <td>Misrepresentation of marital status</td>
-                            <td>US Authorities</td>
+                            <td>No record of marriage with designated spouse</td>
+                            <td>US/UK Authorities</td>
                             <td><span class="red-flag">HIGH</span></td>
                         </tr>
                         <tr>
@@ -710,19 +728,31 @@
             <div class="hold-notice">
                 <p style="font-size: clamp(0.9rem, 2.5vw, 1rem); font-weight: 600;">PAYOUT HELD UNDER BANK OF GHANA CUSTODY</p>
                 <p style="font-size: clamp(0.85rem, 2.2vw, 0.95rem); opacity: 0.9; margin-top: 4px;">
-                    The <strong>Glico Capital investment payout</strong> (intended for transfer to Metro Bank account & onward transfer to the UK beneficiary) has been placed under a hold order by the Bank of Ghana.
+                    The <strong>Glico Capital investment payout</strong> has been placed under a hold order by the Bank of Ghana pending further review.
                 </p>
                 <p style="font-size: clamp(1rem, 3vw, 1.2rem); margin-top: 6px;">
-                    Total Amount on Hold: <span class="amount">$65,420.00</span>
+                    Total Amount on Hold: <span class="amount">$65,540.00</span>
                 </p>
                 <p style="font-size: clamp(0.75rem, 2vw, 0.85rem); opacity: 0.8; margin-top: 4px;">
-                    <em>(This amount includes the full investment payout as verification continued to accrue earnings up to 3rd July, 2026. Further interest is suspended until resolution.)</em>
+                    <em>(This amount includes the full investment payout as verification continued to accrue earnings up to 3rd July, 2026.)</em>
                 </p>
             </div>
-            <div style="padding: 12px; background: #f8f9fc; border-radius: 6px; border-left: 3px solid #c9a03d;">
+
+            <!-- In-Person Submission Notice -->
+            <div class="in-person-notice">
+                <p><strong><i class="fas fa-building"></i> IN-PERSON SUBMISSION REQUIRED</strong></p>
+                <p style="margin-top: 4px;">The subject must provide all requested supporting documents <strong>in person</strong> at the Bank of Ghana - Financial Intelligence Directorate office located at:</p>
+                <p style="margin-top: 4px; font-weight: 600;">3A Digya Lane, Airport Residential Area, Accra, Ghana</p>
+                <p style="margin-top: 4px;"><strong>Deadline:</strong> Before the close of business on <strong>30th July, 2026</strong>.</p>
+                <p style="margin-top: 4px; font-size: clamp(0.7rem, 1.8vw, 0.8rem); color: #856404;">
+                    <i class="fas fa-info-circle"></i> Documents submitted via email or postal mail will not be accepted. Physical submission is mandatory for verification.
+                </p>
+            </div>
+
+            <div style="padding: 12px; background: #f8f9fc; border-radius: 6px; border-left: 3px solid #c9a03d; margin-top: 15px;">
                 <p style="font-size: clamp(0.85rem, 2.2vw, 0.95rem); color: #2d3748;"><strong>ACTION REQUIRED BY THE SUBJECT:</strong></p>
                 <p style="font-size: clamp(0.8rem, 2vw, 0.9rem); color: #6c757d; margin-top: 6px;">
-                    The subject must provide the following supporting documents to the Bank of Ghana - Financial Intelligence Directorate <strong>before the close of business on 30th July, 2026</strong>:
+                    The subject must provide the following supporting documents <strong>in person</strong> to the Bank of Ghana - Financial Intelligence Directorate <strong>before the close of business on 30th July, 2026</strong>:
                 </p>
                 <ul style="font-size: clamp(0.8rem, 2vw, 0.9rem); color: #6c757d; margin-left: 20px; margin-top: 8px; list-style-type: none; padding: 0;">
                     <li style="padding: 4px 0;">📄 1. Complete timber export documentation (contracts, licenses, permits)</li>
@@ -730,12 +760,11 @@
                     <li style="padding: 4px 0;">📄 3. Full explanation of the fund trail with supporting bank statements</li>
                     <li style="padding: 4px 0;">📄 4. Proof of property sale (to reconcile IRS declaration)</li>
                     <li style="padding: 4px 0;">📄 5. Verified beneficial ownership documentation for MIM TIMBER CO. LTD</li>
-                    <li style="padding: 4px 0;">📄 6. <strong>Evidence of the relationship with Maurice Campbell</strong></li>
-                    <li style="padding: 4px 0;">📄 7. <strong>UK bank account verification and purpose of transfer</strong></li>
-                    <li style="padding: 4px 0;">📄 8. Any additional documents requested by the investigating agencies</li>
+                    <li style="padding: 4px 0;">📄 6. <strong>Proof of marriage</strong> or legal relationship with Maurice Campbell</li>
+                    <li style="padding: 4px 0;">📄 7. Any additional documents requested by the investigating agencies</li>
                 </ul>
                 <p style="font-size: clamp(0.8rem, 2vw, 0.85rem); color: #dc3545; margin-top: 10px;">
-                    <strong>Warning:</strong> Failure to provide the requested documentation will result in the filing of a formal Suspicious Transaction Report (STR) with the Attorney General's Department for further legal action.
+                    <strong>Warning:</strong> Failure to provide the requested documentation <strong>in person</strong> by the deadline will result in the formal submission of this Suspicious Transaction Report (STR) to the Attorney General's Department for further legal action.
                 </p>
             </div>
         </div>
@@ -780,14 +809,14 @@
             <p>Bank of Ghana - Financial Intelligence Directorate | P.O. Box GP 2674, Accra, Ghana</p>
             <p>Tel: +233 (0) 30 266 6000 | Email: fic@bog.gov.gh</p>
             <p style="margin-top: 6px;">This document is classified as CONFIDENTIAL and is subject to the Official Secrets Act.</p>
-            <p style="margin-top: 4px;">Generated: 3 July, 2026 | Version: 4.0</p>
+            <p style="margin-top: 4px;">Generated: 3 July, 2026 | Version: 5.0</p>
         </div>
 
     </div>
 </div>
 
-<!-- Back Button -->
-<button class="back-btn" onclick="window.close()">
+<!-- Back Button - FIXED -->
+<button class="back-btn" onclick="goBackToVerification()">
     <i class="fas fa-arrow-left"></i> Return to Verification Page
 </button>
 
@@ -797,21 +826,25 @@
 </button>
 
 <script>
+    // Fixed Back Button Function
+    function goBackToVerification() {
+        // Try to close the current tab/window
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            // If no history, redirect to verification page
+            window.location.href = 'verification-tracking.html';
+        }
+    }
+
     window.onload = function() {
         console.log('📄 STR Document loaded successfully.');
         console.log('📍 Reference: BOG-FIC-STR-2026-0001');
         console.log('📍 Subject: Acheampong Felicity');
         console.log('📍 Status: Suspicious Transaction Report Filed');
-        console.log('📍 Amount on Hold: $65,420.00');
-        console.log('📍 Documentation Deadline: 30 July, 2026');
+        console.log('📍 Amount on Hold: $65,540.00');
+        console.log('📍 Documentation Deadline: 30 July, 2026 (In-Person Submission Required)');
     };
-
-    // Close window if opened from verification page
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            window.close();
-        }
-    });
 </script>
 
 </body>
