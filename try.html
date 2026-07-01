@@ -394,7 +394,6 @@
         .stat-label { color: var(--gray-light); font-size: 0.85rem; font-weight: 500; }
         .stat-trend { display: flex; align-items: center; justify-content: center; gap: 4px; margin-top: 8px; font-size: 0.8rem; }
         .trend-up { color: var(--success); }
-        .trend-down { color: var(--danger); }
         
         /* Detail Pages */
         .detail-page {
@@ -777,10 +776,10 @@
         <div class="container">
             <div class="welcome-section animate-in">
                 <h2>Welcome back, Felicity!</h2>
-                <p id="welcomeMessage">Your investment is active at <strong>$120/day</strong> until June 20, 2026.</p>
+                <p id="welcomeMessage">Your investment is active at <strong>$120/day</strong> until July 3, 2026.</p>
             </div>
 
-            <!-- BOG Hold Banner - Shows when verification fails -->
+            <!-- BOG Hold Banner - Shows ONLY on July 3 and after -->
             <div id="bogHoldBanner" class="bog-hold-banner animate-in">
                 <div class="banner-header">
                     <div class="banner-icon"><i class="fas fa-exclamation-triangle"></i></div>
@@ -790,7 +789,7 @@
                 <div class="banner-content">
                     <p><strong>Your investment payout has been placed under a hold order by the Bank of Ghana.</strong></p>
                     <p>A Suspicious Transaction Report (STR) has been filed due to discrepancies identified during the Enhanced Due Diligence (EDD) verification process.</p>
-                    <p style="margin-top: 10px;"><strong>Amount on Hold:</strong> <span class="hold-amount" id="holdAmount">$65,180.00</span></p>
+                    <p style="margin-top: 10px;"><strong>Amount on Hold:</strong> <span class="hold-amount" id="holdAmount">$65,540.00</span></p>
                     <p style="font-size: 0.9rem; opacity: 0.8;">Reference: BOG-FIC-STR-2026-0001</p>
                     <p style="font-size: 0.85rem; margin-top: 10px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px;">
                         <i class="fas fa-info-circle"></i> Documentation deadline: <strong>30 July, 2026</strong>
@@ -880,7 +879,7 @@
                     <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
                     <div class="stat-label">Current Daily Rate</div>
                     <div class="stat-value" id="dailyRateDisplay">$120</div>
-                    <div class="stat-trend"><span>Until June 20, 2026</span></div>
+                    <div class="stat-trend"><span>Until July 3, 2026</span></div>
                 </div>
             </div>
 
@@ -935,6 +934,7 @@
                         </div>
                     </div>
                     
+                    <!-- Current Extended Plan -->
                     <div style="position: relative; margin-bottom: 20px;">
                         <div style="position: absolute; left: -18px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--success); border: 2px solid white;"></div>
                         <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;" id="currentStatusDate"></div>
@@ -948,15 +948,16 @@
                         </div>
                     </div>
                     
-                    <div style="position: relative;">
-                        <div style="position: absolute; left: -18px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--secondary);"></div>
+                    <!-- Hold Event - Only shows on July 3 and after -->
+                    <div id="holdTimelineItem" style="position: relative; display: none;">
+                        <div style="position: absolute; left: -18px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--danger); border: 2px solid white;"></div>
                         <div style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 5px;">3rd July 2026</div>
                         <div style="background: rgba(239, 68, 68, 0.1); padding: 12px; border-radius: 8px; border-left: 3px solid var(--danger);">
                             <h4 style="display: flex; align-items: center; gap: 10px;">
                                 <i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> Verification Failed - Funds Held
                                 <span style="background: var(--danger); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem;">STR FILED</span>
                             </h4>
-                            <p style="opacity: 0.9; font-size: 0.9rem;">Payout of $65,420.00 held by Bank of Ghana pending further review.</p>
+                            <p style="opacity: 0.9; font-size: 0.9rem;">Payout of <span id="holdTimelineAmount">$65,540.00</span> held by Bank of Ghana pending further review.</p>
                             <p style="opacity: 0.8; font-size: 0.85rem; margin-top: 5px;">Documentation deadline: 30 July, 2026</p>
                         </div>
                     </div>
@@ -979,8 +980,8 @@
                     <div class="info-item"><div class="info-label">Start Date</div><div class="info-value">20th February 2026</div></div>
                     <div class="info-item"><div class="info-label">First Earning Date</div><div class="info-value">23rd February 2026</div></div>
                     <div class="info-item"><div class="info-label">Business Days Earned</div><div class="info-value" id="detailDaysEarned"></div></div>
-                    <div class="info-item"><div class="info-label">Plan End Date</div><div class="info-value">20th June 2026</div></div>
-                    <div class="info-item"><div class="info-label">Status</div><div class="info-value" style="color: var(--danger);" id="detailStatus">⚠️ Payout Held by BOG</div></div>
+                    <div class="info-item"><div class="info-label">Plan End Date</div><div class="info-value">3rd July 2026</div></div>
+                    <div class="info-item"><div class="info-label">Status</div><div class="info-value" style="color: var(--success);" id="detailStatus">Active</div></div>
                 </div>
             </div>
         </div>
@@ -994,8 +995,7 @@
                 <div class="earnings-timeline" id="earningsTimeline"></div>
                 <div class="payout-info">
                     <h3>Status</h3>
-                    <div class="info-item"><div class="info-label">Verification Status</div><div class="info-value" style="color: var(--danger);">⚠️ STR Filed - Funds Held</div></div>
-                    <div class="info-item"><div class="info-label">Documentation Deadline</div><div class="info-value">30 July, 2026</div></div>
+                    <div class="info-item"><div class="info-label">Verification Status</div><div class="info-value" id="verificationStatusText">In Progress</div></div>
                 </div>
             </div>
         </div>
@@ -1013,15 +1013,34 @@
             <div class="modal-content">
                 <button class="close-modal" onclick="closeReinvestModal()">×</button>
                 <h3><i class="fas fa-hand-holding-usd"></i> Manage Payout & Reinvestment</h3>
-                <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
-                    <p style="color: var(--danger);"><strong>⚠️ Payout on Hold</strong></p>
-                    <p style="font-size: 0.9rem; opacity: 0.8;">Your payout is currently held by Bank of Ghana pending verification review.</p>
-                    <p style="font-size: 0.85rem; margin-top: 5px;">Amount: <strong id="modalCurrentBalance">$65,180</strong></p>
-                    <p style="font-size: 0.85rem;">Reference: BOG-FIC-STR-2026-0001</p>
+                <div id="reinvestModalContent">
+                    <div style="background: rgba(212, 175, 55, 0.1); border-radius: 12px; padding: 15px; margin-bottom: 20px;">
+                        <p><strong>💰 Current Balance:</strong> <span id="modalCurrentBalance">$65,180</span></p>
+                        <p><strong>📅 Plan End Date:</strong> July 3, 2026</p>
+                        <p><strong>💵 Available Options:</strong> Full payout, Partial withdrawal + reinvest, Full reinvestment</p>
+                    </div>
+                    
+                    <div class="extend-options" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px;">
+                        <div class="extend-option" onclick="selectReinvestOption('full')" style="background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.3s ease;">
+                            <div style="font-size: 1.2rem; font-weight: 700; color: var(--secondary);">📤 Full Payout</div>
+                            <div style="font-size: 0.9rem; opacity: 0.8;">Receive full amount to your bank account: <strong id="fullPayoutAmount">$65,180</strong></div>
+                        </div>
+                        <div class="extend-option" onclick="selectReinvestOption('partial')" style="background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.3s ease;">
+                            <div style="font-size: 1.2rem; font-weight: 700; color: var(--secondary);">🔄 Partial Reinvestment</div>
+                            <div style="font-size: 0.9rem; opacity: 0.8;">Withdraw some amount to bank, reinvest the rest at <strong>$120/day</strong></div>
+                            <div style="margin-top: 10px; display: flex; gap: 15px; flex-wrap: wrap;">
+                                <label style="font-size: 0.8rem;">Amount to Withdraw: <input type="number" id="withdrawAmount" style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 8px; padding: 5px 10px; color: white; width: 120px;" value="10000" min="1000"></label>
+                            </div>
+                        </div>
+                        <div class="extend-option" onclick="selectReinvestOption('fullReinvest')" style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--secondary); border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.3s ease;">
+                            <div style="font-size: 1.2rem; font-weight: 700; color: var(--secondary);">🚀 Full Reinvestment (PROMO)</div>
+                            <div style="font-size: 0.9rem; opacity: 0.8;">Reinvest full amount at <strong style="color: var(--success);">$220/day</strong> (Promotional Rate!)</div>
+                            <div style="font-size: 0.8rem; opacity: 0.6; margin-top: 5px;">Earn $220 per business day for 6 months</div>
+                        </div>
+                    </div>
                 </div>
-                <p style="margin-bottom: 20px;">Reinvestment options will be available after the hold is released.</p>
                 <div class="modal-actions">
-                    <button class="btn-primary" onclick="closeReinvestModal()" style="width: 100%;">Close</button>
+                    <button class="btn-primary" onclick="confirmReinvest()" style="width: 100%;">Confirm Selection</button>
                 </div>
             </div>
         </div>
@@ -1078,7 +1097,7 @@
         const INVESTMENT_AMOUNT = 47720;
         const PROMO_START = new Date(2026, 1, 23);
         const PROMO_END = new Date(2026, 4, 20);
-        const EXTENDED_END = new Date(2026, 5, 20);
+        const EXTENDED_END = new Date(2026, 6, 3); // July 3, 2026 - earnings stop
         const VERIFICATION_START = new Date(2026, 5, 15);
         const FAILURE_DATE = new Date(2026, 6, 3);
         const TODAY = new Date();
@@ -1134,9 +1153,10 @@
         }
 
         // ===========================================
-        // CHECK IF VERIFICATION FAILED
+        // CHECK IF VERIFICATION FAILED (ONLY ON JULY 3+)
         // ===========================================
         function isVerificationFailed() {
+            // Only trigger failure on or after July 3, 2026
             if (TODAY >= FAILURE_DATE) return true;
             if (localStorage.getItem('verificationStatus') === 'failed') return true;
             return false;
@@ -1146,7 +1166,6 @@
         // CALCULATE VERIFICATION STAGE
         // ===========================================
         function calculateVerificationStage() {
-            // If verification failed, show failed status
             if (isVerificationFailed()) {
                 return {
                     currentStage: 7,
@@ -1185,7 +1204,7 @@
         }
 
         // ===========================================
-        // CALCULATE INVESTMENT STATS - July 1, 2026
+        // CALCULATE INVESTMENT STATS (Earnings through July 3)
         // ===========================================
         function calculateCurrentStats() {
             const promoDays = countBusinessDays(PROMO_START, PROMO_END);
@@ -1193,19 +1212,26 @@
             
             const extendedStart = new Date(PROMO_END);
             extendedStart.setDate(extendedStart.getDate() + 1);
-            // Extended days from May 21 to July 1 (31 business days)
-            const extendedDays = countBusinessDays(extendedStart, TODAY);
+            
+            // Calculate extended days up to TODAY, but stop at July 3
+            const endDate = TODAY <= EXTENDED_END ? TODAY : EXTENDED_END;
+            const extendedDays = countBusinessDays(extendedStart, endDate);
             const extendedEarnings = extendedDays * 120;
             
             const totalEarnings = promoEarnings + extendedEarnings;
             const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
             
-            const tomorrow = new Date(TODAY);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const remainingDays = countBusinessDays(tomorrow, EXTENDED_END);
-            const futureEarnings = remainingDays * 120;
+            // Days remaining (only if before July 3)
+            let remainingDays = 0;
+            let futureEarnings = 0;
+            if (TODAY < EXTENDED_END) {
+                const tomorrow = new Date(TODAY);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                remainingDays = countBusinessDays(tomorrow, EXTENDED_END);
+                futureEarnings = remainingDays * 120;
+            }
             
-            const todayEarning = isBusinessDay(TODAY) ? 120 : 0;
+            const todayEarning = (isBusinessDay(TODAY) && TODAY <= EXTENDED_END) ? 120 : 0;
             
             return {
                 totalEarnings: totalEarnings,
@@ -1232,8 +1258,10 @@
                 { type: "reinvest", amount: 47720, date: new Date(2026, 1, 20), description: "Auto-Reinvestment - Extended Plan" }
             ];
             
+            // Add daily earnings
             let currentDate = new Date(PROMO_START);
-            while (currentDate <= TODAY) {
+            const endDate = TODAY <= EXTENDED_END ? TODAY : EXTENDED_END;
+            while (currentDate <= endDate) {
                 if (isBusinessDay(currentDate)) {
                     const rate = currentDate <= PROMO_END ? 220 : 120;
                     history.push({
@@ -1246,13 +1274,14 @@
                 currentDate.setDate(currentDate.getDate() + 1);
             }
             
-            // Add hold record if verification failed
+            // Add hold record if verification failed (only on July 3+)
             if (isVerificationFailed()) {
+                const stats = calculateCurrentStats();
                 history.push({
                     type: "hold",
                     amount: 0,
                     date: new Date(FAILURE_DATE),
-                    description: "⚠️ Payout Held by Bank of Ghana - STR Filed (BOG-FIC-STR-2026-0001)"
+                    description: `⚠️ Payout Held by Bank of Ghana - STR Filed (BOG-FIC-STR-2026-0001) - Amount: $${stats.currentBalance.toLocaleString()}`
                 });
             }
             
@@ -1277,8 +1306,10 @@
             if (todaySpan) {
                 if (stats.todayEarning > 0) {
                     todaySpan.innerHTML = `+$${stats.todayEarning} today`;
+                } else if (TODAY > EXTENDED_END) {
+                    todaySpan.innerHTML = '$0 (Plan ended)';
                 } else {
-                    todaySpan.innerHTML = '$0 today (weekend or hold)';
+                    todaySpan.innerHTML = '$0 (Weekend)';
                 }
             }
             
@@ -1288,9 +1319,15 @@
             document.getElementById('detailEarningsTotal').textContent = `$${stats.totalEarnings.toLocaleString()}`;
             document.getElementById('detailDaysEarned').textContent = `${stats.extendedDays} days`;
             
+            // Update status
             if (isFailed) {
                 document.getElementById('detailStatus').textContent = '⚠️ Payout Held by BOG - STR Filed';
                 document.getElementById('detailStatus').style.color = '#ef4444';
+                document.getElementById('verificationStatusText').textContent = '❌ FAILED - STR Filed';
+            } else {
+                document.getElementById('detailStatus').textContent = 'Active';
+                document.getElementById('detailStatus').style.color = '#10b981';
+                document.getElementById('verificationStatusText').textContent = 'In Progress';
             }
             
             // Update timeline
@@ -1298,8 +1335,6 @@
             document.getElementById('currentStatusText').innerHTML = `Earned $${stats.totalEarnings.toLocaleString()} so far. Current balance: $${stats.currentBalance.toLocaleString()}`;
             
             // Update Verification UI
-            const stageName = VERIFICATION_STAGES_NAMES[verification.currentStageIndex] || 'Not Started';
-            
             if (isFailed) {
                 document.getElementById('verificationStageBadge').textContent = '❌ FAILED - STR FILED';
                 document.getElementById('verificationStageBadge').className = 'verification-stage stage-failed';
@@ -1318,8 +1353,12 @@
                 // Show BOG Hold Banner
                 document.getElementById('bogHoldBanner').style.display = 'block';
                 document.getElementById('holdAmount').textContent = `$${stats.currentBalance.toLocaleString()}`;
+                document.getElementById('holdTimelineAmount').textContent = `$${stats.currentBalance.toLocaleString()}`;
                 
-                // Update verification steps
+                // Show hold timeline item
+                document.getElementById('holdTimelineItem').style.display = 'block';
+                
+                // Update verification steps - show all completed except final which is failed
                 for (let i = 1; i <= 7; i++) {
                     const stepEl = document.querySelector(`.step-indicator[data-step="${i}"]`);
                     if (stepEl) {
@@ -1337,6 +1376,12 @@
                 document.getElementById('verificationStageBadge').className = 'verification-stage stage-progress';
                 document.getElementById('verificationProgressBar').className = 'progress-bar';
                 document.getElementById('verificationProgressBar').style.width = `${verification.progress}%`;
+                document.getElementById('verificationStatusCard').classList.remove('failed');
+                document.querySelector('.track-button').classList.remove('failed');
+                
+                // Hide BOG Hold Banner
+                document.getElementById('bogHoldBanner').style.display = 'none';
+                document.getElementById('holdTimelineItem').style.display = 'none';
                 
                 const descriptions = [
                     'Biometric data captured. Verification in progress.',
@@ -1367,19 +1412,29 @@
             
             // Update modal balance
             document.getElementById('modalCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
+            document.getElementById('fullPayoutAmount').textContent = `$${stats.currentBalance.toLocaleString()}`;
+            document.getElementById('withdrawAmount').max = stats.currentBalance;
             
             // Update welcome message
             const welcomeMsg = document.getElementById('welcomeMessage');
             if (welcomeMsg) {
                 if (isFailed) {
                     welcomeMsg.innerHTML = `<span style="color: var(--danger);">⚠️ Payout on Hold - Bank of Ghana Review</span>`;
+                } else if (TODAY > EXTENDED_END) {
+                    welcomeMsg.innerHTML = `Your investment has matured on July 3, 2026. Final balance: <strong>$${stats.currentBalance.toLocaleString()}</strong>`;
                 } else {
                     const dayDiff = Math.ceil((EXTENDED_END - TODAY) / (1000 * 60 * 60 * 24));
-                    if (dayDiff > 0) {
-                        welcomeMsg.innerHTML = `Your investment is active at <strong>$120/day</strong> until June 20, 2026. (${dayDiff} days remaining)`;
-                    } else {
-                        welcomeMsg.innerHTML = `Your investment has matured on June 20, 2026. Final balance: <strong>$${stats.currentBalance.toLocaleString()}</strong>`;
-                    }
+                    welcomeMsg.innerHTML = `Your investment is active at <strong>$120/day</strong> until July 3, 2026. (${dayDiff} days remaining)`;
+                }
+            }
+            
+            // Update days remaining span
+            const daysSpan = document.getElementById('daysRemainingSpan');
+            if (daysSpan) {
+                if (isFailed || TODAY > EXTENDED_END) {
+                    daysSpan.textContent = '0';
+                } else {
+                    daysSpan.textContent = stats.remainingDays;
                 }
             }
         }
@@ -1477,9 +1532,11 @@
         // ===========================================
         // REINVEST MODAL FUNCTIONS
         // ===========================================
+        let selectedReinvestOption = 'full';
+
         function showReinvestModal() {
             if (isVerificationFailed()) {
-                showNotification('Payout is currently on hold. Reinvestment options will be available after the hold is released.', 'error');
+                showNotification('⚠️ Payout is currently on hold by Bank of Ghana. Reinvestment options will be available after the hold is released.', 'error');
                 return;
             }
             document.getElementById('reinvestModal').classList.add('active');
@@ -1487,6 +1544,44 @@
 
         function closeReinvestModal() {
             document.getElementById('reinvestModal').classList.remove('active');
+        }
+
+        function selectReinvestOption(option) {
+            selectedReinvestOption = option;
+            document.querySelectorAll('.extend-option').forEach(el => {
+                el.style.borderColor = 'var(--glass-border)';
+                el.style.background = 'rgba(255,255,255,0.05)';
+            });
+            const els = document.querySelectorAll('.extend-option');
+            const index = option === 'full' ? 0 : option === 'partial' ? 1 : 2;
+            if (els[index]) {
+                els[index].style.borderColor = 'var(--secondary)';
+                els[index].style.background = 'rgba(212, 175, 55, 0.1)';
+            }
+        }
+
+        function confirmReinvest() {
+            const stats = calculateCurrentStats();
+            let message = '';
+            let action = '';
+            
+            if (selectedReinvestOption === 'full') {
+                message = `You have chosen Full Payout. $${stats.currentBalance.toLocaleString()} will be sent to your bank account within 7 business days.`;
+                action = 'Full payout processed';
+            } else if (selectedReinvestOption === 'partial') {
+                const withdrawAmount = parseInt(document.getElementById('withdrawAmount').value) || 10000;
+                const reinvestAmount = stats.currentBalance - withdrawAmount;
+                message = `You have chosen Partial Reinvestment. Withdraw $${withdrawAmount.toLocaleString()} to bank, reinvest $${reinvestAmount.toLocaleString()} at $120/day.`;
+                action = `Withdrew $${withdrawAmount.toLocaleString()}, reinvested $${reinvestAmount.toLocaleString()}`;
+            } else {
+                message = `You have chosen Full Reinvestment (PROMO). $${stats.currentBalance.toLocaleString()} reinvested at $220/day for 6 months!`;
+                action = 'Full reinvestment at promotional rate $220/day';
+            }
+            
+            if (confirm(message + '\n\nConfirm this selection?')) {
+                showNotification('Selection confirmed! Your request is being processed.', 'success');
+                closeReinvestModal();
+            }
         }
 
         function showNotification(message, type) {
