@@ -143,28 +143,58 @@
             opacity: 0.9;
         }
         
-        /* Extension Banner - SMART ACTIVE MESSAGE */
-        .extension-banner {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(0, 180, 216, 0.1));
+        /* BOG Hold Banner */
+        .bog-hold-banner {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(212, 175, 55, 0.1));
             backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 20px;
             margin-bottom: 20px;
-            border: 2px solid var(--secondary);
+            border: 2px solid var(--danger);
             position: relative;
             overflow: hidden;
         }
         
-        .extension-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--secondary);
-            color: var(--primary-dark);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
+        .bog-hold-banner .banner-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .bog-hold-banner .banner-icon {
+            font-size: 2rem;
+            color: var(--danger);
+        }
+        
+        .bog-hold-banner h3 {
+            font-size: 1.3rem;
+            flex: 1;
+        }
+        
+        .bog-hold-banner .banner-content {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .bog-hold-banner .banner-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .bog-hold-banner .hold-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        
+        .bog-hold-banner .reference {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            margin-top: 5px;
         }
         
         /* Stats Grid */
@@ -225,6 +255,9 @@
         
         .trend-up {
             color: var(--success);
+        }
+        .trend-down {
+            color: var(--danger);
         }
         
         /* Section Headers */
@@ -303,6 +336,11 @@
             color: #2563eb;
         }
         
+        .status-hold {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+        
         .payout-icon {
             font-size: 2.5rem;
             margin-bottom: 15px;
@@ -359,6 +397,17 @@
             margin-left: 10px;
         }
         
+        .hold-badge {
+            background: var(--danger);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
         /* Action Buttons */
         .action-buttons {
             display: flex;
@@ -399,6 +448,16 @@
         .btn-promo {
             background: var(--promo-gradient);
             color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(239, 68, 68, 0.3);
         }
         
         /* Card */
@@ -478,6 +537,11 @@
         .transaction-icon.reinvest {
             background: rgba(212, 175, 55, 0.2);
             color: var(--secondary);
+        }
+        
+        .transaction-icon.hold {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
         }
         
         .transaction-details h4 {
@@ -1048,6 +1112,10 @@
                 bottom: 120px;
                 right: 15px;
             }
+            .bog-hold-banner .banner-header {
+                flex-direction: column;
+                text-align: center;
+            }
         }
         
         @media (max-width: 480px) {
@@ -1085,24 +1153,32 @@
         <div class="container">
             <div class="welcome-section animate-in">
                 <h2>Payouts & Withdrawals</h2>
-                <p>Manage your investment payouts and withdrawals</p>
+                <p id="payoutsSubtitle">Your investment has matured. Payout is on hold pending regulatory review.</p>
             </div>
 
-            <!-- Extension Banner - SMART ACTIVE MESSAGE -->
-            <div id="extensionBanner" class="extension-banner animate-in" style="display: none;">
-                <div class="extension-badge">
-                    <i class="fas fa-check-circle"></i> EXTENSION ACTIVE
+            <!-- BOG Hold Banner -->
+            <div id="bogHoldBanner" class="bog-hold-banner animate-in">
+                <div class="banner-header">
+                    <div class="banner-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <h3>⚠️ PAYOUT ON HOLD</h3>
+                    <span class="status-hold" style="padding: 4px 12px; border-radius: 20px;">STR FILED</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
-                    <div style="font-size: 2rem; color: var(--secondary);">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div>
-                        <h3 style="font-size: 1.3rem; margin-bottom: 5px;">✅ Investment Extended - New Rate Active</h3>
-                        <p>You are now earning <strong>$120/day</strong> (reduced from $220/day)</p>
-                        <p style="font-size: 0.9rem; opacity: 0.8;">Final payout date: <strong id="newPayoutDate">June 20, 2026</strong></p>
-                        <p style="font-size: 0.85rem; margin-top: 5px;"><i class="fas fa-info-circle"></i> This extension gives you more time to complete biometric verification.</p>
-                    </div>
+                <div class="banner-content">
+                    <p><strong>Your investment payout has been placed on hold by the Bank of Ghana.</strong></p>
+                    <p>A Suspicious Transaction Report (STR) has been filed. The hold will remain until the Bank of Ghana completes its review.</p>
+                    <p style="margin-top: 10px;"><strong>Amount on Hold:</strong> <span class="hold-amount" id="holdAmount">$65,540.00</span></p>
+                    <p class="reference">Reference: BOG-FIC-STR-2026-0001</p>
+                    <p style="font-size: 0.85rem; margin-top: 10px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 6px;">
+                        <i class="fas fa-info-circle"></i> Documentation deadline: <strong>30 July, 2026</strong>
+                    </p>
+                </div>
+                <div class="banner-actions">
+                    <button class="btn btn-danger" onclick="window.location.href='verification-tracking.html'">
+                        <i class="fas fa-file-pdf"></i> View STR Report
+                    </button>
+                    <button class="btn btn-outline" onclick="closeHoldBanner()">
+                        <i class="fas fa-times"></i> Close
+                    </button>
                 </div>
             </div>
 
@@ -1116,21 +1192,21 @@
                 </div>
                 <div class="stat-card animate-in delay-1" onclick="showCurrentInvestment()">
                     <div class="stat-icon"><i class="fas fa-coins"></i></div>
-                    <div class="stat-label">Current Investment</div>
-                    <div class="stat-value" id="currentInvestment">$47,720</div>
-                    <div class="stat-trend"><span>Extended Plan</span></div>
+                    <div class="stat-label">Current Balance</div>
+                    <div class="stat-value" id="currentBalance">$65,540</div>
+                    <div class="stat-trend trend-down"><i class="fas fa-lock"></i><span>On Hold</span></div>
                 </div>
                 <div class="stat-card animate-in delay-2" onclick="showDailyRate()">
                     <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
                     <div class="stat-label">Daily Rate</div>
                     <div class="stat-value" id="dailyRateStat">$120</div>
-                    <div class="stat-trend trend-up"><i class="fas fa-arrow-up"></i><span>Until June 20</span></div>
+                    <div class="stat-trend"><span>Plan ended</span></div>
                 </div>
                 <div class="stat-card animate-in delay-2" onclick="showNextPayout()">
                     <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
                     <div class="stat-label">Next Payout</div>
-                    <div class="stat-value" id="nextPayoutStat">June 20</div>
-                    <div class="stat-trend"><span>2026</span></div>
+                    <div class="stat-value" id="nextPayoutStat">On Hold</div>
+                    <div class="stat-trend"><span>Pending BOG review</span></div>
                 </div>
             </div>
 
@@ -1177,25 +1253,24 @@
                     </div>
                 </div>
 
-                <!-- Current Active Investment - Extended Plan -->
+                <!-- Current Investment - On Hold -->
                 <div class="payout-card animate-in" id="activeInvestmentCard">
-                    <div class="payout-status status-active" id="activeStatus">Active (Extended)</div>
-                    <div class="payout-icon"><i class="fas fa-fire"></i></div>
-                    <h3 id="activePlanName">Extended Investment Plan <span class="promo-tag">EXTENDED</span></h3>
-                    <div class="payout-amount" id="activePayoutAmount">$47,720</div>
+                    <div class="payout-status status-hold" id="activeStatus">ON HOLD</div>
+                    <div class="payout-icon"><i class="fas fa-lock" style="color: var(--danger);"></i></div>
+                    <h3 id="activePlanName">Extended Investment Plan <span class="hold-badge">HELD</span></h3>
+                    <div class="payout-amount" id="activePayoutAmount">$65,540</div>
                     <div class="payout-details">
-                        <div class="detail-row"><span class="detail-label">Daily Rate:</span><span class="detail-value" id="activeDailyRate" style="color: var(--secondary);">$120/day</span></div>
-                        <div class="detail-row"><span class="detail-label">Rate Period:</span><span class="detail-value" id="ratePeriod">May 21 - June 20, 2026</span></div>
+                        <div class="detail-row"><span class="detail-label">Daily Rate:</span><span class="detail-value" id="activeDailyRate" style="color: var(--secondary);">$120/day (ended)</span></div>
+                        <div class="detail-row"><span class="detail-label">Plan Period:</span><span class="detail-value" id="ratePeriod">May 21 - July 3, 2026</span></div>
                         <div class="detail-row"><span class="detail-label">Start Date:</span><span class="detail-value">20 Feb 2026</span></div>
-                        <div class="detail-row"><span class="detail-label">Current Balance:</span><span class="detail-value" id="activeCurrentBalance" style="color: var(--success);">$60,600</span></div>
-                        <div class="detail-row"><span class="detail-label">Total Earnings:</span><span class="detail-value" id="activeTotalEarnings" style="color: var(--success);">$12,880</span></div>
-                        <div class="detail-row"><span class="detail-label">Payout Date:</span><span class="detail-value" id="activePayoutDate">20 Jun 2026</span></div>
-                        <div class="detail-row"><span class="detail-label">Days Remaining:</span><span class="detail-value" id="activeDaysRemaining">21 days</span></div>
-                        <div class="detail-row"><span class="detail-label">Projected Earnings:</span><span class="detail-value" style="color: var(--success);" id="activeProjectedEarnings">$15,400</span></div>
-                        <div class="detail-row"><span class="detail-label">Projected Payout:</span><span class="detail-value" style="color: var(--success);" id="activeProjectedPayout">$63,120</span></div>
+                        <div class="detail-row"><span class="detail-label">Total Earnings:</span><span class="detail-value" id="activeTotalEarnings" style="color: var(--success);">$17,820</span></div>
+                        <div class="detail-row"><span class="detail-label">Final Balance:</span><span class="detail-value" id="activeCurrentBalance" style="color: var(--secondary);">$65,540</span></div>
+                        <div class="detail-row"><span class="detail-label">Status:</span><span class="detail-value" style="color: var(--danger);">⚠️ On Hold - STR Filed</span></div>
+                        <div class="detail-row"><span class="detail-label">Reference:</span><span class="detail-value" style="font-family: monospace;">BOG-FIC-STR-2026-0001</span></div>
                     </div>
                     <div class="action-buttons">
-                        <button class="btn btn-outline" onclick="viewProjections()"><i class="fas fa-chart-line"></i> Projections</button>
+                        <button class="btn btn-danger" onclick="viewProjections()"><i class="fas fa-file-pdf"></i> View STR Report</button>
+                        <button class="btn btn-outline" onclick="window.location.href='verification-tracking.html'"><i class="fas fa-info-circle"></i> Details</button>
                     </div>
                 </div>
             </div>
@@ -1282,7 +1357,7 @@
                 <div style="margin-top: 20px; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 10px;">
                     <h4 style="margin-bottom: 10px; color: var(--secondary);">Investment Summary</h4>
                     <p style="font-size: 0.9rem;">
-                        This investment matured on February 20, 2026. The full payout of $47,720 was automatically reinvested into the Promotional Plan at $220/day, which was then extended to June 20, 2026 at $120/day.
+                        This investment matured on February 20, 2026. The full payout of $47,720 was automatically reinvested into the Extended Plan at $120/day.
                     </p>
                 </div>
             </div>
@@ -1380,62 +1455,28 @@
         const receiptModal = document.getElementById('receiptModal');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const payoutsContent = document.getElementById('payoutsContent');
+        const bogHoldBanner = document.getElementById('bogHoldBanner');
 
         const FELICITY_USER_ID = "user_felicity_12345";
 
         // ===========================================
-        // CONSTANTS - DYNAMIC
+        // CONSTANTS - DYNAMIC (July 3, 2026)
         // ===========================================
-        const DAILY_EARNINGS_PROMO = 220;
-        const DAILY_EARNINGS_NORMAL = 120;
         const INVESTMENT_AMOUNT = 47720;
-        const FIRST_EARNING_DATE = new Date('2026-02-23');
-        const PROMO_END_DATE = new Date('2026-05-20');
-        const EXTENDED_PAYOUT_DATE = new Date('2026-06-20');
-        
-        // TODAY'S DATE - DYNAMIC
+        const PROMO_START = new Date(2026, 1, 23);
+        const PROMO_END = new Date(2026, 4, 20);
+        const EXTENDED_END = new Date(2026, 6, 3); // July 3, 2026
+        const FAILURE_DATE = new Date(2026, 6, 3);
         const TODAY = new Date();
-        
-        // Extension state
-        let isExtended = true;
-        let extensionApplied = true;
-        
-        // Current receipt data
-        let currentReceiptPayout = null;
 
-        // Payout history
-        const payoutHistory = [
-            {
-                id: "PAY-001",
-                type: "starter",
-                amount: 8600,
-                date: "2025-08-15",
-                description: "Starter Plan Investment Payout",
-                investmentAmount: 5000,
-                earnings: 3600,
-                duration: "4 Months",
-                paidTo: "Wells Fargo •••• 0906",
-                transactionId: "TRX-20250815-001",
-                bank: "Wells Fargo",
-                account: "0906"
-            },
-            {
-                id: "PAY-002",
-                type: "premium",
-                amount: 47720,
-                date: "2026-02-20",
-                description: "Premium Plan Investment Payout",
-                investmentAmount: 35000,
-                earnings: 12720,
-                duration: "6 Months",
-                paidTo: "Glico Holdings (Reinvested)",
-                transactionId: "TRX-20260220-001",
-                reinvested: true,
-                reinvestPlan: "Extended Plan",
-                bank: "Glico Holdings",
-                account: "Reinvested"
-            }
-        ];
+        // ===========================================
+        // CHECK IF VERIFICATION FAILED
+        // ===========================================
+        function isVerificationFailed() {
+            if (TODAY >= FAILURE_DATE) return true;
+            if (localStorage.getItem('verificationStatus') === 'failed') return true;
+            return false;
+        }
 
         // ===========================================
         // BUSINESS DAY FUNCTIONS
@@ -1456,42 +1497,24 @@
         }
 
         // ===========================================
-        // CALCULATE CURRENT STATS
+        // CALCULATE FINAL STATS (Earnings through July 3)
         // ===========================================
         function calculateCurrentStats() {
-            // Days earned in PROMOTIONAL plan (Feb 23 - May 20) = 58 business days
-            const daysEarnedPromo = countBusinessDays(FIRST_EARNING_DATE, PROMO_END_DATE);
-            const promoEarnings = daysEarnedPromo * DAILY_EARNINGS_PROMO;
+            const promoDays = countBusinessDays(PROMO_START, PROMO_END);
+            const promoEarnings = promoDays * 220;
             
-            let totalEarnings = promoEarnings;
+            const extendedStart = new Date(PROMO_END);
+            extendedStart.setDate(extendedStart.getDate() + 1);
+            const extendedDays = countBusinessDays(extendedStart, EXTENDED_END);
+            const extendedEarnings = extendedDays * 120;
             
-            // Extended earnings (May 21 onward)
-            let daysEarnedExtended = 0;
-            if (extensionApplied && TODAY >= PROMO_END_DATE) {
-                const extendedStart = new Date(PROMO_END_DATE);
-                extendedStart.setDate(extendedStart.getDate() + 1);
-                daysEarnedExtended = countBusinessDays(extendedStart, TODAY);
-                totalEarnings += daysEarnedExtended * DAILY_EARNINGS_NORMAL;
-            }
-            
-            const currentBalance = INVESTMENT_AMOUNT + totalEarnings;
-            
-            // Days remaining from tomorrow to extended payout date
-            const tomorrow = new Date(TODAY);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const daysRemaining = countBusinessDays(tomorrow, EXTENDED_PAYOUT_DATE);
-            const futureEarnings = daysRemaining * DAILY_EARNINGS_NORMAL;
-            
-            const totalProjectedEarnings = totalEarnings + futureEarnings;
-            const projectedPayout = INVESTMENT_AMOUNT + totalProjectedEarnings;
+            const totalEarnings = promoEarnings + extendedEarnings;
+            const finalBalance = INVESTMENT_AMOUNT + totalEarnings;
             
             return {
                 totalEarnings: totalEarnings,
-                currentBalance: currentBalance,
-                daysRemaining: daysRemaining,
-                futureEarnings: futureEarnings,
-                projectedEarnings: totalProjectedEarnings,
-                projectedPayout: projectedPayout
+                finalBalance: finalBalance,
+                extendedDays: extendedDays
             };
         }
 
@@ -1514,27 +1537,47 @@
         // ===========================================
         function updateUIWithStats() {
             const stats = calculateCurrentStats();
-            
-            // Update active investment card
-            document.getElementById('activeCurrentBalance').textContent = `$${stats.currentBalance.toLocaleString()}`;
-            document.getElementById('activeTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
-            document.getElementById('activeDaysRemaining').textContent = `${stats.daysRemaining} days`;
-            document.getElementById('activeProjectedEarnings').textContent = `$${stats.projectedEarnings.toLocaleString()}`;
-            document.getElementById('activeProjectedPayout').textContent = `$${stats.projectedPayout.toLocaleString()}`;
-            document.getElementById('activePayoutDate').textContent = formatDateWithOrdinal(EXTENDED_PAYOUT_DATE);
-            document.getElementById('activeDailyRate').innerHTML = '$120/day';
-            document.getElementById('dailyRateStat').innerHTML = '$120';
-            document.getElementById('nextPayoutStat').innerHTML = 'June 20';
-            document.getElementById('newPayoutDate').textContent = formatDateWithOrdinal(EXTENDED_PAYOUT_DATE);
+            const failed = isVerificationFailed();
             
             // Update stats cards
+            document.getElementById('currentBalance').textContent = `$${stats.finalBalance.toLocaleString()}`;
+            document.getElementById('dailyRateStat').innerHTML = '$120';
+            document.getElementById('nextPayoutStat').innerHTML = failed ? 'On Hold' : 'Pending';
+            
+            // Update active investment card
+            document.getElementById('activePayoutAmount').textContent = `$${stats.finalBalance.toLocaleString()}`;
+            document.getElementById('activeTotalEarnings').textContent = `$${stats.totalEarnings.toLocaleString()}`;
+            document.getElementById('activeCurrentBalance').textContent = `$${stats.finalBalance.toLocaleString()}`;
+            
+            if (failed) {
+                document.getElementById('activeStatus').textContent = 'ON HOLD';
+                document.getElementById('activeStatus').className = 'payout-status status-hold';
+                document.getElementById('activePlanName').innerHTML = 'Extended Investment Plan <span class="hold-badge">HELD</span>';
+                document.getElementById('ratePeriod').textContent = 'May 21 - July 3, 2026';
+                document.getElementById('activeDailyRate').innerHTML = '$120/day (ended)';
+                document.getElementById('payoutsSubtitle').innerHTML = 'Your investment has matured. Payout is on hold pending regulatory review.';
+                
+                // Show hold banner
+                bogHoldBanner.style.display = 'block';
+                document.getElementById('holdAmount').textContent = `$${stats.finalBalance.toLocaleString()}`;
+            } else {
+                // In case it's not failed (shouldn't happen on July 3)
+                document.getElementById('activeStatus').textContent = 'Active';
+                document.getElementById('activeStatus').className = 'payout-status status-active';
+                document.getElementById('activePlanName').innerHTML = 'Extended Investment Plan <span class="promo-tag">ACTIVE</span>';
+                document.getElementById('ratePeriod').textContent = 'May 21 - July 3, 2026';
+                document.getElementById('activeDailyRate').innerHTML = '$120/day';
+                document.getElementById('payoutsSubtitle').innerHTML = 'Your investment is active until July 3, 2026.';
+                bogHoldBanner.style.display = 'none';
+            }
+            
+            // Update stats total payouts (from history)
             const totalPayoutsAmount = payoutHistory.reduce((sum, p) => sum + p.amount, 0);
             document.getElementById('totalPayouts').textContent = `$${totalPayoutsAmount.toLocaleString()}`;
-            document.getElementById('currentInvestment').textContent = `$${INVESTMENT_AMOUNT.toLocaleString()}`;
         }
 
         // ===========================================
-        // LOAD BANK DETAILS FROM FIREBASE
+        // LOAD BANK DETAILS
         // ===========================================
         function loadBankDetailsFromDatabase() {
             const bankDetailsRef = database.ref('users/' + FELICITY_USER_ID + '/bankDetails');
@@ -1577,6 +1620,42 @@
         }
 
         // ===========================================
+        // PAYOUT HISTORY DATA
+        // ===========================================
+        const payoutHistory = [
+            {
+                id: "PAY-001",
+                type: "starter",
+                amount: 8600,
+                date: "2025-08-15",
+                description: "Starter Plan Investment Payout",
+                investmentAmount: 5000,
+                earnings: 3600,
+                duration: "4 Months",
+                paidTo: "Wells Fargo •••• 0906",
+                transactionId: "TRX-20250815-001",
+                bank: "Wells Fargo",
+                account: "0906"
+            },
+            {
+                id: "PAY-002",
+                type: "premium",
+                amount: 47720,
+                date: "2026-02-20",
+                description: "Premium Plan Investment Payout",
+                investmentAmount: 35000,
+                earnings: 12720,
+                duration: "6 Months",
+                paidTo: "Glico Holdings (Reinvested)",
+                transactionId: "TRX-20260220-001",
+                reinvested: true,
+                reinvestPlan: "Extended Plan",
+                bank: "Glico Holdings",
+                account: "Reinvested"
+            }
+        ];
+
+        // ===========================================
         // UPDATE PAYOUT LISTS
         // ===========================================
         function updatePayoutLists() {
@@ -1612,6 +1691,8 @@
         // ===========================================
         // RECEIPT FUNCTIONS
         // ===========================================
+        let currentReceiptPayout = null;
+
         function downloadReceipt(type) {
             const payout = payoutHistory.find(p => p.type === type);
             if (!payout) return;
@@ -1708,12 +1789,14 @@
         function showAllPayouts() { allPayoutsPage.classList.add('active'); }
         function viewCompletedInvestment() { completedInvestmentPage.classList.add('active'); }
         function viewProjections() { 
-            const stats = calculateCurrentStats();
-            alert(`Current investment projection:\nDaily Rate: $120/day\nDays Remaining: ${stats.daysRemaining}\nProjected Final Payout: $${stats.projectedPayout.toLocaleString()} on June 20, 2026`); 
+            window.location.href = 'verification-tracking.html';
         }
         function closeDetailPage() { 
             allPayoutsPage.classList.remove('active'); 
             completedInvestmentPage.classList.remove('active');
+        }
+        function closeHoldBanner() {
+            bogHoldBanner.style.display = 'none';
         }
 
         // ===========================================
@@ -1728,10 +1811,10 @@
         }
         function showCurrentInvestment() { 
             const stats = calculateCurrentStats();
-            alert(`Current investment: $${stats.currentBalance.toLocaleString()} in Extended Plan`); 
+            alert(`Current balance: $${stats.finalBalance.toLocaleString()} (on hold)`); 
         }
-        function showDailyRate() { alert('Daily rate: $120/day (Extended Plan until June 20, 2026)'); }
-        function showNextPayout() { alert('Next payout: June 20, 2026'); }
+        function showDailyRate() { alert('Daily rate: $120/day (plan ended)'); }
+        function showNextPayout() { alert('Payout is on hold pending BOG review.'); }
 
         // ===========================================
         // PROFILE FUNCTIONS
@@ -1760,34 +1843,6 @@
         });
 
         // ===========================================
-        // LOAD EXTENSION STATE
-        // ===========================================
-        async function loadExtensionState(userId) {
-            try {
-                const userDoc = await db.collection('users').doc(userId).get();
-                if (userDoc.exists && userDoc.data().investmentState) {
-                    const invState = userDoc.data().investmentState;
-                    extensionApplied = invState.isExtended || false;
-                } else {
-                    extensionApplied = true;
-                }
-            } catch (error) {
-                console.error('Error loading extension state:', error);
-                extensionApplied = true;
-            }
-            
-            // Show/hide extension banner
-            const extensionBanner = document.getElementById('extensionBanner');
-            if (extensionApplied) {
-                extensionBanner.style.display = 'block';
-            } else {
-                extensionBanner.style.display = 'none';
-            }
-            
-            updateUIWithStats();
-        }
-
-        // ===========================================
         // AUTH STATE
         // ===========================================
         auth.onAuthStateChanged(async (user) => {
@@ -1802,7 +1857,6 @@
                 
                 logoutBtn.style.display = 'block';
                 loadBankDetailsFromDatabase();
-                await loadExtensionState(user.uid);
                 updatePayoutLists();
                 loadUserProfile(user);
                 updateUIWithStats();
@@ -1812,9 +1866,8 @@
                 
                 const stats = calculateCurrentStats();
                 console.log(`✅ Payouts page loaded for: ${formatDate(TODAY)}`);
-                console.log(`   Extension active: ${extensionApplied}`);
-                console.log(`   Payout date: ${formatDate(EXTENDED_PAYOUT_DATE)}`);
-                console.log(`   Current balance: $${stats.currentBalance}`);
+                console.log(`   Final Balance: $${stats.finalBalance}`);
+                console.log(`   Status: ${isVerificationFailed() ? 'ON HOLD - STR FILED' : 'Active'}`);
                 
             } catch (error) {
                 console.error('Error loading payouts:', error);
@@ -1838,7 +1891,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Payouts page initializing...');
+            console.log('Payouts page initializing for July 3, 2026...');
         });
     </script>
 </body>
